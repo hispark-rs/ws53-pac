@@ -63,6 +63,22 @@ assert_not_impl!(
 );
 assert_not_impl!(ws53_pac::qspi1::rx::RxSpec, ws53_pac::generic::Writable);
 assert_not_impl!(ws53_pac::qspi1::tx::TxSpec, ws53_pac::generic::Readable);
+assert_not_impl!(
+    ws53_pac::trng::fifo_data::FifoDataSpec,
+    ws53_pac::generic::Writable
+);
+assert_not_impl!(
+    ws53_pac::trng::fifo_data::FifoDataSpec,
+    ws53_pac::generic::Resettable
+);
+assert_not_impl!(
+    ws53_pac::trng::fifo_ready::FifoReadySpec,
+    ws53_pac::generic::Writable
+);
+assert_not_impl!(
+    ws53_pac::m_crg::trng_ring_control::TrngRingControlSpec,
+    ws53_pac::generic::Resettable
+);
 assert_not_impl!(m_crg::m_clken1::MClken1Spec, ws53_pac::generic::Resettable);
 assert_not_impl!(
     pinmux_aon::agpio6_pad::Agpio6PadSpec,
@@ -325,4 +341,33 @@ fn adc_v155_uses_diagnostic_capture_and_explicit_pulses() {
             .write_with_zero(|w| w.pulse().clear_bit());
         assert_eq!(adc.offset_state_clear().as_ptr().read_volatile(), 0);
     }
+}
+
+#[test]
+fn trng_uses_unified_address_and_shared_halfword_ring_control() {
+    use ws53_pac::trng;
+    let trng: trng::RegisterBlock = unsafe { core::mem::zeroed() };
+    let clocks: m_crg::RegisterBlock = unsafe { core::mem::zeroed() };
+    assert_eq!(ws53_pac::Trng::ptr() as usize, 0x52024000);
+    assert_eq!(offset(&trng, trng.fifo_data()), 0x100);
+    assert_eq!(offset(&trng, trng.fifo_ready()), 0x104);
+    assert_eq!(offset(&trng, trng.fro_sample_clk_sel()), 0x174);
+    assert_eq!(offset(&trng, trng.fro_div_cnt()), 0x178);
+    assert_eq!(offset(&clocks, clocks.trng_ring_control()), 0x1600);
+    assert_eq!(size_of_val(clocks.trng_ring_control()), 2);
+    // Local cells test generated field placement only. They do not emulate
+    // FIFO consumption, ring startup, health tests or hardware entropy.
+    for ready in 0..4 {
+        unsafe { trng.fifo_ready().as_ptr().write_volatile(ready) };
+        let value = trng.fifo_ready().read();
+        assert_eq!(value.data_ready().bit(), ready & 1 != 0);
+        assert_eq!(value.done().bit(), ready & 2 != 0);
+    }
+    unsafe { clocks.trng_ring_control().as_ptr().write_volatile(0xa5a4) };
+    clocks
+        .trng_ring_control()
+        .modify(|_, w| w.ring_enable().set_bit());
+    assert_eq!(clocks.trng_ring_control().read().bits(), 0xa5a5);
+    unsafe { trng.fro_div_cnt().write_with_zero(|w| w.value().bits(0x1b)) };
+    assert_eq!(trng.fro_div_cnt().read().bits(), 0x1b);
 }

@@ -12,7 +12,7 @@
       <baseAddress>0x52000000</baseAddress>
       <addressBlock>
         <offset>0x0</offset>
-        <size>0x952</size>
+        <size>0x1602</size>
         <usage>registers</usage>
       </addressBlock>
       <registers>
@@ -334,6 +334,22 @@
             <field>
               <name>MASTER</name>
               <description>SPI_BUS_0: 0 slave, 1 master; QSPI bus1 is master-only</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_RING_CONTROL</name>
+          <description>TRNG_SEC_CFB: volatile shared ring control; SDK waits 200 us after enabling</description>
+          <addressOffset>0x1600</addressOffset>
+          <size>16</size>
+          <access>read-write</access>
+          <fields>
+            <field>
+              <name>RING_ENABLE</name>
+              <description>ring_enable</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-write</access>
@@ -1334,6 +1350,91 @@
               <description>Pin-specific mux selection; legal functions depend on the pad</description>
               <bitOffset>0</bitOffset>
               <bitWidth>3</bitWidth>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+      </registers>
+    </peripheral>
+    <peripheral>
+      <name>TRNG</name>
+      <description>trng</description>
+      <baseAddress>0x52024000</baseAddress>
+      <addressBlock>
+        <offset>0x0</offset>
+        <size>0x17C</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <register>
+          <name>FIFO_DATA</name>
+          <description>Consume one FIFO word; SDK reads twice per candidate and discards the comparison word</description>
+          <addressOffset>0x100</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <readAction>modifyExternal</readAction>
+          <fields>
+            <field>
+              <name>VALUE</name>
+              <description>value</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+              <access>read-only</access>
+              <readAction>modifyExternal</readAction>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>FIFO_READY</name>
+          <description>Both data_ready and done must be set before the SDK consumes a candidate</description>
+          <addressOffset>0x104</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <fields>
+            <field>
+              <name>DATA_READY</name>
+              <description>data_ready</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>DONE</name>
+              <description>done</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>FRO_SAMPLE_CLK_SEL</name>
+          <description>Optional FRO entropy-source clock selector; SDK writes 1 for internal FRO</description>
+          <addressOffset>0x174</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <fields>
+            <field>
+              <name>INTERNAL_FRO</name>
+              <description>internal_fro</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>FRO_DIV_CNT</name>
+          <description>Optional FRO divider encoding; SDK uses 0x1b for its divide-by-54 setup</description>
+          <addressOffset>0x178</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <fields>
+            <field>
+              <name>VALUE</name>
+              <description>value</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>8</bitWidth>
               <access>read-write</access>
             </field>
           </fields>

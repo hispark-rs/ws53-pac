@@ -40,3 +40,10 @@ SDIO is a ROM-audited register subset, not an implemented SDIO driver. Its
 command views deliberately omit read-modify-write and unverified clear/reset
 semantics. PAC availability does not establish DMA quiescence, safe buffer
 ownership, clock configuration, or completed silicon peripheral validation.
+
+TRNG describes the SDK unified-security application path at `0x52024000`.
+`FIFO_DATA` reads consume words; it is not a passive diagnostic register.
+The SDK application also services control-core random-buffer requests over IPC.
+Neither this PAC nor its `Peripherals` singleton grants exclusive ownership of
+that service or its shared 16-bit ring control in `M_CRG`. Entropy quality,
+handover, HAL behavior and hardware validation remain outstanding.

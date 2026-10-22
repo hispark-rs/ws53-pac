@@ -976,6 +976,8 @@ pub mod m_crg {
         spi_clock: SpiClock,
         _reserved7: [u8; 0x03f2],
         spi_device_mode: SpiDeviceMode,
+        _reserved8: [u8; 0x0cae],
+        trng_ring_control: TrngRingControl,
     }
     impl RegisterBlock {
         #[doc = "0x40 - M_CLKEN0"]
@@ -1017,6 +1019,11 @@ pub mod m_crg {
         #[inline(always)]
         pub const fn spi_device_mode(&self) -> &SpiDeviceMode {
             &self.spi_device_mode
+        }
+        #[doc = "0x1600 - TRNG_SEC_CFB: volatile shared ring control; SDK waits 200 us after enabling"]
+        #[inline(always)]
+        pub const fn trng_ring_control(&self) -> &TrngRingControl {
+            &self.trng_ring_control
         }
     }
     #[doc = "M_CLKEN0 (rw) register accessor: M_CLKEN0\n\nYou can [`read`](crate::Reg::read) this register and get [`m_clken0::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`m_clken0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@m_clken0`] module"]
@@ -1720,6 +1727,45 @@ pub mod m_crg {
         impl crate::Readable for SpiDeviceModeSpec {}
         #[doc = "`write(|w| ..)` method takes [`spi_device_mode::W`](W) writer structure"]
         impl crate::Writable for SpiDeviceModeSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "TRNG_RING_CONTROL (rw) register accessor: TRNG_SEC_CFB: volatile shared ring control; SDK waits 200 us after enabling\n\nYou can [`read`](crate::Reg::read) this register and get [`trng_ring_control::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`trng_ring_control::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@trng_ring_control`] module"]
+    #[doc(alias = "TRNG_RING_CONTROL")]
+    pub type TrngRingControl = crate::Reg<trng_ring_control::TrngRingControlSpec>;
+    #[doc = "TRNG_SEC_CFB: volatile shared ring control; SDK waits 200 us after enabling"]
+    pub mod trng_ring_control {
+        #[doc = "Register `TRNG_RING_CONTROL` reader"]
+        pub type R = crate::R<TrngRingControlSpec>;
+        #[doc = "Register `TRNG_RING_CONTROL` writer"]
+        pub type W = crate::W<TrngRingControlSpec>;
+        #[doc = "Field `RING_ENABLE` reader - ring_enable"]
+        pub type RingEnableR = crate::BitReader;
+        #[doc = "Field `RING_ENABLE` writer - ring_enable"]
+        pub type RingEnableW<'a, REG> = crate::BitWriter<'a, REG>;
+        impl R {
+            #[doc = "Bit 0 - ring_enable"]
+            #[inline(always)]
+            pub fn ring_enable(&self) -> RingEnableR {
+                RingEnableR::new((self.bits & 1) != 0)
+            }
+        }
+        impl W {
+            #[doc = "Bit 0 - ring_enable"]
+            #[inline(always)]
+            pub fn ring_enable(&mut self) -> RingEnableW<'_, TrngRingControlSpec> {
+                RingEnableW::new(self, 0)
+            }
+        }
+        #[doc = "TRNG_SEC_CFB: volatile shared ring control; SDK waits 200 us after enabling\n\nYou can [`read`](crate::Reg::read) this register and get [`trng_ring_control::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`trng_ring_control::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct TrngRingControlSpec;
+        impl crate::RegisterSpec for TrngRingControlSpec {
+            type Ux = u16;
+        }
+        #[doc = "`read()` method returns [`trng_ring_control::R`](R) reader structure"]
+        impl crate::Readable for TrngRingControlSpec {}
+        #[doc = "`write(|w| ..)` method takes [`trng_ring_control::W`](W) writer structure"]
+        impl crate::Writable for TrngRingControlSpec {
             type Safety = crate::Unsafe;
         }
     }
@@ -4165,6 +4211,181 @@ pub mod pinmux_mcu {
         impl crate::Readable for Mgpio22SelSpec {}
         #[doc = "`write(|w| ..)` method takes [`mgpio22_sel::W`](W) writer structure"]
         impl crate::Writable for Mgpio22SelSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+}
+#[doc = "trng"]
+pub type Trng = crate::Periph<trng::RegisterBlock, 0x5202_4000>;
+impl core::fmt::Debug for Trng {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("Trng").finish()
+    }
+}
+#[doc = "trng"]
+pub mod trng {
+    #[repr(C)]
+    #[doc = "Register block"]
+    pub struct RegisterBlock {
+        _reserved0: [u8; 0x0100],
+        fifo_data: FifoData,
+        fifo_ready: FifoReady,
+        _reserved2: [u8; 0x6c],
+        fro_sample_clk_sel: FroSampleClkSel,
+        fro_div_cnt: FroDivCnt,
+    }
+    impl RegisterBlock {
+        #[doc = "0x100 - Consume one FIFO word; SDK reads twice per candidate and discards the comparison word"]
+        #[inline(always)]
+        pub const fn fifo_data(&self) -> &FifoData {
+            &self.fifo_data
+        }
+        #[doc = "0x104 - Both data_ready and done must be set before the SDK consumes a candidate"]
+        #[inline(always)]
+        pub const fn fifo_ready(&self) -> &FifoReady {
+            &self.fifo_ready
+        }
+        #[doc = "0x174 - Optional FRO entropy-source clock selector; SDK writes 1 for internal FRO"]
+        #[inline(always)]
+        pub const fn fro_sample_clk_sel(&self) -> &FroSampleClkSel {
+            &self.fro_sample_clk_sel
+        }
+        #[doc = "0x178 - Optional FRO divider encoding; SDK uses 0x1b for its divide-by-54 setup"]
+        #[inline(always)]
+        pub const fn fro_div_cnt(&self) -> &FroDivCnt {
+            &self.fro_div_cnt
+        }
+    }
+    #[doc = "FIFO_DATA (r) register accessor: Consume one FIFO word; SDK reads twice per candidate and discards the comparison word\n\nYou can [`read`](crate::Reg::read) this register and get [`fifo_data::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\n<div class=\"warning\">One or more dependent resources other than the current register are immediately affected by a read operation.</div>\n\nFor information about available fields see [`mod@fifo_data`] module"]
+    #[doc(alias = "FIFO_DATA")]
+    pub type FifoData = crate::Reg<fifo_data::FifoDataSpec>;
+    #[doc = "Consume one FIFO word; SDK reads twice per candidate and discards the comparison word"]
+    pub mod fifo_data {
+        #[doc = "Register `FIFO_DATA` reader"]
+        pub type R = crate::R<FifoDataSpec>;
+        #[doc = "Field `VALUE` reader - value\n\n<div class=\"warning\">One or more dependent resources other than the current field are immediately affected by a read operation.</div>"]
+        pub type ValueR = crate::FieldReader<u32>;
+        impl R {
+            #[doc = "Bits 0:31 - value"]
+            #[inline(always)]
+            pub fn value(&self) -> ValueR {
+                ValueR::new(self.bits)
+            }
+        }
+        #[doc = "Consume one FIFO word; SDK reads twice per candidate and discards the comparison word\n\nYou can [`read`](crate::Reg::read) this register and get [`fifo_data::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\n<div class=\"warning\">One or more dependent resources other than the current register are immediately affected by a read operation.</div>"]
+        pub struct FifoDataSpec;
+        impl crate::RegisterSpec for FifoDataSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`fifo_data::R`](R) reader structure"]
+        impl crate::Readable for FifoDataSpec {}
+    }
+    #[doc = "FIFO_READY (r) register accessor: Both data_ready and done must be set before the SDK consumes a candidate\n\nYou can [`read`](crate::Reg::read) this register and get [`fifo_ready::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@fifo_ready`] module"]
+    #[doc(alias = "FIFO_READY")]
+    pub type FifoReady = crate::Reg<fifo_ready::FifoReadySpec>;
+    #[doc = "Both data_ready and done must be set before the SDK consumes a candidate"]
+    pub mod fifo_ready {
+        #[doc = "Register `FIFO_READY` reader"]
+        pub type R = crate::R<FifoReadySpec>;
+        #[doc = "Field `DATA_READY` reader - data_ready"]
+        pub type DataReadyR = crate::BitReader;
+        #[doc = "Field `DONE` reader - done"]
+        pub type DoneR = crate::BitReader;
+        impl R {
+            #[doc = "Bit 0 - data_ready"]
+            #[inline(always)]
+            pub fn data_ready(&self) -> DataReadyR {
+                DataReadyR::new((self.bits & 1) != 0)
+            }
+            #[doc = "Bit 1 - done"]
+            #[inline(always)]
+            pub fn done(&self) -> DoneR {
+                DoneR::new(((self.bits >> 1) & 1) != 0)
+            }
+        }
+        #[doc = "Both data_ready and done must be set before the SDK consumes a candidate\n\nYou can [`read`](crate::Reg::read) this register and get [`fifo_ready::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct FifoReadySpec;
+        impl crate::RegisterSpec for FifoReadySpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`fifo_ready::R`](R) reader structure"]
+        impl crate::Readable for FifoReadySpec {}
+    }
+    #[doc = "FRO_SAMPLE_CLK_SEL (rw) register accessor: Optional FRO entropy-source clock selector; SDK writes 1 for internal FRO\n\nYou can [`read`](crate::Reg::read) this register and get [`fro_sample_clk_sel::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`fro_sample_clk_sel::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@fro_sample_clk_sel`] module"]
+    #[doc(alias = "FRO_SAMPLE_CLK_SEL")]
+    pub type FroSampleClkSel = crate::Reg<fro_sample_clk_sel::FroSampleClkSelSpec>;
+    #[doc = "Optional FRO entropy-source clock selector; SDK writes 1 for internal FRO"]
+    pub mod fro_sample_clk_sel {
+        #[doc = "Register `FRO_SAMPLE_CLK_SEL` reader"]
+        pub type R = crate::R<FroSampleClkSelSpec>;
+        #[doc = "Register `FRO_SAMPLE_CLK_SEL` writer"]
+        pub type W = crate::W<FroSampleClkSelSpec>;
+        #[doc = "Field `INTERNAL_FRO` reader - internal_fro"]
+        pub type InternalFroR = crate::BitReader;
+        #[doc = "Field `INTERNAL_FRO` writer - internal_fro"]
+        pub type InternalFroW<'a, REG> = crate::BitWriter<'a, REG>;
+        impl R {
+            #[doc = "Bit 0 - internal_fro"]
+            #[inline(always)]
+            pub fn internal_fro(&self) -> InternalFroR {
+                InternalFroR::new((self.bits & 1) != 0)
+            }
+        }
+        impl W {
+            #[doc = "Bit 0 - internal_fro"]
+            #[inline(always)]
+            pub fn internal_fro(&mut self) -> InternalFroW<'_, FroSampleClkSelSpec> {
+                InternalFroW::new(self, 0)
+            }
+        }
+        #[doc = "Optional FRO entropy-source clock selector; SDK writes 1 for internal FRO\n\nYou can [`read`](crate::Reg::read) this register and get [`fro_sample_clk_sel::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`fro_sample_clk_sel::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct FroSampleClkSelSpec;
+        impl crate::RegisterSpec for FroSampleClkSelSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`fro_sample_clk_sel::R`](R) reader structure"]
+        impl crate::Readable for FroSampleClkSelSpec {}
+        #[doc = "`write(|w| ..)` method takes [`fro_sample_clk_sel::W`](W) writer structure"]
+        impl crate::Writable for FroSampleClkSelSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "FRO_DIV_CNT (rw) register accessor: Optional FRO divider encoding; SDK uses 0x1b for its divide-by-54 setup\n\nYou can [`read`](crate::Reg::read) this register and get [`fro_div_cnt::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`fro_div_cnt::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@fro_div_cnt`] module"]
+    #[doc(alias = "FRO_DIV_CNT")]
+    pub type FroDivCnt = crate::Reg<fro_div_cnt::FroDivCntSpec>;
+    #[doc = "Optional FRO divider encoding; SDK uses 0x1b for its divide-by-54 setup"]
+    pub mod fro_div_cnt {
+        #[doc = "Register `FRO_DIV_CNT` reader"]
+        pub type R = crate::R<FroDivCntSpec>;
+        #[doc = "Register `FRO_DIV_CNT` writer"]
+        pub type W = crate::W<FroDivCntSpec>;
+        #[doc = "Field `VALUE` reader - value"]
+        pub type ValueR = crate::FieldReader;
+        #[doc = "Field `VALUE` writer - value"]
+        pub type ValueW<'a, REG> = crate::FieldWriter<'a, REG, 8>;
+        impl R {
+            #[doc = "Bits 0:7 - value"]
+            #[inline(always)]
+            pub fn value(&self) -> ValueR {
+                ValueR::new((self.bits & 0xff) as u8)
+            }
+        }
+        impl W {
+            #[doc = "Bits 0:7 - value"]
+            #[inline(always)]
+            pub fn value(&mut self) -> ValueW<'_, FroDivCntSpec> {
+                ValueW::new(self, 0)
+            }
+        }
+        #[doc = "Optional FRO divider encoding; SDK uses 0x1b for its divide-by-54 setup\n\nYou can [`read`](crate::Reg::read) this register and get [`fro_div_cnt::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`fro_div_cnt::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct FroDivCntSpec;
+        impl crate::RegisterSpec for FroDivCntSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`fro_div_cnt::R`](R) reader structure"]
+        impl crate::Readable for FroDivCntSpec {}
+        #[doc = "`write(|w| ..)` method takes [`fro_div_cnt::W`](W) writer structure"]
+        impl crate::Writable for FroDivCntSpec {
             type Safety = crate::Unsafe;
         }
     }
@@ -35705,6 +35926,8 @@ pub struct Peripherals {
     pub mcu_diag: McuDiag,
     #[doc = "PINMUX_MCU"]
     pub pinmux_mcu: PinmuxMcu,
+    #[doc = "TRNG"]
+    pub trng: Trng,
     #[doc = "I2S"]
     pub i2s: I2s,
     #[doc = "SDIO"]
@@ -35780,6 +36003,7 @@ impl Peripherals {
                 timer: Timer::steal(),
                 mcu_diag: McuDiag::steal(),
                 pinmux_mcu: PinmuxMcu::steal(),
+                trng: Trng::steal(),
                 i2s: I2s::steal(),
                 sdio: Sdio::steal(),
                 mdma: Mdma::steal(),
