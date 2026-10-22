@@ -76,6 +76,30 @@ assert_not_impl!(
     ws53_pac::mdma::configuration::ConfigurationSpec,
     ws53_pac::generic::Resettable
 );
+assert_not_impl!(
+    ws53_pac::adc::scan_command::ScanCommandSpec,
+    ws53_pac::generic::Readable
+);
+assert_not_impl!(
+    ws53_pac::adc::offset_state_clear::OffsetStateClearSpec,
+    ws53_pac::generic::Readable
+);
+assert_not_impl!(
+    ws53_pac::adc::cap_finish_clear::CapFinishClearSpec,
+    ws53_pac::generic::Readable
+);
+assert_not_impl!(
+    ws53_pac::adc::analog_config::AnalogConfigSpec,
+    ws53_pac::generic::Readable
+);
+assert_not_impl!(
+    ws53_pac::adc::offset_status::OffsetStatusSpec,
+    ws53_pac::generic::Writable
+);
+assert_not_impl!(
+    ws53_pac::adc::scan_control::ScanControlSpec,
+    ws53_pac::generic::Resettable
+);
 
 #[test]
 fn spi_fifo_views_keep_their_instance_layout_and_access_direction() {
@@ -134,5 +158,60 @@ fn mdma_eight_channels_keep_padding_request_encoding_and_w1c_commands() {
         dma.interrupt_clear()
             .write_with_zero(|w| w.transfer_complete().bits(1 << 7).error().bits(1 << 3));
         assert_eq!(dma.interrupt_clear().as_ptr().read_volatile(), 0x880);
+    }
+}
+
+#[test]
+fn adc_v155_uses_diagnostic_capture_and_explicit_pulses() {
+    use ws53_pac::{adc, mcu_diag};
+    let adc: adc::RegisterBlock = unsafe { core::mem::zeroed() };
+    let diag: mcu_diag::RegisterBlock = unsafe { core::mem::zeroed() };
+    let clocks: m_crg::RegisterBlock = unsafe { core::mem::zeroed() };
+    assert_eq!(offset(&adc, adc.scan_command()), 0x1c);
+    assert_eq!(offset(&adc, adc.analog_control()), 0x24);
+    assert_eq!(offset(&adc, adc.manual_control()), 0x28);
+    assert_eq!(offset(&adc, adc.offset_status()), 0x44);
+    assert_eq!(offset(&adc, adc.cap_calibration()), 0x88);
+    assert_eq!(offset(&adc, adc.cap_status()), 0xa0);
+    for index in 0..3 {
+        assert_eq!(offset(&adc, adc.analog_config(index)), 0xf4 + 4 * index);
+    }
+    assert_eq!(offset(&diag, diag.sample_mode()), 0x104);
+    assert_eq!(offset(&diag, diag.start_low()), 0x110);
+    assert_eq!(offset(&diag, diag.end_high()), 0x11c);
+    assert_eq!(offset(&diag, diag.done_address_low()), 0x120);
+    assert_eq!(offset(&diag, diag.sample_done()), 0x128);
+    assert_eq!(offset(&clocks, clocks.soft_reset1()), 0x54);
+    assert_eq!(size_of_val(clocks.soft_reset1()), 4);
+    assert_eq!(size_of_val(clocks.m_clken1()), 2);
+    adc.scan_control().modify(|_, w| unsafe {
+        w.channels()
+            .bits(0x80)
+            .average()
+            .eight()
+            .sample_count()
+            .bits(6)
+            .start_count()
+            .bits(0x1a)
+            .discard_count()
+            .bits(0x20)
+    });
+    assert_eq!(
+        adc.scan_control().read().bits(),
+        0x80 | (3 << 8) | (6 << 10) | (0x1a << 15) | (0x20 << 23)
+    );
+    diag.sample_mode()
+        .modify(|_, w| w.mode().repeat().enable().set_bit().sync().set_bit());
+    assert_eq!(diag.sample_mode().read().bits(), 0x301);
+    assert_eq!(ws53_pac::interrupt::ExternalInterrupt::LSADC as u16, 80);
+    // SDK requires explicit high/low writes, not a W1C/self-clearing assumption.
+    assert_eq!(<adc::offset_state_clear::OffsetStateClearSpec as ws53_pac::generic::Writable>::ONE_TO_MODIFY_FIELDS_BITMAP, 0);
+    unsafe {
+        adc.offset_state_clear()
+            .write_with_zero(|w| w.pulse().set_bit());
+        assert_eq!(adc.offset_state_clear().as_ptr().read_volatile(), 1);
+        adc.offset_state_clear()
+            .write_with_zero(|w| w.pulse().clear_bit());
+        assert_eq!(adc.offset_state_clear().as_ptr().read_volatile(), 0);
     }
 }

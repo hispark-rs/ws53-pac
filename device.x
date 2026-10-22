@@ -17,4 +17,5 @@ PROVIDE(SPI_3 = DefaultHandler);
 PROVIDE(I2S = DefaultHandler);
 PROVIDE(PWM_ABNOR = DefaultHandler);
 PROVIDE(PWM_CFG = DefaultHandler);
+PROVIDE(LSADC = DefaultHandler);
 
