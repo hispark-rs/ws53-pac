@@ -62,3 +62,10 @@ absent. EOI only exposes the SDK's write acknowledgement, not speculative read
 behavior. TIMER/TCXO do not implement Resettable: inherited IP reset annotations
 were not established for WS53. TCXO's four count slots are 32-bit accesses with
 16-bit payloads. None of these layout checks proves shared-resource handover.
+
+UART0/1/2 use the SDK's 32-bit access profile. RX and TX are separate views of
+the data address, so neither exposes modify(). Reading LINE_STATUS clears some
+errors; polling FIFO_STATUS.rx_not_empty avoids that side effect. The WS63
+receive-count read alias at +0x40 is not established on WS53: that address only
+exposes the SDK's WO test-injection view. Unknown resets and PRO extensions are
+not imported. Full UART configuration, DMA and hardware validation remain open.

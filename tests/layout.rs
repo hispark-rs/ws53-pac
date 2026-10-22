@@ -80,6 +80,17 @@ assert_not_impl!(
     ws53_pac::generic::Resettable
 );
 assert_not_impl!(m_crg::m_clken1::MClken1Spec, ws53_pac::generic::Resettable);
+assert_not_impl!(ws53_pac::uart0::rx::RxSpec, ws53_pac::generic::Writable);
+assert_not_impl!(ws53_pac::uart0::tx::TxSpec, ws53_pac::generic::Readable);
+assert_not_impl!(ws53_pac::uart0::tx::TxSpec, ws53_pac::generic::Resettable);
+assert_not_impl!(
+    ws53_pac::uart0::fifo_ctl::FifoCtlSpec,
+    ws53_pac::generic::Readable
+);
+assert_not_impl!(
+    ws53_pac::uart0::rx_fifo_write::RxFifoWriteSpec,
+    ws53_pac::generic::Readable
+);
 assert_not_impl!(
     ws53_pac::timer::timer_load_count0::TimerLoadCount0Spec,
     ws53_pac::generic::Resettable
@@ -208,6 +219,32 @@ assert_not_impl!(
     ws53_pac::sdio::global_interrupt_enable::GlobalInterruptEnableSpec,
     ws53_pac::generic::Resettable
 );
+
+#[test]
+fn uart_word_views_preserve_data_directions_and_receive_flags() {
+    let uart: ws53_pac::uart0::RegisterBlock = unsafe { core::mem::zeroed() };
+    assert_eq!(size_of_val(&uart), 0x64);
+    assert_eq!(size_of_val(uart.rx()), 4);
+    assert_eq!(size_of_val(uart.tx()), 4);
+    assert_eq!(offset(&uart, uart.rx()), 4);
+    assert_eq!(offset(&uart, uart.tx()), 4);
+    assert_eq!(offset(&uart, uart.rx_fifo_cnt()), 0x4c);
+    for raw in 0..16 {
+        unsafe { uart.fifo_status().as_ptr().write_volatile(raw) };
+        let status = uart.fifo_status().read();
+        assert_eq!(status.tx_fifo_full().bit(), raw & 1 != 0);
+        assert_eq!(status.tx_fifo_empty().bit(), raw & 2 != 0);
+        assert_eq!(status.rx_not_empty().bit(), raw & 4 != 0);
+        assert_eq!(status.rx_full().bit(), raw & 8 != 0);
+    }
+    unsafe {
+        uart.rx_fifo_cnt().as_ptr().write_volatile(64);
+        uart.tx().write_with_zero(|w| w.data().bits(0xa5));
+    }
+    assert_eq!(uart.rx_fifo_cnt().read().rx_fifo_level().bits(), 64);
+    // Local memory checks encoding only: physical RX and TX are separate FIFOs.
+    assert_eq!(unsafe { uart.tx().as_ptr().read_volatile() }, 0xa5);
+}
 
 #[test]
 fn timer_channel_status_and_tcxo_words_match_selected_sdk_profile() {

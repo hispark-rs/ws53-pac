@@ -8079,51 +8079,29 @@ pub mod uart0 {
     #[doc = "Register block"]
     pub struct RegisterBlock {
         intr_id: IntrId,
-        _reserved1: [u8; 0x02],
-        data: Data,
-        _reserved2: [u8; 0x02],
+        _reserved_1_rx: [u8; 0x04],
         uart_ctl: UartCtl,
-        _reserved3: [u8; 0x02],
         div_h: DivH,
-        _reserved4: [u8; 0x02],
         div_l: DivL,
-        _reserved5: [u8; 0x02],
         div_fra: DivFra,
-        _reserved6: [u8; 0x02],
         intr_en: IntrEn,
-        _reserved7: [u8; 0x02],
         intr_status: IntrStatus,
-        _reserved8: [u8; 0x06],
+        _reserved8: [u8; 0x04],
         fifo_ctl: FifoCtl,
-        _reserved9: [u8; 0x02],
         far: Far,
-        _reserved10: [u8; 0x02],
         modem_ctl: ModemCtl,
-        _reserved11: [u8; 0x02],
         modem_status: ModemStatus,
-        _reserved12: [u8; 0x02],
         line_status: LineStatus,
-        _reserved13: [u8; 0x02],
         uart_gp_reg: UartGpReg,
-        _reserved14: [u8; 0x02],
         tx_fifo_read: TxFifoRead,
-        _reserved15: [u8; 0x02],
         rx_fifo_write: RxFifoWrite,
-        _reserved16: [u8; 0x02],
         fifo_status: FifoStatus,
-        _reserved17: [u8; 0x02],
         tx_fifo_cnt: TxFifoCnt,
-        _reserved18: [u8; 0x02],
         rx_fifo_cnt: RxFifoCnt,
-        _reserved19: [u8; 0x02],
         halt_tx: HaltTx,
-        _reserved20: [u8; 0x02],
         dma_sw_ack: DmaSwAck,
-        _reserved21: [u8; 0x02],
         baud_ctl: BaudCtl,
-        _reserved22: [u8; 0x02],
         stp_ctl: StpCtl,
-        _reserved23: [u8; 0x02],
         uart_parameter: UartParameter,
     }
     impl RegisterBlock {
@@ -8132,10 +8110,15 @@ pub mod uart0 {
         pub const fn intr_id(&self) -> &IntrId {
             &self.intr_id
         }
-        #[doc = "0x04 - DATA"]
+        #[doc = "0x04 - TX"]
         #[inline(always)]
-        pub const fn data(&self) -> &Data {
-            &self.data
+        pub const fn tx(&self) -> &Tx {
+            unsafe { &*core::ptr::from_ref(self).cast::<u8>().add(4).cast() }
+        }
+        #[doc = "0x04 - RX"]
+        #[inline(always)]
+        pub const fn rx(&self) -> &Rx {
+            unsafe { &*core::ptr::from_ref(self).cast::<u8>().add(4).cast() }
         }
         #[doc = "0x08 - UART_CTL"]
         #[inline(always)]
@@ -8274,57 +8257,62 @@ pub mod uart0 {
         #[doc = "INTR_ID\n\nYou can [`read`](crate::Reg::read) this register and get [`intr_id::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct IntrIdSpec;
         impl crate::RegisterSpec for IntrIdSpec {
-            type Ux = u16;
+            type Ux = u32;
         }
         #[doc = "`read()` method returns [`intr_id::R`](R) reader structure"]
         impl crate::Readable for IntrIdSpec {}
-        #[doc = "`reset()` method sets INTR_ID to value 0x01"]
-        impl crate::Resettable for IntrIdSpec {
-            const RESET_VALUE: u16 = 0x01;
-        }
     }
-    #[doc = "DATA (rw) register accessor: DATA\n\nYou can [`read`](crate::Reg::read) this register and get [`data::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`data::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@data`] module"]
-    #[doc(alias = "DATA")]
-    pub type Data = crate::Reg<data::DataSpec>;
-    #[doc = "DATA"]
-    pub mod data {
-        #[doc = "Register `DATA` reader"]
-        pub type R = crate::R<DataSpec>;
-        #[doc = "Register `DATA` writer"]
-        pub type W = crate::W<DataSpec>;
-        #[doc = "Field `DATA` reader - Write: TX data; Read: RX data"]
+    #[doc = "RX (r) register accessor: RX\n\nYou can [`read`](crate::Reg::read) this register and get [`rx::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\n<div class=\"warning\">One or more dependent resources other than the current register are immediately affected by a read operation.</div>\n\nFor information about available fields see [`mod@rx`] module"]
+    #[doc(alias = "RX")]
+    pub type Rx = crate::Reg<rx::RxSpec>;
+    #[doc = "RX"]
+    pub mod rx {
+        #[doc = "Register `RX` reader"]
+        pub type R = crate::R<RxSpec>;
+        #[doc = "Field `DATA` reader - Pop one byte from RX FIFO; not a passive read\n\n<div class=\"warning\">One or more dependent resources other than the current field are immediately affected by a read operation.</div>"]
         pub type DataR = crate::FieldReader;
-        #[doc = "Field `DATA` writer - Write: TX data; Read: RX data"]
-        pub type DataW<'a, REG> = crate::FieldWriter<'a, REG, 8>;
         impl R {
-            #[doc = "Bits 0:7 - Write: TX data; Read: RX data"]
+            #[doc = "Bits 0:7 - Pop one byte from RX FIFO; not a passive read"]
             #[inline(always)]
             pub fn data(&self) -> DataR {
                 DataR::new((self.bits & 0xff) as u8)
             }
         }
+        #[doc = "RX\n\nYou can [`read`](crate::Reg::read) this register and get [`rx::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\n<div class=\"warning\">One or more dependent resources other than the current register are immediately affected by a read operation.</div>"]
+        pub struct RxSpec;
+        impl crate::RegisterSpec for RxSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`rx::R`](R) reader structure"]
+        impl crate::Readable for RxSpec {}
+    }
+    #[doc = "TX (w) register accessor: TX\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`tx::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@tx`] module"]
+    #[doc(alias = "TX")]
+    pub type Tx = crate::Reg<tx::TxSpec>;
+    #[doc = "TX"]
+    pub mod tx {
+        #[doc = "Register `TX` writer"]
+        pub type W = crate::W<TxSpec>;
+        #[doc = "Field `DATA` writer - Push one byte into TX FIFO"]
+        pub type DataW<'a, REG> = crate::FieldWriter<'a, REG, 8>;
         impl W {
-            #[doc = "Bits 0:7 - Write: TX data; Read: RX data"]
+            #[doc = "Bits 0:7 - Push one byte into TX FIFO"]
             #[inline(always)]
-            pub fn data(&mut self) -> DataW<'_, DataSpec> {
+            pub fn data(&mut self) -> DataW<'_, TxSpec> {
                 DataW::new(self, 0)
             }
         }
-        #[doc = "DATA\n\nYou can [`read`](crate::Reg::read) this register and get [`data::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`data::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
-        pub struct DataSpec;
-        impl crate::RegisterSpec for DataSpec {
-            type Ux = u16;
+        #[doc = "TX\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`tx::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct TxSpec;
+        impl crate::RegisterSpec for TxSpec {
+            type Ux = u32;
         }
-        #[doc = "`read()` method returns [`data::R`](R) reader structure"]
-        impl crate::Readable for DataSpec {}
-        #[doc = "`write(|w| ..)` method takes [`data::W`](W) writer structure"]
-        impl crate::Writable for DataSpec {
+        #[doc = "`write(|w| ..)` method takes [`tx::W`](W) writer structure"]
+        impl crate::Writable for TxSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets DATA to value 0"]
-        impl crate::Resettable for DataSpec {}
     }
-    #[doc = "UART_CTL (rw) register accessor: UART_CTL\n\nYou can [`read`](crate::Reg::read) this register and get [`uart_ctl::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`uart_ctl::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@uart_ctl`] module"]
+    #[doc = "UART_CTL (rw) register accessor: UART_CTL\n\nYou can [`read`](crate::Reg::read) this register and get [`uart_ctl::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`uart_ctl::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@uart_ctl`] module"]
     #[doc(alias = "UART_CTL")]
     pub type UartCtl = crate::Reg<uart_ctl::UartCtlSpec>;
     #[doc = "UART_CTL"]
@@ -8341,7 +8329,7 @@ pub mod uart0 {
         pub type XbreakR = crate::BitReader;
         #[doc = "Field `XBREAK` writer - Break control: 0=normal; 1=force TX to space"]
         pub type XbreakW<'a, REG> = crate::BitWriter<'a, REG>;
-        #[doc = "Data length: 00=5bit; 01=6bit; 10=7bit; 11=8bit\n\nValue on reset: 0"]
+        #[doc = "Data length: 00=5bit; 01=6bit; 10=7bit; 11=8bit"]
         #[derive(Clone, Copy, Debug, PartialEq, Eq)]
         #[repr(u8)]
         pub enum Dlen {
@@ -8427,7 +8415,7 @@ pub mod uart0 {
                 self.variant(Dlen::Bits8)
             }
         }
-        #[doc = "Parity select: 0=odd; 1=even\n\nValue on reset: 0"]
+        #[doc = "Parity select: 0=odd; 1=even"]
         #[derive(Clone, Copy, Debug, PartialEq, Eq)]
         pub enum Eps {
             #[doc = "0: Odd parity"]
@@ -8480,7 +8468,7 @@ pub mod uart0 {
                 self.variant(Eps::Even)
             }
         }
-        #[doc = "Parity enable: 0=disabled; 1=enabled\n\nValue on reset: 0"]
+        #[doc = "Parity enable: 0=disabled; 1=enabled"]
         #[derive(Clone, Copy, Debug, PartialEq, Eq)]
         pub enum Pen {
             #[doc = "0: No parity"]
@@ -8537,7 +8525,7 @@ pub mod uart0 {
         pub type SpsR = crate::BitReader;
         #[doc = "Field `SPS` writer - Sticky parity: 0=disabled; 1=enabled"]
         pub type SpsW<'a, REG> = crate::BitWriter<'a, REG>;
-        #[doc = "Stop bits: 0=1bit; 1=1.5/2bit\n\nValue on reset: 0"]
+        #[doc = "Stop bits: 0=1bit; 1=1.5/2bit"]
         #[derive(Clone, Copy, Debug, PartialEq, Eq)]
         pub enum Stp {
             #[doc = "0: 1 stop bit"]
@@ -8664,10 +8652,10 @@ pub mod uart0 {
                 StpW::new(self, 7)
             }
         }
-        #[doc = "UART_CTL\n\nYou can [`read`](crate::Reg::read) this register and get [`uart_ctl::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`uart_ctl::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "UART_CTL\n\nYou can [`read`](crate::Reg::read) this register and get [`uart_ctl::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`uart_ctl::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct UartCtlSpec;
         impl crate::RegisterSpec for UartCtlSpec {
-            type Ux = u16;
+            type Ux = u32;
         }
         #[doc = "`read()` method returns [`uart_ctl::R`](R) reader structure"]
         impl crate::Readable for UartCtlSpec {}
@@ -8675,10 +8663,8 @@ pub mod uart0 {
         impl crate::Writable for UartCtlSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets UART_CTL to value 0"]
-        impl crate::Resettable for UartCtlSpec {}
     }
-    #[doc = "DIV_H (rw) register accessor: DIV_H\n\nYou can [`read`](crate::Reg::read) this register and get [`div_h::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`div_h::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@div_h`] module"]
+    #[doc = "DIV_H (rw) register accessor: DIV_H\n\nYou can [`read`](crate::Reg::read) this register and get [`div_h::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`div_h::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@div_h`] module"]
     #[doc(alias = "DIV_H")]
     pub type DivH = crate::Reg<div_h::DivHSpec>;
     #[doc = "DIV_H"]
@@ -8705,10 +8691,10 @@ pub mod uart0 {
                 DivHW::new(self, 0)
             }
         }
-        #[doc = "DIV_H\n\nYou can [`read`](crate::Reg::read) this register and get [`div_h::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`div_h::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "DIV_H\n\nYou can [`read`](crate::Reg::read) this register and get [`div_h::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`div_h::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct DivHSpec;
         impl crate::RegisterSpec for DivHSpec {
-            type Ux = u16;
+            type Ux = u32;
         }
         #[doc = "`read()` method returns [`div_h::R`](R) reader structure"]
         impl crate::Readable for DivHSpec {}
@@ -8716,10 +8702,8 @@ pub mod uart0 {
         impl crate::Writable for DivHSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets DIV_H to value 0"]
-        impl crate::Resettable for DivHSpec {}
     }
-    #[doc = "DIV_L (rw) register accessor: DIV_L\n\nYou can [`read`](crate::Reg::read) this register and get [`div_l::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`div_l::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@div_l`] module"]
+    #[doc = "DIV_L (rw) register accessor: DIV_L\n\nYou can [`read`](crate::Reg::read) this register and get [`div_l::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`div_l::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@div_l`] module"]
     #[doc(alias = "DIV_L")]
     pub type DivL = crate::Reg<div_l::DivLSpec>;
     #[doc = "DIV_L"]
@@ -8746,10 +8730,10 @@ pub mod uart0 {
                 DivLW::new(self, 0)
             }
         }
-        #[doc = "DIV_L\n\nYou can [`read`](crate::Reg::read) this register and get [`div_l::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`div_l::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "DIV_L\n\nYou can [`read`](crate::Reg::read) this register and get [`div_l::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`div_l::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct DivLSpec;
         impl crate::RegisterSpec for DivLSpec {
-            type Ux = u16;
+            type Ux = u32;
         }
         #[doc = "`read()` method returns [`div_l::R`](R) reader structure"]
         impl crate::Readable for DivLSpec {}
@@ -8757,10 +8741,8 @@ pub mod uart0 {
         impl crate::Writable for DivLSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets DIV_L to value 0"]
-        impl crate::Resettable for DivLSpec {}
     }
-    #[doc = "DIV_FRA (rw) register accessor: DIV_FRA\n\nYou can [`read`](crate::Reg::read) this register and get [`div_fra::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`div_fra::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@div_fra`] module"]
+    #[doc = "DIV_FRA (rw) register accessor: DIV_FRA\n\nYou can [`read`](crate::Reg::read) this register and get [`div_fra::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`div_fra::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@div_fra`] module"]
     #[doc(alias = "DIV_FRA")]
     pub type DivFra = crate::Reg<div_fra::DivFraSpec>;
     #[doc = "DIV_FRA"]
@@ -8787,10 +8769,10 @@ pub mod uart0 {
                 DivFraW::new(self, 0)
             }
         }
-        #[doc = "DIV_FRA\n\nYou can [`read`](crate::Reg::read) this register and get [`div_fra::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`div_fra::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "DIV_FRA\n\nYou can [`read`](crate::Reg::read) this register and get [`div_fra::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`div_fra::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct DivFraSpec;
         impl crate::RegisterSpec for DivFraSpec {
-            type Ux = u16;
+            type Ux = u32;
         }
         #[doc = "`read()` method returns [`div_fra::R`](R) reader structure"]
         impl crate::Readable for DivFraSpec {}
@@ -8798,10 +8780,8 @@ pub mod uart0 {
         impl crate::Writable for DivFraSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets DIV_FRA to value 0"]
-        impl crate::Resettable for DivFraSpec {}
     }
-    #[doc = "INTR_EN (rw) register accessor: INTR_EN\n\nYou can [`read`](crate::Reg::read) this register and get [`intr_en::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`intr_en::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@intr_en`] module"]
+    #[doc = "INTR_EN (rw) register accessor: INTR_EN\n\nYou can [`read`](crate::Reg::read) this register and get [`intr_en::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`intr_en::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@intr_en`] module"]
     #[doc(alias = "INTR_EN")]
     pub type IntrEn = crate::Reg<intr_en::IntrEnSpec>;
     #[doc = "INTR_EN"]
@@ -8884,10 +8864,10 @@ pub mod uart0 {
                 PtimEnW::new(self, 4)
             }
         }
-        #[doc = "INTR_EN\n\nYou can [`read`](crate::Reg::read) this register and get [`intr_en::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`intr_en::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "INTR_EN\n\nYou can [`read`](crate::Reg::read) this register and get [`intr_en::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`intr_en::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct IntrEnSpec;
         impl crate::RegisterSpec for IntrEnSpec {
-            type Ux = u16;
+            type Ux = u32;
         }
         #[doc = "`read()` method returns [`intr_en::R`](R) reader structure"]
         impl crate::Readable for IntrEnSpec {}
@@ -8895,8 +8875,6 @@ pub mod uart0 {
         impl crate::Writable for IntrEnSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets INTR_EN to value 0"]
-        impl crate::Resettable for IntrEnSpec {}
     }
     #[doc = "INTR_STATUS (r) register accessor: INTR_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`intr_status::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@intr_status`] module"]
     #[doc(alias = "INTR_STATUS")]
@@ -8952,21 +8930,19 @@ pub mod uart0 {
         #[doc = "INTR_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`intr_status::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct IntrStatusSpec;
         impl crate::RegisterSpec for IntrStatusSpec {
-            type Ux = u16;
+            type Ux = u32;
         }
         #[doc = "`read()` method returns [`intr_status::R`](R) reader structure"]
         impl crate::Readable for IntrStatusSpec {}
-        #[doc = "`reset()` method sets INTR_STATUS to value 0"]
-        impl crate::Resettable for IntrStatusSpec {}
     }
-    #[doc = "FIFO_CTL (w) register accessor: FIFO_CTL\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`fifo_ctl::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@fifo_ctl`] module"]
+    #[doc = "FIFO_CTL (w) register accessor: FIFO_CTL\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`fifo_ctl::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@fifo_ctl`] module"]
     #[doc(alias = "FIFO_CTL")]
     pub type FifoCtl = crate::Reg<fifo_ctl::FifoCtlSpec>;
     #[doc = "FIFO_CTL"]
     pub mod fifo_ctl {
         #[doc = "Register `FIFO_CTL` writer"]
         pub type W = crate::W<FifoCtlSpec>;
-        #[doc = "TX empty trigger: 00=empty; 01=2chars; 10=1/4; 11=1/2\n\nValue on reset: 0"]
+        #[doc = "TX empty trigger: 00=empty; 01=2chars; 10=1/4; 11=1/2"]
         #[derive(Clone, Copy, Debug, PartialEq, Eq)]
         #[repr(u8)]
         pub enum TxEmptyTrig {
@@ -9017,7 +8993,7 @@ pub mod uart0 {
                 self.variant(TxEmptyTrig::Half)
             }
         }
-        #[doc = "RX trigger: 00=1char; 01=1/4; 10=1/2; 11=2below full\n\nValue on reset: 0"]
+        #[doc = "RX trigger: 00=1char; 01=1/4; 10=1/2; 11=2below full"]
         #[derive(Clone, Copy, Debug, PartialEq, Eq)]
         #[repr(u8)]
         pub enum RxEmptyTrig {
@@ -9101,19 +9077,17 @@ pub mod uart0 {
                 RxFifoRstW::new(self, 6)
             }
         }
-        #[doc = "FIFO_CTL\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`fifo_ctl::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "FIFO_CTL\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`fifo_ctl::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct FifoCtlSpec;
         impl crate::RegisterSpec for FifoCtlSpec {
-            type Ux = u16;
+            type Ux = u32;
         }
         #[doc = "`write(|w| ..)` method takes [`fifo_ctl::W`](W) writer structure"]
         impl crate::Writable for FifoCtlSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets FIFO_CTL to value 0"]
-        impl crate::Resettable for FifoCtlSpec {}
     }
-    #[doc = "FAR (rw) register accessor: FAR\n\nYou can [`read`](crate::Reg::read) this register and get [`far::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`far::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@far`] module"]
+    #[doc = "FAR (rw) register accessor: FAR\n\nYou can [`read`](crate::Reg::read) this register and get [`far::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`far::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@far`] module"]
     #[doc(alias = "FAR")]
     pub type Far = crate::Reg<far::FarSpec>;
     #[doc = "FAR"]
@@ -9140,10 +9114,10 @@ pub mod uart0 {
                 FarW::new(self, 0)
             }
         }
-        #[doc = "FAR\n\nYou can [`read`](crate::Reg::read) this register and get [`far::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`far::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "FAR\n\nYou can [`read`](crate::Reg::read) this register and get [`far::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`far::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct FarSpec;
         impl crate::RegisterSpec for FarSpec {
-            type Ux = u16;
+            type Ux = u32;
         }
         #[doc = "`read()` method returns [`far::R`](R) reader structure"]
         impl crate::Readable for FarSpec {}
@@ -9151,10 +9125,8 @@ pub mod uart0 {
         impl crate::Writable for FarSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets FAR to value 0"]
-        impl crate::Resettable for FarSpec {}
     }
-    #[doc = "MODEM_CTL (rw) register accessor: MODEM_CTL\n\nYou can [`read`](crate::Reg::read) this register and get [`modem_ctl::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`modem_ctl::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@modem_ctl`] module"]
+    #[doc = "MODEM_CTL (rw) register accessor: MODEM_CTL\n\nYou can [`read`](crate::Reg::read) this register and get [`modem_ctl::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`modem_ctl::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@modem_ctl`] module"]
     #[doc(alias = "MODEM_CTL")]
     pub type ModemCtl = crate::Reg<modem_ctl::ModemCtlSpec>;
     #[doc = "MODEM_CTL"]
@@ -9175,6 +9147,18 @@ pub mod uart0 {
         pub type RtsR = crate::BitReader;
         #[doc = "Field `RTS` writer - RTS software control"]
         pub type RtsW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `DTR` reader - dtr"]
+        pub type DtrR = crate::BitReader;
+        #[doc = "Field `DTR` writer - dtr"]
+        pub type DtrW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `OUT1` reader - out1"]
+        pub type Out1R = crate::BitReader;
+        #[doc = "Field `OUT1` writer - out1"]
+        pub type Out1W<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `OUT2` reader - out2"]
+        pub type Out2R = crate::BitReader;
+        #[doc = "Field `OUT2` writer - out2"]
+        pub type Out2W<'a, REG> = crate::BitWriter<'a, REG>;
         impl R {
             #[doc = "Bit 0 - Auto flow control enable"]
             #[inline(always)]
@@ -9190,6 +9174,21 @@ pub mod uart0 {
             #[inline(always)]
             pub fn rts(&self) -> RtsR {
                 RtsR::new(((self.bits >> 2) & 1) != 0)
+            }
+            #[doc = "Bit 3 - dtr"]
+            #[inline(always)]
+            pub fn dtr(&self) -> DtrR {
+                DtrR::new(((self.bits >> 3) & 1) != 0)
+            }
+            #[doc = "Bit 4 - out1"]
+            #[inline(always)]
+            pub fn out1(&self) -> Out1R {
+                Out1R::new(((self.bits >> 4) & 1) != 0)
+            }
+            #[doc = "Bit 5 - out2"]
+            #[inline(always)]
+            pub fn out2(&self) -> Out2R {
+                Out2R::new(((self.bits >> 5) & 1) != 0)
             }
         }
         impl W {
@@ -9208,11 +9207,26 @@ pub mod uart0 {
             pub fn rts(&mut self) -> RtsW<'_, ModemCtlSpec> {
                 RtsW::new(self, 2)
             }
+            #[doc = "Bit 3 - dtr"]
+            #[inline(always)]
+            pub fn dtr(&mut self) -> DtrW<'_, ModemCtlSpec> {
+                DtrW::new(self, 3)
+            }
+            #[doc = "Bit 4 - out1"]
+            #[inline(always)]
+            pub fn out1(&mut self) -> Out1W<'_, ModemCtlSpec> {
+                Out1W::new(self, 4)
+            }
+            #[doc = "Bit 5 - out2"]
+            #[inline(always)]
+            pub fn out2(&mut self) -> Out2W<'_, ModemCtlSpec> {
+                Out2W::new(self, 5)
+            }
         }
-        #[doc = "MODEM_CTL\n\nYou can [`read`](crate::Reg::read) this register and get [`modem_ctl::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`modem_ctl::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "MODEM_CTL\n\nYou can [`read`](crate::Reg::read) this register and get [`modem_ctl::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`modem_ctl::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct ModemCtlSpec;
         impl crate::RegisterSpec for ModemCtlSpec {
-            type Ux = u16;
+            type Ux = u32;
         }
         #[doc = "`read()` method returns [`modem_ctl::R`](R) reader structure"]
         impl crate::Readable for ModemCtlSpec {}
@@ -9220,20 +9234,30 @@ pub mod uart0 {
         impl crate::Writable for ModemCtlSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets MODEM_CTL to value 0"]
-        impl crate::Resettable for ModemCtlSpec {}
     }
-    #[doc = "MODEM_STATUS (r) register accessor: MODEM_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`modem_status::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@modem_status`] module"]
+    #[doc = "MODEM_STATUS (r) register accessor: MODEM_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`modem_status::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\n<div class=\"warning\">The register is <b>modified</b> in some way after a read operation.</div>\n\nFor information about available fields see [`mod@modem_status`] module"]
     #[doc(alias = "MODEM_STATUS")]
     pub type ModemStatus = crate::Reg<modem_status::ModemStatusSpec>;
     #[doc = "MODEM_STATUS"]
     pub mod modem_status {
         #[doc = "Register `MODEM_STATUS` reader"]
         pub type R = crate::R<ModemStatusSpec>;
-        #[doc = "Field `DCTS` reader - CTS change indicator"]
+        #[doc = "Field `DCTS` reader - CTS change indicator\n\n<div class=\"warning\">The field is <b>cleared</b> (set to zero) following a read operation.</div>"]
         pub type DctsR = crate::BitReader;
         #[doc = "Field `CTS` reader - CTS signal state"]
         pub type CtsR = crate::BitReader;
+        #[doc = "Field `DDCD` reader - ddcd\n\n<div class=\"warning\">The field is <b>cleared</b> (set to zero) following a read operation.</div>"]
+        pub type DdcdR = crate::BitReader;
+        #[doc = "Field `DCD` reader - dcd"]
+        pub type DcdR = crate::BitReader;
+        #[doc = "Field `TERI` reader - teri\n\n<div class=\"warning\">The field is <b>cleared</b> (set to zero) following a read operation.</div>"]
+        pub type TeriR = crate::BitReader;
+        #[doc = "Field `RI` reader - ri"]
+        pub type RiR = crate::BitReader;
+        #[doc = "Field `DDSR` reader - ddsr\n\n<div class=\"warning\">The field is <b>cleared</b> (set to zero) following a read operation.</div>"]
+        pub type DdsrR = crate::BitReader;
+        #[doc = "Field `DSR` reader - dsr"]
+        pub type DsrR = crate::BitReader;
         impl R {
             #[doc = "Bit 0 - CTS change indicator"]
             #[inline(always)]
@@ -9245,31 +9269,59 @@ pub mod uart0 {
             pub fn cts(&self) -> CtsR {
                 CtsR::new(((self.bits >> 1) & 1) != 0)
             }
+            #[doc = "Bit 2 - ddcd"]
+            #[inline(always)]
+            pub fn ddcd(&self) -> DdcdR {
+                DdcdR::new(((self.bits >> 2) & 1) != 0)
+            }
+            #[doc = "Bit 3 - dcd"]
+            #[inline(always)]
+            pub fn dcd(&self) -> DcdR {
+                DcdR::new(((self.bits >> 3) & 1) != 0)
+            }
+            #[doc = "Bit 4 - teri"]
+            #[inline(always)]
+            pub fn teri(&self) -> TeriR {
+                TeriR::new(((self.bits >> 4) & 1) != 0)
+            }
+            #[doc = "Bit 5 - ri"]
+            #[inline(always)]
+            pub fn ri(&self) -> RiR {
+                RiR::new(((self.bits >> 5) & 1) != 0)
+            }
+            #[doc = "Bit 6 - ddsr"]
+            #[inline(always)]
+            pub fn ddsr(&self) -> DdsrR {
+                DdsrR::new(((self.bits >> 6) & 1) != 0)
+            }
+            #[doc = "Bit 7 - dsr"]
+            #[inline(always)]
+            pub fn dsr(&self) -> DsrR {
+                DsrR::new(((self.bits >> 7) & 1) != 0)
+            }
         }
-        #[doc = "MODEM_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`modem_status::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "MODEM_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`modem_status::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\n<div class=\"warning\">The register is <b>modified</b> in some way after a read operation.</div>"]
         pub struct ModemStatusSpec;
         impl crate::RegisterSpec for ModemStatusSpec {
-            type Ux = u16;
+            type Ux = u32;
         }
         #[doc = "`read()` method returns [`modem_status::R`](R) reader structure"]
         impl crate::Readable for ModemStatusSpec {}
-        #[doc = "`reset()` method sets MODEM_STATUS to value 0"]
-        impl crate::Resettable for ModemStatusSpec {}
     }
-    #[doc = "LINE_STATUS (r) register accessor: LINE_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`line_status::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@line_status`] module"]
+    #[doc = "LINE_STATUS (r) register accessor: LINE_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`line_status::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\n<div class=\"warning\">The register is <b>modified</b> in some way after a read operation.</div>\n\nFor information about available fields see [`mod@line_status`] module"]
     #[doc(alias = "LINE_STATUS")]
     pub type LineStatus = crate::Reg<line_status::LineStatusSpec>;
     #[doc = "LINE_STATUS"]
     pub mod line_status {
         #[doc = "Register `LINE_STATUS` reader"]
         pub type R = crate::R<LineStatusSpec>;
-        #[doc = "Field `RX_FIFO_ERR` reader - RX FIFO error status"]
+        #[doc = "Field `RX_FIFO_ERR` reader - Read can clear only when the errored character is at FIFO head and no later errors remain\n\n<div class=\"warning\">The field is <b>modified</b> in some way after a read operation.</div>"]
         pub type RxFifoErrR = crate::BitReader;
-        #[doc = "Field `FRAME_ERR` reader - Framing error"]
+        #[doc = "Field `FRAME_ERR` reader - Framing error\n\n<div class=\"warning\">The field is <b>cleared</b> (set to zero) following a read operation.</div>"]
         pub type FrameErrR = crate::BitReader;
-        #[doc = "Field `PARITY_ERR` reader - Parity error"]
+        #[doc = "Field `PARITY_ERR` reader - Parity error\n\n<div class=\"warning\">The field is <b>cleared</b> (set to zero) following a read operation.</div>"]
         pub type ParityErrR = crate::BitReader;
-        #[doc = "Field `OVERRUN_ERR` reader - Overrun error"]
+        #[doc = "Field `OVERRUN_ERR` reader - Overrun error\n\n<div class=\"warning\">The field is <b>cleared</b> (set to zero) following a read operation.</div>"]
         pub type OverrunErrR = crate::BitReader;
         #[doc = "Field `BREAK_INTR` reader - Break interrupt"]
         pub type BreakIntrR = crate::BitReader;
@@ -9280,7 +9332,7 @@ pub mod uart0 {
         #[doc = "Field `TX_EMPTY_S` reader - Transmitter empty flag"]
         pub type TxEmptySR = crate::BitReader;
         impl R {
-            #[doc = "Bit 0 - RX FIFO error status"]
+            #[doc = "Bit 0 - Read can clear only when the errored character is at FIFO head and no later errors remain"]
             #[inline(always)]
             pub fn rx_fifo_err(&self) -> RxFifoErrR {
                 RxFifoErrR::new((self.bits & 1) != 0)
@@ -9321,19 +9373,15 @@ pub mod uart0 {
                 TxEmptySR::new(((self.bits >> 7) & 1) != 0)
             }
         }
-        #[doc = "LINE_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`line_status::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "LINE_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`line_status::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\n<div class=\"warning\">The register is <b>modified</b> in some way after a read operation.</div>"]
         pub struct LineStatusSpec;
         impl crate::RegisterSpec for LineStatusSpec {
-            type Ux = u16;
+            type Ux = u32;
         }
         #[doc = "`read()` method returns [`line_status::R`](R) reader structure"]
         impl crate::Readable for LineStatusSpec {}
-        #[doc = "`reset()` method sets LINE_STATUS to value 0xc0"]
-        impl crate::Resettable for LineStatusSpec {
-            const RESET_VALUE: u16 = 0xc0;
-        }
     }
-    #[doc = "UART_GP_REG (rw) register accessor: UART_GP_REG\n\nYou can [`read`](crate::Reg::read) this register and get [`uart_gp_reg::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`uart_gp_reg::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@uart_gp_reg`] module"]
+    #[doc = "UART_GP_REG (rw) register accessor: UART_GP_REG\n\nYou can [`read`](crate::Reg::read) this register and get [`uart_gp_reg::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`uart_gp_reg::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@uart_gp_reg`] module"]
     #[doc(alias = "UART_GP_REG")]
     pub type UartGpReg = crate::Reg<uart_gp_reg::UartGpRegSpec>;
     #[doc = "UART_GP_REG"]
@@ -9360,10 +9408,10 @@ pub mod uart0 {
                 UartGpRegW::new(self, 0)
             }
         }
-        #[doc = "UART_GP_REG\n\nYou can [`read`](crate::Reg::read) this register and get [`uart_gp_reg::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`uart_gp_reg::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "UART_GP_REG\n\nYou can [`read`](crate::Reg::read) this register and get [`uart_gp_reg::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`uart_gp_reg::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct UartGpRegSpec;
         impl crate::RegisterSpec for UartGpRegSpec {
-            type Ux = u16;
+            type Ux = u32;
         }
         #[doc = "`read()` method returns [`uart_gp_reg::R`](R) reader structure"]
         impl crate::Readable for UartGpRegSpec {}
@@ -9371,17 +9419,15 @@ pub mod uart0 {
         impl crate::Writable for UartGpRegSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets UART_GP_REG to value 0"]
-        impl crate::Resettable for UartGpRegSpec {}
     }
-    #[doc = "TX_FIFO_READ (r) register accessor: TX_FIFO_READ\n\nYou can [`read`](crate::Reg::read) this register and get [`tx_fifo_read::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@tx_fifo_read`] module"]
+    #[doc = "TX_FIFO_READ (r) register accessor: TX_FIFO_READ\n\nYou can [`read`](crate::Reg::read) this register and get [`tx_fifo_read::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\n<div class=\"warning\">One or more dependent resources other than the current register are immediately affected by a read operation.</div>\n\nFor information about available fields see [`mod@tx_fifo_read`] module"]
     #[doc(alias = "TX_FIFO_READ")]
     pub type TxFifoRead = crate::Reg<tx_fifo_read::TxFifoReadSpec>;
     #[doc = "TX_FIFO_READ"]
     pub mod tx_fifo_read {
         #[doc = "Register `TX_FIFO_READ` reader"]
         pub type R = crate::R<TxFifoReadSpec>;
-        #[doc = "Field `TX_FIFO_READ` reader - TX FIFO top data"]
+        #[doc = "Field `TX_FIFO_READ` reader - TX FIFO top data\n\n<div class=\"warning\">One or more dependent resources other than the current field are immediately affected by a read operation.</div>"]
         pub type TxFifoReadR = crate::FieldReader;
         impl R {
             #[doc = "Bits 0:7 - TX FIFO top data"]
@@ -9390,42 +9436,29 @@ pub mod uart0 {
                 TxFifoReadR::new((self.bits & 0xff) as u8)
             }
         }
-        #[doc = "TX_FIFO_READ\n\nYou can [`read`](crate::Reg::read) this register and get [`tx_fifo_read::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "TX_FIFO_READ\n\nYou can [`read`](crate::Reg::read) this register and get [`tx_fifo_read::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\n<div class=\"warning\">One or more dependent resources other than the current register are immediately affected by a read operation.</div>"]
         pub struct TxFifoReadSpec;
         impl crate::RegisterSpec for TxFifoReadSpec {
-            type Ux = u16;
+            type Ux = u32;
         }
         #[doc = "`read()` method returns [`tx_fifo_read::R`](R) reader structure"]
         impl crate::Readable for TxFifoReadSpec {}
-        #[doc = "`reset()` method sets TX_FIFO_READ to value 0"]
-        impl crate::Resettable for TxFifoReadSpec {}
     }
-    #[doc = "RX_FIFO_WRITE (rw) register accessor: RX_FIFO_WRITE\n\nYou can [`read`](crate::Reg::read) this register and get [`rx_fifo_write::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`rx_fifo_write::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@rx_fifo_write`] module"]
+    #[doc = "RX_FIFO_WRITE (w) register accessor: RX_FIFO_WRITE\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`rx_fifo_write::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@rx_fifo_write`] module"]
     #[doc(alias = "RX_FIFO_WRITE")]
     pub type RxFifoWrite = crate::Reg<rx_fifo_write::RxFifoWriteSpec>;
     #[doc = "RX_FIFO_WRITE"]
     pub mod rx_fifo_write {
-        #[doc = "Register `RX_FIFO_WRITE` reader"]
-        pub type R = crate::R<RxFifoWriteSpec>;
         #[doc = "Register `RX_FIFO_WRITE` writer"]
         pub type W = crate::W<RxFifoWriteSpec>;
-        #[doc = "Field `RX_FIFO_WRITE` reader - Write: push data to RX FIFO; Read: rx_fifo_level\\[6:0\\]"]
-        pub type RxFifoWriteR = crate::FieldReader;
-        #[doc = "Field `RX_FIFO_WRITE` writer - Write: push data to RX FIFO; Read: rx_fifo_level\\[6:0\\]"]
+        #[doc = "Field `RX_FIFO_WRITE` writer - Push test data only in FIFO access mode; no read-level alias established on WS53"]
         pub type RxFifoWriteW<'a, REG> = crate::FieldWriter<'a, REG, 8>;
         #[doc = "Field `RX_FIFO_PE` writer - RX FIFO parity error"]
         pub type RxFifoPeW<'a, REG> = crate::BitWriter<'a, REG>;
         #[doc = "Field `RX_FIFO_FE` writer - RX FIFO framing error"]
         pub type RxFifoFeW<'a, REG> = crate::BitWriter<'a, REG>;
-        impl R {
-            #[doc = "Bits 0:7 - Write: push data to RX FIFO; Read: rx_fifo_level\\[6:0\\]"]
-            #[inline(always)]
-            pub fn rx_fifo_write(&self) -> RxFifoWriteR {
-                RxFifoWriteR::new((self.bits & 0xff) as u8)
-            }
-        }
         impl W {
-            #[doc = "Bits 0:7 - Write: push data to RX FIFO; Read: rx_fifo_level\\[6:0\\]"]
+            #[doc = "Bits 0:7 - Push test data only in FIFO access mode; no read-level alias established on WS53"]
             #[inline(always)]
             pub fn rx_fifo_write(&mut self) -> RxFifoWriteW<'_, RxFifoWriteSpec> {
                 RxFifoWriteW::new(self, 0)
@@ -9441,19 +9474,15 @@ pub mod uart0 {
                 RxFifoFeW::new(self, 9)
             }
         }
-        #[doc = "RX_FIFO_WRITE\n\nYou can [`read`](crate::Reg::read) this register and get [`rx_fifo_write::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`rx_fifo_write::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "RX_FIFO_WRITE\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`rx_fifo_write::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct RxFifoWriteSpec;
         impl crate::RegisterSpec for RxFifoWriteSpec {
-            type Ux = u16;
+            type Ux = u32;
         }
-        #[doc = "`read()` method returns [`rx_fifo_write::R`](R) reader structure"]
-        impl crate::Readable for RxFifoWriteSpec {}
         #[doc = "`write(|w| ..)` method takes [`rx_fifo_write::W`](W) writer structure"]
         impl crate::Writable for RxFifoWriteSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets RX_FIFO_WRITE to value 0"]
-        impl crate::Resettable for RxFifoWriteSpec {}
     }
     #[doc = "FIFO_STATUS (r) register accessor: FIFO_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`fifo_status::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@fifo_status`] module"]
     #[doc(alias = "FIFO_STATUS")]
@@ -9466,10 +9495,10 @@ pub mod uart0 {
         pub type TxFifoFullR = crate::BitReader;
         #[doc = "Field `TX_FIFO_EMPTY` reader - TX FIFO empty flag"]
         pub type TxFifoEmptyR = crate::BitReader;
-        #[doc = "Field `RX_FIFO_FULL` reader - RX FIFO full flag"]
-        pub type RxFifoFullR = crate::BitReader;
-        #[doc = "Field `RX_FIFO_EMPTY` reader - RX FIFO empty flag"]
-        pub type RxFifoEmptyR = crate::BitReader;
+        #[doc = "Field `RX_NOT_EMPTY` reader - Receive FIFO contains data"]
+        pub type RxNotEmptyR = crate::BitReader;
+        #[doc = "Field `RX_FULL` reader - Receive FIFO full"]
+        pub type RxFullR = crate::BitReader;
         impl R {
             #[doc = "Bit 0 - TX FIFO full flag"]
             #[inline(always)]
@@ -9481,28 +9510,24 @@ pub mod uart0 {
             pub fn tx_fifo_empty(&self) -> TxFifoEmptyR {
                 TxFifoEmptyR::new(((self.bits >> 1) & 1) != 0)
             }
-            #[doc = "Bit 2 - RX FIFO full flag"]
+            #[doc = "Bit 2 - Receive FIFO contains data"]
             #[inline(always)]
-            pub fn rx_fifo_full(&self) -> RxFifoFullR {
-                RxFifoFullR::new(((self.bits >> 2) & 1) != 0)
+            pub fn rx_not_empty(&self) -> RxNotEmptyR {
+                RxNotEmptyR::new(((self.bits >> 2) & 1) != 0)
             }
-            #[doc = "Bit 3 - RX FIFO empty flag"]
+            #[doc = "Bit 3 - Receive FIFO full"]
             #[inline(always)]
-            pub fn rx_fifo_empty(&self) -> RxFifoEmptyR {
-                RxFifoEmptyR::new(((self.bits >> 3) & 1) != 0)
+            pub fn rx_full(&self) -> RxFullR {
+                RxFullR::new(((self.bits >> 3) & 1) != 0)
             }
         }
         #[doc = "FIFO_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`fifo_status::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct FifoStatusSpec;
         impl crate::RegisterSpec for FifoStatusSpec {
-            type Ux = u16;
+            type Ux = u32;
         }
         #[doc = "`read()` method returns [`fifo_status::R`](R) reader structure"]
         impl crate::Readable for FifoStatusSpec {}
-        #[doc = "`reset()` method sets FIFO_STATUS to value 0x02"]
-        impl crate::Resettable for FifoStatusSpec {
-            const RESET_VALUE: u16 = 0x02;
-        }
     }
     #[doc = "TX_FIFO_CNT (r) register accessor: TX_FIFO_CNT\n\nYou can [`read`](crate::Reg::read) this register and get [`tx_fifo_cnt::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@tx_fifo_cnt`] module"]
     #[doc(alias = "TX_FIFO_CNT")]
@@ -9523,12 +9548,10 @@ pub mod uart0 {
         #[doc = "TX_FIFO_CNT\n\nYou can [`read`](crate::Reg::read) this register and get [`tx_fifo_cnt::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct TxFifoCntSpec;
         impl crate::RegisterSpec for TxFifoCntSpec {
-            type Ux = u16;
+            type Ux = u32;
         }
         #[doc = "`read()` method returns [`tx_fifo_cnt::R`](R) reader structure"]
         impl crate::Readable for TxFifoCntSpec {}
-        #[doc = "`reset()` method sets TX_FIFO_CNT to value 0"]
-        impl crate::Resettable for TxFifoCntSpec {}
     }
     #[doc = "RX_FIFO_CNT (r) register accessor: RX_FIFO_CNT\n\nYou can [`read`](crate::Reg::read) this register and get [`rx_fifo_cnt::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@rx_fifo_cnt`] module"]
     #[doc(alias = "RX_FIFO_CNT")]
@@ -9537,17 +9560,24 @@ pub mod uart0 {
     pub mod rx_fifo_cnt {
         #[doc = "Register `RX_FIFO_CNT` reader"]
         pub type R = crate::R<RxFifoCntSpec>;
+        #[doc = "Field `RX_FIFO_LEVEL` reader - Receive FIFO data count"]
+        pub type RxFifoLevelR = crate::FieldReader;
+        impl R {
+            #[doc = "Bits 0:6 - Receive FIFO data count"]
+            #[inline(always)]
+            pub fn rx_fifo_level(&self) -> RxFifoLevelR {
+                RxFifoLevelR::new((self.bits & 0x7f) as u8)
+            }
+        }
         #[doc = "RX_FIFO_CNT\n\nYou can [`read`](crate::Reg::read) this register and get [`rx_fifo_cnt::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct RxFifoCntSpec;
         impl crate::RegisterSpec for RxFifoCntSpec {
-            type Ux = u16;
+            type Ux = u32;
         }
         #[doc = "`read()` method returns [`rx_fifo_cnt::R`](R) reader structure"]
         impl crate::Readable for RxFifoCntSpec {}
-        #[doc = "`reset()` method sets RX_FIFO_CNT to value 0"]
-        impl crate::Resettable for RxFifoCntSpec {}
     }
-    #[doc = "HALT_TX (rw) register accessor: HALT_TX\n\nYou can [`read`](crate::Reg::read) this register and get [`halt_tx::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`halt_tx::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@halt_tx`] module"]
+    #[doc = "HALT_TX (rw) register accessor: HALT_TX\n\nYou can [`read`](crate::Reg::read) this register and get [`halt_tx::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`halt_tx::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@halt_tx`] module"]
     #[doc(alias = "HALT_TX")]
     pub type HaltTx = crate::Reg<halt_tx::HaltTxSpec>;
     #[doc = "HALT_TX"]
@@ -9574,10 +9604,10 @@ pub mod uart0 {
                 HaltTxW::new(self, 0)
             }
         }
-        #[doc = "HALT_TX\n\nYou can [`read`](crate::Reg::read) this register and get [`halt_tx::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`halt_tx::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "HALT_TX\n\nYou can [`read`](crate::Reg::read) this register and get [`halt_tx::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`halt_tx::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct HaltTxSpec;
         impl crate::RegisterSpec for HaltTxSpec {
-            type Ux = u16;
+            type Ux = u32;
         }
         #[doc = "`read()` method returns [`halt_tx::R`](R) reader structure"]
         impl crate::Readable for HaltTxSpec {}
@@ -9585,10 +9615,8 @@ pub mod uart0 {
         impl crate::Writable for HaltTxSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets HALT_TX to value 0"]
-        impl crate::Resettable for HaltTxSpec {}
     }
-    #[doc = "DMA_SW_ACK (w) register accessor: DMA_SW_ACK\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`dma_sw_ack::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@dma_sw_ack`] module"]
+    #[doc = "DMA_SW_ACK (w) register accessor: DMA_SW_ACK\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`dma_sw_ack::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@dma_sw_ack`] module"]
     #[doc(alias = "DMA_SW_ACK")]
     pub type DmaSwAck = crate::Reg<dma_sw_ack::DmaSwAckSpec>;
     #[doc = "DMA_SW_ACK"]
@@ -9604,19 +9632,17 @@ pub mod uart0 {
                 DmaSwAckW::new(self, 0)
             }
         }
-        #[doc = "DMA_SW_ACK\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`dma_sw_ack::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "DMA_SW_ACK\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`dma_sw_ack::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct DmaSwAckSpec;
         impl crate::RegisterSpec for DmaSwAckSpec {
-            type Ux = u16;
+            type Ux = u32;
         }
         #[doc = "`write(|w| ..)` method takes [`dma_sw_ack::W`](W) writer structure"]
         impl crate::Writable for DmaSwAckSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets DMA_SW_ACK to value 0"]
-        impl crate::Resettable for DmaSwAckSpec {}
     }
-    #[doc = "BAUD_CTL (rw) register accessor: BAUD_CTL\n\nYou can [`read`](crate::Reg::read) this register and get [`baud_ctl::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`baud_ctl::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@baud_ctl`] module"]
+    #[doc = "BAUD_CTL (rw) register accessor: BAUD_CTL\n\nYou can [`read`](crate::Reg::read) this register and get [`baud_ctl::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`baud_ctl::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@baud_ctl`] module"]
     #[doc(alias = "BAUD_CTL")]
     pub type BaudCtl = crate::Reg<baud_ctl::BaudCtlSpec>;
     #[doc = "BAUD_CTL"]
@@ -9625,7 +9651,7 @@ pub mod uart0 {
         pub type R = crate::R<BaudCtlSpec>;
         #[doc = "Register `BAUD_CTL` writer"]
         pub type W = crate::W<BaudCtlSpec>;
-        #[doc = "Baud rate oversampling: 0x7=8x; 0xF=16x\n\nValue on reset: 15"]
+        #[doc = "Baud rate oversampling: 0x7=8x; 0xF=16x"]
         #[derive(Clone, Copy, Debug, PartialEq, Eq)]
         #[repr(u8)]
         pub enum BaudDiv {
@@ -9713,10 +9739,10 @@ pub mod uart0 {
                 SamplePhaseW::new(self, 4)
             }
         }
-        #[doc = "BAUD_CTL\n\nYou can [`read`](crate::Reg::read) this register and get [`baud_ctl::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`baud_ctl::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "BAUD_CTL\n\nYou can [`read`](crate::Reg::read) this register and get [`baud_ctl::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`baud_ctl::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct BaudCtlSpec;
         impl crate::RegisterSpec for BaudCtlSpec {
-            type Ux = u16;
+            type Ux = u32;
         }
         #[doc = "`read()` method returns [`baud_ctl::R`](R) reader structure"]
         impl crate::Readable for BaudCtlSpec {}
@@ -9724,12 +9750,8 @@ pub mod uart0 {
         impl crate::Writable for BaudCtlSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets BAUD_CTL to value 0x7f"]
-        impl crate::Resettable for BaudCtlSpec {
-            const RESET_VALUE: u16 = 0x7f;
-        }
     }
-    #[doc = "STP_CTL (rw) register accessor: STP_CTL\n\nYou can [`read`](crate::Reg::read) this register and get [`stp_ctl::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`stp_ctl::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@stp_ctl`] module"]
+    #[doc = "STP_CTL (rw) register accessor: STP_CTL\n\nYou can [`read`](crate::Reg::read) this register and get [`stp_ctl::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`stp_ctl::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@stp_ctl`] module"]
     #[doc(alias = "STP_CTL")]
     pub type StpCtl = crate::Reg<stp_ctl::StpCtlSpec>;
     #[doc = "STP_CTL"]
@@ -9784,10 +9806,10 @@ pub mod uart0 {
                 StpModeW::new(self, 2)
             }
         }
-        #[doc = "STP_CTL\n\nYou can [`read`](crate::Reg::read) this register and get [`stp_ctl::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`stp_ctl::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "STP_CTL\n\nYou can [`read`](crate::Reg::read) this register and get [`stp_ctl::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`stp_ctl::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct StpCtlSpec;
         impl crate::RegisterSpec for StpCtlSpec {
-            type Ux = u16;
+            type Ux = u32;
         }
         #[doc = "`read()` method returns [`stp_ctl::R`](R) reader structure"]
         impl crate::Readable for StpCtlSpec {}
@@ -9795,8 +9817,6 @@ pub mod uart0 {
         impl crate::Writable for StpCtlSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets STP_CTL to value 0"]
-        impl crate::Resettable for StpCtlSpec {}
     }
     #[doc = "UART_PARAMETER (r) register accessor: UART_PARAMETER\n\nYou can [`read`](crate::Reg::read) this register and get [`uart_parameter::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@uart_parameter`] module"]
     #[doc(alias = "UART_PARAMETER")]
@@ -9845,14 +9865,10 @@ pub mod uart0 {
         #[doc = "UART_PARAMETER\n\nYou can [`read`](crate::Reg::read) this register and get [`uart_parameter::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct UartParameterSpec;
         impl crate::RegisterSpec for UartParameterSpec {
-            type Ux = u16;
+            type Ux = u32;
         }
         #[doc = "`read()` method returns [`uart_parameter::R`](R) reader structure"]
         impl crate::Readable for UartParameterSpec {}
-        #[doc = "`reset()` method sets UART_PARAMETER to value 0x0d04"]
-        impl crate::Resettable for UartParameterSpec {
-            const RESET_VALUE: u16 = 0x0d04;
-        }
     }
 }
 #[doc = "pwm"]

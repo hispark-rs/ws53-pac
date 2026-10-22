@@ -3147,7 +3147,7 @@
       <baseAddress>0x52080000</baseAddress>
       <addressBlock>
         <offset>0x0</offset>
-        <size>0x62</size>
+        <size>0x64</size>
         <usage>registers</usage>
       </addressBlock>
       <interrupt>
@@ -3162,7 +3162,7 @@
       <baseAddress>0x52081000</baseAddress>
       <addressBlock>
         <offset>0x0</offset>
-        <size>0x62</size>
+        <size>0x64</size>
         <usage>registers</usage>
       </addressBlock>
       <interrupt>
@@ -3175,10 +3175,8 @@
           <name>INTR_ID</name>
           <description>INTR_ID</description>
           <addressOffset>0x0</addressOffset>
-          <size>16</size>
+          <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000001</resetValue>
-          <resetMask>0x0000001F</resetMask>
           <fields>
             <field>
               <name>INTR_ID</name>
@@ -3198,20 +3196,37 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           </fields>
         </register>
         <register>
-          <name>DATA</name>
-          <description>DATA</description>
+          <name>RX</name>
+          <description>RX</description>
           <addressOffset>0x4</addressOffset>
-          <size>16</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x000000FF</resetMask>
+          <size>32</size>
+          <access>read-only</access>
+          <readAction>modifyExternal</readAction>
           <fields>
             <field>
               <name>DATA</name>
-              <description>Write: TX data; Read: RX data</description>
+              <description>Pop one byte from RX FIFO; not a passive read</description>
               <bitOffset>0</bitOffset>
               <bitWidth>8</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
+              <readAction>modifyExternal</readAction>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TX</name>
+          <description>TX</description>
+          <alternateRegister>RX</alternateRegister>
+          <addressOffset>0x4</addressOffset>
+          <size>32</size>
+          <access>write-only</access>
+          <fields>
+            <field>
+              <name>DATA</name>
+              <description>Push one byte into TX FIFO</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>8</bitWidth>
+              <access>write-only</access>
             </field>
           </fields>
         </register>
@@ -3219,10 +3234,8 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <name>UART_CTL</name>
           <description>UART_CTL</description>
           <addressOffset>0x8</addressOffset>
-          <size>16</size>
+          <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x000000FF</resetMask>
           <fields>
             <field>
               <name>DIV_EN</name>
@@ -3337,10 +3350,8 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <name>DIV_H</name>
           <description>DIV_H</description>
           <addressOffset>0xC</addressOffset>
-          <size>16</size>
+          <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x000000FF</resetMask>
           <writeConstraint>
             <range>
               <minimum>0</minimum>
@@ -3361,10 +3372,8 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <name>DIV_L</name>
           <description>DIV_L</description>
           <addressOffset>0x10</addressOffset>
-          <size>16</size>
+          <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x000000FF</resetMask>
           <writeConstraint>
             <range>
               <minimum>0</minimum>
@@ -3385,10 +3394,8 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <name>DIV_FRA</name>
           <description>DIV_FRA</description>
           <addressOffset>0x14</addressOffset>
-          <size>16</size>
+          <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000003F</resetMask>
           <fields>
             <field>
               <name>DIV_FRA</name>
@@ -3403,10 +3410,8 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <name>INTR_EN</name>
           <description>INTR_EN</description>
           <addressOffset>0x18</addressOffset>
-          <size>16</size>
+          <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000001F</resetMask>
           <fields>
             <field>
               <name>RECE_LINE_STAT_INTR_EN</name>
@@ -3449,10 +3454,8 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <name>INTR_STATUS</name>
           <description>INTR_STATUS</description>
           <addressOffset>0x1C</addressOffset>
-          <size>16</size>
+          <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000003F</resetMask>
           <fields>
             <field>
               <name>BUSY_DET_INTR</name>
@@ -3502,10 +3505,8 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <name>FIFO_CTL</name>
           <description>FIFO_CTL</description>
           <addressOffset>0x24</addressOffset>
-          <size>16</size>
+          <size>32</size>
           <access>write-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000007F</resetMask>
           <fields>
             <field>
               <name>TX_EMPTY_TRIG</name>
@@ -3592,10 +3593,8 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <name>FAR</name>
           <description>FAR</description>
           <addressOffset>0x28</addressOffset>
-          <size>16</size>
+          <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>FAR</name>
@@ -3610,10 +3609,8 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <name>MODEM_CTL</name>
           <description>MODEM_CTL</description>
           <addressOffset>0x2C</addressOffset>
-          <size>16</size>
+          <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000007</resetMask>
           <fields>
             <field>
               <name>AFC_EN</name>
@@ -3636,16 +3633,36 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
               <bitWidth>1</bitWidth>
               <access>read-write</access>
             </field>
+            <field>
+              <name>DTR</name>
+              <description>dtr</description>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>OUT1</name>
+              <description>out1</description>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>OUT2</name>
+              <description>out2</description>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
           </fields>
         </register>
         <register>
           <name>MODEM_STATUS</name>
           <description>MODEM_STATUS</description>
           <addressOffset>0x30</addressOffset>
-          <size>16</size>
+          <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000003</resetMask>
+          <readAction>modify</readAction>
           <fields>
             <field>
               <name>DCTS</name>
@@ -3653,11 +3670,57 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-only</access>
+              <readAction>clear</readAction>
             </field>
             <field>
               <name>CTS</name>
               <description>CTS signal state</description>
               <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>DDCD</name>
+              <description>ddcd</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+              <readAction>clear</readAction>
+            </field>
+            <field>
+              <name>DCD</name>
+              <description>dcd</description>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>TERI</name>
+              <description>teri</description>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+              <readAction>clear</readAction>
+            </field>
+            <field>
+              <name>RI</name>
+              <description>ri</description>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>DDSR</name>
+              <description>ddsr</description>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+              <readAction>clear</readAction>
+            </field>
+            <field>
+              <name>DSR</name>
+              <description>dsr</description>
+              <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-only</access>
             </field>
@@ -3667,17 +3730,17 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <name>LINE_STATUS</name>
           <description>LINE_STATUS</description>
           <addressOffset>0x34</addressOffset>
-          <size>16</size>
+          <size>32</size>
           <access>read-only</access>
-          <resetValue>0x000000C0</resetValue>
-          <resetMask>0x000000FF</resetMask>
+          <readAction>modify</readAction>
           <fields>
             <field>
               <name>RX_FIFO_ERR</name>
-              <description>RX FIFO error status</description>
+              <description>Read can clear only when the errored character is at FIFO head and no later errors remain</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-only</access>
+              <readAction>modify</readAction>
             </field>
             <field>
               <name>FRAME_ERR</name>
@@ -3685,6 +3748,7 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
               <bitOffset>1</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-only</access>
+              <readAction>clear</readAction>
             </field>
             <field>
               <name>PARITY_ERR</name>
@@ -3692,6 +3756,7 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-only</access>
+              <readAction>clear</readAction>
             </field>
             <field>
               <name>OVERRUN_ERR</name>
@@ -3699,6 +3764,7 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
               <bitOffset>3</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-only</access>
+              <readAction>clear</readAction>
             </field>
             <field>
               <name>BREAK_INTR</name>
@@ -3734,10 +3800,8 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <name>UART_GP_REG</name>
           <description>UART_GP_REG</description>
           <addressOffset>0x38</addressOffset>
-          <size>16</size>
+          <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x000000FF</resetMask>
           <fields>
             <field>
               <name>UART_GP_REG</name>
@@ -3752,10 +3816,9 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <name>TX_FIFO_READ</name>
           <description>TX_FIFO_READ</description>
           <addressOffset>0x3C</addressOffset>
-          <size>16</size>
+          <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x000000FF</resetMask>
+          <readAction>modifyExternal</readAction>
           <fields>
             <field>
               <name>TX_FIFO_READ</name>
@@ -3763,6 +3826,7 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
               <bitOffset>0</bitOffset>
               <bitWidth>8</bitWidth>
               <access>read-only</access>
+              <readAction>modifyExternal</readAction>
             </field>
           </fields>
         </register>
@@ -3770,16 +3834,15 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <name>RX_FIFO_WRITE</name>
           <description>RX_FIFO_WRITE</description>
           <addressOffset>0x40</addressOffset>
-          <size>16</size>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x000003FF</resetMask>
+          <size>32</size>
+          <access>write-only</access>
           <fields>
             <field>
               <name>RX_FIFO_WRITE</name>
-              <description>Write: push data to RX FIFO; Read: rx_fifo_level[6:0]</description>
+              <description>Push test data only in FIFO access mode; no read-level alias established on WS53</description>
               <bitOffset>0</bitOffset>
               <bitWidth>8</bitWidth>
-              <access>read-write</access>
+              <access>write-only</access>
             </field>
             <field>
               <name>RX_FIFO_PE</name>
@@ -3801,10 +3864,8 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <name>FIFO_STATUS</name>
           <description>FIFO_STATUS</description>
           <addressOffset>0x44</addressOffset>
-          <size>16</size>
+          <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000002</resetValue>
-          <resetMask>0x0000000F</resetMask>
           <fields>
             <field>
               <name>TX_FIFO_FULL</name>
@@ -3821,15 +3882,15 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
               <access>read-only</access>
             </field>
             <field>
-              <name>RX_FIFO_FULL</name>
-              <description>RX FIFO full flag</description>
+              <name>RX_NOT_EMPTY</name>
+              <description>Receive FIFO contains data</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-only</access>
             </field>
             <field>
-              <name>RX_FIFO_EMPTY</name>
-              <description>RX FIFO empty flag</description>
+              <name>RX_FULL</name>
+              <description>Receive FIFO full</description>
               <bitOffset>3</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-only</access>
@@ -3840,10 +3901,8 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <name>TX_FIFO_CNT</name>
           <description>TX_FIFO_CNT</description>
           <addressOffset>0x48</addressOffset>
-          <size>16</size>
+          <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000007F</resetMask>
           <fields>
             <field>
               <name>TX_FIFO_LEVEL</name>
@@ -3858,14 +3917,12 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <name>RX_FIFO_CNT</name>
           <description>RX_FIFO_CNT</description>
           <addressOffset>0x4C</addressOffset>
-          <size>16</size>
+          <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000007F</resetMask>
           <fields>
             <field>
-              <name>RESERVED</name>
-              <description>Reserved</description>
+              <name>RX_FIFO_LEVEL</name>
+              <description>Receive FIFO data count</description>
               <bitOffset>0</bitOffset>
               <bitWidth>7</bitWidth>
               <access>read-only</access>
@@ -3876,10 +3933,8 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <name>HALT_TX</name>
           <description>HALT_TX</description>
           <addressOffset>0x50</addressOffset>
-          <size>16</size>
+          <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>HALT_TX</name>
@@ -3894,10 +3949,8 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <name>DMA_SW_ACK</name>
           <description>DMA_SW_ACK</description>
           <addressOffset>0x54</addressOffset>
-          <size>16</size>
+          <size>32</size>
           <access>write-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>DMA_SW_ACK</name>
@@ -3912,10 +3965,8 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <name>BAUD_CTL</name>
           <description>BAUD_CTL</description>
           <addressOffset>0x58</addressOffset>
-          <size>16</size>
+          <size>32</size>
           <access>read-write</access>
-          <resetValue>0x0000007F</resetValue>
-          <resetMask>0x000000FF</resetMask>
           <fields>
             <field>
               <name>BAUD_DIV</name>
@@ -3949,10 +4000,8 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <name>STP_CTL</name>
           <description>STP_CTL</description>
           <addressOffset>0x5C</addressOffset>
-          <size>16</size>
+          <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000007</resetMask>
           <fields>
             <field>
               <name>RX_SP</name>
@@ -3981,10 +4030,8 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <name>UART_PARAMETER</name>
           <description>UART_PARAMETER</description>
           <addressOffset>0x60</addressOffset>
-          <size>16</size>
+          <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000D04</resetValue>
-          <resetMask>0x00001FFF</resetMask>
           <fields>
             <field>
               <name>FIFO_DEPTH</name>
@@ -12512,7 +12559,7 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
       <baseAddress>0x57014000</baseAddress>
       <addressBlock>
         <offset>0x0</offset>
-        <size>0x62</size>
+        <size>0x64</size>
         <usage>registers</usage>
       </addressBlock>
       <interrupt>
