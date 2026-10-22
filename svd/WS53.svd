@@ -364,7 +364,7 @@
       <baseAddress>0x52002000</baseAddress>
       <addressBlock>
         <offset>0x0</offset>
-        <size>0x31C</size>
+        <size>0x220</size>
         <usage>registers</usage>
       </addressBlock>
       <interrupt>
@@ -379,122 +379,11 @@
       </interrupt>
       <registers>
         <register>
-          <name>ABNOR_INTR_RAW</name>
-          <description>ABNOR_INTR_RAW</description>
-          <addressOffset>0x60</addressOffset>
-          <size>32</size>
-          <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000003</resetMask>
-          <fields>
-            <field>
-              <name>ABNOR_INTR_RAW</name>
-              <description>Abnormal interrupt raw status for all timers</description>
-              <bitOffset>0</bitOffset>
-              <bitWidth>2</bitWidth>
-              <access>read-only</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>ABNOR_IMSK</name>
-          <description>ABNOR_IMSK</description>
-          <addressOffset>0x64</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000003</resetMask>
-          <fields>
-            <field>
-              <name>ABNOR_IMSK</name>
-              <description>Abnormal interrupt mask for all timers</description>
-              <bitOffset>0</bitOffset>
-              <bitWidth>2</bitWidth>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>ABNOR_INTR_STAT</name>
-          <description>ABNOR_INTR_STAT</description>
-          <addressOffset>0x68</addressOffset>
-          <size>32</size>
-          <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000003</resetMask>
-          <fields>
-            <field>
-              <name>ABNOR_INTR_STAT</name>
-              <description>Abnormal interrupt status for all timers</description>
-              <bitOffset>0</bitOffset>
-              <bitWidth>2</bitWidth>
-              <access>read-only</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>EOI_REN</name>
-          <description>EOI_REN</description>
-          <addressOffset>0x78</addressOffset>
-          <size>32</size>
-          <access>write-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000003</resetMask>
-          <fields>
-            <field>
-              <name>EOI</name>
-              <description>Write one bit per channel to clear timer interrupts; reads return zero</description>
-              <bitOffset>0</bitOffset>
-              <bitWidth>2</bitWidth>
-              <access>write-only</access>
-              <modifiedWriteValues>oneToClear</modifiedWriteValues>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>RAW_INTR_STAT</name>
-          <description>RAW_INTR_STAT</description>
-          <addressOffset>0x7C</addressOffset>
-          <size>32</size>
-          <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000003</resetMask>
-          <fields>
-            <field>
-              <name>RAW_INTR</name>
-              <description>Raw interrupt status for all timers</description>
-              <bitOffset>0</bitOffset>
-              <bitWidth>2</bitWidth>
-              <access>read-only</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>INTR_STAT</name>
-          <description>INTR_STAT</description>
-          <addressOffset>0x80</addressOffset>
-          <size>32</size>
-          <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000003</resetMask>
-          <fields>
-            <field>
-              <name>INTR_STAT</name>
-              <description>Interrupt status for all timers (after mask)</description>
-              <bitOffset>0</bitOffset>
-              <bitWidth>2</bitWidth>
-              <access>read-only</access>
-            </field>
-          </fields>
-        </register>
-        <register>
           <name>TIMER_LOAD_COUNT0</name>
           <description>TIMER_LOAD_COUNT0</description>
           <addressOffset>0x100</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
               <name>LOAD_COUNT</name>
@@ -511,8 +400,6 @@
           <addressOffset>0x108</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
               <name>CURRENT_VALUE</name>
@@ -528,8 +415,6 @@
           <description>TIMER_CONTROL0</description>
           <addressOffset>0x110</addressOffset>
           <size>32</size>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000007F</resetMask>
           <fields>
             <field>
               <name>ENABLE</name>
@@ -598,12 +483,10 @@
           <addressOffset>0x114</addressOffset>
           <size>32</size>
           <access>write-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>EOI</name>
-              <description>Write 1 to clear this timer interrupt; reads return zero</description>
+              <description>Write one to acknowledge channel 0; read semantics unverified, no read API</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
               <access>write-only</access>
@@ -617,12 +500,26 @@
           <addressOffset>0x118</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>RAW_INTR</name>
               <description>Raw interrupt status</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TIMER_MASKED_INTR0</name>
+          <description>TIMER_MASKED_INTR0</description>
+          <addressOffset>0x11C</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <fields>
+            <field>
+              <name>PENDING</name>
+              <description>pending</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-only</access>
@@ -635,8 +532,6 @@
           <addressOffset>0x200</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
               <name>LOAD_COUNT</name>
@@ -653,8 +548,6 @@
           <addressOffset>0x208</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
               <name>CURRENT_VALUE</name>
@@ -670,8 +563,6 @@
           <description>TIMER_CONTROL1</description>
           <addressOffset>0x210</addressOffset>
           <size>32</size>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000007F</resetMask>
           <fields>
             <field>
               <name>ENABLE</name>
@@ -740,12 +631,10 @@
           <addressOffset>0x214</addressOffset>
           <size>32</size>
           <access>write-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>EOI</name>
-              <description>Write 1 to clear this timer interrupt; reads return zero</description>
+              <description>Write one to acknowledge channel 1; read semantics unverified, no read API</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
               <access>write-only</access>
@@ -759,12 +648,26 @@
           <addressOffset>0x218</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>RAW_INTR</name>
               <description>Raw interrupt status</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TIMER_MASKED_INTR1</name>
+          <description>TIMER_MASKED_INTR1</description>
+          <addressOffset>0x21C</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <fields>
+            <field>
+              <name>PENDING</name>
+              <description>pending</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-only</access>
@@ -11908,8 +11811,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <description>TCXO_STATUS</description>
           <addressOffset>0x0</addressOffset>
           <size>32</size>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000017</resetMask>
           <fields>
             <field>
               <name>REFRESH</name>
@@ -11947,8 +11848,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x4</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>COUNT0</name>
@@ -11965,8 +11864,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x8</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>COUNT1</name>
@@ -11983,8 +11880,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0xC</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>COUNT2</name>
@@ -12001,8 +11896,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x10</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>COUNT3</name>

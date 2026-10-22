@@ -81,6 +81,34 @@ assert_not_impl!(
 );
 assert_not_impl!(m_crg::m_clken1::MClken1Spec, ws53_pac::generic::Resettable);
 assert_not_impl!(
+    ws53_pac::timer::timer_load_count0::TimerLoadCount0Spec,
+    ws53_pac::generic::Resettable
+);
+assert_not_impl!(
+    ws53_pac::timer::timer_control0::TimerControl0Spec,
+    ws53_pac::generic::Resettable
+);
+assert_not_impl!(
+    ws53_pac::timer::timer_eoi0::TimerEoi0Spec,
+    ws53_pac::generic::Readable
+);
+assert_not_impl!(
+    ws53_pac::timer::timer_eoi0::TimerEoi0Spec,
+    ws53_pac::generic::Resettable
+);
+assert_not_impl!(
+    ws53_pac::timer::timer_masked_intr0::TimerMaskedIntr0Spec,
+    ws53_pac::generic::Writable
+);
+assert_not_impl!(
+    ws53_pac::tcxo::tcxo_status::TcxoStatusSpec,
+    ws53_pac::generic::Resettable
+);
+assert_not_impl!(
+    ws53_pac::tcxo::tcxo_count0::TcxoCount0Spec,
+    ws53_pac::generic::Writable
+);
+assert_not_impl!(
     ws53_pac::efuse::data_read::DataReadSpec,
     ws53_pac::generic::Writable
 );
@@ -180,6 +208,47 @@ assert_not_impl!(
     ws53_pac::sdio::global_interrupt_enable::GlobalInterruptEnableSpec,
     ws53_pac::generic::Resettable
 );
+
+#[test]
+fn timer_channel_status_and_tcxo_words_match_selected_sdk_profile() {
+    let timer: ws53_pac::timer::RegisterBlock = unsafe { core::mem::zeroed() };
+    let tcxo: ws53_pac::tcxo::RegisterBlock = unsafe { core::mem::zeroed() };
+    assert_eq!(ws53_pac::Timer::ptr() as usize, 0x52002000);
+    assert_eq!(size_of_val(&timer), 0x220);
+    assert_eq!(offset(&timer, timer.timer_load_count0()), 0x100);
+    assert_eq!(offset(&timer, timer.timer_control0()), 0x110);
+    assert_eq!(offset(&timer, timer.timer_eoi0()), 0x114);
+    assert_eq!(offset(&timer, timer.timer_masked_intr0()), 0x11c);
+    assert_eq!(offset(&timer, timer.timer_load_count1()), 0x200);
+    assert_eq!(offset(&timer, timer.timer_control1()), 0x210);
+    assert_eq!(offset(&timer, timer.timer_eoi1()), 0x214);
+    assert_eq!(offset(&timer, timer.timer_masked_intr1()), 0x21c);
+    // Local storage verifies field placement and preservation, not hardware
+    // initial values, acknowledgement side effects or counting behavior.
+    unsafe { timer.timer_control0().as_ptr().write_volatile(0xa5a50000) };
+    timer
+        .timer_control0()
+        .modify(|_, w| w.mode().periodic().int_mask().set_bit());
+    assert_eq!(timer.timer_control0().read().bits(), 0xa5a5000a);
+    assert_eq!(ws53_pac::Tcxo::ptr() as usize, 0x57000200);
+    assert_eq!(size_of_val(&tcxo), 0x14);
+    assert_eq!(offset(&tcxo, tcxo.tcxo_count0()), 4);
+    assert_eq!(offset(&tcxo, tcxo.tcxo_count1()), 8);
+    assert_eq!(offset(&tcxo, tcxo.tcxo_count2()), 12);
+    assert_eq!(offset(&tcxo, tcxo.tcxo_count3()), 16);
+    assert_eq!(size_of_val(tcxo.tcxo_count0()), 4);
+    unsafe {
+        tcxo.tcxo_count0().as_ptr().write_volatile(0xffff1234);
+        tcxo.tcxo_count1().as_ptr().write_volatile(0xffff5678);
+        tcxo.tcxo_count2().as_ptr().write_volatile(0xffff9abc);
+        tcxo.tcxo_count3().as_ptr().write_volatile(0xffffdef0);
+    }
+    let count = (u64::from(tcxo.tcxo_count3().read().count3().bits()) << 48)
+        | (u64::from(tcxo.tcxo_count2().read().count2().bits()) << 32)
+        | (u64::from(tcxo.tcxo_count1().read().count1().bits()) << 16)
+        | u64::from(tcxo.tcxo_count0().read().count0().bits());
+    assert_eq!(count, 0xdef09abc56781234);
+}
 
 #[test]
 fn sdio_device_layout_keeps_command_views_and_cmd53_fields() {

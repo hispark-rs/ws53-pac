@@ -1,6 +1,6 @@
 {
   "source": "https://github.com/hispark-rs/hisi-registers",
-  "commit": "93c236719305b77723d7e53b6ddf40d17a109f3f",
+  "commit": "021399b2127ce80ebf7bb8e393b8b647d1c3171c",
   "dirty": false,
   "profile": "ws53_liteos_app/acore/MCU_MODE_1",
   "svd2rust": "0.37.1",
@@ -30,7 +30,7 @@
     "rdl/chips/ws53/system-memory.rdl": "0392b17ff9ec8fc7a2d747b9edb1ccfbfd60a9eba7bac937d7339d63595270fc",
     "rdl/chips/ws53/trng.rdl": "75e3a5cc88ca1d2b91312f38c5d43138b39753dc6f9ea591a3e34d8e9a0e8f74",
     "rdl/chips/ws53/tsensor.rdl": "66a6e2ab719aa72b59e263e73818f5b03b1baf41bd9e2d5f6ab7c3d01feb162b",
-    "rdl/chips/ws53.rdl": "9441eebcf917e89472c06a8916b5c75b51e6c7e1bafd5a22e7f5b539e00a7c0e",
+    "rdl/chips/ws53.rdl": "7ee2fa3a45d759551833c9a14dd51475275ae935b307057db6f6344cc16d3f38",
     "rdl/chips/ws63/peripherals/bt_em_ctl.rdl": "96d045b6ed1984d43822e7833f93f90dd77cfb2553bcffb423f86f5e5404a563",
     "rdl/chips/ws63/peripherals/cldo_crg.rdl": "b5289461723351d3643ec982df334dbd795d78fe185435c29c9dee868153d77d",
     "rdl/chips/ws63/peripherals/cmu.rdl": "9e5e37d420c350d9529c5186451db5ce2dccc354bfdec64bba7a6a8060db8a9a",
@@ -61,11 +61,11 @@
     "rdl/ip/sio-v151.rdl": "1d6a0966b6393bd7d9b4ffc5a8b1424afe6d9c0ba3ca50cb39f61e1d1d9bf556",
     "rdl/ip/spi-v151.rdl": "747b69d2f3401d1082feb277af2e70de90ad3e00807a2c5ae6391afe71494c61",
     "rdl/ip/tcxo-v150-data16.rdl": "7a2092a30b2c7f7853eb8311c1a0971272aefe3fe1b77386a046d1596b504873",
-    "rdl/ip/timer-v150.rdl": "800f4237fd8737a164a928fd0801e807ad2ff567c87a6877a9c565e9403c2949",
+    "rdl/ip/timer-v150.rdl": "806d6fd020f8725765066c646b1470db5bd7e7b2b2a3a54f6aab47e50e9363f9",
     "rdl/ip/uart-v151-basic.rdl": "82b7f6d68e05a6d49257add84b1542f5580e03833fb06e605b65f92516b46854",
     "rdl/ip/watchdog-v151.rdl": "2791272dbefb29c3f0029303c352c8398d32aa2d951b3059bd3c42e92a2dfddc",
-    "rdl/properties.rdl": "6c43a552d642c0b353d5f04c72aefbee158c90c7f1a2ae47d0d8b1e2602ab8d4",
-    "scripts/export_svd.py": "dd6a9a0716876dfbc4472a213cea6bf8b9fb8882fb76a448162bcd6c24bbb0e1",
+    "rdl/properties.rdl": "2cbcea8f251ba240cfa944d4ecd579659ab23e3f52612140dedc81f0a2e20a84",
+    "scripts/export_svd.py": "4b463f74dd46b66cef22b1db4367a643b22cfb24f01106a18992bb0661312378",
     "scripts/check_schema.py": "90f34e314dde90c716ae98ba3ba373f1f47458f1080bd88abc3a59cc119a4a0f",
     "schema/CMSIS-SVD-1.3.9.xsd": "48456961947060a71d75144a74f3a081c32ad2cba7a68dcb7a4603a77d10fb65",
     "pyproject.toml": "3bf21307596a0753b6897c450668a3bf1ffbdfa57ca18705239d98724a09365a",
@@ -79,8 +79,8 @@
     "rust-toolchain.toml": "4a55a5c6ce672e0024729f0739b0a82a0897538c9332528927201459bda83585"
   },
   "outputs": {
-    "src/lib.rs": "0f9b740a984776e996641800d9af5bde9245399fcaa2b7b86a9be1b7c247e591",
+    "src/lib.rs": "b9aea51cdbcb2110f0bee18c7f09b7a93543f64feeef26a41d0d3ef496291102",
     "device.x": "b732da88f67fc24ca2cdce044efc37da252563f855f19ca7975359951be95eba",
-    "svd/WS53.svd": "52855c8b3d20bf8b35642090146e619a29b9957b472e8ac140446b364ec15fcf"
+    "svd/WS53.svd": "7d41d817a9b0c2aaf8b0c0cfaf5c2db2acb0d0ef1f5cca8ce18ae56c28925c63"
   }
 }

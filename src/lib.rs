@@ -1782,62 +1782,26 @@ pub mod timer {
     #[repr(C)]
     #[doc = "Register block"]
     pub struct RegisterBlock {
-        _reserved0: [u8; 0x60],
-        abnor_intr_raw: AbnorIntrRaw,
-        abnor_imsk: AbnorImsk,
-        abnor_intr_stat: AbnorIntrStat,
-        _reserved3: [u8; 0x0c],
-        eoi_ren: EoiRen,
-        raw_intr_stat: RawIntrStat,
-        intr_stat: IntrStat,
-        _reserved6: [u8; 0x7c],
+        _reserved0: [u8; 0x0100],
         timer_load_count0: TimerLoadCount0,
-        _reserved7: [u8; 0x04],
+        _reserved1: [u8; 0x04],
         timer_current_value0: TimerCurrentValue0,
-        _reserved8: [u8; 0x04],
+        _reserved2: [u8; 0x04],
         timer_control0: TimerControl0,
         timer_eoi0: TimerEoi0,
         timer_raw_intr0: TimerRawIntr0,
-        _reserved11: [u8; 0xe4],
+        timer_masked_intr0: TimerMaskedIntr0,
+        _reserved6: [u8; 0xe0],
         timer_load_count1: TimerLoadCount1,
-        _reserved12: [u8; 0x04],
+        _reserved7: [u8; 0x04],
         timer_current_value1: TimerCurrentValue1,
-        _reserved13: [u8; 0x04],
+        _reserved8: [u8; 0x04],
         timer_control1: TimerControl1,
         timer_eoi1: TimerEoi1,
         timer_raw_intr1: TimerRawIntr1,
+        timer_masked_intr1: TimerMaskedIntr1,
     }
     impl RegisterBlock {
-        #[doc = "0x60 - ABNOR_INTR_RAW"]
-        #[inline(always)]
-        pub const fn abnor_intr_raw(&self) -> &AbnorIntrRaw {
-            &self.abnor_intr_raw
-        }
-        #[doc = "0x64 - ABNOR_IMSK"]
-        #[inline(always)]
-        pub const fn abnor_imsk(&self) -> &AbnorImsk {
-            &self.abnor_imsk
-        }
-        #[doc = "0x68 - ABNOR_INTR_STAT"]
-        #[inline(always)]
-        pub const fn abnor_intr_stat(&self) -> &AbnorIntrStat {
-            &self.abnor_intr_stat
-        }
-        #[doc = "0x78 - EOI_REN"]
-        #[inline(always)]
-        pub const fn eoi_ren(&self) -> &EoiRen {
-            &self.eoi_ren
-        }
-        #[doc = "0x7c - RAW_INTR_STAT"]
-        #[inline(always)]
-        pub const fn raw_intr_stat(&self) -> &RawIntrStat {
-            &self.raw_intr_stat
-        }
-        #[doc = "0x80 - INTR_STAT"]
-        #[inline(always)]
-        pub const fn intr_stat(&self) -> &IntrStat {
-            &self.intr_stat
-        }
         #[doc = "0x100 - TIMER_LOAD_COUNT0"]
         #[inline(always)]
         pub const fn timer_load_count0(&self) -> &TimerLoadCount0 {
@@ -1862,6 +1826,11 @@ pub mod timer {
         #[inline(always)]
         pub const fn timer_raw_intr0(&self) -> &TimerRawIntr0 {
             &self.timer_raw_intr0
+        }
+        #[doc = "0x11c - TIMER_MASKED_INTR0"]
+        #[inline(always)]
+        pub const fn timer_masked_intr0(&self) -> &TimerMaskedIntr0 {
+            &self.timer_masked_intr0
         }
         #[doc = "0x200 - TIMER_LOAD_COUNT1"]
         #[inline(always)]
@@ -1888,182 +1857,13 @@ pub mod timer {
         pub const fn timer_raw_intr1(&self) -> &TimerRawIntr1 {
             &self.timer_raw_intr1
         }
+        #[doc = "0x21c - TIMER_MASKED_INTR1"]
+        #[inline(always)]
+        pub const fn timer_masked_intr1(&self) -> &TimerMaskedIntr1 {
+            &self.timer_masked_intr1
+        }
     }
-    #[doc = "ABNOR_INTR_RAW (r) register accessor: ABNOR_INTR_RAW\n\nYou can [`read`](crate::Reg::read) this register and get [`abnor_intr_raw::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@abnor_intr_raw`] module"]
-    #[doc(alias = "ABNOR_INTR_RAW")]
-    pub type AbnorIntrRaw = crate::Reg<abnor_intr_raw::AbnorIntrRawSpec>;
-    #[doc = "ABNOR_INTR_RAW"]
-    pub mod abnor_intr_raw {
-        #[doc = "Register `ABNOR_INTR_RAW` reader"]
-        pub type R = crate::R<AbnorIntrRawSpec>;
-        #[doc = "Field `ABNOR_INTR_RAW` reader - Abnormal interrupt raw status for all timers"]
-        pub type AbnorIntrRawR = crate::FieldReader;
-        impl R {
-            #[doc = "Bits 0:1 - Abnormal interrupt raw status for all timers"]
-            #[inline(always)]
-            pub fn abnor_intr_raw(&self) -> AbnorIntrRawR {
-                AbnorIntrRawR::new((self.bits & 3) as u8)
-            }
-        }
-        #[doc = "ABNOR_INTR_RAW\n\nYou can [`read`](crate::Reg::read) this register and get [`abnor_intr_raw::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
-        pub struct AbnorIntrRawSpec;
-        impl crate::RegisterSpec for AbnorIntrRawSpec {
-            type Ux = u32;
-        }
-        #[doc = "`read()` method returns [`abnor_intr_raw::R`](R) reader structure"]
-        impl crate::Readable for AbnorIntrRawSpec {}
-        #[doc = "`reset()` method sets ABNOR_INTR_RAW to value 0"]
-        impl crate::Resettable for AbnorIntrRawSpec {}
-    }
-    #[doc = "ABNOR_IMSK (rw) register accessor: ABNOR_IMSK\n\nYou can [`read`](crate::Reg::read) this register and get [`abnor_imsk::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`abnor_imsk::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@abnor_imsk`] module"]
-    #[doc(alias = "ABNOR_IMSK")]
-    pub type AbnorImsk = crate::Reg<abnor_imsk::AbnorImskSpec>;
-    #[doc = "ABNOR_IMSK"]
-    pub mod abnor_imsk {
-        #[doc = "Register `ABNOR_IMSK` reader"]
-        pub type R = crate::R<AbnorImskSpec>;
-        #[doc = "Register `ABNOR_IMSK` writer"]
-        pub type W = crate::W<AbnorImskSpec>;
-        #[doc = "Field `ABNOR_IMSK` reader - Abnormal interrupt mask for all timers"]
-        pub type AbnorImskR = crate::FieldReader;
-        #[doc = "Field `ABNOR_IMSK` writer - Abnormal interrupt mask for all timers"]
-        pub type AbnorImskW<'a, REG> = crate::FieldWriter<'a, REG, 2>;
-        impl R {
-            #[doc = "Bits 0:1 - Abnormal interrupt mask for all timers"]
-            #[inline(always)]
-            pub fn abnor_imsk(&self) -> AbnorImskR {
-                AbnorImskR::new((self.bits & 3) as u8)
-            }
-        }
-        impl W {
-            #[doc = "Bits 0:1 - Abnormal interrupt mask for all timers"]
-            #[inline(always)]
-            pub fn abnor_imsk(&mut self) -> AbnorImskW<'_, AbnorImskSpec> {
-                AbnorImskW::new(self, 0)
-            }
-        }
-        #[doc = "ABNOR_IMSK\n\nYou can [`read`](crate::Reg::read) this register and get [`abnor_imsk::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`abnor_imsk::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
-        pub struct AbnorImskSpec;
-        impl crate::RegisterSpec for AbnorImskSpec {
-            type Ux = u32;
-        }
-        #[doc = "`read()` method returns [`abnor_imsk::R`](R) reader structure"]
-        impl crate::Readable for AbnorImskSpec {}
-        #[doc = "`write(|w| ..)` method takes [`abnor_imsk::W`](W) writer structure"]
-        impl crate::Writable for AbnorImskSpec {
-            type Safety = crate::Unsafe;
-        }
-        #[doc = "`reset()` method sets ABNOR_IMSK to value 0"]
-        impl crate::Resettable for AbnorImskSpec {}
-    }
-    #[doc = "ABNOR_INTR_STAT (r) register accessor: ABNOR_INTR_STAT\n\nYou can [`read`](crate::Reg::read) this register and get [`abnor_intr_stat::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@abnor_intr_stat`] module"]
-    #[doc(alias = "ABNOR_INTR_STAT")]
-    pub type AbnorIntrStat = crate::Reg<abnor_intr_stat::AbnorIntrStatSpec>;
-    #[doc = "ABNOR_INTR_STAT"]
-    pub mod abnor_intr_stat {
-        #[doc = "Register `ABNOR_INTR_STAT` reader"]
-        pub type R = crate::R<AbnorIntrStatSpec>;
-        #[doc = "Field `ABNOR_INTR_STAT` reader - Abnormal interrupt status for all timers"]
-        pub type AbnorIntrStatR = crate::FieldReader;
-        impl R {
-            #[doc = "Bits 0:1 - Abnormal interrupt status for all timers"]
-            #[inline(always)]
-            pub fn abnor_intr_stat(&self) -> AbnorIntrStatR {
-                AbnorIntrStatR::new((self.bits & 3) as u8)
-            }
-        }
-        #[doc = "ABNOR_INTR_STAT\n\nYou can [`read`](crate::Reg::read) this register and get [`abnor_intr_stat::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
-        pub struct AbnorIntrStatSpec;
-        impl crate::RegisterSpec for AbnorIntrStatSpec {
-            type Ux = u32;
-        }
-        #[doc = "`read()` method returns [`abnor_intr_stat::R`](R) reader structure"]
-        impl crate::Readable for AbnorIntrStatSpec {}
-        #[doc = "`reset()` method sets ABNOR_INTR_STAT to value 0"]
-        impl crate::Resettable for AbnorIntrStatSpec {}
-    }
-    #[doc = "EOI_REN (w) register accessor: EOI_REN\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`eoi_ren::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@eoi_ren`] module"]
-    #[doc(alias = "EOI_REN")]
-    pub type EoiRen = crate::Reg<eoi_ren::EoiRenSpec>;
-    #[doc = "EOI_REN"]
-    pub mod eoi_ren {
-        #[doc = "Register `EOI_REN` writer"]
-        pub type W = crate::W<EoiRenSpec>;
-        #[doc = "Field `EOI` writer - Write one bit per channel to clear timer interrupts; reads return zero"]
-        pub type EoiW<'a, REG> = crate::FieldWriter<'a, REG, 2>;
-        impl W {
-            #[doc = "Bits 0:1 - Write one bit per channel to clear timer interrupts; reads return zero"]
-            #[inline(always)]
-            pub fn eoi(&mut self) -> EoiW<'_, EoiRenSpec> {
-                EoiW::new(self, 0)
-            }
-        }
-        #[doc = "EOI_REN\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`eoi_ren::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
-        pub struct EoiRenSpec;
-        impl crate::RegisterSpec for EoiRenSpec {
-            type Ux = u32;
-        }
-        #[doc = "`write(|w| ..)` method takes [`eoi_ren::W`](W) writer structure"]
-        impl crate::Writable for EoiRenSpec {
-            type Safety = crate::Unsafe;
-            const ONE_TO_MODIFY_FIELDS_BITMAP: u32 = 0x03;
-        }
-        #[doc = "`reset()` method sets EOI_REN to value 0"]
-        impl crate::Resettable for EoiRenSpec {}
-    }
-    #[doc = "RAW_INTR_STAT (r) register accessor: RAW_INTR_STAT\n\nYou can [`read`](crate::Reg::read) this register and get [`raw_intr_stat::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@raw_intr_stat`] module"]
-    #[doc(alias = "RAW_INTR_STAT")]
-    pub type RawIntrStat = crate::Reg<raw_intr_stat::RawIntrStatSpec>;
-    #[doc = "RAW_INTR_STAT"]
-    pub mod raw_intr_stat {
-        #[doc = "Register `RAW_INTR_STAT` reader"]
-        pub type R = crate::R<RawIntrStatSpec>;
-        #[doc = "Field `RAW_INTR` reader - Raw interrupt status for all timers"]
-        pub type RawIntrR = crate::FieldReader;
-        impl R {
-            #[doc = "Bits 0:1 - Raw interrupt status for all timers"]
-            #[inline(always)]
-            pub fn raw_intr(&self) -> RawIntrR {
-                RawIntrR::new((self.bits & 3) as u8)
-            }
-        }
-        #[doc = "RAW_INTR_STAT\n\nYou can [`read`](crate::Reg::read) this register and get [`raw_intr_stat::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
-        pub struct RawIntrStatSpec;
-        impl crate::RegisterSpec for RawIntrStatSpec {
-            type Ux = u32;
-        }
-        #[doc = "`read()` method returns [`raw_intr_stat::R`](R) reader structure"]
-        impl crate::Readable for RawIntrStatSpec {}
-        #[doc = "`reset()` method sets RAW_INTR_STAT to value 0"]
-        impl crate::Resettable for RawIntrStatSpec {}
-    }
-    #[doc = "INTR_STAT (r) register accessor: INTR_STAT\n\nYou can [`read`](crate::Reg::read) this register and get [`intr_stat::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@intr_stat`] module"]
-    #[doc(alias = "INTR_STAT")]
-    pub type IntrStat = crate::Reg<intr_stat::IntrStatSpec>;
-    #[doc = "INTR_STAT"]
-    pub mod intr_stat {
-        #[doc = "Register `INTR_STAT` reader"]
-        pub type R = crate::R<IntrStatSpec>;
-        #[doc = "Field `INTR_STAT` reader - Interrupt status for all timers (after mask)"]
-        pub type IntrStatR = crate::FieldReader;
-        impl R {
-            #[doc = "Bits 0:1 - Interrupt status for all timers (after mask)"]
-            #[inline(always)]
-            pub fn intr_stat(&self) -> IntrStatR {
-                IntrStatR::new((self.bits & 3) as u8)
-            }
-        }
-        #[doc = "INTR_STAT\n\nYou can [`read`](crate::Reg::read) this register and get [`intr_stat::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
-        pub struct IntrStatSpec;
-        impl crate::RegisterSpec for IntrStatSpec {
-            type Ux = u32;
-        }
-        #[doc = "`read()` method returns [`intr_stat::R`](R) reader structure"]
-        impl crate::Readable for IntrStatSpec {}
-        #[doc = "`reset()` method sets INTR_STAT to value 0"]
-        impl crate::Resettable for IntrStatSpec {}
-    }
-    #[doc = "TIMER_LOAD_COUNT0 (rw) register accessor: TIMER_LOAD_COUNT0\n\nYou can [`read`](crate::Reg::read) this register and get [`timer_load_count0::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`timer_load_count0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@timer_load_count0`] module"]
+    #[doc = "TIMER_LOAD_COUNT0 (rw) register accessor: TIMER_LOAD_COUNT0\n\nYou can [`read`](crate::Reg::read) this register and get [`timer_load_count0::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`timer_load_count0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@timer_load_count0`] module"]
     #[doc(alias = "TIMER_LOAD_COUNT0")]
     pub type TimerLoadCount0 = crate::Reg<timer_load_count0::TimerLoadCount0Spec>;
     #[doc = "TIMER_LOAD_COUNT0"]
@@ -2090,7 +1890,7 @@ pub mod timer {
                 LoadCountW::new(self, 0)
             }
         }
-        #[doc = "TIMER_LOAD_COUNT0\n\nYou can [`read`](crate::Reg::read) this register and get [`timer_load_count0::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`timer_load_count0::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "TIMER_LOAD_COUNT0\n\nYou can [`read`](crate::Reg::read) this register and get [`timer_load_count0::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`timer_load_count0::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct TimerLoadCount0Spec;
         impl crate::RegisterSpec for TimerLoadCount0Spec {
             type Ux = u32;
@@ -2101,8 +1901,6 @@ pub mod timer {
         impl crate::Writable for TimerLoadCount0Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets TIMER_LOAD_COUNT0 to value 0"]
-        impl crate::Resettable for TimerLoadCount0Spec {}
     }
     #[doc = "TIMER_CURRENT_VALUE0 (r) register accessor: TIMER_CURRENT_VALUE0\n\nYou can [`read`](crate::Reg::read) this register and get [`timer_current_value0::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@timer_current_value0`] module"]
     #[doc(alias = "TIMER_CURRENT_VALUE0")]
@@ -2127,10 +1925,8 @@ pub mod timer {
         }
         #[doc = "`read()` method returns [`timer_current_value0::R`](R) reader structure"]
         impl crate::Readable for TimerCurrentValue0Spec {}
-        #[doc = "`reset()` method sets TIMER_CURRENT_VALUE0 to value 0"]
-        impl crate::Resettable for TimerCurrentValue0Spec {}
     }
-    #[doc = "TIMER_CONTROL0 (rw) register accessor: TIMER_CONTROL0\n\nYou can [`read`](crate::Reg::read) this register and get [`timer_control0::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`timer_control0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@timer_control0`] module"]
+    #[doc = "TIMER_CONTROL0 (rw) register accessor: TIMER_CONTROL0\n\nYou can [`read`](crate::Reg::read) this register and get [`timer_control0::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`timer_control0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@timer_control0`] module"]
     #[doc(alias = "TIMER_CONTROL0")]
     pub type TimerControl0 = crate::Reg<timer_control0::TimerControl0Spec>;
     #[doc = "TIMER_CONTROL0"]
@@ -2143,7 +1939,7 @@ pub mod timer {
         pub type EnableR = crate::BitReader;
         #[doc = "Field `ENABLE` writer - Timer enable: 0=disabled; 1=enabled"]
         pub type EnableW<'a, REG> = crate::BitWriter<'a, REG>;
-        #[doc = "Timer mode (TIMER_V150, per vendor control_reg_mode_v150_t): 0=one-shot; 1=periodic; 3=free-run (2 is a one-shot alias)\n\nValue on reset: 0"]
+        #[doc = "Timer mode (TIMER_V150, per vendor control_reg_mode_v150_t): 0=one-shot; 1=periodic; 3=free-run (2 is a one-shot alias)"]
         #[derive(Clone, Copy, Debug, PartialEq, Eq)]
         #[repr(u8)]
         pub enum Mode {
@@ -2282,7 +2078,7 @@ pub mod timer {
                 CntReqW::new(self, 5)
             }
         }
-        #[doc = "TIMER_CONTROL0\n\nYou can [`read`](crate::Reg::read) this register and get [`timer_control0::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`timer_control0::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "TIMER_CONTROL0\n\nYou can [`read`](crate::Reg::read) this register and get [`timer_control0::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`timer_control0::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct TimerControl0Spec;
         impl crate::RegisterSpec for TimerControl0Spec {
             type Ux = u32;
@@ -2293,26 +2089,24 @@ pub mod timer {
         impl crate::Writable for TimerControl0Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets TIMER_CONTROL0 to value 0"]
-        impl crate::Resettable for TimerControl0Spec {}
     }
-    #[doc = "TIMER_EOI0 (w) register accessor: TIMER_EOI0\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`timer_eoi0::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@timer_eoi0`] module"]
+    #[doc = "TIMER_EOI0 (w) register accessor: TIMER_EOI0\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`timer_eoi0::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@timer_eoi0`] module"]
     #[doc(alias = "TIMER_EOI0")]
     pub type TimerEoi0 = crate::Reg<timer_eoi0::TimerEoi0Spec>;
     #[doc = "TIMER_EOI0"]
     pub mod timer_eoi0 {
         #[doc = "Register `TIMER_EOI0` writer"]
         pub type W = crate::W<TimerEoi0Spec>;
-        #[doc = "Field `EOI` writer - Write 1 to clear this timer interrupt; reads return zero"]
+        #[doc = "Field `EOI` writer - Write one to acknowledge channel 0; read semantics unverified, no read API"]
         pub type EoiW<'a, REG> = crate::BitWriter1C<'a, REG>;
         impl W {
-            #[doc = "Bit 0 - Write 1 to clear this timer interrupt; reads return zero"]
+            #[doc = "Bit 0 - Write one to acknowledge channel 0; read semantics unverified, no read API"]
             #[inline(always)]
             pub fn eoi(&mut self) -> EoiW<'_, TimerEoi0Spec> {
                 EoiW::new(self, 0)
             }
         }
-        #[doc = "TIMER_EOI0\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`timer_eoi0::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "TIMER_EOI0\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`timer_eoi0::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct TimerEoi0Spec;
         impl crate::RegisterSpec for TimerEoi0Spec {
             type Ux = u32;
@@ -2322,8 +2116,6 @@ pub mod timer {
             type Safety = crate::Unsafe;
             const ONE_TO_MODIFY_FIELDS_BITMAP: u32 = 0x01;
         }
-        #[doc = "`reset()` method sets TIMER_EOI0 to value 0"]
-        impl crate::Resettable for TimerEoi0Spec {}
     }
     #[doc = "TIMER_RAW_INTR0 (r) register accessor: TIMER_RAW_INTR0\n\nYou can [`read`](crate::Reg::read) this register and get [`timer_raw_intr0::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@timer_raw_intr0`] module"]
     #[doc(alias = "TIMER_RAW_INTR0")]
@@ -2348,10 +2140,32 @@ pub mod timer {
         }
         #[doc = "`read()` method returns [`timer_raw_intr0::R`](R) reader structure"]
         impl crate::Readable for TimerRawIntr0Spec {}
-        #[doc = "`reset()` method sets TIMER_RAW_INTR0 to value 0"]
-        impl crate::Resettable for TimerRawIntr0Spec {}
     }
-    #[doc = "TIMER_LOAD_COUNT1 (rw) register accessor: TIMER_LOAD_COUNT1\n\nYou can [`read`](crate::Reg::read) this register and get [`timer_load_count1::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`timer_load_count1::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@timer_load_count1`] module"]
+    #[doc = "TIMER_MASKED_INTR0 (r) register accessor: TIMER_MASKED_INTR0\n\nYou can [`read`](crate::Reg::read) this register and get [`timer_masked_intr0::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@timer_masked_intr0`] module"]
+    #[doc(alias = "TIMER_MASKED_INTR0")]
+    pub type TimerMaskedIntr0 = crate::Reg<timer_masked_intr0::TimerMaskedIntr0Spec>;
+    #[doc = "TIMER_MASKED_INTR0"]
+    pub mod timer_masked_intr0 {
+        #[doc = "Register `TIMER_MASKED_INTR0` reader"]
+        pub type R = crate::R<TimerMaskedIntr0Spec>;
+        #[doc = "Field `PENDING` reader - pending"]
+        pub type PendingR = crate::BitReader;
+        impl R {
+            #[doc = "Bit 0 - pending"]
+            #[inline(always)]
+            pub fn pending(&self) -> PendingR {
+                PendingR::new((self.bits & 1) != 0)
+            }
+        }
+        #[doc = "TIMER_MASKED_INTR0\n\nYou can [`read`](crate::Reg::read) this register and get [`timer_masked_intr0::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct TimerMaskedIntr0Spec;
+        impl crate::RegisterSpec for TimerMaskedIntr0Spec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`timer_masked_intr0::R`](R) reader structure"]
+        impl crate::Readable for TimerMaskedIntr0Spec {}
+    }
+    #[doc = "TIMER_LOAD_COUNT1 (rw) register accessor: TIMER_LOAD_COUNT1\n\nYou can [`read`](crate::Reg::read) this register and get [`timer_load_count1::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`timer_load_count1::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@timer_load_count1`] module"]
     #[doc(alias = "TIMER_LOAD_COUNT1")]
     pub type TimerLoadCount1 = crate::Reg<timer_load_count1::TimerLoadCount1Spec>;
     #[doc = "TIMER_LOAD_COUNT1"]
@@ -2378,7 +2192,7 @@ pub mod timer {
                 LoadCountW::new(self, 0)
             }
         }
-        #[doc = "TIMER_LOAD_COUNT1\n\nYou can [`read`](crate::Reg::read) this register and get [`timer_load_count1::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`timer_load_count1::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "TIMER_LOAD_COUNT1\n\nYou can [`read`](crate::Reg::read) this register and get [`timer_load_count1::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`timer_load_count1::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct TimerLoadCount1Spec;
         impl crate::RegisterSpec for TimerLoadCount1Spec {
             type Ux = u32;
@@ -2389,8 +2203,6 @@ pub mod timer {
         impl crate::Writable for TimerLoadCount1Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets TIMER_LOAD_COUNT1 to value 0"]
-        impl crate::Resettable for TimerLoadCount1Spec {}
     }
     #[doc = "TIMER_CURRENT_VALUE1 (r) register accessor: TIMER_CURRENT_VALUE1\n\nYou can [`read`](crate::Reg::read) this register and get [`timer_current_value1::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@timer_current_value1`] module"]
     #[doc(alias = "TIMER_CURRENT_VALUE1")]
@@ -2415,10 +2227,8 @@ pub mod timer {
         }
         #[doc = "`read()` method returns [`timer_current_value1::R`](R) reader structure"]
         impl crate::Readable for TimerCurrentValue1Spec {}
-        #[doc = "`reset()` method sets TIMER_CURRENT_VALUE1 to value 0"]
-        impl crate::Resettable for TimerCurrentValue1Spec {}
     }
-    #[doc = "TIMER_CONTROL1 (rw) register accessor: TIMER_CONTROL1\n\nYou can [`read`](crate::Reg::read) this register and get [`timer_control1::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`timer_control1::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@timer_control1`] module"]
+    #[doc = "TIMER_CONTROL1 (rw) register accessor: TIMER_CONTROL1\n\nYou can [`read`](crate::Reg::read) this register and get [`timer_control1::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`timer_control1::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@timer_control1`] module"]
     #[doc(alias = "TIMER_CONTROL1")]
     pub type TimerControl1 = crate::Reg<timer_control1::TimerControl1Spec>;
     #[doc = "TIMER_CONTROL1"]
@@ -2431,7 +2241,7 @@ pub mod timer {
         pub type EnableR = crate::BitReader;
         #[doc = "Field `ENABLE` writer - Timer enable: 0=disabled; 1=enabled"]
         pub type EnableW<'a, REG> = crate::BitWriter<'a, REG>;
-        #[doc = "Timer mode (TIMER_V150, per vendor control_reg_mode_v150_t): 0=one-shot; 1=periodic; 3=free-run (2 is a one-shot alias)\n\nValue on reset: 0"]
+        #[doc = "Timer mode (TIMER_V150, per vendor control_reg_mode_v150_t): 0=one-shot; 1=periodic; 3=free-run (2 is a one-shot alias)"]
         #[derive(Clone, Copy, Debug, PartialEq, Eq)]
         #[repr(u8)]
         pub enum Mode {
@@ -2570,7 +2380,7 @@ pub mod timer {
                 CntReqW::new(self, 5)
             }
         }
-        #[doc = "TIMER_CONTROL1\n\nYou can [`read`](crate::Reg::read) this register and get [`timer_control1::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`timer_control1::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "TIMER_CONTROL1\n\nYou can [`read`](crate::Reg::read) this register and get [`timer_control1::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`timer_control1::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct TimerControl1Spec;
         impl crate::RegisterSpec for TimerControl1Spec {
             type Ux = u32;
@@ -2581,26 +2391,24 @@ pub mod timer {
         impl crate::Writable for TimerControl1Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets TIMER_CONTROL1 to value 0"]
-        impl crate::Resettable for TimerControl1Spec {}
     }
-    #[doc = "TIMER_EOI1 (w) register accessor: TIMER_EOI1\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`timer_eoi1::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@timer_eoi1`] module"]
+    #[doc = "TIMER_EOI1 (w) register accessor: TIMER_EOI1\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`timer_eoi1::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@timer_eoi1`] module"]
     #[doc(alias = "TIMER_EOI1")]
     pub type TimerEoi1 = crate::Reg<timer_eoi1::TimerEoi1Spec>;
     #[doc = "TIMER_EOI1"]
     pub mod timer_eoi1 {
         #[doc = "Register `TIMER_EOI1` writer"]
         pub type W = crate::W<TimerEoi1Spec>;
-        #[doc = "Field `EOI` writer - Write 1 to clear this timer interrupt; reads return zero"]
+        #[doc = "Field `EOI` writer - Write one to acknowledge channel 1; read semantics unverified, no read API"]
         pub type EoiW<'a, REG> = crate::BitWriter1C<'a, REG>;
         impl W {
-            #[doc = "Bit 0 - Write 1 to clear this timer interrupt; reads return zero"]
+            #[doc = "Bit 0 - Write one to acknowledge channel 1; read semantics unverified, no read API"]
             #[inline(always)]
             pub fn eoi(&mut self) -> EoiW<'_, TimerEoi1Spec> {
                 EoiW::new(self, 0)
             }
         }
-        #[doc = "TIMER_EOI1\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`timer_eoi1::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "TIMER_EOI1\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`timer_eoi1::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct TimerEoi1Spec;
         impl crate::RegisterSpec for TimerEoi1Spec {
             type Ux = u32;
@@ -2610,8 +2418,6 @@ pub mod timer {
             type Safety = crate::Unsafe;
             const ONE_TO_MODIFY_FIELDS_BITMAP: u32 = 0x01;
         }
-        #[doc = "`reset()` method sets TIMER_EOI1 to value 0"]
-        impl crate::Resettable for TimerEoi1Spec {}
     }
     #[doc = "TIMER_RAW_INTR1 (r) register accessor: TIMER_RAW_INTR1\n\nYou can [`read`](crate::Reg::read) this register and get [`timer_raw_intr1::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@timer_raw_intr1`] module"]
     #[doc(alias = "TIMER_RAW_INTR1")]
@@ -2636,8 +2442,30 @@ pub mod timer {
         }
         #[doc = "`read()` method returns [`timer_raw_intr1::R`](R) reader structure"]
         impl crate::Readable for TimerRawIntr1Spec {}
-        #[doc = "`reset()` method sets TIMER_RAW_INTR1 to value 0"]
-        impl crate::Resettable for TimerRawIntr1Spec {}
+    }
+    #[doc = "TIMER_MASKED_INTR1 (r) register accessor: TIMER_MASKED_INTR1\n\nYou can [`read`](crate::Reg::read) this register and get [`timer_masked_intr1::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@timer_masked_intr1`] module"]
+    #[doc(alias = "TIMER_MASKED_INTR1")]
+    pub type TimerMaskedIntr1 = crate::Reg<timer_masked_intr1::TimerMaskedIntr1Spec>;
+    #[doc = "TIMER_MASKED_INTR1"]
+    pub mod timer_masked_intr1 {
+        #[doc = "Register `TIMER_MASKED_INTR1` reader"]
+        pub type R = crate::R<TimerMaskedIntr1Spec>;
+        #[doc = "Field `PENDING` reader - pending"]
+        pub type PendingR = crate::BitReader;
+        impl R {
+            #[doc = "Bit 0 - pending"]
+            #[inline(always)]
+            pub fn pending(&self) -> PendingR {
+                PendingR::new((self.bits & 1) != 0)
+            }
+        }
+        #[doc = "TIMER_MASKED_INTR1\n\nYou can [`read`](crate::Reg::read) this register and get [`timer_masked_intr1::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct TimerMaskedIntr1Spec;
+        impl crate::RegisterSpec for TimerMaskedIntr1Spec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`timer_masked_intr1::R`](R) reader structure"]
+        impl crate::Readable for TimerMaskedIntr1Spec {}
     }
 }
 #[doc = "mcu_diag"]
@@ -28215,7 +28043,7 @@ pub mod tcxo {
             &self.tcxo_count3
         }
     }
-    #[doc = "TCXO_STATUS (rw) register accessor: TCXO_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`tcxo_status::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`tcxo_status::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@tcxo_status`] module"]
+    #[doc = "TCXO_STATUS (rw) register accessor: TCXO_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`tcxo_status::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`tcxo_status::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@tcxo_status`] module"]
     #[doc(alias = "TCXO_STATUS")]
     pub type TcxoStatus = crate::Reg<tcxo_status::TcxoStatusSpec>;
     #[doc = "TCXO_STATUS"]
@@ -28277,7 +28105,7 @@ pub mod tcxo {
                 EnableW::new(self, 2)
             }
         }
-        #[doc = "TCXO_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`tcxo_status::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`tcxo_status::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "TCXO_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`tcxo_status::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`tcxo_status::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct TcxoStatusSpec;
         impl crate::RegisterSpec for TcxoStatusSpec {
             type Ux = u32;
@@ -28288,8 +28116,6 @@ pub mod tcxo {
         impl crate::Writable for TcxoStatusSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets TCXO_STATUS to value 0"]
-        impl crate::Resettable for TcxoStatusSpec {}
     }
     #[doc = "TCXO_COUNT0 (r) register accessor: TCXO_COUNT0\n\nYou can [`read`](crate::Reg::read) this register and get [`tcxo_count0::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@tcxo_count0`] module"]
     #[doc(alias = "TCXO_COUNT0")]
@@ -28314,8 +28140,6 @@ pub mod tcxo {
         }
         #[doc = "`read()` method returns [`tcxo_count0::R`](R) reader structure"]
         impl crate::Readable for TcxoCount0Spec {}
-        #[doc = "`reset()` method sets TCXO_COUNT0 to value 0"]
-        impl crate::Resettable for TcxoCount0Spec {}
     }
     #[doc = "TCXO_COUNT1 (r) register accessor: TCXO_COUNT1\n\nYou can [`read`](crate::Reg::read) this register and get [`tcxo_count1::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@tcxo_count1`] module"]
     #[doc(alias = "TCXO_COUNT1")]
@@ -28340,8 +28164,6 @@ pub mod tcxo {
         }
         #[doc = "`read()` method returns [`tcxo_count1::R`](R) reader structure"]
         impl crate::Readable for TcxoCount1Spec {}
-        #[doc = "`reset()` method sets TCXO_COUNT1 to value 0"]
-        impl crate::Resettable for TcxoCount1Spec {}
     }
     #[doc = "TCXO_COUNT2 (r) register accessor: TCXO_COUNT2\n\nYou can [`read`](crate::Reg::read) this register and get [`tcxo_count2::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@tcxo_count2`] module"]
     #[doc(alias = "TCXO_COUNT2")]
@@ -28366,8 +28188,6 @@ pub mod tcxo {
         }
         #[doc = "`read()` method returns [`tcxo_count2::R`](R) reader structure"]
         impl crate::Readable for TcxoCount2Spec {}
-        #[doc = "`reset()` method sets TCXO_COUNT2 to value 0"]
-        impl crate::Resettable for TcxoCount2Spec {}
     }
     #[doc = "TCXO_COUNT3 (r) register accessor: TCXO_COUNT3\n\nYou can [`read`](crate::Reg::read) this register and get [`tcxo_count3::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@tcxo_count3`] module"]
     #[doc(alias = "TCXO_COUNT3")]
@@ -28392,8 +28212,6 @@ pub mod tcxo {
         }
         #[doc = "`read()` method returns [`tcxo_count3::R`](R) reader structure"]
         impl crate::Readable for TcxoCount3Spec {}
-        #[doc = "`reset()` method sets TCXO_COUNT3 to value 0"]
-        impl crate::Resettable for TcxoCount3Spec {}
     }
 }
 #[doc = "gpio0"]

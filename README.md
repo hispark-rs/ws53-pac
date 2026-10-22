@@ -55,3 +55,10 @@ control bits and coordinate shared users. The SVD command constraint documents
 `0x5a5a`; it is not a runtime guard on unsafe raw writes. SDK die-ID/MAC schemas
 disagree, so this PAC does not select an identity interpretation or claim a
 hardware-validated eFuse driver.
+
+TIMER exposes two 32-bit channels and local raw/masked status. The SDK's common
+structure conflicts with its offset comments; that window is intentionally
+absent. EOI only exposes the SDK's write acknowledgement, not speculative read
+behavior. TIMER/TCXO do not implement Resettable: inherited IP reset annotations
+were not established for WS53. TCXO's four count slots are 32-bit accesses with
+16-bit payloads. None of these layout checks proves shared-resource handover.
