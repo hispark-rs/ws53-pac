@@ -100,6 +100,45 @@ assert_not_impl!(
     ws53_pac::adc::scan_control::ScanControlSpec,
     ws53_pac::generic::Resettable
 );
+assert_not_impl!(
+    ws53_pac::tsensor::auto_status::AutoStatusSpec,
+    ws53_pac::generic::Writable
+);
+assert_not_impl!(
+    ws53_pac::tsensor::start::StartSpec,
+    ws53_pac::generic::Readable
+);
+assert_not_impl!(
+    ws53_pac::tsensor::control::ControlSpec,
+    ws53_pac::generic::Resettable
+);
+
+#[test]
+fn temperature_status_decodes_ten_bit_code_without_a_clear_write_api() {
+    let sensor: ws53_pac::tsensor::RegisterBlock = unsafe { core::mem::zeroed() };
+    assert_eq!(ws53_pac::Tsensor::PTR as usize, 0x59006300);
+    assert_eq!(offset(&sensor, sensor.start()), 0);
+    assert_eq!(offset(&sensor, sensor.control()), 4);
+    assert_eq!(offset(&sensor, sensor.auto_status()), 8);
+    assert_eq!(offset(&sensor, sensor.sample_time()), 0x10);
+    assert_eq!(offset(&sensor, sensor.auto_refresh_period()), 0x30);
+    assert_eq!(offset(&sensor, sensor.auto_refresh_config()), 0x34);
+    assert_eq!(size_of::<ws53_pac::tsensor::RegisterBlock>(), 0x38);
+    // Inject values into a stack-backed cell, not into the hardware RO register.
+    for code in [0, 118, 933, 1023] {
+        for ready in [false, true] {
+            unsafe {
+                sensor
+                    .auto_status()
+                    .as_ptr()
+                    .write_volatile(0xffff_f001 | (code << 2) | ((ready as u32) << 1));
+            }
+            let status = sensor.auto_status().read();
+            assert_eq!(status.code().bits(), code as u16);
+            assert_eq!(status.ready().bit(), ready);
+        }
+    }
+}
 
 #[test]
 fn spi_fifo_views_keep_their_instance_layout_and_access_direction() {

@@ -14301,5 +14301,120 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
         </register>
       </registers>
     </peripheral>
+    <peripheral>
+      <name>TSENSOR</name>
+      <description>tsensor</description>
+      <baseAddress>0x59006300</baseAddress>
+      <addressBlock>
+        <offset>0x0</offset>
+        <size>0x38</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <register>
+          <name>START</name>
+          <description>Command view: SDK writes 1 to start; stop and self-clear behavior unspecified</description>
+          <addressOffset>0x0</addressOffset>
+          <size>32</size>
+          <access>write-only</access>
+          <fields>
+            <field>
+              <name>VALUE</name>
+              <description>value</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+              <access>write-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CONTROL</name>
+          <description>Opaque configuration: SDK writes 3 for 16-point average cyclic reports, reads zero as uninitialized</description>
+          <addressOffset>0x4</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <fields>
+            <field>
+              <name>VALUE</name>
+              <description>value</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>AUTO_STATUS</name>
+          <description>Polling status subset. Bit 0 named auto_clr has no evidenced write/clear semantics and is omitted</description>
+          <addressOffset>0x8</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <fields>
+            <field>
+              <name>READY</name>
+              <description>ready</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>CODE</name>
+              <description>code</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>10</bitWidth>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SAMPLE_TIME</name>
+          <description>Opaque write view: SDK writes 2 for 0.256 ms per sample; readback unspecified</description>
+          <addressOffset>0x10</addressOffset>
+          <size>32</size>
+          <access>write-only</access>
+          <fields>
+            <field>
+              <name>VALUE</name>
+              <description>value</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+              <access>write-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>AUTO_REFRESH_PERIOD</name>
+          <description>Opaque write view: SDK writes 160 cycles of the 32 kHz source (5 ms); implemented width unknown</description>
+          <addressOffset>0x30</addressOffset>
+          <size>32</size>
+          <access>write-only</access>
+          <fields>
+            <field>
+              <name>VALUE</name>
+              <description>value</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+              <access>write-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>AUTO_REFRESH_CONFIG</name>
+          <description>Opaque write view: SDK writes 0 to disable auto-refresh reporting; readback unspecified</description>
+          <addressOffset>0x34</addressOffset>
+          <size>32</size>
+          <access>write-only</access>
+          <fields>
+            <field>
+              <name>VALUE</name>
+              <description>value</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+              <access>write-only</access>
+            </field>
+          </fields>
+        </register>
+      </registers>
+    </peripheral>
   </peripherals>
 </device>

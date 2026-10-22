@@ -34191,6 +34191,234 @@ pub mod pinmux_tzpc {
         }
     }
 }
+#[doc = "tsensor"]
+pub type Tsensor = crate::Periph<tsensor::RegisterBlock, 0x5900_6300>;
+impl core::fmt::Debug for Tsensor {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("Tsensor").finish()
+    }
+}
+#[doc = "tsensor"]
+pub mod tsensor {
+    #[repr(C)]
+    #[doc = "Register block"]
+    pub struct RegisterBlock {
+        start: Start,
+        control: Control,
+        auto_status: AutoStatus,
+        _reserved3: [u8; 0x04],
+        sample_time: SampleTime,
+        _reserved4: [u8; 0x1c],
+        auto_refresh_period: AutoRefreshPeriod,
+        auto_refresh_config: AutoRefreshConfig,
+    }
+    impl RegisterBlock {
+        #[doc = "0x00 - Command view: SDK writes 1 to start; stop and self-clear behavior unspecified"]
+        #[inline(always)]
+        pub const fn start(&self) -> &Start {
+            &self.start
+        }
+        #[doc = "0x04 - Opaque configuration: SDK writes 3 for 16-point average cyclic reports, reads zero as uninitialized"]
+        #[inline(always)]
+        pub const fn control(&self) -> &Control {
+            &self.control
+        }
+        #[doc = "0x08 - Polling status subset. Bit 0 named auto_clr has no evidenced write/clear semantics and is omitted"]
+        #[inline(always)]
+        pub const fn auto_status(&self) -> &AutoStatus {
+            &self.auto_status
+        }
+        #[doc = "0x10 - Opaque write view: SDK writes 2 for 0.256 ms per sample; readback unspecified"]
+        #[inline(always)]
+        pub const fn sample_time(&self) -> &SampleTime {
+            &self.sample_time
+        }
+        #[doc = "0x30 - Opaque write view: SDK writes 160 cycles of the 32 kHz source (5 ms); implemented width unknown"]
+        #[inline(always)]
+        pub const fn auto_refresh_period(&self) -> &AutoRefreshPeriod {
+            &self.auto_refresh_period
+        }
+        #[doc = "0x34 - Opaque write view: SDK writes 0 to disable auto-refresh reporting; readback unspecified"]
+        #[inline(always)]
+        pub const fn auto_refresh_config(&self) -> &AutoRefreshConfig {
+            &self.auto_refresh_config
+        }
+    }
+    #[doc = "START (w) register accessor: Command view: SDK writes 1 to start; stop and self-clear behavior unspecified\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`start::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@start`] module"]
+    #[doc(alias = "START")]
+    pub type Start = crate::Reg<start::StartSpec>;
+    #[doc = "Command view: SDK writes 1 to start; stop and self-clear behavior unspecified"]
+    pub mod start {
+        #[doc = "Register `START` writer"]
+        pub type W = crate::W<StartSpec>;
+        #[doc = "Field `VALUE` writer - value"]
+        pub type ValueW<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
+        impl W {
+            #[doc = "Bits 0:31 - value"]
+            #[inline(always)]
+            pub fn value(&mut self) -> ValueW<'_, StartSpec> {
+                ValueW::new(self, 0)
+            }
+        }
+        #[doc = "Command view: SDK writes 1 to start; stop and self-clear behavior unspecified\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`start::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct StartSpec;
+        impl crate::RegisterSpec for StartSpec {
+            type Ux = u32;
+        }
+        #[doc = "`write(|w| ..)` method takes [`start::W`](W) writer structure"]
+        impl crate::Writable for StartSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "CONTROL (rw) register accessor: Opaque configuration: SDK writes 3 for 16-point average cyclic reports, reads zero as uninitialized\n\nYou can [`read`](crate::Reg::read) this register and get [`control::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`control::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@control`] module"]
+    #[doc(alias = "CONTROL")]
+    pub type Control = crate::Reg<control::ControlSpec>;
+    #[doc = "Opaque configuration: SDK writes 3 for 16-point average cyclic reports, reads zero as uninitialized"]
+    pub mod control {
+        #[doc = "Register `CONTROL` reader"]
+        pub type R = crate::R<ControlSpec>;
+        #[doc = "Register `CONTROL` writer"]
+        pub type W = crate::W<ControlSpec>;
+        #[doc = "Field `VALUE` reader - value"]
+        pub type ValueR = crate::FieldReader<u32>;
+        #[doc = "Field `VALUE` writer - value"]
+        pub type ValueW<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
+        impl R {
+            #[doc = "Bits 0:31 - value"]
+            #[inline(always)]
+            pub fn value(&self) -> ValueR {
+                ValueR::new(self.bits)
+            }
+        }
+        impl W {
+            #[doc = "Bits 0:31 - value"]
+            #[inline(always)]
+            pub fn value(&mut self) -> ValueW<'_, ControlSpec> {
+                ValueW::new(self, 0)
+            }
+        }
+        #[doc = "Opaque configuration: SDK writes 3 for 16-point average cyclic reports, reads zero as uninitialized\n\nYou can [`read`](crate::Reg::read) this register and get [`control::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`control::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct ControlSpec;
+        impl crate::RegisterSpec for ControlSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`control::R`](R) reader structure"]
+        impl crate::Readable for ControlSpec {}
+        #[doc = "`write(|w| ..)` method takes [`control::W`](W) writer structure"]
+        impl crate::Writable for ControlSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "AUTO_STATUS (r) register accessor: Polling status subset. Bit 0 named auto_clr has no evidenced write/clear semantics and is omitted\n\nYou can [`read`](crate::Reg::read) this register and get [`auto_status::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@auto_status`] module"]
+    #[doc(alias = "AUTO_STATUS")]
+    pub type AutoStatus = crate::Reg<auto_status::AutoStatusSpec>;
+    #[doc = "Polling status subset. Bit 0 named auto_clr has no evidenced write/clear semantics and is omitted"]
+    pub mod auto_status {
+        #[doc = "Register `AUTO_STATUS` reader"]
+        pub type R = crate::R<AutoStatusSpec>;
+        #[doc = "Field `READY` reader - ready"]
+        pub type ReadyR = crate::BitReader;
+        #[doc = "Field `CODE` reader - code"]
+        pub type CodeR = crate::FieldReader<u16>;
+        impl R {
+            #[doc = "Bit 1 - ready"]
+            #[inline(always)]
+            pub fn ready(&self) -> ReadyR {
+                ReadyR::new(((self.bits >> 1) & 1) != 0)
+            }
+            #[doc = "Bits 2:11 - code"]
+            #[inline(always)]
+            pub fn code(&self) -> CodeR {
+                CodeR::new(((self.bits >> 2) & 0x03ff) as u16)
+            }
+        }
+        #[doc = "Polling status subset. Bit 0 named auto_clr has no evidenced write/clear semantics and is omitted\n\nYou can [`read`](crate::Reg::read) this register and get [`auto_status::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct AutoStatusSpec;
+        impl crate::RegisterSpec for AutoStatusSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`auto_status::R`](R) reader structure"]
+        impl crate::Readable for AutoStatusSpec {}
+    }
+    #[doc = "SAMPLE_TIME (w) register accessor: Opaque write view: SDK writes 2 for 0.256 ms per sample; readback unspecified\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`sample_time::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@sample_time`] module"]
+    #[doc(alias = "SAMPLE_TIME")]
+    pub type SampleTime = crate::Reg<sample_time::SampleTimeSpec>;
+    #[doc = "Opaque write view: SDK writes 2 for 0.256 ms per sample; readback unspecified"]
+    pub mod sample_time {
+        #[doc = "Register `SAMPLE_TIME` writer"]
+        pub type W = crate::W<SampleTimeSpec>;
+        #[doc = "Field `VALUE` writer - value"]
+        pub type ValueW<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
+        impl W {
+            #[doc = "Bits 0:31 - value"]
+            #[inline(always)]
+            pub fn value(&mut self) -> ValueW<'_, SampleTimeSpec> {
+                ValueW::new(self, 0)
+            }
+        }
+        #[doc = "Opaque write view: SDK writes 2 for 0.256 ms per sample; readback unspecified\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`sample_time::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct SampleTimeSpec;
+        impl crate::RegisterSpec for SampleTimeSpec {
+            type Ux = u32;
+        }
+        #[doc = "`write(|w| ..)` method takes [`sample_time::W`](W) writer structure"]
+        impl crate::Writable for SampleTimeSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "AUTO_REFRESH_PERIOD (w) register accessor: Opaque write view: SDK writes 160 cycles of the 32 kHz source (5 ms); implemented width unknown\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`auto_refresh_period::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@auto_refresh_period`] module"]
+    #[doc(alias = "AUTO_REFRESH_PERIOD")]
+    pub type AutoRefreshPeriod = crate::Reg<auto_refresh_period::AutoRefreshPeriodSpec>;
+    #[doc = "Opaque write view: SDK writes 160 cycles of the 32 kHz source (5 ms); implemented width unknown"]
+    pub mod auto_refresh_period {
+        #[doc = "Register `AUTO_REFRESH_PERIOD` writer"]
+        pub type W = crate::W<AutoRefreshPeriodSpec>;
+        #[doc = "Field `VALUE` writer - value"]
+        pub type ValueW<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
+        impl W {
+            #[doc = "Bits 0:31 - value"]
+            #[inline(always)]
+            pub fn value(&mut self) -> ValueW<'_, AutoRefreshPeriodSpec> {
+                ValueW::new(self, 0)
+            }
+        }
+        #[doc = "Opaque write view: SDK writes 160 cycles of the 32 kHz source (5 ms); implemented width unknown\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`auto_refresh_period::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct AutoRefreshPeriodSpec;
+        impl crate::RegisterSpec for AutoRefreshPeriodSpec {
+            type Ux = u32;
+        }
+        #[doc = "`write(|w| ..)` method takes [`auto_refresh_period::W`](W) writer structure"]
+        impl crate::Writable for AutoRefreshPeriodSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "AUTO_REFRESH_CONFIG (w) register accessor: Opaque write view: SDK writes 0 to disable auto-refresh reporting; readback unspecified\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`auto_refresh_config::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@auto_refresh_config`] module"]
+    #[doc(alias = "AUTO_REFRESH_CONFIG")]
+    pub type AutoRefreshConfig = crate::Reg<auto_refresh_config::AutoRefreshConfigSpec>;
+    #[doc = "Opaque write view: SDK writes 0 to disable auto-refresh reporting; readback unspecified"]
+    pub mod auto_refresh_config {
+        #[doc = "Register `AUTO_REFRESH_CONFIG` writer"]
+        pub type W = crate::W<AutoRefreshConfigSpec>;
+        #[doc = "Field `VALUE` writer - value"]
+        pub type ValueW<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
+        impl W {
+            #[doc = "Bits 0:31 - value"]
+            #[inline(always)]
+            pub fn value(&mut self) -> ValueW<'_, AutoRefreshConfigSpec> {
+                ValueW::new(self, 0)
+            }
+        }
+        #[doc = "Opaque write view: SDK writes 0 to disable auto-refresh reporting; readback unspecified\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`auto_refresh_config::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct AutoRefreshConfigSpec;
+        impl crate::RegisterSpec for AutoRefreshConfigSpec {
+            type Ux = u32;
+        }
+        #[doc = "`write(|w| ..)` method takes [`auto_refresh_config::W`](W) writer structure"]
+        impl crate::Writable for AutoRefreshConfigSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+}
 #[unsafe(no_mangle)]
 static mut DEVICE_PERIPHERALS: bool = false;
 #[doc = r" All the peripherals."]
@@ -34248,6 +34476,8 @@ pub struct Peripherals {
     pub pinmux_aon: PinmuxAon,
     #[doc = "PINMUX_TZPC"]
     pub pinmux_tzpc: PinmuxTzpc,
+    #[doc = "TSENSOR"]
+    pub tsensor: Tsensor,
 }
 impl Peripherals {
     #[doc = r" Returns all the peripherals *once*."]
@@ -34297,6 +34527,7 @@ impl Peripherals {
                 system_memory: SystemMemory::steal(),
                 pinmux_aon: PinmuxAon::steal(),
                 pinmux_tzpc: PinmuxTzpc::steal(),
+                tsensor: Tsensor::steal(),
             }
         }
     }
