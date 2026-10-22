@@ -81,6 +81,26 @@ assert_not_impl!(
 );
 assert_not_impl!(m_crg::m_clken1::MClken1Spec, ws53_pac::generic::Resettable);
 assert_not_impl!(
+    ws53_pac::efuse::data_read::DataReadSpec,
+    ws53_pac::generic::Writable
+);
+assert_not_impl!(
+    ws53_pac::efuse::data_read::DataReadSpec,
+    ws53_pac::generic::Resettable
+);
+assert_not_impl!(
+    ws53_pac::efuse::mode_status::ModeStatusSpec,
+    ws53_pac::generic::Writable
+);
+assert_not_impl!(
+    ws53_pac::efuse::read_mode_command::ReadModeCommandSpec,
+    ws53_pac::generic::Readable
+);
+assert_not_impl!(
+    ws53_pac::efuse::read_mode_command::ReadModeCommandSpec,
+    ws53_pac::generic::Resettable
+);
+assert_not_impl!(
     pinmux_aon::agpio6_pad::Agpio6PadSpec,
     ws53_pac::generic::Resettable
 );
@@ -370,4 +390,39 @@ fn trng_uses_unified_address_and_shared_halfword_ring_control() {
     assert_eq!(clocks.trng_ring_control().read().bits(), 0xa5a5);
     unsafe { trng.fro_div_cnt().write_with_zero(|w| w.value().bits(0x1b)) };
     assert_eq!(trng.fro_div_cnt().read().bits(), 0x1b);
+}
+
+#[test]
+fn efuse_read_window_preserves_two_bytes_per_word_and_command_alias() {
+    use ws53_pac::efuse;
+    // Stack storage only: no OTP reads, mode changes or programming on silicon.
+    let efuse: efuse::RegisterBlock = unsafe { core::mem::zeroed() };
+    assert_eq!(ws53_pac::Efuse::ptr() as usize, 0x57024000);
+    assert_eq!(offset(&efuse, efuse.boot_status()), 0x2c);
+    assert_eq!(offset(&efuse, efuse.mode_status()), 0x30);
+    assert_eq!(offset(&efuse, efuse.read_mode_command()), 0x30);
+    assert_eq!(offset(&efuse, efuse.clock_period()), 0x34);
+    assert_eq!(efuse.data_read_iter().count(), 128);
+    assert_eq!(size_of::<efuse::RegisterBlock>(), 0xa00);
+    for (index, slot) in efuse.data_read_iter().enumerate() {
+        assert_eq!(offset(&efuse, slot), 0x800 + index * 4);
+        assert_eq!(size_of_val(slot), 4);
+        let even = 2 * index as u32;
+        unsafe {
+            slot.as_ptr()
+                .write_volatile(0xffff0000 | ((even + 1) << 8) | even)
+        };
+        assert_eq!(slot.read().even_byte().bits(), even as u8);
+        assert_eq!(slot.read().odd_byte().bits(), (even + 1) as u8);
+    }
+    // The physical mode setter preserves unmodeled upper bits. The separate
+    // command view has no modify(); a driver must coordinate the whole sequence.
+    unsafe { efuse.mode_status().as_ptr().write_volatile(0xabcd1234) };
+    let upper = efuse.mode_status().read().bits() & 0xffff0000;
+    unsafe {
+        efuse
+            .read_mode_command()
+            .write_with_zero(|w| w.bits(upper).read_mode().bits(0x5a5a))
+    };
+    assert_eq!(efuse.mode_status().read().bits(), 0xabcd5a5a);
 }

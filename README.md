@@ -47,3 +47,11 @@ The SDK application also services control-core random-buffer requests over IPC.
 Neither this PAC nor its `Peripherals` singleton grants exclusive ownership of
 that service or its shared 16-bit ring control in `M_CRG`. Entropy quality,
 handover, HAL behavior and hardware validation remain outstanding.
+
+eFuse exposes a read-service subset: 256 logical bytes in 128 word-sized slots,
+status, volatile timing and a separate read-mode command view. It has no OTP
+data-write or programming-power interface. Read setup must preserve unmodeled
+control bits and coordinate shared users. The SVD command constraint documents
+`0x5a5a`; it is not a runtime guard on unsafe raw writes. SDK die-ID/MAC schemas
+disagree, so this PAC does not select an identity interpretation or claim a
+hardware-validated eFuse driver.

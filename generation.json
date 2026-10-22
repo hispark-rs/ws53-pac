@@ -1,6 +1,6 @@
 {
   "source": "https://github.com/hispark-rs/hisi-registers",
-  "commit": "b713ef5d237e3f0e770da6aa53cfd2af26ac426c",
+  "commit": "93c236719305b77723d7e53b6ddf40d17a109f3f",
   "dirty": false,
   "profile": "ws53_liteos_app/acore/MCU_MODE_1",
   "svd2rust": "0.37.1",
@@ -21,6 +21,7 @@
     "rdl/chips/bs2x/peripherals/usb.rdl": "ec3bbd133b42258633372918917b8319918e2049ce453a5e782f3a68a10512ba",
     "rdl/chips/bs2x.rdl": "dc4deadfee95e9ca39fed2376d673f75b1c00935e87d80495c5c2d6295932de5",
     "rdl/chips/ws53/adc-v155.rdl": "abd8eb6d3c2ea78a76d00b6b86d002d48060984c462707c9045d2b473013450a",
+    "rdl/chips/ws53/efuse-read.rdl": "ff2098881aff1cd3b7b5240fe9afe26e07ae0e691de52835d797a9cc4dcc7e1d",
     "rdl/chips/ws53/m-crg.rdl": "dcf21ec9234f22086ab4026638d8ed60e7af991b085dda195bb6cd33e50d0df2",
     "rdl/chips/ws53/mdma-v151.rdl": "a541c7deaadcc455b95737ae076eb3b6d3e1ed274d693489ee8a36ee099e54a1",
     "rdl/chips/ws53/pinctrl.rdl": "e1f2690aba6fe2e144f29af73cf8606befbd172c8f02204f201417addb9e5550",
@@ -29,7 +30,7 @@
     "rdl/chips/ws53/system-memory.rdl": "0392b17ff9ec8fc7a2d747b9edb1ccfbfd60a9eba7bac937d7339d63595270fc",
     "rdl/chips/ws53/trng.rdl": "75e3a5cc88ca1d2b91312f38c5d43138b39753dc6f9ea591a3e34d8e9a0e8f74",
     "rdl/chips/ws53/tsensor.rdl": "66a6e2ab719aa72b59e263e73818f5b03b1baf41bd9e2d5f6ab7c3d01feb162b",
-    "rdl/chips/ws53.rdl": "4747e5eb5572722384790e6971fdeeffcfb8a039636c947c2494cfa5051084aa",
+    "rdl/chips/ws53.rdl": "9441eebcf917e89472c06a8916b5c75b51e6c7e1bafd5a22e7f5b539e00a7c0e",
     "rdl/chips/ws63/peripherals/bt_em_ctl.rdl": "96d045b6ed1984d43822e7833f93f90dd77cfb2553bcffb423f86f5e5404a563",
     "rdl/chips/ws63/peripherals/cldo_crg.rdl": "b5289461723351d3643ec982df334dbd795d78fe185435c29c9dee868153d77d",
     "rdl/chips/ws63/peripherals/cmu.rdl": "9e5e37d420c350d9529c5186451db5ce2dccc354bfdec64bba7a6a8060db8a9a",
@@ -78,8 +79,8 @@
     "rust-toolchain.toml": "4a55a5c6ce672e0024729f0739b0a82a0897538c9332528927201459bda83585"
   },
   "outputs": {
-    "src/lib.rs": "c17ae57c138a04ff5e23d6ca667ff31487d77a0b683082451e90c685fcfeaabc",
+    "src/lib.rs": "0f9b740a984776e996641800d9af5bde9245399fcaa2b7b86a9be1b7c247e591",
     "device.x": "b732da88f67fc24ca2cdce044efc37da252563f855f19ca7975359951be95eba",
-    "svd/WS53.svd": "a05554fc2290c2db191a20b0b2b7ec6308fd10ab00caad1c43a17006fb87f89c"
+    "svd/WS53.svd": "52855c8b3d20bf8b35642090146e619a29b9957b472e8ac140446b364ec15fcf"
   }
 }

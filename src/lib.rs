@@ -29975,6 +29975,224 @@ impl core::fmt::Debug for Uart2 {
 }
 #[doc = "uart2"]
 pub use self::uart0 as uart2;
+#[doc = "efuse"]
+pub type Efuse = crate::Periph<efuse::RegisterBlock, 0x5702_4000>;
+impl core::fmt::Debug for Efuse {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("Efuse").finish()
+    }
+}
+#[doc = "efuse"]
+pub mod efuse {
+    #[repr(C)]
+    #[doc = "Register block"]
+    pub struct RegisterBlock {
+        _reserved0: [u8; 0x2c],
+        boot_status: BootStatus,
+        _reserved_1_mode_status: [u8; 0x04],
+        clock_period: ClockPeriod,
+        _reserved3: [u8; 0x07c8],
+        data_read: [DataRead; 128],
+    }
+    impl RegisterBlock {
+        #[doc = "0x2c - BOOT_STATUS"]
+        #[inline(always)]
+        pub const fn boot_status(&self) -> &BootStatus {
+            &self.boot_status
+        }
+        #[doc = "0x30 - Restricted read-mode view of physical RW control. SDK preserves upper 16 bits; no implicit zeroing or RMW API. Programming mode is not modeled"]
+        #[inline(always)]
+        pub const fn read_mode_command(&self) -> &ReadModeCommand {
+            unsafe { &*core::ptr::from_ref(self).cast::<u8>().add(48).cast() }
+        }
+        #[doc = "0x30 - Readback of the physical mode register; preserve upper bits when issuing a read-mode command"]
+        #[inline(always)]
+        pub const fn mode_status(&self) -> &ModeStatus {
+            unsafe { &*core::ptr::from_ref(self).cast::<u8>().add(48).cast() }
+        }
+        #[doc = "0x34 - Shared volatile controller timing; SDK initializes low8 to 0x1f preserving other bits; clock frequency and reset unknown"]
+        #[inline(always)]
+        pub const fn clock_period(&self) -> &ClockPeriod {
+            &self.clock_period
+        }
+        #[doc = "0x800..0xa00 - Read-only service view of OTP storage: each 32-bit MMIO slot contains two logical bytes; no contiguous byte loads or program writes"]
+        #[inline(always)]
+        pub const fn data_read(&self, n: usize) -> &DataRead {
+            &self.data_read[n]
+        }
+        #[doc = "Iterator for array of:"]
+        #[doc = "0x800..0xa00 - Read-only service view of OTP storage: each 32-bit MMIO slot contains two logical bytes; no contiguous byte loads or program writes"]
+        #[inline(always)]
+        pub fn data_read_iter(&self) -> impl Iterator<Item = &DataRead> {
+            self.data_read.iter()
+        }
+    }
+    #[doc = "BOOT_STATUS (r) register accessor: BOOT_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`boot_status::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@boot_status`] module"]
+    #[doc(alias = "BOOT_STATUS")]
+    pub type BootStatus = crate::Reg<boot_status::BootStatusSpec>;
+    #[doc = "BOOT_STATUS"]
+    pub mod boot_status {
+        #[doc = "Register `BOOT_STATUS` reader"]
+        pub type R = crate::R<BootStatusSpec>;
+        #[doc = "Field `MANUAL_STATUS` reader - manual_status"]
+        pub type ManualStatusR = crate::FieldReader;
+        #[doc = "Field `BOOT0_DONE` reader - boot0_done"]
+        pub type Boot0DoneR = crate::BitReader;
+        #[doc = "Field `BOOT1_DONE` reader - boot1_done"]
+        pub type Boot1DoneR = crate::BitReader;
+        #[doc = "Field `BOOT2_DONE` reader - boot2_done"]
+        pub type Boot2DoneR = crate::BitReader;
+        impl R {
+            #[doc = "Bits 0:1 - manual_status"]
+            #[inline(always)]
+            pub fn manual_status(&self) -> ManualStatusR {
+                ManualStatusR::new((self.bits & 3) as u8)
+            }
+            #[doc = "Bit 2 - boot0_done"]
+            #[inline(always)]
+            pub fn boot0_done(&self) -> Boot0DoneR {
+                Boot0DoneR::new(((self.bits >> 2) & 1) != 0)
+            }
+            #[doc = "Bit 3 - boot1_done"]
+            #[inline(always)]
+            pub fn boot1_done(&self) -> Boot1DoneR {
+                Boot1DoneR::new(((self.bits >> 3) & 1) != 0)
+            }
+            #[doc = "Bit 4 - boot2_done"]
+            #[inline(always)]
+            pub fn boot2_done(&self) -> Boot2DoneR {
+                Boot2DoneR::new(((self.bits >> 4) & 1) != 0)
+            }
+        }
+        #[doc = "BOOT_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`boot_status::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct BootStatusSpec;
+        impl crate::RegisterSpec for BootStatusSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`boot_status::R`](R) reader structure"]
+        impl crate::Readable for BootStatusSpec {}
+    }
+    #[doc = "MODE_STATUS (r) register accessor: Readback of the physical mode register; preserve upper bits when issuing a read-mode command\n\nYou can [`read`](crate::Reg::read) this register and get [`mode_status::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@mode_status`] module"]
+    #[doc(alias = "MODE_STATUS")]
+    pub type ModeStatus = crate::Reg<mode_status::ModeStatusSpec>;
+    #[doc = "Readback of the physical mode register; preserve upper bits when issuing a read-mode command"]
+    pub mod mode_status {
+        #[doc = "Register `MODE_STATUS` reader"]
+        pub type R = crate::R<ModeStatusSpec>;
+        #[doc = "Field `MODE` reader - mode"]
+        pub type ModeR = crate::FieldReader<u16>;
+        impl R {
+            #[doc = "Bits 0:15 - mode"]
+            #[inline(always)]
+            pub fn mode(&self) -> ModeR {
+                ModeR::new((self.bits & 0xffff) as u16)
+            }
+        }
+        #[doc = "Readback of the physical mode register; preserve upper bits when issuing a read-mode command\n\nYou can [`read`](crate::Reg::read) this register and get [`mode_status::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct ModeStatusSpec;
+        impl crate::RegisterSpec for ModeStatusSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`mode_status::R`](R) reader structure"]
+        impl crate::Readable for ModeStatusSpec {}
+    }
+    #[doc = "READ_MODE_COMMAND (w) register accessor: Restricted read-mode view of physical RW control. SDK preserves upper 16 bits; no implicit zeroing or RMW API. Programming mode is not modeled\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`read_mode_command::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@read_mode_command`] module"]
+    #[doc(alias = "READ_MODE_COMMAND")]
+    pub type ReadModeCommand = crate::Reg<read_mode_command::ReadModeCommandSpec>;
+    #[doc = "Restricted read-mode view of physical RW control. SDK preserves upper 16 bits; no implicit zeroing or RMW API. Programming mode is not modeled"]
+    pub mod read_mode_command {
+        #[doc = "Register `READ_MODE_COMMAND` writer"]
+        pub type W = crate::W<ReadModeCommandSpec>;
+        #[doc = "Field `READ_MODE` writer - read_mode"]
+        pub type ReadModeW<'a, REG> = crate::FieldWriter<'a, REG, 16, u16>;
+        impl W {
+            #[doc = "Bits 0:15 - read_mode"]
+            #[inline(always)]
+            pub fn read_mode(&mut self) -> ReadModeW<'_, ReadModeCommandSpec> {
+                ReadModeW::new(self, 0)
+            }
+        }
+        #[doc = "Restricted read-mode view of physical RW control. SDK preserves upper 16 bits; no implicit zeroing or RMW API. Programming mode is not modeled\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`read_mode_command::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct ReadModeCommandSpec;
+        impl crate::RegisterSpec for ReadModeCommandSpec {
+            type Ux = u32;
+        }
+        #[doc = "`write(|w| ..)` method takes [`read_mode_command::W`](W) writer structure"]
+        impl crate::Writable for ReadModeCommandSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "CLOCK_PERIOD (rw) register accessor: Shared volatile controller timing; SDK initializes low8 to 0x1f preserving other bits; clock frequency and reset unknown\n\nYou can [`read`](crate::Reg::read) this register and get [`clock_period::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`clock_period::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@clock_period`] module"]
+    #[doc(alias = "CLOCK_PERIOD")]
+    pub type ClockPeriod = crate::Reg<clock_period::ClockPeriodSpec>;
+    #[doc = "Shared volatile controller timing; SDK initializes low8 to 0x1f preserving other bits; clock frequency and reset unknown"]
+    pub mod clock_period {
+        #[doc = "Register `CLOCK_PERIOD` reader"]
+        pub type R = crate::R<ClockPeriodSpec>;
+        #[doc = "Register `CLOCK_PERIOD` writer"]
+        pub type W = crate::W<ClockPeriodSpec>;
+        #[doc = "Field `VALUE` reader - value"]
+        pub type ValueR = crate::FieldReader;
+        #[doc = "Field `VALUE` writer - value"]
+        pub type ValueW<'a, REG> = crate::FieldWriter<'a, REG, 8>;
+        impl R {
+            #[doc = "Bits 0:7 - value"]
+            #[inline(always)]
+            pub fn value(&self) -> ValueR {
+                ValueR::new((self.bits & 0xff) as u8)
+            }
+        }
+        impl W {
+            #[doc = "Bits 0:7 - value"]
+            #[inline(always)]
+            pub fn value(&mut self) -> ValueW<'_, ClockPeriodSpec> {
+                ValueW::new(self, 0)
+            }
+        }
+        #[doc = "Shared volatile controller timing; SDK initializes low8 to 0x1f preserving other bits; clock frequency and reset unknown\n\nYou can [`read`](crate::Reg::read) this register and get [`clock_period::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`clock_period::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct ClockPeriodSpec;
+        impl crate::RegisterSpec for ClockPeriodSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`clock_period::R`](R) reader structure"]
+        impl crate::Readable for ClockPeriodSpec {}
+        #[doc = "`write(|w| ..)` method takes [`clock_period::W`](W) writer structure"]
+        impl crate::Writable for ClockPeriodSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "DATA_READ (r) register accessor: Read-only service view of OTP storage: each 32-bit MMIO slot contains two logical bytes; no contiguous byte loads or program writes\n\nYou can [`read`](crate::Reg::read) this register and get [`data_read::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@data_read`] module"]
+    #[doc(alias = "DATA_READ")]
+    pub type DataRead = crate::Reg<data_read::DataReadSpec>;
+    #[doc = "Read-only service view of OTP storage: each 32-bit MMIO slot contains two logical bytes; no contiguous byte loads or program writes"]
+    pub mod data_read {
+        #[doc = "Register `DATA_READ[%s]` reader"]
+        pub type R = crate::R<DataReadSpec>;
+        #[doc = "Field `EVEN_BYTE` reader - even_byte"]
+        pub type EvenByteR = crate::FieldReader;
+        #[doc = "Field `ODD_BYTE` reader - odd_byte"]
+        pub type OddByteR = crate::FieldReader;
+        impl R {
+            #[doc = "Bits 0:7 - even_byte"]
+            #[inline(always)]
+            pub fn even_byte(&self) -> EvenByteR {
+                EvenByteR::new((self.bits & 0xff) as u8)
+            }
+            #[doc = "Bits 8:15 - odd_byte"]
+            #[inline(always)]
+            pub fn odd_byte(&self) -> OddByteR {
+                OddByteR::new(((self.bits >> 8) & 0xff) as u8)
+            }
+        }
+        #[doc = "Read-only service view of OTP storage: each 32-bit MMIO slot contains two logical bytes; no contiguous byte loads or program writes\n\nYou can [`read`](crate::Reg::read) this register and get [`data_read::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct DataReadSpec;
+        impl crate::RegisterSpec for DataReadSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`data_read::R`](R) reader structure"]
+        impl crate::Readable for DataReadSpec {}
+    }
+}
 #[doc = "gpio1"]
 pub type Gpio1 = crate::Periph<gpio1::RegisterBlock, 0x5702_8000>;
 impl core::fmt::Debug for Gpio1 {
@@ -35960,6 +36178,8 @@ pub struct Peripherals {
     pub gpio2: Gpio2,
     #[doc = "UART2"]
     pub uart2: Uart2,
+    #[doc = "EFUSE"]
+    pub efuse: Efuse,
     #[doc = "GPIO1"]
     pub gpio1: Gpio1,
     #[doc = "RTC0"]
@@ -36020,6 +36240,7 @@ impl Peripherals {
                 gpio0: Gpio0::steal(),
                 gpio2: Gpio2::steal(),
                 uart2: Uart2::steal(),
+                efuse: Efuse::steal(),
                 gpio1: Gpio1::steal(),
                 rtc0: Rtc0::steal(),
                 rtc1: Rtc1::steal(),
