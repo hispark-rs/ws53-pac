@@ -9,7 +9,7 @@ WORK="$(mktemp -d)"
 trap 'rm -rf "$WORK"' EXIT
 uv run --locked --project "$SOURCE" "$SOURCE/scripts/export_svd.py" "$SOURCE/rdl/chips/ws53.rdl" "$WORK/WS53.svd"
 uv run --locked --project "$SOURCE" "$SOURCE/scripts/check_schema.py" "$WORK/WS53.svd"
-(cd "$WORK" && "$SVD2RUST" -i WS53.svd --target riscv --settings "$ROOT/ws53-settings.yaml")
+(cd "$WORK" && "$SVD2RUST" -i WS53.svd --target riscv --max-cluster-size --settings "$ROOT/ws53-settings.yaml")
 rustup run "$RUST_TOOLCHAIN" rustfmt --edition 2024 "$WORK/lib.rs"
 uv run --script "$ROOT/scripts/postprocess.py" "$WORK/lib.rs"
 rustup run "$RUST_TOOLCHAIN" rustfmt --edition 2024 "$WORK/lib.rs"

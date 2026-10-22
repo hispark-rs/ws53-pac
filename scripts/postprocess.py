@@ -5,7 +5,7 @@
 # ///
 """Pinned svd2rust 0.37.1 edition-2024 and host-target compatibility fixes.
 
-WS53 currently has expanded registers (zero duplicate array accessors).
+WS53 arrays currently generate zero duplicate bare array accessors.
 The generated singleton unsafe block, no_mangle attribute and RISC-V-only
 reexports are transformed deterministically, with exact occurrence assertions.
 Register definitions are never edited here; change hisi-registers instead.

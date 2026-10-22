@@ -68,6 +68,14 @@ assert_not_impl!(
     pinmux_aon::agpio6_pad::Agpio6PadSpec,
     ws53_pac::generic::Resettable
 );
+assert_not_impl!(
+    ws53_pac::mdma::interrupt_clear::InterruptClearSpec,
+    ws53_pac::generic::Readable
+);
+assert_not_impl!(
+    ws53_pac::mdma::configuration::ConfigurationSpec,
+    ws53_pac::generic::Resettable
+);
 
 #[test]
 fn spi_fifo_views_keep_their_instance_layout_and_access_direction() {
@@ -89,4 +97,42 @@ fn spi_fifo_views_keep_their_instance_layout_and_access_direction() {
     writable::<ws53_pac::spi0::tx::TxSpec>();
     readable::<ws53_pac::qspi1::rx::RxSpec>();
     writable::<ws53_pac::qspi1::tx::TxSpec>();
+}
+
+#[test]
+fn mdma_eight_channels_keep_padding_request_encoding_and_w1c_commands() {
+    use ws53_pac::mdma;
+    let dma: mdma::RegisterBlock = unsafe { core::mem::zeroed() };
+    assert_eq!(size_of::<mdma::channel::Channel>(), 0x20);
+    assert_eq!(size_of::<mdma::RegisterBlock>(), 0x200);
+    assert_eq!(offset(&dma, dma.enabled_channels()), 0x10);
+    assert_eq!(offset(&dma, dma.configuration()), 0x1c);
+    assert_eq!(dma.channel_iter().count(), 8);
+    for index in 0..8 {
+        let channel = dma.channel(index);
+        assert_eq!(offset(&dma, channel), 0x100 + 0x20 * index);
+        assert_eq!(offset(channel, channel.linked_list()), 0);
+        assert_eq!(offset(channel, channel.destination()), 4);
+        assert_eq!(offset(channel, channel.configuration()), 8);
+        assert_eq!(offset(channel, channel.source()), 16);
+        assert_eq!(offset(channel, channel.control()), 20);
+        channel.configuration().modify(|_, w| {
+            w.source_request()
+                .uart0_rx()
+                .destination_request()
+                .spi0_tx()
+        });
+        assert_eq!(channel.configuration().read().bits(), (11 << 1) | (6 << 5));
+    }
+    assert_eq!(ws53_pac::interrupt::ExternalInterrupt::M_DMA as u16, 58);
+    assert_eq!(
+        <mdma::interrupt_clear::InterruptClearSpec as ws53_pac::generic::Writable>::ONE_TO_MODIFY_FIELDS_BITMAP,
+        0xffff
+    );
+    // API/layout only; stack-backed cells do not emulate W1C hardware behavior.
+    unsafe {
+        dma.interrupt_clear()
+            .write_with_zero(|w| w.transfer_complete().bits(1 << 7).error().bits(1 << 3));
+        assert_eq!(dma.interrupt_clear().as_ptr().read_volatile(), 0x880);
+    }
 }

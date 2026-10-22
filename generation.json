@@ -1,12 +1,13 @@
 {
   "source": "https://github.com/hispark-rs/hisi-registers",
-  "commit": "66e519dd8262cca0450047525f5dfe1b23439ba1",
+  "commit": "d8de2dc6a89e6a13a554cd20c57750b5c8bd2ab8",
   "dirty": false,
   "profile": "ws53_liteos_app/acore/MCU_MODE_1",
   "svd2rust": "0.37.1",
   "rust_toolchain": "nightly-2026-07-09",
   "rustfmt": "rustfmt 1.9.0-nightly (14cae68132 2026-07-08)",
   "target": "riscv",
+  "max_cluster_size": true,
   "inputs": {
     "rdl/chips/bs2x/peripherals/adc_pmu_afe.rdl": "279ab1e69258561af311afb380d4a95625352f085fedfcaf36ff83ba48b0f7f9",
     "rdl/chips/bs2x/peripherals/aon_afe.rdl": "d82a991ce6a8f47cc20305e327af69cba3e66ff78f0b4134b4da5ecd18e47a00",
@@ -20,10 +21,11 @@
     "rdl/chips/bs2x/peripherals/usb.rdl": "ec3bbd133b42258633372918917b8319918e2049ce453a5e782f3a68a10512ba",
     "rdl/chips/bs2x.rdl": "dc4deadfee95e9ca39fed2376d673f75b1c00935e87d80495c5c2d6295932de5",
     "rdl/chips/ws53/m-crg.rdl": "489b9cc22068b5f5009e66b0d42e930395cd70f790c3405fccc94d74363d9196",
+    "rdl/chips/ws53/mdma-v151.rdl": "a541c7deaadcc455b95737ae076eb3b6d3e1ed274d693489ee8a36ee099e54a1",
     "rdl/chips/ws53/pinctrl.rdl": "e1f2690aba6fe2e144f29af73cf8606befbd172c8f02204f201417addb9e5550",
     "rdl/chips/ws53/spi-v151-100.rdl": "480ed9bb4402491ccab378e4e6f3a44c3202b0a7ef9aaecb17be9124fe121136",
     "rdl/chips/ws53/system-memory.rdl": "0392b17ff9ec8fc7a2d747b9edb1ccfbfd60a9eba7bac937d7339d63595270fc",
-    "rdl/chips/ws53.rdl": "818e2677a306340b41053e8941a96d2b637d0bcedf2ef84419faa7b51489116f",
+    "rdl/chips/ws53.rdl": "e132bbbc27cd010b814107176358e045aad495b70b086146bcb21f254e1e2eb4",
     "rdl/chips/ws63/peripherals/bt_em_ctl.rdl": "96d045b6ed1984d43822e7833f93f90dd77cfb2553bcffb423f86f5e5404a563",
     "rdl/chips/ws63/peripherals/cldo_crg.rdl": "b5289461723351d3643ec982df334dbd795d78fe185435c29c9dee868153d77d",
     "rdl/chips/ws63/peripherals/cmu.rdl": "9e5e37d420c350d9529c5186451db5ce2dccc354bfdec64bba7a6a8060db8a9a",
@@ -58,22 +60,22 @@
     "rdl/ip/uart-v151-basic.rdl": "82b7f6d68e05a6d49257add84b1542f5580e03833fb06e605b65f92516b46854",
     "rdl/ip/watchdog-v151.rdl": "2791272dbefb29c3f0029303c352c8398d32aa2d951b3059bd3c42e92a2dfddc",
     "rdl/properties.rdl": "6c43a552d642c0b353d5f04c72aefbee158c90c7f1a2ae47d0d8b1e2602ab8d4",
-    "scripts/export_svd.py": "32bf3f8a421bdacb4dc41d5de2ad33e94c1d707a50332a7d3cdd5221ba94ffea",
+    "scripts/export_svd.py": "dd6a9a0716876dfbc4472a213cea6bf8b9fb8882fb76a448162bcd6c24bbb0e1",
     "scripts/check_schema.py": "90f34e314dde90c716ae98ba3ba373f1f47458f1080bd88abc3a59cc119a4a0f",
     "schema/CMSIS-SVD-1.3.9.xsd": "48456961947060a71d75144a74f3a081c32ad2cba7a68dcb7a4603a77d10fb65",
     "pyproject.toml": "3bf21307596a0753b6897c450668a3bf1ffbdfa57ca18705239d98724a09365a",
     "uv.lock": "752f78ac0439495ded6fa0474621e652d4ff7c1f64f09aa74061a709cb6648f7"
   },
   "generator_inputs": {
-    "scripts/regen.sh": "e6a202e1bc3528684373bd402fe9efe4d3f811ff03c4b23c9b578bc8b8212faa",
-    "scripts/postprocess.py": "aa55eaac20124be1eb258c91574b2b4fde8eee3b00c41eb71e6d75acd1969620",
-    "scripts/provenance.py": "383a035b03fdee701dd2739c70e095c30290d084feec61adc2f990b9a80dab01",
+    "scripts/regen.sh": "68fcd253d08d33d88a89e3d6969767cde0773712e9095b05edade39d76b1b89e",
+    "scripts/postprocess.py": "bcadbeaac05fa4c53f6f980dcc3f4a6e38d9f098df0be20b0963c38edf2c5d8a",
+    "scripts/provenance.py": "f7aeaec261950de9fa9c80aa28a4ff94c0e3d4e83df32259e4d080885ccad916",
     "ws53-settings.yaml": "cfa552494fe47b57afc868f9412bc6c49f2b3733ba8811ed1bf06b342cb181a2",
     "rust-toolchain.toml": "4a55a5c6ce672e0024729f0739b0a82a0897538c9332528927201459bda83585"
   },
   "outputs": {
-    "src/lib.rs": "e0b83525ae27bcaa8c27f2445d9d782873a2f8c9939b9073034c6570d6c9dc8d",
-    "device.x": "06aeb8169730f8ec22e152ee4825daf40bfc35c48104b0bab319a83575b3e3ad",
-    "svd/WS53.svd": "d300b6149f8189c36d081f5119d56c868e4118fca989678d754576ab5b2a5f04"
+    "src/lib.rs": "89360f22721c45093e9009a725199fc23d77c93d5517ca0478cb1ddb00c38774",
+    "device.x": "25ae04edd7775c63aa292d405dc1a990467a4091bb857fb61494ec382c6003be",
+    "svd/WS53.svd": "aa1c1ab68ee8cd421c68a93000b1b5d530d9b0614789731a7f7db6723a10d70f"
   }
 }

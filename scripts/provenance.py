@@ -29,6 +29,7 @@ record = {
     "rust_toolchain": "nightly-2026-07-09",
     "rustfmt": subprocess.check_output(["rustup", "run", "nightly-2026-07-09", "rustfmt", "--version"], text=True).strip(),
     "target": "riscv",
+    "max_cluster_size": True,
     "inputs": {str(p.relative_to(source)): digest(p) for p in inputs},
     "generator_inputs": {p: digest(root / p) for p in recipe},
     "outputs": {p: digest(root / p) for p in ["src/lib.rs", "device.x", "svd/WS53.svd"]},

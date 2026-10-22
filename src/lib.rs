@@ -928,6 +928,8 @@ pub mod interrupt {
         TIMER_0 = 53,
         #[doc = "54 - TIMER_1"]
         TIMER_1 = 54,
+        #[doc = "58 - M_DMA"]
+        M_DMA = 58,
         #[doc = "62 - I2C_0"]
         I2C_0 = 62,
         #[doc = "63 - I2C_1"]
@@ -4538,6 +4540,1406 @@ pub mod i2s {
         }
         #[doc = "`reset()` method sets I2S_FS_DIV_RATIO_NUM to value 0"]
         impl crate::Resettable for I2sFsDivRatioNumSpec {}
+    }
+}
+#[doc = "mdma"]
+pub type Mdma = crate::Periph<mdma::RegisterBlock, 0x5207_0000>;
+impl core::fmt::Debug for Mdma {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("Mdma").finish()
+    }
+}
+#[doc = "mdma"]
+pub mod mdma {
+    #[repr(C)]
+    #[doc = "Register block"]
+    pub struct RegisterBlock {
+        _reserved0: [u8; 0x04],
+        interrupt_status: InterruptStatus,
+        interrupt_clear: InterruptClear,
+        raw_interrupt_status: RawInterruptStatus,
+        enabled_channels: EnabledChannels,
+        burst_request: BurstRequest,
+        single_request: SingleRequest,
+        configuration: Configuration,
+        sync: Sync,
+        _reserved8: [u8; 0xdc],
+        channel: [Channel; 8],
+    }
+    impl RegisterBlock {
+        #[doc = "0x04 - INTERRUPT_STATUS"]
+        #[inline(always)]
+        pub const fn interrupt_status(&self) -> &InterruptStatus {
+            &self.interrupt_status
+        }
+        #[doc = "0x08 - Command view: write one to acknowledge selected channels. ROM uses RMW, but readback is not specified; deliberately no read/modify API."]
+        #[inline(always)]
+        pub const fn interrupt_clear(&self) -> &InterruptClear {
+            &self.interrupt_clear
+        }
+        #[doc = "0x0c - RAW_INTERRUPT_STATUS"]
+        #[inline(always)]
+        pub const fn raw_interrupt_status(&self) -> &RawInterruptStatus {
+            &self.raw_interrupt_status
+        }
+        #[doc = "0x10 - ENABLED_CHANNELS"]
+        #[inline(always)]
+        pub const fn enabled_channels(&self) -> &EnabledChannels {
+            &self.enabled_channels
+        }
+        #[doc = "0x14 - BURST_REQUEST"]
+        #[inline(always)]
+        pub const fn burst_request(&self) -> &BurstRequest {
+            &self.burst_request
+        }
+        #[doc = "0x18 - SINGLE_REQUEST"]
+        #[inline(always)]
+        pub const fn single_request(&self) -> &SingleRequest {
+            &self.single_request
+        }
+        #[doc = "0x1c - CONFIGURATION"]
+        #[inline(always)]
+        pub const fn configuration(&self) -> &Configuration {
+            &self.configuration
+        }
+        #[doc = "0x20 - SYNC"]
+        #[inline(always)]
+        pub const fn sync(&self) -> &Sync {
+            &self.sync
+        }
+        #[doc = "0x100..0x200 - CHANNEL"]
+        #[inline(always)]
+        pub const fn channel(&self, n: usize) -> &Channel {
+            &self.channel[n]
+        }
+        #[doc = "Iterator for array of:"]
+        #[doc = "0x100..0x200 - CHANNEL"]
+        #[inline(always)]
+        pub fn channel_iter(&self) -> impl Iterator<Item = &Channel> {
+            self.channel.iter()
+        }
+    }
+    #[doc = "INTERRUPT_STATUS (r) register accessor: INTERRUPT_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`interrupt_status::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@interrupt_status`] module"]
+    #[doc(alias = "INTERRUPT_STATUS")]
+    pub type InterruptStatus = crate::Reg<interrupt_status::InterruptStatusSpec>;
+    #[doc = "INTERRUPT_STATUS"]
+    pub mod interrupt_status {
+        #[doc = "Register `INTERRUPT_STATUS` reader"]
+        pub type R = crate::R<InterruptStatusSpec>;
+        #[doc = "Field `PENDING` reader - pending"]
+        pub type PendingR = crate::FieldReader;
+        #[doc = "Field `TRANSFER_COMPLETE` reader - transfer_complete"]
+        pub type TransferCompleteR = crate::FieldReader;
+        #[doc = "Field `ERROR` reader - error"]
+        pub type ErrorR = crate::FieldReader;
+        impl R {
+            #[doc = "Bits 0:7 - pending"]
+            #[inline(always)]
+            pub fn pending(&self) -> PendingR {
+                PendingR::new((self.bits & 0xff) as u8)
+            }
+            #[doc = "Bits 8:15 - transfer_complete"]
+            #[inline(always)]
+            pub fn transfer_complete(&self) -> TransferCompleteR {
+                TransferCompleteR::new(((self.bits >> 8) & 0xff) as u8)
+            }
+            #[doc = "Bits 16:23 - error"]
+            #[inline(always)]
+            pub fn error(&self) -> ErrorR {
+                ErrorR::new(((self.bits >> 16) & 0xff) as u8)
+            }
+        }
+        #[doc = "INTERRUPT_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`interrupt_status::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct InterruptStatusSpec;
+        impl crate::RegisterSpec for InterruptStatusSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`interrupt_status::R`](R) reader structure"]
+        impl crate::Readable for InterruptStatusSpec {}
+    }
+    #[doc = "INTERRUPT_CLEAR (w) register accessor: Command view: write one to acknowledge selected channels. ROM uses RMW, but readback is not specified; deliberately no read/modify API.\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`interrupt_clear::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@interrupt_clear`] module"]
+    #[doc(alias = "INTERRUPT_CLEAR")]
+    pub type InterruptClear = crate::Reg<interrupt_clear::InterruptClearSpec>;
+    #[doc = "Command view: write one to acknowledge selected channels. ROM uses RMW, but readback is not specified; deliberately no read/modify API."]
+    pub mod interrupt_clear {
+        #[doc = "Register `INTERRUPT_CLEAR` writer"]
+        pub type W = crate::W<InterruptClearSpec>;
+        #[doc = "Field `TRANSFER_COMPLETE` writer - transfer_complete"]
+        pub type TransferCompleteW<'a, REG> = crate::FieldWriter<'a, REG, 8>;
+        #[doc = "Field `ERROR` writer - error"]
+        pub type ErrorW<'a, REG> = crate::FieldWriter<'a, REG, 8>;
+        impl W {
+            #[doc = "Bits 0:7 - transfer_complete"]
+            #[inline(always)]
+            pub fn transfer_complete(&mut self) -> TransferCompleteW<'_, InterruptClearSpec> {
+                TransferCompleteW::new(self, 0)
+            }
+            #[doc = "Bits 8:15 - error"]
+            #[inline(always)]
+            pub fn error(&mut self) -> ErrorW<'_, InterruptClearSpec> {
+                ErrorW::new(self, 8)
+            }
+        }
+        #[doc = "Command view: write one to acknowledge selected channels. ROM uses RMW, but readback is not specified; deliberately no read/modify API.\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`interrupt_clear::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct InterruptClearSpec;
+        impl crate::RegisterSpec for InterruptClearSpec {
+            type Ux = u32;
+        }
+        #[doc = "`write(|w| ..)` method takes [`interrupt_clear::W`](W) writer structure"]
+        impl crate::Writable for InterruptClearSpec {
+            type Safety = crate::Unsafe;
+            const ONE_TO_MODIFY_FIELDS_BITMAP: u32 = 0xffff;
+        }
+    }
+    #[doc = "RAW_INTERRUPT_STATUS (r) register accessor: RAW_INTERRUPT_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`raw_interrupt_status::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@raw_interrupt_status`] module"]
+    #[doc(alias = "RAW_INTERRUPT_STATUS")]
+    pub type RawInterruptStatus = crate::Reg<raw_interrupt_status::RawInterruptStatusSpec>;
+    #[doc = "RAW_INTERRUPT_STATUS"]
+    pub mod raw_interrupt_status {
+        #[doc = "Register `RAW_INTERRUPT_STATUS` reader"]
+        pub type R = crate::R<RawInterruptStatusSpec>;
+        #[doc = "Field `TRANSFER_COMPLETE` reader - transfer_complete"]
+        pub type TransferCompleteR = crate::FieldReader;
+        #[doc = "Field `ERROR` reader - error"]
+        pub type ErrorR = crate::FieldReader;
+        impl R {
+            #[doc = "Bits 0:7 - transfer_complete"]
+            #[inline(always)]
+            pub fn transfer_complete(&self) -> TransferCompleteR {
+                TransferCompleteR::new((self.bits & 0xff) as u8)
+            }
+            #[doc = "Bits 8:15 - error"]
+            #[inline(always)]
+            pub fn error(&self) -> ErrorR {
+                ErrorR::new(((self.bits >> 8) & 0xff) as u8)
+            }
+        }
+        #[doc = "RAW_INTERRUPT_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`raw_interrupt_status::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct RawInterruptStatusSpec;
+        impl crate::RegisterSpec for RawInterruptStatusSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`raw_interrupt_status::R`](R) reader structure"]
+        impl crate::Readable for RawInterruptStatusSpec {}
+    }
+    #[doc = "ENABLED_CHANNELS (r) register accessor: ENABLED_CHANNELS\n\nYou can [`read`](crate::Reg::read) this register and get [`enabled_channels::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@enabled_channels`] module"]
+    #[doc(alias = "ENABLED_CHANNELS")]
+    pub type EnabledChannels = crate::Reg<enabled_channels::EnabledChannelsSpec>;
+    #[doc = "ENABLED_CHANNELS"]
+    pub mod enabled_channels {
+        #[doc = "Register `ENABLED_CHANNELS` reader"]
+        pub type R = crate::R<EnabledChannelsSpec>;
+        #[doc = "Field `CHANNELS` reader - channels"]
+        pub type ChannelsR = crate::FieldReader;
+        impl R {
+            #[doc = "Bits 0:7 - channels"]
+            #[inline(always)]
+            pub fn channels(&self) -> ChannelsR {
+                ChannelsR::new((self.bits & 0xff) as u8)
+            }
+        }
+        #[doc = "ENABLED_CHANNELS\n\nYou can [`read`](crate::Reg::read) this register and get [`enabled_channels::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct EnabledChannelsSpec;
+        impl crate::RegisterSpec for EnabledChannelsSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`enabled_channels::R`](R) reader structure"]
+        impl crate::Readable for EnabledChannelsSpec {}
+    }
+    #[doc = "BURST_REQUEST (rw) register accessor: BURST_REQUEST\n\nYou can [`read`](crate::Reg::read) this register and get [`burst_request::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`burst_request::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@burst_request`] module"]
+    #[doc(alias = "BURST_REQUEST")]
+    pub type BurstRequest = crate::Reg<burst_request::BurstRequestSpec>;
+    #[doc = "BURST_REQUEST"]
+    pub mod burst_request {
+        #[doc = "Register `BURST_REQUEST` reader"]
+        pub type R = crate::R<BurstRequestSpec>;
+        #[doc = "Register `BURST_REQUEST` writer"]
+        pub type W = crate::W<BurstRequestSpec>;
+        #[doc = "Field `LAST_BURST` reader - last_burst"]
+        pub type LastBurstR = crate::FieldReader<u16>;
+        #[doc = "Field `LAST_BURST` writer - last_burst"]
+        pub type LastBurstW<'a, REG> = crate::FieldWriter<'a, REG, 16, u16>;
+        #[doc = "Field `BURST` reader - burst"]
+        pub type BurstR = crate::FieldReader<u16>;
+        #[doc = "Field `BURST` writer - burst"]
+        pub type BurstW<'a, REG> = crate::FieldWriter<'a, REG, 16, u16>;
+        impl R {
+            #[doc = "Bits 0:15 - last_burst"]
+            #[inline(always)]
+            pub fn last_burst(&self) -> LastBurstR {
+                LastBurstR::new((self.bits & 0xffff) as u16)
+            }
+            #[doc = "Bits 16:31 - burst"]
+            #[inline(always)]
+            pub fn burst(&self) -> BurstR {
+                BurstR::new(((self.bits >> 16) & 0xffff) as u16)
+            }
+        }
+        impl W {
+            #[doc = "Bits 0:15 - last_burst"]
+            #[inline(always)]
+            pub fn last_burst(&mut self) -> LastBurstW<'_, BurstRequestSpec> {
+                LastBurstW::new(self, 0)
+            }
+            #[doc = "Bits 16:31 - burst"]
+            #[inline(always)]
+            pub fn burst(&mut self) -> BurstW<'_, BurstRequestSpec> {
+                BurstW::new(self, 16)
+            }
+        }
+        #[doc = "BURST_REQUEST\n\nYou can [`read`](crate::Reg::read) this register and get [`burst_request::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`burst_request::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct BurstRequestSpec;
+        impl crate::RegisterSpec for BurstRequestSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`burst_request::R`](R) reader structure"]
+        impl crate::Readable for BurstRequestSpec {}
+        #[doc = "`write(|w| ..)` method takes [`burst_request::W`](W) writer structure"]
+        impl crate::Writable for BurstRequestSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "SINGLE_REQUEST (rw) register accessor: SINGLE_REQUEST\n\nYou can [`read`](crate::Reg::read) this register and get [`single_request::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`single_request::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@single_request`] module"]
+    #[doc(alias = "SINGLE_REQUEST")]
+    pub type SingleRequest = crate::Reg<single_request::SingleRequestSpec>;
+    #[doc = "SINGLE_REQUEST"]
+    pub mod single_request {
+        #[doc = "Register `SINGLE_REQUEST` reader"]
+        pub type R = crate::R<SingleRequestSpec>;
+        #[doc = "Register `SINGLE_REQUEST` writer"]
+        pub type W = crate::W<SingleRequestSpec>;
+        #[doc = "Field `LAST_SINGLE` reader - last_single"]
+        pub type LastSingleR = crate::FieldReader<u16>;
+        #[doc = "Field `LAST_SINGLE` writer - last_single"]
+        pub type LastSingleW<'a, REG> = crate::FieldWriter<'a, REG, 16, u16>;
+        #[doc = "Field `SINGLE` reader - single"]
+        pub type SingleR = crate::FieldReader<u16>;
+        #[doc = "Field `SINGLE` writer - single"]
+        pub type SingleW<'a, REG> = crate::FieldWriter<'a, REG, 16, u16>;
+        impl R {
+            #[doc = "Bits 0:15 - last_single"]
+            #[inline(always)]
+            pub fn last_single(&self) -> LastSingleR {
+                LastSingleR::new((self.bits & 0xffff) as u16)
+            }
+            #[doc = "Bits 16:31 - single"]
+            #[inline(always)]
+            pub fn single(&self) -> SingleR {
+                SingleR::new(((self.bits >> 16) & 0xffff) as u16)
+            }
+        }
+        impl W {
+            #[doc = "Bits 0:15 - last_single"]
+            #[inline(always)]
+            pub fn last_single(&mut self) -> LastSingleW<'_, SingleRequestSpec> {
+                LastSingleW::new(self, 0)
+            }
+            #[doc = "Bits 16:31 - single"]
+            #[inline(always)]
+            pub fn single(&mut self) -> SingleW<'_, SingleRequestSpec> {
+                SingleW::new(self, 16)
+            }
+        }
+        #[doc = "SINGLE_REQUEST\n\nYou can [`read`](crate::Reg::read) this register and get [`single_request::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`single_request::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct SingleRequestSpec;
+        impl crate::RegisterSpec for SingleRequestSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`single_request::R`](R) reader structure"]
+        impl crate::Readable for SingleRequestSpec {}
+        #[doc = "`write(|w| ..)` method takes [`single_request::W`](W) writer structure"]
+        impl crate::Writable for SingleRequestSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "CONFIGURATION (rw) register accessor: CONFIGURATION\n\nYou can [`read`](crate::Reg::read) this register and get [`configuration::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`configuration::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@configuration`] module"]
+    #[doc(alias = "CONFIGURATION")]
+    pub type Configuration = crate::Reg<configuration::ConfigurationSpec>;
+    #[doc = "CONFIGURATION"]
+    pub mod configuration {
+        #[doc = "Register `CONFIGURATION` reader"]
+        pub type R = crate::R<ConfigurationSpec>;
+        #[doc = "Register `CONFIGURATION` writer"]
+        pub type W = crate::W<ConfigurationSpec>;
+        #[doc = "Field `ENABLE` reader - enable"]
+        pub type EnableR = crate::BitReader;
+        #[doc = "Field `ENABLE` writer - enable"]
+        pub type EnableW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `MASTER1` reader - master1"]
+        pub type Master1R = crate::BitReader;
+        #[doc = "Field `MASTER1` writer - master1"]
+        pub type Master1W<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `MASTER2` reader - master2"]
+        pub type Master2R = crate::BitReader;
+        #[doc = "Field `MASTER2` writer - master2"]
+        pub type Master2W<'a, REG> = crate::BitWriter<'a, REG>;
+        impl R {
+            #[doc = "Bit 0 - enable"]
+            #[inline(always)]
+            pub fn enable(&self) -> EnableR {
+                EnableR::new((self.bits & 1) != 0)
+            }
+            #[doc = "Bit 1 - master1"]
+            #[inline(always)]
+            pub fn master1(&self) -> Master1R {
+                Master1R::new(((self.bits >> 1) & 1) != 0)
+            }
+            #[doc = "Bit 2 - master2"]
+            #[inline(always)]
+            pub fn master2(&self) -> Master2R {
+                Master2R::new(((self.bits >> 2) & 1) != 0)
+            }
+        }
+        impl W {
+            #[doc = "Bit 0 - enable"]
+            #[inline(always)]
+            pub fn enable(&mut self) -> EnableW<'_, ConfigurationSpec> {
+                EnableW::new(self, 0)
+            }
+            #[doc = "Bit 1 - master1"]
+            #[inline(always)]
+            pub fn master1(&mut self) -> Master1W<'_, ConfigurationSpec> {
+                Master1W::new(self, 1)
+            }
+            #[doc = "Bit 2 - master2"]
+            #[inline(always)]
+            pub fn master2(&mut self) -> Master2W<'_, ConfigurationSpec> {
+                Master2W::new(self, 2)
+            }
+        }
+        #[doc = "CONFIGURATION\n\nYou can [`read`](crate::Reg::read) this register and get [`configuration::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`configuration::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct ConfigurationSpec;
+        impl crate::RegisterSpec for ConfigurationSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`configuration::R`](R) reader structure"]
+        impl crate::Readable for ConfigurationSpec {}
+        #[doc = "`write(|w| ..)` method takes [`configuration::W`](W) writer structure"]
+        impl crate::Writable for ConfigurationSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "SYNC (rw) register accessor: SYNC\n\nYou can [`read`](crate::Reg::read) this register and get [`sync::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`sync::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@sync`] module"]
+    #[doc(alias = "SYNC")]
+    pub type Sync = crate::Reg<sync::SyncSpec>;
+    #[doc = "SYNC"]
+    pub mod sync {
+        #[doc = "Register `SYNC` reader"]
+        pub type R = crate::R<SyncSpec>;
+        #[doc = "Register `SYNC` writer"]
+        pub type W = crate::W<SyncSpec>;
+        #[doc = "Field `REQUESTS` reader - requests"]
+        pub type RequestsR = crate::FieldReader<u16>;
+        #[doc = "Field `REQUESTS` writer - requests"]
+        pub type RequestsW<'a, REG> = crate::FieldWriter<'a, REG, 16, u16>;
+        impl R {
+            #[doc = "Bits 0:15 - requests"]
+            #[inline(always)]
+            pub fn requests(&self) -> RequestsR {
+                RequestsR::new((self.bits & 0xffff) as u16)
+            }
+        }
+        impl W {
+            #[doc = "Bits 0:15 - requests"]
+            #[inline(always)]
+            pub fn requests(&mut self) -> RequestsW<'_, SyncSpec> {
+                RequestsW::new(self, 0)
+            }
+        }
+        #[doc = "SYNC\n\nYou can [`read`](crate::Reg::read) this register and get [`sync::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`sync::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct SyncSpec;
+        impl crate::RegisterSpec for SyncSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`sync::R`](R) reader structure"]
+        impl crate::Readable for SyncSpec {}
+        #[doc = "`write(|w| ..)` method takes [`sync::W`](W) writer structure"]
+        impl crate::Writable for SyncSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "CHANNEL"]
+    pub use self::channel::Channel;
+    #[doc = r"Cluster"]
+    #[doc = "CHANNEL"]
+    pub mod channel {
+        #[repr(C)]
+        #[doc = "CHANNEL"]
+        #[doc(alias = "CHANNEL")]
+        pub struct Channel {
+            linked_list: LinkedList,
+            destination: Destination,
+            configuration: Configuration,
+            _reserved3: [u8; 0x04],
+            source: Source,
+            control: Control,
+            _reserved_end: [u8; 0x08],
+        }
+        impl Channel {
+            #[doc = "0x00 - LINKED_LIST"]
+            #[inline(always)]
+            pub const fn linked_list(&self) -> &LinkedList {
+                &self.linked_list
+            }
+            #[doc = "0x04 - DESTINATION"]
+            #[inline(always)]
+            pub const fn destination(&self) -> &Destination {
+                &self.destination
+            }
+            #[doc = "0x08 - CONFIGURATION"]
+            #[inline(always)]
+            pub const fn configuration(&self) -> &Configuration {
+                &self.configuration
+            }
+            #[doc = "0x10 - SOURCE"]
+            #[inline(always)]
+            pub const fn source(&self) -> &Source {
+                &self.source
+            }
+            #[doc = "0x14 - CONTROL"]
+            #[inline(always)]
+            pub const fn control(&self) -> &Control {
+                &self.control
+            }
+        }
+        #[doc = "LINKED_LIST (rw) register accessor: LINKED_LIST\n\nYou can [`read`](crate::Reg::read) this register and get [`linked_list::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`linked_list::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@linked_list`] module"]
+        #[doc(alias = "LINKED_LIST")]
+        pub type LinkedList = crate::Reg<linked_list::LinkedListSpec>;
+        #[doc = "LINKED_LIST"]
+        pub mod linked_list {
+            #[doc = "Register `LINKED_LIST` reader"]
+            pub type R = crate::R<LinkedListSpec>;
+            #[doc = "Register `LINKED_LIST` writer"]
+            pub type W = crate::W<LinkedListSpec>;
+            #[doc = "Field `MASTER` reader - master"]
+            pub type MasterR = crate::BitReader;
+            #[doc = "Field `MASTER` writer - master"]
+            pub type MasterW<'a, REG> = crate::BitWriter<'a, REG>;
+            #[doc = "Field `ADDRESS` reader - address"]
+            pub type AddressR = crate::FieldReader<u32>;
+            #[doc = "Field `ADDRESS` writer - address"]
+            pub type AddressW<'a, REG> = crate::FieldWriter<'a, REG, 30, u32>;
+            impl R {
+                #[doc = "Bit 0 - master"]
+                #[inline(always)]
+                pub fn master(&self) -> MasterR {
+                    MasterR::new((self.bits & 1) != 0)
+                }
+                #[doc = "Bits 2:31 - address"]
+                #[inline(always)]
+                pub fn address(&self) -> AddressR {
+                    AddressR::new((self.bits >> 2) & 0x3fff_ffff)
+                }
+            }
+            impl W {
+                #[doc = "Bit 0 - master"]
+                #[inline(always)]
+                pub fn master(&mut self) -> MasterW<'_, LinkedListSpec> {
+                    MasterW::new(self, 0)
+                }
+                #[doc = "Bits 2:31 - address"]
+                #[inline(always)]
+                pub fn address(&mut self) -> AddressW<'_, LinkedListSpec> {
+                    AddressW::new(self, 2)
+                }
+            }
+            #[doc = "LINKED_LIST\n\nYou can [`read`](crate::Reg::read) this register and get [`linked_list::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`linked_list::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+            pub struct LinkedListSpec;
+            impl crate::RegisterSpec for LinkedListSpec {
+                type Ux = u32;
+            }
+            #[doc = "`read()` method returns [`linked_list::R`](R) reader structure"]
+            impl crate::Readable for LinkedListSpec {}
+            #[doc = "`write(|w| ..)` method takes [`linked_list::W`](W) writer structure"]
+            impl crate::Writable for LinkedListSpec {
+                type Safety = crate::Unsafe;
+            }
+        }
+        #[doc = "DESTINATION (rw) register accessor: DESTINATION\n\nYou can [`read`](crate::Reg::read) this register and get [`destination::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`destination::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@destination`] module"]
+        #[doc(alias = "DESTINATION")]
+        pub type Destination = crate::Reg<destination::DestinationSpec>;
+        #[doc = "DESTINATION"]
+        pub mod destination {
+            #[doc = "Register `DESTINATION` reader"]
+            pub type R = crate::R<DestinationSpec>;
+            #[doc = "Register `DESTINATION` writer"]
+            pub type W = crate::W<DestinationSpec>;
+            #[doc = "Field `ADDRESS` reader - address"]
+            pub type AddressR = crate::FieldReader<u32>;
+            #[doc = "Field `ADDRESS` writer - address"]
+            pub type AddressW<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
+            impl R {
+                #[doc = "Bits 0:31 - address"]
+                #[inline(always)]
+                pub fn address(&self) -> AddressR {
+                    AddressR::new(self.bits)
+                }
+            }
+            impl W {
+                #[doc = "Bits 0:31 - address"]
+                #[inline(always)]
+                pub fn address(&mut self) -> AddressW<'_, DestinationSpec> {
+                    AddressW::new(self, 0)
+                }
+            }
+            #[doc = "DESTINATION\n\nYou can [`read`](crate::Reg::read) this register and get [`destination::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`destination::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+            pub struct DestinationSpec;
+            impl crate::RegisterSpec for DestinationSpec {
+                type Ux = u32;
+            }
+            #[doc = "`read()` method returns [`destination::R`](R) reader structure"]
+            impl crate::Readable for DestinationSpec {}
+            #[doc = "`write(|w| ..)` method takes [`destination::W`](W) writer structure"]
+            impl crate::Writable for DestinationSpec {
+                type Safety = crate::Unsafe;
+            }
+        }
+        #[doc = "CONFIGURATION (rw) register accessor: CONFIGURATION\n\nYou can [`read`](crate::Reg::read) this register and get [`configuration::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`configuration::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@configuration`] module"]
+        #[doc(alias = "CONFIGURATION")]
+        pub type Configuration = crate::Reg<configuration::ConfigurationSpec>;
+        #[doc = "CONFIGURATION"]
+        pub mod configuration {
+            #[doc = "Register `CONFIGURATION` reader"]
+            pub type R = crate::R<ConfigurationSpec>;
+            #[doc = "Register `CONFIGURATION` writer"]
+            pub type W = crate::W<ConfigurationSpec>;
+            #[doc = "Field `ENABLE` reader - enable"]
+            pub type EnableR = crate::BitReader;
+            #[doc = "Field `ENABLE` writer - enable"]
+            pub type EnableW<'a, REG> = crate::BitWriter<'a, REG>;
+            #[doc = "source_request"]
+            #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+            #[repr(u8)]
+            pub enum SourceRequest {
+                #[doc = "0: `0`"]
+                I2c0Tx = 0,
+                #[doc = "1: `1`"]
+                I2c0Rx = 1,
+                #[doc = "2: `10`"]
+                I2c1Tx = 2,
+                #[doc = "3: `11`"]
+                I2c1Rx = 3,
+                #[doc = "4: `100`"]
+                Qspi1Tx = 4,
+                #[doc = "5: `101`"]
+                Qspi1Rx = 5,
+                #[doc = "6: `110`"]
+                Spi0Tx = 6,
+                #[doc = "7: `111`"]
+                Spi0Rx = 7,
+                #[doc = "8: `1000`"]
+                Uart1Tx = 8,
+                #[doc = "9: `1001`"]
+                Uart1Rx = 9,
+                #[doc = "10: `1010`"]
+                Uart0Tx = 10,
+                #[doc = "11: `1011`"]
+                Uart0Rx = 11,
+                #[doc = "12: `1100`"]
+                I2sTx = 12,
+                #[doc = "13: `1101`"]
+                I2sRx = 13,
+                #[doc = "14: `1110`"]
+                Pwm = 14,
+                #[doc = "15: `1111`"]
+                Spwm = 15,
+            }
+            impl From<SourceRequest> for u8 {
+                #[inline(always)]
+                fn from(variant: SourceRequest) -> Self {
+                    variant as _
+                }
+            }
+            impl crate::FieldSpec for SourceRequest {
+                type Ux = u8;
+            }
+            impl crate::IsEnum for SourceRequest {}
+            #[doc = "Field `SOURCE_REQUEST` reader - source_request"]
+            pub type SourceRequestR = crate::FieldReader<SourceRequest>;
+            impl SourceRequestR {
+                #[doc = "Get enumerated values variant"]
+                #[inline(always)]
+                pub const fn variant(&self) -> SourceRequest {
+                    match self.bits {
+                        0 => SourceRequest::I2c0Tx,
+                        1 => SourceRequest::I2c0Rx,
+                        2 => SourceRequest::I2c1Tx,
+                        3 => SourceRequest::I2c1Rx,
+                        4 => SourceRequest::Qspi1Tx,
+                        5 => SourceRequest::Qspi1Rx,
+                        6 => SourceRequest::Spi0Tx,
+                        7 => SourceRequest::Spi0Rx,
+                        8 => SourceRequest::Uart1Tx,
+                        9 => SourceRequest::Uart1Rx,
+                        10 => SourceRequest::Uart0Tx,
+                        11 => SourceRequest::Uart0Rx,
+                        12 => SourceRequest::I2sTx,
+                        13 => SourceRequest::I2sRx,
+                        14 => SourceRequest::Pwm,
+                        15 => SourceRequest::Spwm,
+                        _ => unreachable!(),
+                    }
+                }
+                #[doc = "`0`"]
+                #[inline(always)]
+                pub fn is_i2c0_tx(&self) -> bool {
+                    *self == SourceRequest::I2c0Tx
+                }
+                #[doc = "`1`"]
+                #[inline(always)]
+                pub fn is_i2c0_rx(&self) -> bool {
+                    *self == SourceRequest::I2c0Rx
+                }
+                #[doc = "`10`"]
+                #[inline(always)]
+                pub fn is_i2c1_tx(&self) -> bool {
+                    *self == SourceRequest::I2c1Tx
+                }
+                #[doc = "`11`"]
+                #[inline(always)]
+                pub fn is_i2c1_rx(&self) -> bool {
+                    *self == SourceRequest::I2c1Rx
+                }
+                #[doc = "`100`"]
+                #[inline(always)]
+                pub fn is_qspi1_tx(&self) -> bool {
+                    *self == SourceRequest::Qspi1Tx
+                }
+                #[doc = "`101`"]
+                #[inline(always)]
+                pub fn is_qspi1_rx(&self) -> bool {
+                    *self == SourceRequest::Qspi1Rx
+                }
+                #[doc = "`110`"]
+                #[inline(always)]
+                pub fn is_spi0_tx(&self) -> bool {
+                    *self == SourceRequest::Spi0Tx
+                }
+                #[doc = "`111`"]
+                #[inline(always)]
+                pub fn is_spi0_rx(&self) -> bool {
+                    *self == SourceRequest::Spi0Rx
+                }
+                #[doc = "`1000`"]
+                #[inline(always)]
+                pub fn is_uart1_tx(&self) -> bool {
+                    *self == SourceRequest::Uart1Tx
+                }
+                #[doc = "`1001`"]
+                #[inline(always)]
+                pub fn is_uart1_rx(&self) -> bool {
+                    *self == SourceRequest::Uart1Rx
+                }
+                #[doc = "`1010`"]
+                #[inline(always)]
+                pub fn is_uart0_tx(&self) -> bool {
+                    *self == SourceRequest::Uart0Tx
+                }
+                #[doc = "`1011`"]
+                #[inline(always)]
+                pub fn is_uart0_rx(&self) -> bool {
+                    *self == SourceRequest::Uart0Rx
+                }
+                #[doc = "`1100`"]
+                #[inline(always)]
+                pub fn is_i2s_tx(&self) -> bool {
+                    *self == SourceRequest::I2sTx
+                }
+                #[doc = "`1101`"]
+                #[inline(always)]
+                pub fn is_i2s_rx(&self) -> bool {
+                    *self == SourceRequest::I2sRx
+                }
+                #[doc = "`1110`"]
+                #[inline(always)]
+                pub fn is_pwm(&self) -> bool {
+                    *self == SourceRequest::Pwm
+                }
+                #[doc = "`1111`"]
+                #[inline(always)]
+                pub fn is_spwm(&self) -> bool {
+                    *self == SourceRequest::Spwm
+                }
+            }
+            #[doc = "Field `SOURCE_REQUEST` writer - source_request"]
+            pub type SourceRequestW<'a, REG> =
+                crate::FieldWriter<'a, REG, 4, SourceRequest, crate::Safe>;
+            impl<'a, REG> SourceRequestW<'a, REG>
+            where
+                REG: crate::Writable + crate::RegisterSpec,
+                REG::Ux: From<u8>,
+            {
+                #[doc = "`0`"]
+                #[inline(always)]
+                pub fn i2c0_tx(self) -> &'a mut crate::W<REG> {
+                    self.variant(SourceRequest::I2c0Tx)
+                }
+                #[doc = "`1`"]
+                #[inline(always)]
+                pub fn i2c0_rx(self) -> &'a mut crate::W<REG> {
+                    self.variant(SourceRequest::I2c0Rx)
+                }
+                #[doc = "`10`"]
+                #[inline(always)]
+                pub fn i2c1_tx(self) -> &'a mut crate::W<REG> {
+                    self.variant(SourceRequest::I2c1Tx)
+                }
+                #[doc = "`11`"]
+                #[inline(always)]
+                pub fn i2c1_rx(self) -> &'a mut crate::W<REG> {
+                    self.variant(SourceRequest::I2c1Rx)
+                }
+                #[doc = "`100`"]
+                #[inline(always)]
+                pub fn qspi1_tx(self) -> &'a mut crate::W<REG> {
+                    self.variant(SourceRequest::Qspi1Tx)
+                }
+                #[doc = "`101`"]
+                #[inline(always)]
+                pub fn qspi1_rx(self) -> &'a mut crate::W<REG> {
+                    self.variant(SourceRequest::Qspi1Rx)
+                }
+                #[doc = "`110`"]
+                #[inline(always)]
+                pub fn spi0_tx(self) -> &'a mut crate::W<REG> {
+                    self.variant(SourceRequest::Spi0Tx)
+                }
+                #[doc = "`111`"]
+                #[inline(always)]
+                pub fn spi0_rx(self) -> &'a mut crate::W<REG> {
+                    self.variant(SourceRequest::Spi0Rx)
+                }
+                #[doc = "`1000`"]
+                #[inline(always)]
+                pub fn uart1_tx(self) -> &'a mut crate::W<REG> {
+                    self.variant(SourceRequest::Uart1Tx)
+                }
+                #[doc = "`1001`"]
+                #[inline(always)]
+                pub fn uart1_rx(self) -> &'a mut crate::W<REG> {
+                    self.variant(SourceRequest::Uart1Rx)
+                }
+                #[doc = "`1010`"]
+                #[inline(always)]
+                pub fn uart0_tx(self) -> &'a mut crate::W<REG> {
+                    self.variant(SourceRequest::Uart0Tx)
+                }
+                #[doc = "`1011`"]
+                #[inline(always)]
+                pub fn uart0_rx(self) -> &'a mut crate::W<REG> {
+                    self.variant(SourceRequest::Uart0Rx)
+                }
+                #[doc = "`1100`"]
+                #[inline(always)]
+                pub fn i2s_tx(self) -> &'a mut crate::W<REG> {
+                    self.variant(SourceRequest::I2sTx)
+                }
+                #[doc = "`1101`"]
+                #[inline(always)]
+                pub fn i2s_rx(self) -> &'a mut crate::W<REG> {
+                    self.variant(SourceRequest::I2sRx)
+                }
+                #[doc = "`1110`"]
+                #[inline(always)]
+                pub fn pwm(self) -> &'a mut crate::W<REG> {
+                    self.variant(SourceRequest::Pwm)
+                }
+                #[doc = "`1111`"]
+                #[inline(always)]
+                pub fn spwm(self) -> &'a mut crate::W<REG> {
+                    self.variant(SourceRequest::Spwm)
+                }
+            }
+            #[doc = "destination_request"]
+            #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+            #[repr(u8)]
+            pub enum DestinationRequest {
+                #[doc = "0: `0`"]
+                I2c0Tx = 0,
+                #[doc = "1: `1`"]
+                I2c0Rx = 1,
+                #[doc = "2: `10`"]
+                I2c1Tx = 2,
+                #[doc = "3: `11`"]
+                I2c1Rx = 3,
+                #[doc = "4: `100`"]
+                Qspi1Tx = 4,
+                #[doc = "5: `101`"]
+                Qspi1Rx = 5,
+                #[doc = "6: `110`"]
+                Spi0Tx = 6,
+                #[doc = "7: `111`"]
+                Spi0Rx = 7,
+                #[doc = "8: `1000`"]
+                Uart1Tx = 8,
+                #[doc = "9: `1001`"]
+                Uart1Rx = 9,
+                #[doc = "10: `1010`"]
+                Uart0Tx = 10,
+                #[doc = "11: `1011`"]
+                Uart0Rx = 11,
+                #[doc = "12: `1100`"]
+                I2sTx = 12,
+                #[doc = "13: `1101`"]
+                I2sRx = 13,
+                #[doc = "14: `1110`"]
+                Pwm = 14,
+                #[doc = "15: `1111`"]
+                Spwm = 15,
+            }
+            impl From<DestinationRequest> for u8 {
+                #[inline(always)]
+                fn from(variant: DestinationRequest) -> Self {
+                    variant as _
+                }
+            }
+            impl crate::FieldSpec for DestinationRequest {
+                type Ux = u8;
+            }
+            impl crate::IsEnum for DestinationRequest {}
+            #[doc = "Field `DESTINATION_REQUEST` reader - destination_request"]
+            pub type DestinationRequestR = crate::FieldReader<DestinationRequest>;
+            impl DestinationRequestR {
+                #[doc = "Get enumerated values variant"]
+                #[inline(always)]
+                pub const fn variant(&self) -> DestinationRequest {
+                    match self.bits {
+                        0 => DestinationRequest::I2c0Tx,
+                        1 => DestinationRequest::I2c0Rx,
+                        2 => DestinationRequest::I2c1Tx,
+                        3 => DestinationRequest::I2c1Rx,
+                        4 => DestinationRequest::Qspi1Tx,
+                        5 => DestinationRequest::Qspi1Rx,
+                        6 => DestinationRequest::Spi0Tx,
+                        7 => DestinationRequest::Spi0Rx,
+                        8 => DestinationRequest::Uart1Tx,
+                        9 => DestinationRequest::Uart1Rx,
+                        10 => DestinationRequest::Uart0Tx,
+                        11 => DestinationRequest::Uart0Rx,
+                        12 => DestinationRequest::I2sTx,
+                        13 => DestinationRequest::I2sRx,
+                        14 => DestinationRequest::Pwm,
+                        15 => DestinationRequest::Spwm,
+                        _ => unreachable!(),
+                    }
+                }
+                #[doc = "`0`"]
+                #[inline(always)]
+                pub fn is_i2c0_tx(&self) -> bool {
+                    *self == DestinationRequest::I2c0Tx
+                }
+                #[doc = "`1`"]
+                #[inline(always)]
+                pub fn is_i2c0_rx(&self) -> bool {
+                    *self == DestinationRequest::I2c0Rx
+                }
+                #[doc = "`10`"]
+                #[inline(always)]
+                pub fn is_i2c1_tx(&self) -> bool {
+                    *self == DestinationRequest::I2c1Tx
+                }
+                #[doc = "`11`"]
+                #[inline(always)]
+                pub fn is_i2c1_rx(&self) -> bool {
+                    *self == DestinationRequest::I2c1Rx
+                }
+                #[doc = "`100`"]
+                #[inline(always)]
+                pub fn is_qspi1_tx(&self) -> bool {
+                    *self == DestinationRequest::Qspi1Tx
+                }
+                #[doc = "`101`"]
+                #[inline(always)]
+                pub fn is_qspi1_rx(&self) -> bool {
+                    *self == DestinationRequest::Qspi1Rx
+                }
+                #[doc = "`110`"]
+                #[inline(always)]
+                pub fn is_spi0_tx(&self) -> bool {
+                    *self == DestinationRequest::Spi0Tx
+                }
+                #[doc = "`111`"]
+                #[inline(always)]
+                pub fn is_spi0_rx(&self) -> bool {
+                    *self == DestinationRequest::Spi0Rx
+                }
+                #[doc = "`1000`"]
+                #[inline(always)]
+                pub fn is_uart1_tx(&self) -> bool {
+                    *self == DestinationRequest::Uart1Tx
+                }
+                #[doc = "`1001`"]
+                #[inline(always)]
+                pub fn is_uart1_rx(&self) -> bool {
+                    *self == DestinationRequest::Uart1Rx
+                }
+                #[doc = "`1010`"]
+                #[inline(always)]
+                pub fn is_uart0_tx(&self) -> bool {
+                    *self == DestinationRequest::Uart0Tx
+                }
+                #[doc = "`1011`"]
+                #[inline(always)]
+                pub fn is_uart0_rx(&self) -> bool {
+                    *self == DestinationRequest::Uart0Rx
+                }
+                #[doc = "`1100`"]
+                #[inline(always)]
+                pub fn is_i2s_tx(&self) -> bool {
+                    *self == DestinationRequest::I2sTx
+                }
+                #[doc = "`1101`"]
+                #[inline(always)]
+                pub fn is_i2s_rx(&self) -> bool {
+                    *self == DestinationRequest::I2sRx
+                }
+                #[doc = "`1110`"]
+                #[inline(always)]
+                pub fn is_pwm(&self) -> bool {
+                    *self == DestinationRequest::Pwm
+                }
+                #[doc = "`1111`"]
+                #[inline(always)]
+                pub fn is_spwm(&self) -> bool {
+                    *self == DestinationRequest::Spwm
+                }
+            }
+            #[doc = "Field `DESTINATION_REQUEST` writer - destination_request"]
+            pub type DestinationRequestW<'a, REG> =
+                crate::FieldWriter<'a, REG, 4, DestinationRequest, crate::Safe>;
+            impl<'a, REG> DestinationRequestW<'a, REG>
+            where
+                REG: crate::Writable + crate::RegisterSpec,
+                REG::Ux: From<u8>,
+            {
+                #[doc = "`0`"]
+                #[inline(always)]
+                pub fn i2c0_tx(self) -> &'a mut crate::W<REG> {
+                    self.variant(DestinationRequest::I2c0Tx)
+                }
+                #[doc = "`1`"]
+                #[inline(always)]
+                pub fn i2c0_rx(self) -> &'a mut crate::W<REG> {
+                    self.variant(DestinationRequest::I2c0Rx)
+                }
+                #[doc = "`10`"]
+                #[inline(always)]
+                pub fn i2c1_tx(self) -> &'a mut crate::W<REG> {
+                    self.variant(DestinationRequest::I2c1Tx)
+                }
+                #[doc = "`11`"]
+                #[inline(always)]
+                pub fn i2c1_rx(self) -> &'a mut crate::W<REG> {
+                    self.variant(DestinationRequest::I2c1Rx)
+                }
+                #[doc = "`100`"]
+                #[inline(always)]
+                pub fn qspi1_tx(self) -> &'a mut crate::W<REG> {
+                    self.variant(DestinationRequest::Qspi1Tx)
+                }
+                #[doc = "`101`"]
+                #[inline(always)]
+                pub fn qspi1_rx(self) -> &'a mut crate::W<REG> {
+                    self.variant(DestinationRequest::Qspi1Rx)
+                }
+                #[doc = "`110`"]
+                #[inline(always)]
+                pub fn spi0_tx(self) -> &'a mut crate::W<REG> {
+                    self.variant(DestinationRequest::Spi0Tx)
+                }
+                #[doc = "`111`"]
+                #[inline(always)]
+                pub fn spi0_rx(self) -> &'a mut crate::W<REG> {
+                    self.variant(DestinationRequest::Spi0Rx)
+                }
+                #[doc = "`1000`"]
+                #[inline(always)]
+                pub fn uart1_tx(self) -> &'a mut crate::W<REG> {
+                    self.variant(DestinationRequest::Uart1Tx)
+                }
+                #[doc = "`1001`"]
+                #[inline(always)]
+                pub fn uart1_rx(self) -> &'a mut crate::W<REG> {
+                    self.variant(DestinationRequest::Uart1Rx)
+                }
+                #[doc = "`1010`"]
+                #[inline(always)]
+                pub fn uart0_tx(self) -> &'a mut crate::W<REG> {
+                    self.variant(DestinationRequest::Uart0Tx)
+                }
+                #[doc = "`1011`"]
+                #[inline(always)]
+                pub fn uart0_rx(self) -> &'a mut crate::W<REG> {
+                    self.variant(DestinationRequest::Uart0Rx)
+                }
+                #[doc = "`1100`"]
+                #[inline(always)]
+                pub fn i2s_tx(self) -> &'a mut crate::W<REG> {
+                    self.variant(DestinationRequest::I2sTx)
+                }
+                #[doc = "`1101`"]
+                #[inline(always)]
+                pub fn i2s_rx(self) -> &'a mut crate::W<REG> {
+                    self.variant(DestinationRequest::I2sRx)
+                }
+                #[doc = "`1110`"]
+                #[inline(always)]
+                pub fn pwm(self) -> &'a mut crate::W<REG> {
+                    self.variant(DestinationRequest::Pwm)
+                }
+                #[doc = "`1111`"]
+                #[inline(always)]
+                pub fn spwm(self) -> &'a mut crate::W<REG> {
+                    self.variant(DestinationRequest::Spwm)
+                }
+            }
+            #[doc = "Field `FLOW_CONTROL` reader - flow_control"]
+            pub type FlowControlR = crate::FieldReader;
+            #[doc = "Field `FLOW_CONTROL` writer - flow_control"]
+            pub type FlowControlW<'a, REG> = crate::FieldWriter<'a, REG, 3>;
+            #[doc = "Field `ERROR_INTERRUPT_MASK` reader - error_interrupt_mask"]
+            pub type ErrorInterruptMaskR = crate::BitReader;
+            #[doc = "Field `ERROR_INTERRUPT_MASK` writer - error_interrupt_mask"]
+            pub type ErrorInterruptMaskW<'a, REG> = crate::BitWriter<'a, REG>;
+            #[doc = "Field `TRANSFER_INTERRUPT_MASK` reader - transfer_interrupt_mask"]
+            pub type TransferInterruptMaskR = crate::BitReader;
+            #[doc = "Field `TRANSFER_INTERRUPT_MASK` writer - transfer_interrupt_mask"]
+            pub type TransferInterruptMaskW<'a, REG> = crate::BitWriter<'a, REG>;
+            #[doc = "Field `LOCK` reader - lock"]
+            pub type LockR = crate::BitReader;
+            #[doc = "Field `LOCK` writer - lock"]
+            pub type LockW<'a, REG> = crate::BitWriter<'a, REG>;
+            #[doc = "Field `ACTIVE` reader - Status-only view of SDK active bit; writable behavior and quiescence timing are not established"]
+            pub type ActiveR = crate::BitReader;
+            #[doc = "Field `HALT` reader - halt"]
+            pub type HaltR = crate::BitReader;
+            #[doc = "Field `HALT` writer - halt"]
+            pub type HaltW<'a, REG> = crate::BitWriter<'a, REG>;
+            impl R {
+                #[doc = "Bit 0 - enable"]
+                #[inline(always)]
+                pub fn enable(&self) -> EnableR {
+                    EnableR::new((self.bits & 1) != 0)
+                }
+                #[doc = "Bits 1:4 - source_request"]
+                #[inline(always)]
+                pub fn source_request(&self) -> SourceRequestR {
+                    SourceRequestR::new(((self.bits >> 1) & 0x0f) as u8)
+                }
+                #[doc = "Bits 5:8 - destination_request"]
+                #[inline(always)]
+                pub fn destination_request(&self) -> DestinationRequestR {
+                    DestinationRequestR::new(((self.bits >> 5) & 0x0f) as u8)
+                }
+                #[doc = "Bits 9:11 - flow_control"]
+                #[inline(always)]
+                pub fn flow_control(&self) -> FlowControlR {
+                    FlowControlR::new(((self.bits >> 9) & 7) as u8)
+                }
+                #[doc = "Bit 12 - error_interrupt_mask"]
+                #[inline(always)]
+                pub fn error_interrupt_mask(&self) -> ErrorInterruptMaskR {
+                    ErrorInterruptMaskR::new(((self.bits >> 12) & 1) != 0)
+                }
+                #[doc = "Bit 13 - transfer_interrupt_mask"]
+                #[inline(always)]
+                pub fn transfer_interrupt_mask(&self) -> TransferInterruptMaskR {
+                    TransferInterruptMaskR::new(((self.bits >> 13) & 1) != 0)
+                }
+                #[doc = "Bit 14 - lock"]
+                #[inline(always)]
+                pub fn lock(&self) -> LockR {
+                    LockR::new(((self.bits >> 14) & 1) != 0)
+                }
+                #[doc = "Bit 15 - Status-only view of SDK active bit; writable behavior and quiescence timing are not established"]
+                #[inline(always)]
+                pub fn active(&self) -> ActiveR {
+                    ActiveR::new(((self.bits >> 15) & 1) != 0)
+                }
+                #[doc = "Bit 16 - halt"]
+                #[inline(always)]
+                pub fn halt(&self) -> HaltR {
+                    HaltR::new(((self.bits >> 16) & 1) != 0)
+                }
+            }
+            impl W {
+                #[doc = "Bit 0 - enable"]
+                #[inline(always)]
+                pub fn enable(&mut self) -> EnableW<'_, ConfigurationSpec> {
+                    EnableW::new(self, 0)
+                }
+                #[doc = "Bits 1:4 - source_request"]
+                #[inline(always)]
+                pub fn source_request(&mut self) -> SourceRequestW<'_, ConfigurationSpec> {
+                    SourceRequestW::new(self, 1)
+                }
+                #[doc = "Bits 5:8 - destination_request"]
+                #[inline(always)]
+                pub fn destination_request(
+                    &mut self,
+                ) -> DestinationRequestW<'_, ConfigurationSpec> {
+                    DestinationRequestW::new(self, 5)
+                }
+                #[doc = "Bits 9:11 - flow_control"]
+                #[inline(always)]
+                pub fn flow_control(&mut self) -> FlowControlW<'_, ConfigurationSpec> {
+                    FlowControlW::new(self, 9)
+                }
+                #[doc = "Bit 12 - error_interrupt_mask"]
+                #[inline(always)]
+                pub fn error_interrupt_mask(
+                    &mut self,
+                ) -> ErrorInterruptMaskW<'_, ConfigurationSpec> {
+                    ErrorInterruptMaskW::new(self, 12)
+                }
+                #[doc = "Bit 13 - transfer_interrupt_mask"]
+                #[inline(always)]
+                pub fn transfer_interrupt_mask(
+                    &mut self,
+                ) -> TransferInterruptMaskW<'_, ConfigurationSpec> {
+                    TransferInterruptMaskW::new(self, 13)
+                }
+                #[doc = "Bit 14 - lock"]
+                #[inline(always)]
+                pub fn lock(&mut self) -> LockW<'_, ConfigurationSpec> {
+                    LockW::new(self, 14)
+                }
+                #[doc = "Bit 16 - halt"]
+                #[inline(always)]
+                pub fn halt(&mut self) -> HaltW<'_, ConfigurationSpec> {
+                    HaltW::new(self, 16)
+                }
+            }
+            #[doc = "CONFIGURATION\n\nYou can [`read`](crate::Reg::read) this register and get [`configuration::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`configuration::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+            pub struct ConfigurationSpec;
+            impl crate::RegisterSpec for ConfigurationSpec {
+                type Ux = u32;
+            }
+            #[doc = "`read()` method returns [`configuration::R`](R) reader structure"]
+            impl crate::Readable for ConfigurationSpec {}
+            #[doc = "`write(|w| ..)` method takes [`configuration::W`](W) writer structure"]
+            impl crate::Writable for ConfigurationSpec {
+                type Safety = crate::Unsafe;
+            }
+        }
+        #[doc = "SOURCE (rw) register accessor: SOURCE\n\nYou can [`read`](crate::Reg::read) this register and get [`source::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`source::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@source`] module"]
+        #[doc(alias = "SOURCE")]
+        pub type Source = crate::Reg<source::SourceSpec>;
+        #[doc = "SOURCE"]
+        pub mod source {
+            #[doc = "Register `SOURCE` reader"]
+            pub type R = crate::R<SourceSpec>;
+            #[doc = "Register `SOURCE` writer"]
+            pub type W = crate::W<SourceSpec>;
+            #[doc = "Field `ADDRESS` reader - address"]
+            pub type AddressR = crate::FieldReader<u32>;
+            #[doc = "Field `ADDRESS` writer - address"]
+            pub type AddressW<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
+            impl R {
+                #[doc = "Bits 0:31 - address"]
+                #[inline(always)]
+                pub fn address(&self) -> AddressR {
+                    AddressR::new(self.bits)
+                }
+            }
+            impl W {
+                #[doc = "Bits 0:31 - address"]
+                #[inline(always)]
+                pub fn address(&mut self) -> AddressW<'_, SourceSpec> {
+                    AddressW::new(self, 0)
+                }
+            }
+            #[doc = "SOURCE\n\nYou can [`read`](crate::Reg::read) this register and get [`source::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`source::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+            pub struct SourceSpec;
+            impl crate::RegisterSpec for SourceSpec {
+                type Ux = u32;
+            }
+            #[doc = "`read()` method returns [`source::R`](R) reader structure"]
+            impl crate::Readable for SourceSpec {}
+            #[doc = "`write(|w| ..)` method takes [`source::W`](W) writer structure"]
+            impl crate::Writable for SourceSpec {
+                type Safety = crate::Unsafe;
+            }
+        }
+        #[doc = "CONTROL (rw) register accessor: CONTROL\n\nYou can [`read`](crate::Reg::read) this register and get [`control::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`control::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@control`] module"]
+        #[doc(alias = "CONTROL")]
+        pub type Control = crate::Reg<control::ControlSpec>;
+        #[doc = "CONTROL"]
+        pub mod control {
+            #[doc = "Register `CONTROL` reader"]
+            pub type R = crate::R<ControlSpec>;
+            #[doc = "Register `CONTROL` writer"]
+            pub type W = crate::W<ControlSpec>;
+            #[doc = "Field `TRANSFER_SIZE` reader - transfer_size"]
+            pub type TransferSizeR = crate::FieldReader<u16>;
+            #[doc = "Field `TRANSFER_SIZE` writer - transfer_size"]
+            pub type TransferSizeW<'a, REG> = crate::FieldWriter<'a, REG, 12, u16>;
+            #[doc = "Field `SOURCE_BURST` reader - source_burst"]
+            pub type SourceBurstR = crate::FieldReader;
+            #[doc = "Field `SOURCE_BURST` writer - source_burst"]
+            pub type SourceBurstW<'a, REG> = crate::FieldWriter<'a, REG, 3>;
+            #[doc = "Field `DESTINATION_BURST` reader - destination_burst"]
+            pub type DestinationBurstR = crate::FieldReader;
+            #[doc = "Field `DESTINATION_BURST` writer - destination_burst"]
+            pub type DestinationBurstW<'a, REG> = crate::FieldWriter<'a, REG, 3>;
+            #[doc = "Field `SOURCE_WIDTH` reader - source_width"]
+            pub type SourceWidthR = crate::FieldReader;
+            #[doc = "Field `SOURCE_WIDTH` writer - source_width"]
+            pub type SourceWidthW<'a, REG> = crate::FieldWriter<'a, REG, 3>;
+            #[doc = "Field `DESTINATION_WIDTH` reader - destination_width"]
+            pub type DestinationWidthR = crate::FieldReader;
+            #[doc = "Field `DESTINATION_WIDTH` writer - destination_width"]
+            pub type DestinationWidthW<'a, REG> = crate::FieldWriter<'a, REG, 3>;
+            #[doc = "Field `SOURCE_MASTER` reader - source_master"]
+            pub type SourceMasterR = crate::BitReader;
+            #[doc = "Field `SOURCE_MASTER` writer - source_master"]
+            pub type SourceMasterW<'a, REG> = crate::BitWriter<'a, REG>;
+            #[doc = "Field `DESTINATION_MASTER` reader - destination_master"]
+            pub type DestinationMasterR = crate::BitReader;
+            #[doc = "Field `DESTINATION_MASTER` writer - destination_master"]
+            pub type DestinationMasterW<'a, REG> = crate::BitWriter<'a, REG>;
+            #[doc = "Field `SOURCE_INCREMENT` reader - source_increment"]
+            pub type SourceIncrementR = crate::BitReader;
+            #[doc = "Field `SOURCE_INCREMENT` writer - source_increment"]
+            pub type SourceIncrementW<'a, REG> = crate::BitWriter<'a, REG>;
+            #[doc = "Field `DESTINATION_INCREMENT` reader - destination_increment"]
+            pub type DestinationIncrementR = crate::BitReader;
+            #[doc = "Field `DESTINATION_INCREMENT` writer - destination_increment"]
+            pub type DestinationIncrementW<'a, REG> = crate::BitWriter<'a, REG>;
+            #[doc = "Field `PROTECTION` reader - protection"]
+            pub type ProtectionR = crate::FieldReader;
+            #[doc = "Field `PROTECTION` writer - protection"]
+            pub type ProtectionW<'a, REG> = crate::FieldWriter<'a, REG, 3>;
+            #[doc = "Field `TERMINAL_INTERRUPT` reader - terminal_interrupt"]
+            pub type TerminalInterruptR = crate::BitReader;
+            #[doc = "Field `TERMINAL_INTERRUPT` writer - terminal_interrupt"]
+            pub type TerminalInterruptW<'a, REG> = crate::BitWriter<'a, REG>;
+            impl R {
+                #[doc = "Bits 0:11 - transfer_size"]
+                #[inline(always)]
+                pub fn transfer_size(&self) -> TransferSizeR {
+                    TransferSizeR::new((self.bits & 0x0fff) as u16)
+                }
+                #[doc = "Bits 12:14 - source_burst"]
+                #[inline(always)]
+                pub fn source_burst(&self) -> SourceBurstR {
+                    SourceBurstR::new(((self.bits >> 12) & 7) as u8)
+                }
+                #[doc = "Bits 15:17 - destination_burst"]
+                #[inline(always)]
+                pub fn destination_burst(&self) -> DestinationBurstR {
+                    DestinationBurstR::new(((self.bits >> 15) & 7) as u8)
+                }
+                #[doc = "Bits 18:20 - source_width"]
+                #[inline(always)]
+                pub fn source_width(&self) -> SourceWidthR {
+                    SourceWidthR::new(((self.bits >> 18) & 7) as u8)
+                }
+                #[doc = "Bits 21:23 - destination_width"]
+                #[inline(always)]
+                pub fn destination_width(&self) -> DestinationWidthR {
+                    DestinationWidthR::new(((self.bits >> 21) & 7) as u8)
+                }
+                #[doc = "Bit 24 - source_master"]
+                #[inline(always)]
+                pub fn source_master(&self) -> SourceMasterR {
+                    SourceMasterR::new(((self.bits >> 24) & 1) != 0)
+                }
+                #[doc = "Bit 25 - destination_master"]
+                #[inline(always)]
+                pub fn destination_master(&self) -> DestinationMasterR {
+                    DestinationMasterR::new(((self.bits >> 25) & 1) != 0)
+                }
+                #[doc = "Bit 26 - source_increment"]
+                #[inline(always)]
+                pub fn source_increment(&self) -> SourceIncrementR {
+                    SourceIncrementR::new(((self.bits >> 26) & 1) != 0)
+                }
+                #[doc = "Bit 27 - destination_increment"]
+                #[inline(always)]
+                pub fn destination_increment(&self) -> DestinationIncrementR {
+                    DestinationIncrementR::new(((self.bits >> 27) & 1) != 0)
+                }
+                #[doc = "Bits 28:30 - protection"]
+                #[inline(always)]
+                pub fn protection(&self) -> ProtectionR {
+                    ProtectionR::new(((self.bits >> 28) & 7) as u8)
+                }
+                #[doc = "Bit 31 - terminal_interrupt"]
+                #[inline(always)]
+                pub fn terminal_interrupt(&self) -> TerminalInterruptR {
+                    TerminalInterruptR::new(((self.bits >> 31) & 1) != 0)
+                }
+            }
+            impl W {
+                #[doc = "Bits 0:11 - transfer_size"]
+                #[inline(always)]
+                pub fn transfer_size(&mut self) -> TransferSizeW<'_, ControlSpec> {
+                    TransferSizeW::new(self, 0)
+                }
+                #[doc = "Bits 12:14 - source_burst"]
+                #[inline(always)]
+                pub fn source_burst(&mut self) -> SourceBurstW<'_, ControlSpec> {
+                    SourceBurstW::new(self, 12)
+                }
+                #[doc = "Bits 15:17 - destination_burst"]
+                #[inline(always)]
+                pub fn destination_burst(&mut self) -> DestinationBurstW<'_, ControlSpec> {
+                    DestinationBurstW::new(self, 15)
+                }
+                #[doc = "Bits 18:20 - source_width"]
+                #[inline(always)]
+                pub fn source_width(&mut self) -> SourceWidthW<'_, ControlSpec> {
+                    SourceWidthW::new(self, 18)
+                }
+                #[doc = "Bits 21:23 - destination_width"]
+                #[inline(always)]
+                pub fn destination_width(&mut self) -> DestinationWidthW<'_, ControlSpec> {
+                    DestinationWidthW::new(self, 21)
+                }
+                #[doc = "Bit 24 - source_master"]
+                #[inline(always)]
+                pub fn source_master(&mut self) -> SourceMasterW<'_, ControlSpec> {
+                    SourceMasterW::new(self, 24)
+                }
+                #[doc = "Bit 25 - destination_master"]
+                #[inline(always)]
+                pub fn destination_master(&mut self) -> DestinationMasterW<'_, ControlSpec> {
+                    DestinationMasterW::new(self, 25)
+                }
+                #[doc = "Bit 26 - source_increment"]
+                #[inline(always)]
+                pub fn source_increment(&mut self) -> SourceIncrementW<'_, ControlSpec> {
+                    SourceIncrementW::new(self, 26)
+                }
+                #[doc = "Bit 27 - destination_increment"]
+                #[inline(always)]
+                pub fn destination_increment(&mut self) -> DestinationIncrementW<'_, ControlSpec> {
+                    DestinationIncrementW::new(self, 27)
+                }
+                #[doc = "Bits 28:30 - protection"]
+                #[inline(always)]
+                pub fn protection(&mut self) -> ProtectionW<'_, ControlSpec> {
+                    ProtectionW::new(self, 28)
+                }
+                #[doc = "Bit 31 - terminal_interrupt"]
+                #[inline(always)]
+                pub fn terminal_interrupt(&mut self) -> TerminalInterruptW<'_, ControlSpec> {
+                    TerminalInterruptW::new(self, 31)
+                }
+            }
+            #[doc = "CONTROL\n\nYou can [`read`](crate::Reg::read) this register and get [`control::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`control::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+            pub struct ControlSpec;
+            impl crate::RegisterSpec for ControlSpec {
+                type Ux = u32;
+            }
+            #[doc = "`read()` method returns [`control::R`](R) reader structure"]
+            impl crate::Readable for ControlSpec {}
+            #[doc = "`write(|w| ..)` method takes [`control::W`](W) writer structure"]
+            impl crate::Writable for ControlSpec {
+                type Safety = crate::Unsafe;
+            }
+        }
     }
 }
 #[doc = "uart1"]
@@ -30923,6 +32325,8 @@ pub struct Peripherals {
     pub pinmux_mcu: PinmuxMcu,
     #[doc = "I2S"]
     pub i2s: I2s,
+    #[doc = "MDMA"]
+    pub mdma: Mdma,
     #[doc = "UART1"]
     pub uart1: Uart1,
     #[doc = "UART0"]
@@ -30988,6 +32392,7 @@ impl Peripherals {
                 timer: Timer::steal(),
                 pinmux_mcu: PinmuxMcu::steal(),
                 i2s: I2s::steal(),
+                mdma: Mdma::steal(),
                 uart1: Uart1::steal(),
                 uart0: Uart0::steal(),
                 pwm: Pwm::steal(),
