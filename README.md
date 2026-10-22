@@ -69,3 +69,10 @@ errors; polling FIFO_STATUS.rx_not_empty avoids that side effect. The WS63
 receive-count read alias at +0x40 is not established on WS53: that address only
 exposes the SDK's WO test-injection view. Unknown resets and PRO extensions are
 not imported. Full UART configuration, DMA and hardware validation remain open.
+
+UART port reset controls are halfword RMW fields: H0/H1 at M_CRG +0x168 and
+L0 at GLB_CTL +0xb0. Their reset values and pulse timing are unknown; the SDK
+skips its debug UART. GLB_CTL +0x48 is a restricted WO command view of the SDK's
+full-word acore-only IRQ route value 1, with no speculative read API. These are
+shared controls, not application-exclusive resources. Conflicting H1/L0 clock
+gate enums are omitted, so the PAC does not claim a complete UART clock tree.

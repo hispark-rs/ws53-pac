@@ -142,6 +142,29 @@
           </fields>
         </register>
         <register>
+          <name>UART_SOFT_RESET</name>
+          <description>UART_SOFT_RESET</description>
+          <addressOffset>0x168</addressOffset>
+          <size>16</size>
+          <access>read-write</access>
+          <fields>
+            <field>
+              <name>UART_H0_RESET_N</name>
+              <description>UART H0/application UART1 reset, active low; shared register, preserve other bits</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>UART_H1_RESET_N</name>
+              <description>UART H1/application UART0 reset, active low; shared register, preserve other bits</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
           <name>MSUB_NORMAL</name>
           <description>MSUB_NORMAL</description>
           <addressOffset>0x3E0</addressOffset>
@@ -11836,6 +11859,56 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
               <name>LEA_IV_VLD</name>
               <description>AES IV value valid (auto-clears after sync)</description>
               <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+      </registers>
+    </peripheral>
+    <peripheral>
+      <name>GLB_CTL</name>
+      <description>glb_ctl</description>
+      <baseAddress>0x57000000</baseAddress>
+      <addressBlock>
+        <offset>0x0</offset>
+        <size>0xB2</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <register>
+          <name>UART_L0_IRQ_ROUTE_COMMAND</name>
+          <description>UART L0 interrupt routing command view: SDK writes the complete word 1 to route only to acore; other values and physical read behavior unverified</description>
+          <addressOffset>0x48</addressOffset>
+          <size>32</size>
+          <access>write-only</access>
+          <fields>
+            <field>
+              <name>ACORE_ONLY</name>
+              <description>acore_only</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+              <access>write-only</access>
+              <writeConstraint>
+                <range>
+                  <minimum>1</minimum>
+                  <maximum>1</maximum>
+                </range>
+              </writeConstraint>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>UART_SOFT_RESET</name>
+          <description>UART_SOFT_RESET</description>
+          <addressOffset>0xB0</addressOffset>
+          <size>16</size>
+          <access>read-write</access>
+          <fields>
+            <field>
+              <name>UART_L0_RESET_N</name>
+              <description>UART L0/application UART2 reset, active low; preserve all other bits</description>
+              <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-write</access>
             </field>

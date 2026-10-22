@@ -966,17 +966,19 @@ pub mod m_crg {
         m_clken1: MClken1,
         _reserved2: [u8; 0x0e],
         soft_reset1: SoftReset1,
-        _reserved3: [u8; 0x0388],
+        _reserved3: [u8; 0x0110],
+        uart_soft_reset: UartSoftReset,
+        _reserved4: [u8; 0x0276],
         msub_normal: MsubNormal,
-        _reserved4: [u8; 0x02],
+        _reserved5: [u8; 0x02],
         msub_sleep: MsubSleep,
-        _reserved5: [u8; 0x0162],
+        _reserved6: [u8; 0x0162],
         global_clken: GlobalClken,
-        _reserved6: [u8; 0x12],
+        _reserved7: [u8; 0x12],
         spi_clock: SpiClock,
-        _reserved7: [u8; 0x03f2],
+        _reserved8: [u8; 0x03f2],
         spi_device_mode: SpiDeviceMode,
-        _reserved8: [u8; 0x0cae],
+        _reserved9: [u8; 0x0cae],
         trng_ring_control: TrngRingControl,
     }
     impl RegisterBlock {
@@ -994,6 +996,11 @@ pub mod m_crg {
         #[inline(always)]
         pub const fn soft_reset1(&self) -> &SoftReset1 {
             &self.soft_reset1
+        }
+        #[doc = "0x168 - UART_SOFT_RESET"]
+        #[inline(always)]
+        pub const fn uart_soft_reset(&self) -> &UartSoftReset {
+            &self.uart_soft_reset
         }
         #[doc = "0x3e0 - MSUB_NORMAL"]
         #[inline(always)]
@@ -1294,6 +1301,59 @@ pub mod m_crg {
         impl crate::Readable for SoftReset1Spec {}
         #[doc = "`write(|w| ..)` method takes [`soft_reset1::W`](W) writer structure"]
         impl crate::Writable for SoftReset1Spec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "UART_SOFT_RESET (rw) register accessor: UART_SOFT_RESET\n\nYou can [`read`](crate::Reg::read) this register and get [`uart_soft_reset::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`uart_soft_reset::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@uart_soft_reset`] module"]
+    #[doc(alias = "UART_SOFT_RESET")]
+    pub type UartSoftReset = crate::Reg<uart_soft_reset::UartSoftResetSpec>;
+    #[doc = "UART_SOFT_RESET"]
+    pub mod uart_soft_reset {
+        #[doc = "Register `UART_SOFT_RESET` reader"]
+        pub type R = crate::R<UartSoftResetSpec>;
+        #[doc = "Register `UART_SOFT_RESET` writer"]
+        pub type W = crate::W<UartSoftResetSpec>;
+        #[doc = "Field `UART_H0_RESET_N` reader - UART H0/application UART1 reset, active low; shared register, preserve other bits"]
+        pub type UartH0ResetNR = crate::BitReader;
+        #[doc = "Field `UART_H0_RESET_N` writer - UART H0/application UART1 reset, active low; shared register, preserve other bits"]
+        pub type UartH0ResetNW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `UART_H1_RESET_N` reader - UART H1/application UART0 reset, active low; shared register, preserve other bits"]
+        pub type UartH1ResetNR = crate::BitReader;
+        #[doc = "Field `UART_H1_RESET_N` writer - UART H1/application UART0 reset, active low; shared register, preserve other bits"]
+        pub type UartH1ResetNW<'a, REG> = crate::BitWriter<'a, REG>;
+        impl R {
+            #[doc = "Bit 0 - UART H0/application UART1 reset, active low; shared register, preserve other bits"]
+            #[inline(always)]
+            pub fn uart_h0_reset_n(&self) -> UartH0ResetNR {
+                UartH0ResetNR::new((self.bits & 1) != 0)
+            }
+            #[doc = "Bit 1 - UART H1/application UART0 reset, active low; shared register, preserve other bits"]
+            #[inline(always)]
+            pub fn uart_h1_reset_n(&self) -> UartH1ResetNR {
+                UartH1ResetNR::new(((self.bits >> 1) & 1) != 0)
+            }
+        }
+        impl W {
+            #[doc = "Bit 0 - UART H0/application UART1 reset, active low; shared register, preserve other bits"]
+            #[inline(always)]
+            pub fn uart_h0_reset_n(&mut self) -> UartH0ResetNW<'_, UartSoftResetSpec> {
+                UartH0ResetNW::new(self, 0)
+            }
+            #[doc = "Bit 1 - UART H1/application UART0 reset, active low; shared register, preserve other bits"]
+            #[inline(always)]
+            pub fn uart_h1_reset_n(&mut self) -> UartH1ResetNW<'_, UartSoftResetSpec> {
+                UartH1ResetNW::new(self, 1)
+            }
+        }
+        #[doc = "UART_SOFT_RESET\n\nYou can [`read`](crate::Reg::read) this register and get [`uart_soft_reset::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`uart_soft_reset::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct UartSoftResetSpec;
+        impl crate::RegisterSpec for UartSoftResetSpec {
+            type Ux = u16;
+        }
+        #[doc = "`read()` method returns [`uart_soft_reset::R`](R) reader structure"]
+        impl crate::Readable for UartSoftResetSpec {}
+        #[doc = "`write(|w| ..)` method takes [`uart_soft_reset::W`](W) writer structure"]
+        impl crate::Writable for UartSoftResetSpec {
             type Safety = crate::Unsafe;
         }
     }
@@ -28014,6 +28074,102 @@ pub mod sfc_cfg {
         impl crate::Resettable for LeaIvVldSpec {}
     }
 }
+#[doc = "glb_ctl"]
+pub type GlbCtl = crate::Periph<glb_ctl::RegisterBlock, 0x5700_0000>;
+impl core::fmt::Debug for GlbCtl {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("GlbCtl").finish()
+    }
+}
+#[doc = "glb_ctl"]
+pub mod glb_ctl {
+    #[repr(C)]
+    #[doc = "Register block"]
+    pub struct RegisterBlock {
+        _reserved0: [u8; 0x48],
+        uart_l0_irq_route_command: UartL0IrqRouteCommand,
+        _reserved1: [u8; 0x64],
+        uart_soft_reset: UartSoftReset,
+    }
+    impl RegisterBlock {
+        #[doc = "0x48 - UART L0 interrupt routing command view: SDK writes the complete word 1 to route only to acore; other values and physical read behavior unverified"]
+        #[inline(always)]
+        pub const fn uart_l0_irq_route_command(&self) -> &UartL0IrqRouteCommand {
+            &self.uart_l0_irq_route_command
+        }
+        #[doc = "0xb0 - UART_SOFT_RESET"]
+        #[inline(always)]
+        pub const fn uart_soft_reset(&self) -> &UartSoftReset {
+            &self.uart_soft_reset
+        }
+    }
+    #[doc = "UART_L0_IRQ_ROUTE_COMMAND (w) register accessor: UART L0 interrupt routing command view: SDK writes the complete word 1 to route only to acore; other values and physical read behavior unverified\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`uart_l0_irq_route_command::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@uart_l0_irq_route_command`] module"]
+    #[doc(alias = "UART_L0_IRQ_ROUTE_COMMAND")]
+    pub type UartL0IrqRouteCommand =
+        crate::Reg<uart_l0_irq_route_command::UartL0IrqRouteCommandSpec>;
+    #[doc = "UART L0 interrupt routing command view: SDK writes the complete word 1 to route only to acore; other values and physical read behavior unverified"]
+    pub mod uart_l0_irq_route_command {
+        #[doc = "Register `UART_L0_IRQ_ROUTE_COMMAND` writer"]
+        pub type W = crate::W<UartL0IrqRouteCommandSpec>;
+        #[doc = "Field `ACORE_ONLY` writer - acore_only"]
+        pub type AcoreOnlyW<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
+        impl W {
+            #[doc = "Bits 0:31 - acore_only"]
+            #[inline(always)]
+            pub fn acore_only(&mut self) -> AcoreOnlyW<'_, UartL0IrqRouteCommandSpec> {
+                AcoreOnlyW::new(self, 0)
+            }
+        }
+        #[doc = "UART L0 interrupt routing command view: SDK writes the complete word 1 to route only to acore; other values and physical read behavior unverified\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`uart_l0_irq_route_command::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct UartL0IrqRouteCommandSpec;
+        impl crate::RegisterSpec for UartL0IrqRouteCommandSpec {
+            type Ux = u32;
+        }
+        #[doc = "`write(|w| ..)` method takes [`uart_l0_irq_route_command::W`](W) writer structure"]
+        impl crate::Writable for UartL0IrqRouteCommandSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "UART_SOFT_RESET (rw) register accessor: UART_SOFT_RESET\n\nYou can [`read`](crate::Reg::read) this register and get [`uart_soft_reset::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`uart_soft_reset::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@uart_soft_reset`] module"]
+    #[doc(alias = "UART_SOFT_RESET")]
+    pub type UartSoftReset = crate::Reg<uart_soft_reset::UartSoftResetSpec>;
+    #[doc = "UART_SOFT_RESET"]
+    pub mod uart_soft_reset {
+        #[doc = "Register `UART_SOFT_RESET` reader"]
+        pub type R = crate::R<UartSoftResetSpec>;
+        #[doc = "Register `UART_SOFT_RESET` writer"]
+        pub type W = crate::W<UartSoftResetSpec>;
+        #[doc = "Field `UART_L0_RESET_N` reader - UART L0/application UART2 reset, active low; preserve all other bits"]
+        pub type UartL0ResetNR = crate::BitReader;
+        #[doc = "Field `UART_L0_RESET_N` writer - UART L0/application UART2 reset, active low; preserve all other bits"]
+        pub type UartL0ResetNW<'a, REG> = crate::BitWriter<'a, REG>;
+        impl R {
+            #[doc = "Bit 7 - UART L0/application UART2 reset, active low; preserve all other bits"]
+            #[inline(always)]
+            pub fn uart_l0_reset_n(&self) -> UartL0ResetNR {
+                UartL0ResetNR::new(((self.bits >> 7) & 1) != 0)
+            }
+        }
+        impl W {
+            #[doc = "Bit 7 - UART L0/application UART2 reset, active low; preserve all other bits"]
+            #[inline(always)]
+            pub fn uart_l0_reset_n(&mut self) -> UartL0ResetNW<'_, UartSoftResetSpec> {
+                UartL0ResetNW::new(self, 7)
+            }
+        }
+        #[doc = "UART_SOFT_RESET\n\nYou can [`read`](crate::Reg::read) this register and get [`uart_soft_reset::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`uart_soft_reset::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct UartSoftResetSpec;
+        impl crate::RegisterSpec for UartSoftResetSpec {
+            type Ux = u16;
+        }
+        #[doc = "`read()` method returns [`uart_soft_reset::R`](R) reader structure"]
+        impl crate::Readable for UartSoftResetSpec {}
+        #[doc = "`write(|w| ..)` method takes [`uart_soft_reset::W`](W) writer structure"]
+        impl crate::Writable for UartSoftResetSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+}
 #[doc = "tcxo"]
 pub type Tcxo = crate::Periph<tcxo::RegisterBlock, 0x5700_0200>;
 impl core::fmt::Debug for Tcxo {
@@ -36004,6 +36160,8 @@ pub struct Peripherals {
     pub qspi1: Qspi1,
     #[doc = "SFC_CFG"]
     pub sfc_cfg: SfcCfg,
+    #[doc = "GLB_CTL"]
+    pub glb_ctl: GlbCtl,
     #[doc = "TCXO"]
     pub tcxo: Tcxo,
     #[doc = "GPIO0"]
@@ -36070,6 +36228,7 @@ impl Peripherals {
                 adc: Adc::steal(),
                 qspi1: Qspi1::steal(),
                 sfc_cfg: SfcCfg::steal(),
+                glb_ctl: GlbCtl::steal(),
                 tcxo: Tcxo::steal(),
                 gpio0: Gpio0::steal(),
                 gpio2: Gpio2::steal(),

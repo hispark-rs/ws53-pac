@@ -40,6 +40,30 @@ fn peripheral_singleton_is_not_reissued() {
     assert!(ws53_pac::Peripherals::take().is_none());
 }
 
+#[test]
+fn uart_reset_controls_preserve_other_halfword_bits() {
+    let m: m_crg::RegisterBlock = unsafe { core::mem::zeroed() };
+    let g: ws53_pac::glb_ctl::RegisterBlock = unsafe { core::mem::zeroed() };
+    assert_eq!(ws53_pac::GlbCtl::PTR as usize, 0x57000000);
+    assert_eq!(offset(&m, m.uart_soft_reset()), 0x168);
+    assert_eq!(offset(&g, g.uart_soft_reset()), 0xb0);
+    assert_eq!(size_of_val(m.uart_soft_reset()), 2);
+    assert_eq!(size_of_val(g.uart_soft_reset()), 2);
+    assert_eq!(offset(&g, g.uart_l0_irq_route_command()), 0x48);
+    assert_eq!(size_of_val(g.uart_l0_irq_route_command()), 4);
+    // Local RAM only: these are field/mask tests, not hardware reset experiments.
+    unsafe {
+        m.uart_soft_reset().write_with_zero(|w| w.bits(0xa5a5));
+        g.uart_soft_reset().write_with_zero(|w| w.bits(0x5a5a));
+    }
+    m.uart_soft_reset()
+        .modify(|_, w| w.uart_h0_reset_n().clear_bit().uart_h1_reset_n().set_bit());
+    g.uart_soft_reset()
+        .modify(|_, w| w.uart_l0_reset_n().set_bit());
+    assert_eq!(m.uart_soft_reset().read().bits(), 0xa5a6);
+    assert_eq!(g.uart_soft_reset().read().bits(), 0x5ada);
+}
+
 // An inferred marker type is unambiguous only if the forbidden trait is absent.
 // These are compile-time API checks: FIFO windows must never acquire modify().
 macro_rules! assert_not_impl {
@@ -55,6 +79,22 @@ macro_rules! assert_not_impl {
         };
     };
 }
+assert_not_impl!(
+    ws53_pac::glb_ctl::uart_l0_irq_route_command::UartL0IrqRouteCommandSpec,
+    ws53_pac::generic::Readable
+);
+assert_not_impl!(
+    ws53_pac::glb_ctl::uart_l0_irq_route_command::UartL0IrqRouteCommandSpec,
+    ws53_pac::generic::Resettable
+);
+assert_not_impl!(
+    ws53_pac::glb_ctl::uart_soft_reset::UartSoftResetSpec,
+    ws53_pac::generic::Resettable
+);
+assert_not_impl!(
+    ws53_pac::m_crg::uart_soft_reset::UartSoftResetSpec,
+    ws53_pac::generic::Resettable
+);
 assert_not_impl!(ws53_pac::spi0::rx::RxSpec, ws53_pac::generic::Writable);
 assert_not_impl!(ws53_pac::spi0::tx::TxSpec, ws53_pac::generic::Readable);
 assert_not_impl!(
