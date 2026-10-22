@@ -133,6 +133,160 @@ macro_rules! rtc_access_api {
         );
     };
 }
+macro_rules! pwm_command_api {
+    ($module:ident, $spec:ident) => {
+        assert_not_impl!(ws53_pac::pwm::$module::$spec, ws53_pac::generic::Readable);
+        assert_not_impl!(ws53_pac::pwm::$module::$spec, ws53_pac::generic::Resettable);
+    };
+}
+pwm_command_api!(pwm_start0, PwmStart0Spec);
+pwm_command_api!(pwm_start1, PwmStart1Spec);
+pwm_command_api!(pwm_start2, PwmStart2Spec);
+pwm_command_api!(pwm_start3, PwmStart3Spec);
+pwm_command_api!(pwm_abnor_state_clr0, PwmAbnorStateClr0Spec);
+pwm_command_api!(pwm_abnor_state_clr1, PwmAbnorStateClr1Spec);
+pwm_command_api!(pwm_cfg_int_clr0, PwmCfgIntClr0Spec);
+assert_not_impl!(
+    ws53_pac::pwm::pwm_int_mask::PwmIntMaskSpec,
+    ws53_pac::generic::Resettable
+);
+assert_not_impl!(
+    ws53_pac::pwm::pwm_freq_l0::PwmFreqL0Spec,
+    ws53_pac::generic::Resettable
+);
+assert_not_impl!(
+    ws53_pac::m_crg::pwm_m_div3::PwmMDiv3Spec,
+    ws53_pac::generic::Resettable
+);
+
+#[test]
+fn pwm_four_groups_eight_channels_and_event_enable_encodings() {
+    use ws53_pac::{interrupt::ExternalInterrupt, pwm};
+    assert_eq!(ws53_pac::Pwm::PTR as usize, 0x52082000);
+    assert_eq!(ExternalInterrupt::PWM_ABNOR as u16, 71);
+    assert_eq!(ExternalInterrupt::PWM_CFG as u16, 72);
+    let r: pwm::RegisterBlock = unsafe { core::mem::zeroed() };
+    assert_eq!(size_of_val(&r), 0x51c);
+    macro_rules! group {
+        ($sel:ident, $clear:ident, $start:ident, $i:expr) => {
+            assert_eq!(offset(&r, r.$sel()), $i * 0x10);
+            assert_eq!(offset(&r, r.$clear()), $i * 0x10 + 4);
+            assert_eq!(offset(&r, r.$start()), $i * 0x10 + 8);
+        };
+    }
+    group!(pwm_sel0, pwm_startclrcnt_en0, pwm_start0, 0);
+    group!(pwm_sel1, pwm_startclrcnt_en1, pwm_start1, 1);
+    group!(pwm_sel2, pwm_startclrcnt_en2, pwm_start2, 2);
+    group!(pwm_sel3, pwm_startclrcnt_en3, pwm_start3, 3);
+    macro_rules! channel {
+        ($en:ident, $freq:ident, $flag:ident, $count:ident, $i:expr) => {
+            assert_eq!(offset(&r, r.$en()), 0x100 + $i * 0x40);
+            assert_eq!(offset(&r, r.$freq()), 0x114 + $i * 0x40);
+            assert_eq!(offset(&r, r.$flag()), 0x124 + $i * 0x40);
+            assert_eq!(offset(&r, r.$count()), 0x12c + $i * 0x40);
+            assert_eq!(size_of_val(r.$freq()), 4);
+        };
+    }
+    channel!(
+        pwm_en0,
+        pwm_freq_l0,
+        pwm_periodload_flag0,
+        pwm_periodcnt0,
+        0
+    );
+    channel!(
+        pwm_en1,
+        pwm_freq_l1,
+        pwm_periodload_flag1,
+        pwm_periodcnt1,
+        1
+    );
+    channel!(
+        pwm_en2,
+        pwm_freq_l2,
+        pwm_periodload_flag2,
+        pwm_periodcnt2,
+        2
+    );
+    channel!(
+        pwm_en3,
+        pwm_freq_l3,
+        pwm_periodload_flag3,
+        pwm_periodcnt3,
+        3
+    );
+    channel!(
+        pwm_en4,
+        pwm_freq_l4,
+        pwm_periodload_flag4,
+        pwm_periodcnt4,
+        4
+    );
+    channel!(
+        pwm_en5,
+        pwm_freq_l5,
+        pwm_periodload_flag5,
+        pwm_periodcnt5,
+        5
+    );
+    channel!(
+        pwm_en6,
+        pwm_freq_l6,
+        pwm_periodload_flag6,
+        pwm_periodcnt6,
+        6
+    );
+    channel!(
+        pwm_en7,
+        pwm_freq_l7,
+        pwm_periodload_flag7,
+        pwm_periodcnt7,
+        7
+    );
+    assert_eq!(offset(&r, r.pwm_int_mask()), 0x510);
+    assert_eq!(offset(&r, r.pwm_cfg_int_clr0()), 0x518);
+    // Host RAM field encoding, not counter latching or silicon widths.
+    unsafe {
+        r.pwm_int_mask().write_with_zero(|w| w.bits(0xa5000000));
+    }
+    r.pwm_int_mask()
+        .modify(|_, w| w.pwm_int_mask().all_events());
+    assert_eq!(r.pwm_int_mask().read().bits(), 0xa5000003);
+    r.pwm_int_mask()
+        .modify(|_, w| w.pwm_int_mask().abnormal_only());
+    assert_eq!(r.pwm_int_mask().read().pwm_int_mask().bits(), 1);
+    r.pwm_int_mask()
+        .modify(|_, w| w.pwm_int_mask().period_end_only());
+    assert_eq!(r.pwm_int_mask().read().pwm_int_mask().bits(), 2);
+    r.pwm_int_mask().modify(|_, w| w.pwm_int_mask().disabled());
+    assert_eq!(r.pwm_int_mask().read().bits(), 0xa5000000);
+    r.pwm_freq_l7()
+        .modify(|_, w| unsafe { w.pwm_freq_l_7().bits(u16::MAX) });
+    r.pwm_freq_h7()
+        .modify(|_, w| unsafe { w.pwm_freq_h_7().bits(0x1234) });
+    assert_eq!(r.pwm_freq_l7().read().bits(), 0xffff);
+    assert_eq!(r.pwm_freq_h7().read().bits(), 0x1234);
+}
+
+#[test]
+fn pwm_clock_divider_is_halfword_and_preserves_unmodeled_fields() {
+    let r: m_crg::RegisterBlock = unsafe { core::mem::zeroed() };
+    assert_eq!(offset(&r, r.pwm_m_div3()), 0x7c);
+    assert_eq!(size_of_val(r.pwm_m_div3()), 2);
+    unsafe {
+        r.m_clken0().write_with_zero(|w| w.bits(0x8000));
+        r.pwm_m_div3().write_with_zero(|w| w.bits(0xa580));
+    }
+    r.m_clken0().modify(|_, w| w.pwm_enable().set_bit());
+    r.pwm_m_div3().modify(|_, w| w.enable().set_bit());
+    r.pwm_m_div3().modify(|_, w| w.load().clear_bit());
+    r.pwm_m_div3()
+        .modify(|_, w| unsafe { w.divider().bits(16) });
+    r.pwm_m_div3().modify(|_, w| w.load().set_bit());
+    assert_eq!(r.m_clken0().read().bits(), 0x8080);
+    assert_eq!(r.pwm_m_div3().read().bits(), 0xa5c3);
+}
+
 rtc_access_api!(rtc0);
 rtc_access_api!(rtc1);
 

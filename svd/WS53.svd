@@ -142,6 +142,36 @@
           </fields>
         </register>
         <register>
+          <name>PWM_M_DIV3</name>
+          <description>PWM_M_DIV3</description>
+          <addressOffset>0x7C</addressOffset>
+          <size>16</size>
+          <access>read-write</access>
+          <fields>
+            <field>
+              <name>ENABLE</name>
+              <description>enable</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>LOAD</name>
+              <description>SDK explicitly clears then sets; no autonomous clearing inferred</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>DIVIDER</name>
+              <description>SDK programs 16 and reports 32MHz; input/divider relationship not proven</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>5</bitWidth>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
           <name>UART_SOFT_RESET</name>
           <description>UART_SOFT_RESET</description>
           <addressOffset>0x168</addressOffset>
@@ -4253,8 +4283,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x0</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_SEL_0</name>
@@ -4271,8 +4299,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x4</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_STARTCLRCNT_EN_0</name>
@@ -4289,15 +4315,19 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x8</addressOffset>
           <size>32</size>
           <access>write-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_START_0</name>
-              <description>Start group 0 (self-clearing)</description>
+              <description>Commit group 0 configuration with 1; SDK has no completion poll, self-clear/readback timing unverified</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
               <access>write-only</access>
+              <writeConstraint>
+                <range>
+                  <minimum>1</minimum>
+                  <maximum>1</maximum>
+                </range>
+              </writeConstraint>
             </field>
           </fields>
         </register>
@@ -4307,8 +4337,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x10</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_SEL_1</name>
@@ -4325,8 +4353,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x14</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_STARTCLRCNT_EN_1</name>
@@ -4343,15 +4369,19 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x18</addressOffset>
           <size>32</size>
           <access>write-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_START_1</name>
-              <description>Start group 1 (self-clearing)</description>
+              <description>Commit group 1 configuration with 1; SDK has no completion poll, self-clear/readback timing unverified</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
               <access>write-only</access>
+              <writeConstraint>
+                <range>
+                  <minimum>1</minimum>
+                  <maximum>1</maximum>
+                </range>
+              </writeConstraint>
             </field>
           </fields>
         </register>
@@ -4361,8 +4391,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x20</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_SEL_2</name>
@@ -4379,8 +4407,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x24</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_STARTCLRCNT_EN_2</name>
@@ -4397,15 +4423,19 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x28</addressOffset>
           <size>32</size>
           <access>write-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_START_2</name>
-              <description>Start group 2 (self-clearing)</description>
+              <description>Commit group 2 configuration with 1; SDK has no completion poll, self-clear/readback timing unverified</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
               <access>write-only</access>
+              <writeConstraint>
+                <range>
+                  <minimum>1</minimum>
+                  <maximum>1</maximum>
+                </range>
+              </writeConstraint>
             </field>
           </fields>
         </register>
@@ -4415,8 +4445,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x30</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_SEL_3</name>
@@ -4433,8 +4461,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x34</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_STARTCLRCNT_EN_3</name>
@@ -4451,15 +4477,19 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x38</addressOffset>
           <size>32</size>
           <access>write-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_START_3</name>
-              <description>Start group 3 (self-clearing)</description>
+              <description>Commit group 3 configuration with 1; SDK has no completion poll, self-clear/readback timing unverified</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
               <access>write-only</access>
+              <writeConstraint>
+                <range>
+                  <minimum>1</minimum>
+                  <maximum>1</maximum>
+                </range>
+              </writeConstraint>
             </field>
           </fields>
         </register>
@@ -4469,8 +4499,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x100</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_EN_0</name>
@@ -4499,8 +4527,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x104</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_POARITY_0</name>
@@ -4529,8 +4555,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x108</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_OEN_CFG_0</name>
@@ -4547,8 +4571,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x10C</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_OFFSET_L_0</name>
@@ -4565,8 +4587,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x110</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_OFFSET_H_0</name>
@@ -4583,8 +4603,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x114</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_FREQ_L_0</name>
@@ -4601,8 +4619,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x118</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_FREQ_H_0</name>
@@ -4619,8 +4635,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x11C</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_DUTY_L_0</name>
@@ -4637,8 +4651,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x120</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_DUTY_H_0</name>
@@ -4655,8 +4667,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x124</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_PERIODLOAD_FLAG_0</name>
@@ -4673,8 +4683,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x128</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_PERIOD_VAL_0</name>
@@ -4691,8 +4699,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x12C</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_PERIODCNT_0</name>
@@ -4709,8 +4715,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x140</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_EN_1</name>
@@ -4727,8 +4731,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x144</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_POARITY_1</name>
@@ -4745,8 +4747,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x148</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_OEN_CFG_1</name>
@@ -4763,8 +4763,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x14C</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_OFFSET_L_1</name>
@@ -4781,8 +4779,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x150</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_OFFSET_H_1</name>
@@ -4799,8 +4795,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x154</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_FREQ_L_1</name>
@@ -4817,8 +4811,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x158</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_FREQ_H_1</name>
@@ -4835,8 +4827,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x15C</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_DUTY_L_1</name>
@@ -4853,8 +4843,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x160</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_DUTY_H_1</name>
@@ -4871,8 +4859,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x164</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_PERIODLOAD_FLAG_1</name>
@@ -4889,8 +4875,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x168</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_PERIOD_VAL_1</name>
@@ -4907,8 +4891,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x16C</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_PERIODCNT_1</name>
@@ -4925,8 +4907,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x180</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_EN_2</name>
@@ -4955,8 +4935,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x184</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_POARITY_2</name>
@@ -4985,8 +4963,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x188</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_OEN_CFG_2</name>
@@ -5003,8 +4979,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x18C</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_OFFSET_L_2</name>
@@ -5021,8 +4995,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x190</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_OFFSET_H_2</name>
@@ -5039,8 +5011,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x194</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_FREQ_L_2</name>
@@ -5057,8 +5027,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x198</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_FREQ_H_2</name>
@@ -5075,8 +5043,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x19C</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_DUTY_L_2</name>
@@ -5093,8 +5059,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x1A0</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_DUTY_H_2</name>
@@ -5111,8 +5075,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x1A4</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_PERIODLOAD_FLAG_2</name>
@@ -5129,8 +5091,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x1A8</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_PERIOD_VAL_2</name>
@@ -5147,8 +5107,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x1AC</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_PERIODCNT_2</name>
@@ -5165,8 +5123,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x1C0</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_EN_3</name>
@@ -5195,8 +5151,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x1C4</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_POARITY_3</name>
@@ -5225,8 +5179,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x1C8</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_OEN_CFG_3</name>
@@ -5243,8 +5195,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x1CC</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_OFFSET_L_3</name>
@@ -5261,8 +5211,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x1D0</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_OFFSET_H_3</name>
@@ -5279,8 +5227,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x1D4</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_FREQ_L_3</name>
@@ -5297,8 +5243,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x1D8</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_FREQ_H_3</name>
@@ -5315,8 +5259,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x1DC</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_DUTY_L_3</name>
@@ -5333,8 +5275,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x1E0</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_DUTY_H_3</name>
@@ -5351,8 +5291,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x1E4</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_PERIODLOAD_FLAG_3</name>
@@ -5369,8 +5307,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x1E8</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_PERIOD_VAL_3</name>
@@ -5387,8 +5323,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x1EC</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_PERIODCNT_3</name>
@@ -5405,8 +5339,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x200</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_EN_4</name>
@@ -5435,8 +5367,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x204</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_POARITY_4</name>
@@ -5465,8 +5395,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x208</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_OEN_CFG_4</name>
@@ -5483,8 +5411,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x20C</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_OFFSET_L_4</name>
@@ -5501,8 +5427,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x210</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_OFFSET_H_4</name>
@@ -5519,8 +5443,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x214</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_FREQ_L_4</name>
@@ -5537,8 +5459,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x218</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_FREQ_H_4</name>
@@ -5555,8 +5475,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x21C</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_DUTY_L_4</name>
@@ -5573,8 +5491,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x220</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_DUTY_H_4</name>
@@ -5591,8 +5507,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x224</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_PERIODLOAD_FLAG_4</name>
@@ -5609,8 +5523,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x228</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_PERIOD_VAL_4</name>
@@ -5627,8 +5539,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x22C</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_PERIODCNT_4</name>
@@ -5645,8 +5555,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x240</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_EN_5</name>
@@ -5675,8 +5583,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x244</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_POARITY_5</name>
@@ -5705,8 +5611,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x248</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_OEN_CFG_5</name>
@@ -5723,8 +5627,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x24C</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_OFFSET_L_5</name>
@@ -5741,8 +5643,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x250</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_OFFSET_H_5</name>
@@ -5759,8 +5659,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x254</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_FREQ_L_5</name>
@@ -5777,8 +5675,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x258</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_FREQ_H_5</name>
@@ -5795,8 +5691,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x25C</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_DUTY_L_5</name>
@@ -5813,8 +5707,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x260</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_DUTY_H_5</name>
@@ -5831,8 +5723,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x264</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_PERIODLOAD_FLAG_5</name>
@@ -5849,8 +5739,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x268</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_PERIOD_VAL_5</name>
@@ -5867,8 +5755,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x26C</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_PERIODCNT_5</name>
@@ -5885,8 +5771,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x280</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_EN_6</name>
@@ -5915,8 +5799,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x284</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_POARITY_6</name>
@@ -5945,8 +5827,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x288</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_OEN_CFG_6</name>
@@ -5963,8 +5843,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x28C</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_OFFSET_L_6</name>
@@ -5981,8 +5859,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x290</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_OFFSET_H_6</name>
@@ -5999,8 +5875,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x294</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_FREQ_L_6</name>
@@ -6017,8 +5891,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x298</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_FREQ_H_6</name>
@@ -6035,8 +5907,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x29C</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_DUTY_L_6</name>
@@ -6053,8 +5923,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x2A0</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_DUTY_H_6</name>
@@ -6071,8 +5939,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x2A4</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_PERIODLOAD_FLAG_6</name>
@@ -6089,8 +5955,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x2A8</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_PERIOD_VAL_6</name>
@@ -6107,8 +5971,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x2AC</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_PERIODCNT_6</name>
@@ -6125,8 +5987,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x2C0</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_EN_7</name>
@@ -6155,8 +6015,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x2C4</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_POARITY_7</name>
@@ -6185,8 +6043,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x2C8</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_OEN_CFG_7</name>
@@ -6203,8 +6059,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x2CC</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_OFFSET_L_7</name>
@@ -6221,8 +6075,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x2D0</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_OFFSET_H_7</name>
@@ -6239,8 +6091,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x2D4</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_FREQ_L_7</name>
@@ -6257,8 +6107,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x2D8</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_FREQ_H_7</name>
@@ -6275,8 +6123,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x2DC</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_DUTY_L_7</name>
@@ -6293,8 +6139,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x2E0</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_DUTY_H_7</name>
@@ -6311,8 +6155,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x2E4</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_PERIODLOAD_FLAG_7</name>
@@ -6329,8 +6171,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x2E8</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_PERIOD_VAL_7</name>
@@ -6347,8 +6187,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x2EC</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_PERIODCNT_7</name>
@@ -6365,8 +6203,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x500</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_ABNOR_STATE0</name>
@@ -6383,8 +6219,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x504</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_ABNOR_STATE1</name>
@@ -6401,12 +6235,10 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x508</addressOffset>
           <size>32</size>
           <access>write-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_ABNOR_STATE_CLR0</name>
-              <description>Clear abnormal state 0 (self-clearing)</description>
+              <description>SDK writes observed abnormal-group bits to acknowledge their events; command readback/self-clear timing unverified</description>
               <bitOffset>0</bitOffset>
               <bitWidth>16</bitWidth>
               <access>write-only</access>
@@ -6419,12 +6251,10 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x50C</addressOffset>
           <size>32</size>
           <access>write-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_ABNOR_STATE_CLR1</name>
-              <description>Clear abnormal state 1 (self-clearing)</description>
+              <description>SDK writes observed abnormal-count bits to acknowledge their events; command readback/self-clear timing unverified</description>
               <bitOffset>0</bitOffset>
               <bitWidth>16</bitWidth>
               <access>write-only</access>
@@ -6437,15 +6267,35 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x510</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000003</resetMask>
           <fields>
             <field>
               <name>PWM_INT_MASK</name>
-              <description>Interrupt mask: bit[0]=abnormal; bit[1]=stepping cycle end</description>
+              <description>Event enable despite MASK name: bit0 abnormal, bit1 step end; 1 permits, 0 masks, confirmed by SDK init writing 3</description>
               <bitOffset>0</bitOffset>
               <bitWidth>2</bitWidth>
               <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Both event outputs masked</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>AbnormalOnly</name>
+                  <description>Enable abnormal configuration event</description>
+                  <value>1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>PeriodEndOnly</name>
+                  <description>Enable step end event</description>
+                  <value>2</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>AllEvents</name>
+                  <description>Enable both event outputs; SDK initialization value</description>
+                  <value>3</value>
+                </enumeratedValue>
+              </enumeratedValues>
             </field>
           </fields>
         </register>
@@ -6455,8 +6305,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x514</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>PWM_DMA_EN</name>
@@ -6473,12 +6321,10 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x518</addressOffset>
           <size>32</size>
           <access>write-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>PWM_CFG_INT_CLR0</name>
-              <description>Stepping cycle end interrupt clear (self-clearing)</description>
+              <description>SDK writes channel bit to acknowledge step-end event; command readback/self-clear timing unverified</description>
               <bitOffset>0</bitOffset>
               <bitWidth>16</bitWidth>
               <access>write-only</access>

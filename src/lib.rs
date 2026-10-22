@@ -966,25 +966,27 @@ pub mod m_crg {
         m_clken1: MClken1,
         _reserved2: [u8; 0x0e],
         soft_reset1: SoftReset1,
-        _reserved3: [u8; 0x0110],
+        _reserved3: [u8; 0x24],
+        pwm_m_div3: PwmMDiv3,
+        _reserved4: [u8; 0xea],
         uart_soft_reset: UartSoftReset,
-        _reserved4: [u8; 0x0276],
+        _reserved5: [u8; 0x0276],
         msub_normal: MsubNormal,
-        _reserved5: [u8; 0x02],
+        _reserved6: [u8; 0x02],
         msub_sleep: MsubSleep,
-        _reserved6: [u8; 0x0162],
+        _reserved7: [u8; 0x0162],
         global_clken: GlobalClken,
-        _reserved7: [u8; 0x12],
+        _reserved8: [u8; 0x12],
         spi_clock: SpiClock,
-        _reserved8: [u8; 0x01a2],
+        _reserved9: [u8; 0x01a2],
         nmi_enable: NmiEnable,
-        _reserved9: [u8; 0x02],
-        nmi_raw_status: NmiRawStatus,
         _reserved10: [u8; 0x02],
+        nmi_raw_status: NmiRawStatus,
+        _reserved11: [u8; 0x02],
         nmi_masked_status: NmiMaskedStatus,
-        _reserved11: [u8; 0x0246],
+        _reserved12: [u8; 0x0246],
         spi_device_mode: SpiDeviceMode,
-        _reserved12: [u8; 0x0cae],
+        _reserved13: [u8; 0x0cae],
         trng_ring_control: TrngRingControl,
     }
     impl RegisterBlock {
@@ -1002,6 +1004,11 @@ pub mod m_crg {
         #[inline(always)]
         pub const fn soft_reset1(&self) -> &SoftReset1 {
             &self.soft_reset1
+        }
+        #[doc = "0x7c - PWM_M_DIV3"]
+        #[inline(always)]
+        pub const fn pwm_m_div3(&self) -> &PwmMDiv3 {
+            &self.pwm_m_div3
         }
         #[doc = "0x168 - UART_SOFT_RESET"]
         #[inline(always)]
@@ -1322,6 +1329,73 @@ pub mod m_crg {
         impl crate::Readable for SoftReset1Spec {}
         #[doc = "`write(|w| ..)` method takes [`soft_reset1::W`](W) writer structure"]
         impl crate::Writable for SoftReset1Spec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "PWM_M_DIV3 (rw) register accessor: PWM_M_DIV3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_m_div3::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_m_div3::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_m_div3`] module"]
+    #[doc(alias = "PWM_M_DIV3")]
+    pub type PwmMDiv3 = crate::Reg<pwm_m_div3::PwmMDiv3Spec>;
+    #[doc = "PWM_M_DIV3"]
+    pub mod pwm_m_div3 {
+        #[doc = "Register `PWM_M_DIV3` reader"]
+        pub type R = crate::R<PwmMDiv3Spec>;
+        #[doc = "Register `PWM_M_DIV3` writer"]
+        pub type W = crate::W<PwmMDiv3Spec>;
+        #[doc = "Field `ENABLE` reader - enable"]
+        pub type EnableR = crate::BitReader;
+        #[doc = "Field `ENABLE` writer - enable"]
+        pub type EnableW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `LOAD` reader - SDK explicitly clears then sets; no autonomous clearing inferred"]
+        pub type LoadR = crate::BitReader;
+        #[doc = "Field `LOAD` writer - SDK explicitly clears then sets; no autonomous clearing inferred"]
+        pub type LoadW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `DIVIDER` reader - SDK programs 16 and reports 32MHz; input/divider relationship not proven"]
+        pub type DividerR = crate::FieldReader;
+        #[doc = "Field `DIVIDER` writer - SDK programs 16 and reports 32MHz; input/divider relationship not proven"]
+        pub type DividerW<'a, REG> = crate::FieldWriter<'a, REG, 5>;
+        impl R {
+            #[doc = "Bit 0 - enable"]
+            #[inline(always)]
+            pub fn enable(&self) -> EnableR {
+                EnableR::new((self.bits & 1) != 0)
+            }
+            #[doc = "Bit 1 - SDK explicitly clears then sets; no autonomous clearing inferred"]
+            #[inline(always)]
+            pub fn load(&self) -> LoadR {
+                LoadR::new(((self.bits >> 1) & 1) != 0)
+            }
+            #[doc = "Bits 2:6 - SDK programs 16 and reports 32MHz; input/divider relationship not proven"]
+            #[inline(always)]
+            pub fn divider(&self) -> DividerR {
+                DividerR::new(((self.bits >> 2) & 0x1f) as u8)
+            }
+        }
+        impl W {
+            #[doc = "Bit 0 - enable"]
+            #[inline(always)]
+            pub fn enable(&mut self) -> EnableW<'_, PwmMDiv3Spec> {
+                EnableW::new(self, 0)
+            }
+            #[doc = "Bit 1 - SDK explicitly clears then sets; no autonomous clearing inferred"]
+            #[inline(always)]
+            pub fn load(&mut self) -> LoadW<'_, PwmMDiv3Spec> {
+                LoadW::new(self, 1)
+            }
+            #[doc = "Bits 2:6 - SDK programs 16 and reports 32MHz; input/divider relationship not proven"]
+            #[inline(always)]
+            pub fn divider(&mut self) -> DividerW<'_, PwmMDiv3Spec> {
+                DividerW::new(self, 2)
+            }
+        }
+        #[doc = "PWM_M_DIV3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_m_div3::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_m_div3::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct PwmMDiv3Spec;
+        impl crate::RegisterSpec for PwmMDiv3Spec {
+            type Ux = u16;
+        }
+        #[doc = "`read()` method returns [`pwm_m_div3::R`](R) reader structure"]
+        impl crate::Readable for PwmMDiv3Spec {}
+        #[doc = "`write(|w| ..)` method takes [`pwm_m_div3::W`](W) writer structure"]
+        impl crate::Writable for PwmMDiv3Spec {
             type Safety = crate::Unsafe;
         }
     }
@@ -10868,7 +10942,7 @@ pub mod pwm {
             &self.pwm_cfg_int_clr0
         }
     }
-    #[doc = "PWM_SEL0 (rw) register accessor: PWM_SEL0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_sel0::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_sel0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_sel0`] module"]
+    #[doc = "PWM_SEL0 (rw) register accessor: PWM_SEL0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_sel0::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_sel0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_sel0`] module"]
     #[doc(alias = "PWM_SEL0")]
     pub type PwmSel0 = crate::Reg<pwm_sel0::PwmSel0Spec>;
     #[doc = "PWM_SEL0"]
@@ -10895,7 +10969,7 @@ pub mod pwm {
                 PwmSel0W::new(self, 0)
             }
         }
-        #[doc = "PWM_SEL0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_sel0::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_sel0::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_SEL0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_sel0::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_sel0::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmSel0Spec;
         impl crate::RegisterSpec for PwmSel0Spec {
             type Ux = u32;
@@ -10906,10 +10980,8 @@ pub mod pwm {
         impl crate::Writable for PwmSel0Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_SEL0 to value 0"]
-        impl crate::Resettable for PwmSel0Spec {}
     }
-    #[doc = "PWM_STARTCLRCNT_EN0 (rw) register accessor: PWM_STARTCLRCNT_EN0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_startclrcnt_en0::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_startclrcnt_en0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_startclrcnt_en0`] module"]
+    #[doc = "PWM_STARTCLRCNT_EN0 (rw) register accessor: PWM_STARTCLRCNT_EN0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_startclrcnt_en0::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_startclrcnt_en0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_startclrcnt_en0`] module"]
     #[doc(alias = "PWM_STARTCLRCNT_EN0")]
     pub type PwmStartclrcntEn0 = crate::Reg<pwm_startclrcnt_en0::PwmStartclrcntEn0Spec>;
     #[doc = "PWM_STARTCLRCNT_EN0"]
@@ -10938,7 +11010,7 @@ pub mod pwm {
                 PwmStartclrcntEn0W::new(self, 0)
             }
         }
-        #[doc = "PWM_STARTCLRCNT_EN0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_startclrcnt_en0::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_startclrcnt_en0::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_STARTCLRCNT_EN0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_startclrcnt_en0::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_startclrcnt_en0::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmStartclrcntEn0Spec;
         impl crate::RegisterSpec for PwmStartclrcntEn0Spec {
             type Ux = u32;
@@ -10949,26 +11021,24 @@ pub mod pwm {
         impl crate::Writable for PwmStartclrcntEn0Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_STARTCLRCNT_EN0 to value 0"]
-        impl crate::Resettable for PwmStartclrcntEn0Spec {}
     }
-    #[doc = "PWM_START0 (w) register accessor: PWM_START0\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_start0::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_start0`] module"]
+    #[doc = "PWM_START0 (w) register accessor: PWM_START0\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_start0::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_start0`] module"]
     #[doc(alias = "PWM_START0")]
     pub type PwmStart0 = crate::Reg<pwm_start0::PwmStart0Spec>;
     #[doc = "PWM_START0"]
     pub mod pwm_start0 {
         #[doc = "Register `PWM_START0` writer"]
         pub type W = crate::W<PwmStart0Spec>;
-        #[doc = "Field `PWM_START_0` writer - Start group 0 (self-clearing)"]
+        #[doc = "Field `PWM_START_0` writer - Commit group 0 configuration with 1; SDK has no completion poll, self-clear/readback timing unverified"]
         pub type PwmStart0W<'a, REG> = crate::BitWriter<'a, REG>;
         impl W {
-            #[doc = "Bit 0 - Start group 0 (self-clearing)"]
+            #[doc = "Bit 0 - Commit group 0 configuration with 1; SDK has no completion poll, self-clear/readback timing unverified"]
             #[inline(always)]
             pub fn pwm_start_0(&mut self) -> PwmStart0W<'_, PwmStart0Spec> {
                 PwmStart0W::new(self, 0)
             }
         }
-        #[doc = "PWM_START0\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_start0::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_START0\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_start0::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmStart0Spec;
         impl crate::RegisterSpec for PwmStart0Spec {
             type Ux = u32;
@@ -10977,10 +11047,8 @@ pub mod pwm {
         impl crate::Writable for PwmStart0Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_START0 to value 0"]
-        impl crate::Resettable for PwmStart0Spec {}
     }
-    #[doc = "PWM_SEL1 (rw) register accessor: PWM_SEL1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_sel1::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_sel1::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_sel1`] module"]
+    #[doc = "PWM_SEL1 (rw) register accessor: PWM_SEL1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_sel1::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_sel1::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_sel1`] module"]
     #[doc(alias = "PWM_SEL1")]
     pub type PwmSel1 = crate::Reg<pwm_sel1::PwmSel1Spec>;
     #[doc = "PWM_SEL1"]
@@ -11007,7 +11075,7 @@ pub mod pwm {
                 PwmSel1W::new(self, 0)
             }
         }
-        #[doc = "PWM_SEL1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_sel1::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_sel1::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_SEL1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_sel1::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_sel1::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmSel1Spec;
         impl crate::RegisterSpec for PwmSel1Spec {
             type Ux = u32;
@@ -11018,10 +11086,8 @@ pub mod pwm {
         impl crate::Writable for PwmSel1Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_SEL1 to value 0"]
-        impl crate::Resettable for PwmSel1Spec {}
     }
-    #[doc = "PWM_STARTCLRCNT_EN1 (rw) register accessor: PWM_STARTCLRCNT_EN1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_startclrcnt_en1::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_startclrcnt_en1::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_startclrcnt_en1`] module"]
+    #[doc = "PWM_STARTCLRCNT_EN1 (rw) register accessor: PWM_STARTCLRCNT_EN1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_startclrcnt_en1::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_startclrcnt_en1::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_startclrcnt_en1`] module"]
     #[doc(alias = "PWM_STARTCLRCNT_EN1")]
     pub type PwmStartclrcntEn1 = crate::Reg<pwm_startclrcnt_en1::PwmStartclrcntEn1Spec>;
     #[doc = "PWM_STARTCLRCNT_EN1"]
@@ -11050,7 +11116,7 @@ pub mod pwm {
                 PwmStartclrcntEn1W::new(self, 0)
             }
         }
-        #[doc = "PWM_STARTCLRCNT_EN1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_startclrcnt_en1::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_startclrcnt_en1::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_STARTCLRCNT_EN1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_startclrcnt_en1::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_startclrcnt_en1::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmStartclrcntEn1Spec;
         impl crate::RegisterSpec for PwmStartclrcntEn1Spec {
             type Ux = u32;
@@ -11061,26 +11127,24 @@ pub mod pwm {
         impl crate::Writable for PwmStartclrcntEn1Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_STARTCLRCNT_EN1 to value 0"]
-        impl crate::Resettable for PwmStartclrcntEn1Spec {}
     }
-    #[doc = "PWM_START1 (w) register accessor: PWM_START1\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_start1::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_start1`] module"]
+    #[doc = "PWM_START1 (w) register accessor: PWM_START1\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_start1::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_start1`] module"]
     #[doc(alias = "PWM_START1")]
     pub type PwmStart1 = crate::Reg<pwm_start1::PwmStart1Spec>;
     #[doc = "PWM_START1"]
     pub mod pwm_start1 {
         #[doc = "Register `PWM_START1` writer"]
         pub type W = crate::W<PwmStart1Spec>;
-        #[doc = "Field `PWM_START_1` writer - Start group 1 (self-clearing)"]
+        #[doc = "Field `PWM_START_1` writer - Commit group 1 configuration with 1; SDK has no completion poll, self-clear/readback timing unverified"]
         pub type PwmStart1W<'a, REG> = crate::BitWriter<'a, REG>;
         impl W {
-            #[doc = "Bit 0 - Start group 1 (self-clearing)"]
+            #[doc = "Bit 0 - Commit group 1 configuration with 1; SDK has no completion poll, self-clear/readback timing unverified"]
             #[inline(always)]
             pub fn pwm_start_1(&mut self) -> PwmStart1W<'_, PwmStart1Spec> {
                 PwmStart1W::new(self, 0)
             }
         }
-        #[doc = "PWM_START1\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_start1::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_START1\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_start1::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmStart1Spec;
         impl crate::RegisterSpec for PwmStart1Spec {
             type Ux = u32;
@@ -11089,10 +11153,8 @@ pub mod pwm {
         impl crate::Writable for PwmStart1Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_START1 to value 0"]
-        impl crate::Resettable for PwmStart1Spec {}
     }
-    #[doc = "PWM_SEL2 (rw) register accessor: PWM_SEL2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_sel2::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_sel2::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_sel2`] module"]
+    #[doc = "PWM_SEL2 (rw) register accessor: PWM_SEL2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_sel2::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_sel2::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_sel2`] module"]
     #[doc(alias = "PWM_SEL2")]
     pub type PwmSel2 = crate::Reg<pwm_sel2::PwmSel2Spec>;
     #[doc = "PWM_SEL2"]
@@ -11119,7 +11181,7 @@ pub mod pwm {
                 PwmSel2W::new(self, 0)
             }
         }
-        #[doc = "PWM_SEL2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_sel2::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_sel2::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_SEL2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_sel2::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_sel2::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmSel2Spec;
         impl crate::RegisterSpec for PwmSel2Spec {
             type Ux = u32;
@@ -11130,10 +11192,8 @@ pub mod pwm {
         impl crate::Writable for PwmSel2Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_SEL2 to value 0"]
-        impl crate::Resettable for PwmSel2Spec {}
     }
-    #[doc = "PWM_STARTCLRCNT_EN2 (rw) register accessor: PWM_STARTCLRCNT_EN2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_startclrcnt_en2::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_startclrcnt_en2::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_startclrcnt_en2`] module"]
+    #[doc = "PWM_STARTCLRCNT_EN2 (rw) register accessor: PWM_STARTCLRCNT_EN2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_startclrcnt_en2::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_startclrcnt_en2::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_startclrcnt_en2`] module"]
     #[doc(alias = "PWM_STARTCLRCNT_EN2")]
     pub type PwmStartclrcntEn2 = crate::Reg<pwm_startclrcnt_en2::PwmStartclrcntEn2Spec>;
     #[doc = "PWM_STARTCLRCNT_EN2"]
@@ -11162,7 +11222,7 @@ pub mod pwm {
                 PwmStartclrcntEn2W::new(self, 0)
             }
         }
-        #[doc = "PWM_STARTCLRCNT_EN2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_startclrcnt_en2::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_startclrcnt_en2::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_STARTCLRCNT_EN2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_startclrcnt_en2::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_startclrcnt_en2::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmStartclrcntEn2Spec;
         impl crate::RegisterSpec for PwmStartclrcntEn2Spec {
             type Ux = u32;
@@ -11173,26 +11233,24 @@ pub mod pwm {
         impl crate::Writable for PwmStartclrcntEn2Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_STARTCLRCNT_EN2 to value 0"]
-        impl crate::Resettable for PwmStartclrcntEn2Spec {}
     }
-    #[doc = "PWM_START2 (w) register accessor: PWM_START2\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_start2::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_start2`] module"]
+    #[doc = "PWM_START2 (w) register accessor: PWM_START2\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_start2::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_start2`] module"]
     #[doc(alias = "PWM_START2")]
     pub type PwmStart2 = crate::Reg<pwm_start2::PwmStart2Spec>;
     #[doc = "PWM_START2"]
     pub mod pwm_start2 {
         #[doc = "Register `PWM_START2` writer"]
         pub type W = crate::W<PwmStart2Spec>;
-        #[doc = "Field `PWM_START_2` writer - Start group 2 (self-clearing)"]
+        #[doc = "Field `PWM_START_2` writer - Commit group 2 configuration with 1; SDK has no completion poll, self-clear/readback timing unverified"]
         pub type PwmStart2W<'a, REG> = crate::BitWriter<'a, REG>;
         impl W {
-            #[doc = "Bit 0 - Start group 2 (self-clearing)"]
+            #[doc = "Bit 0 - Commit group 2 configuration with 1; SDK has no completion poll, self-clear/readback timing unverified"]
             #[inline(always)]
             pub fn pwm_start_2(&mut self) -> PwmStart2W<'_, PwmStart2Spec> {
                 PwmStart2W::new(self, 0)
             }
         }
-        #[doc = "PWM_START2\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_start2::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_START2\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_start2::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmStart2Spec;
         impl crate::RegisterSpec for PwmStart2Spec {
             type Ux = u32;
@@ -11201,10 +11259,8 @@ pub mod pwm {
         impl crate::Writable for PwmStart2Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_START2 to value 0"]
-        impl crate::Resettable for PwmStart2Spec {}
     }
-    #[doc = "PWM_SEL3 (rw) register accessor: PWM_SEL3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_sel3::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_sel3::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_sel3`] module"]
+    #[doc = "PWM_SEL3 (rw) register accessor: PWM_SEL3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_sel3::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_sel3::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_sel3`] module"]
     #[doc(alias = "PWM_SEL3")]
     pub type PwmSel3 = crate::Reg<pwm_sel3::PwmSel3Spec>;
     #[doc = "PWM_SEL3"]
@@ -11231,7 +11287,7 @@ pub mod pwm {
                 PwmSel3W::new(self, 0)
             }
         }
-        #[doc = "PWM_SEL3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_sel3::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_sel3::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_SEL3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_sel3::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_sel3::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmSel3Spec;
         impl crate::RegisterSpec for PwmSel3Spec {
             type Ux = u32;
@@ -11242,10 +11298,8 @@ pub mod pwm {
         impl crate::Writable for PwmSel3Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_SEL3 to value 0"]
-        impl crate::Resettable for PwmSel3Spec {}
     }
-    #[doc = "PWM_STARTCLRCNT_EN3 (rw) register accessor: PWM_STARTCLRCNT_EN3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_startclrcnt_en3::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_startclrcnt_en3::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_startclrcnt_en3`] module"]
+    #[doc = "PWM_STARTCLRCNT_EN3 (rw) register accessor: PWM_STARTCLRCNT_EN3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_startclrcnt_en3::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_startclrcnt_en3::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_startclrcnt_en3`] module"]
     #[doc(alias = "PWM_STARTCLRCNT_EN3")]
     pub type PwmStartclrcntEn3 = crate::Reg<pwm_startclrcnt_en3::PwmStartclrcntEn3Spec>;
     #[doc = "PWM_STARTCLRCNT_EN3"]
@@ -11274,7 +11328,7 @@ pub mod pwm {
                 PwmStartclrcntEn3W::new(self, 0)
             }
         }
-        #[doc = "PWM_STARTCLRCNT_EN3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_startclrcnt_en3::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_startclrcnt_en3::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_STARTCLRCNT_EN3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_startclrcnt_en3::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_startclrcnt_en3::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmStartclrcntEn3Spec;
         impl crate::RegisterSpec for PwmStartclrcntEn3Spec {
             type Ux = u32;
@@ -11285,26 +11339,24 @@ pub mod pwm {
         impl crate::Writable for PwmStartclrcntEn3Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_STARTCLRCNT_EN3 to value 0"]
-        impl crate::Resettable for PwmStartclrcntEn3Spec {}
     }
-    #[doc = "PWM_START3 (w) register accessor: PWM_START3\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_start3::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_start3`] module"]
+    #[doc = "PWM_START3 (w) register accessor: PWM_START3\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_start3::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_start3`] module"]
     #[doc(alias = "PWM_START3")]
     pub type PwmStart3 = crate::Reg<pwm_start3::PwmStart3Spec>;
     #[doc = "PWM_START3"]
     pub mod pwm_start3 {
         #[doc = "Register `PWM_START3` writer"]
         pub type W = crate::W<PwmStart3Spec>;
-        #[doc = "Field `PWM_START_3` writer - Start group 3 (self-clearing)"]
+        #[doc = "Field `PWM_START_3` writer - Commit group 3 configuration with 1; SDK has no completion poll, self-clear/readback timing unverified"]
         pub type PwmStart3W<'a, REG> = crate::BitWriter<'a, REG>;
         impl W {
-            #[doc = "Bit 0 - Start group 3 (self-clearing)"]
+            #[doc = "Bit 0 - Commit group 3 configuration with 1; SDK has no completion poll, self-clear/readback timing unverified"]
             #[inline(always)]
             pub fn pwm_start_3(&mut self) -> PwmStart3W<'_, PwmStart3Spec> {
                 PwmStart3W::new(self, 0)
             }
         }
-        #[doc = "PWM_START3\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_start3::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_START3\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_start3::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmStart3Spec;
         impl crate::RegisterSpec for PwmStart3Spec {
             type Ux = u32;
@@ -11313,10 +11365,8 @@ pub mod pwm {
         impl crate::Writable for PwmStart3Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_START3 to value 0"]
-        impl crate::Resettable for PwmStart3Spec {}
     }
-    #[doc = "PWM_EN0 (rw) register accessor: PWM_EN0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_en0::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_en0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_en0`] module"]
+    #[doc = "PWM_EN0 (rw) register accessor: PWM_EN0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_en0::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_en0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_en0`] module"]
     #[doc(alias = "PWM_EN0")]
     pub type PwmEn0 = crate::Reg<pwm_en0::PwmEn0Spec>;
     #[doc = "PWM_EN0"]
@@ -11325,7 +11375,7 @@ pub mod pwm {
         pub type R = crate::R<PwmEn0Spec>;
         #[doc = "Register `PWM_EN0` writer"]
         pub type W = crate::W<PwmEn0Spec>;
-        #[doc = "PWM0 enable: 0=off; 1=on\n\nValue on reset: 0"]
+        #[doc = "PWM0 enable: 0=off; 1=on"]
         #[derive(Clone, Copy, Debug, PartialEq, Eq)]
         pub enum PwmEn0 {
             #[doc = "0: PWM disabled, output low"]
@@ -11392,7 +11442,7 @@ pub mod pwm {
                 PwmEn0W::new(self, 0)
             }
         }
-        #[doc = "PWM_EN0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_en0::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_en0::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_EN0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_en0::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_en0::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmEn0Spec;
         impl crate::RegisterSpec for PwmEn0Spec {
             type Ux = u32;
@@ -11403,10 +11453,8 @@ pub mod pwm {
         impl crate::Writable for PwmEn0Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_EN0 to value 0"]
-        impl crate::Resettable for PwmEn0Spec {}
     }
-    #[doc = "PWM_PORTITY0 (rw) register accessor: PWM_PORTITY0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_portity0::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_portity0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_portity0`] module"]
+    #[doc = "PWM_PORTITY0 (rw) register accessor: PWM_PORTITY0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_portity0::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_portity0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_portity0`] module"]
     #[doc(alias = "PWM_PORTITY0")]
     pub type PwmPortity0 = crate::Reg<pwm_portity0::PwmPortity0Spec>;
     #[doc = "PWM_PORTITY0"]
@@ -11415,7 +11463,7 @@ pub mod pwm {
         pub type R = crate::R<PwmPortity0Spec>;
         #[doc = "Register `PWM_PORTITY0` writer"]
         pub type W = crate::W<PwmPortity0Spec>;
-        #[doc = "PWM0 polarity: 0=normal; 1=inverted\n\nValue on reset: 0"]
+        #[doc = "PWM0 polarity: 0=normal; 1=inverted"]
         #[derive(Clone, Copy, Debug, PartialEq, Eq)]
         pub enum PwmPoarity0 {
             #[doc = "0: Normal polarity"]
@@ -11482,7 +11530,7 @@ pub mod pwm {
                 PwmPoarity0W::new(self, 0)
             }
         }
-        #[doc = "PWM_PORTITY0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_portity0::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_portity0::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_PORTITY0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_portity0::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_portity0::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmPortity0Spec;
         impl crate::RegisterSpec for PwmPortity0Spec {
             type Ux = u32;
@@ -11493,10 +11541,8 @@ pub mod pwm {
         impl crate::Writable for PwmPortity0Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_PORTITY0 to value 0"]
-        impl crate::Resettable for PwmPortity0Spec {}
     }
-    #[doc = "PWM_OEN_CFG0 (rw) register accessor: PWM_OEN_CFG0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_oen_cfg0::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_oen_cfg0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_oen_cfg0`] module"]
+    #[doc = "PWM_OEN_CFG0 (rw) register accessor: PWM_OEN_CFG0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_oen_cfg0::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_oen_cfg0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_oen_cfg0`] module"]
     #[doc(alias = "PWM_OEN_CFG0")]
     pub type PwmOenCfg0 = crate::Reg<pwm_oen_cfg0::PwmOenCfg0Spec>;
     #[doc = "PWM_OEN_CFG0"]
@@ -11523,7 +11569,7 @@ pub mod pwm {
                 PwmOenCfg0W::new(self, 0)
             }
         }
-        #[doc = "PWM_OEN_CFG0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_oen_cfg0::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_oen_cfg0::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_OEN_CFG0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_oen_cfg0::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_oen_cfg0::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmOenCfg0Spec;
         impl crate::RegisterSpec for PwmOenCfg0Spec {
             type Ux = u32;
@@ -11534,10 +11580,8 @@ pub mod pwm {
         impl crate::Writable for PwmOenCfg0Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_OEN_CFG0 to value 0"]
-        impl crate::Resettable for PwmOenCfg0Spec {}
     }
-    #[doc = "PWM_OFFSET_L0 (rw) register accessor: PWM_OFFSET_L0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_l0::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_l0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_offset_l0`] module"]
+    #[doc = "PWM_OFFSET_L0 (rw) register accessor: PWM_OFFSET_L0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_l0::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_l0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_offset_l0`] module"]
     #[doc(alias = "PWM_OFFSET_L0")]
     pub type PwmOffsetL0 = crate::Reg<pwm_offset_l0::PwmOffsetL0Spec>;
     #[doc = "PWM_OFFSET_L0"]
@@ -11564,7 +11608,7 @@ pub mod pwm {
                 PwmOffsetL0W::new(self, 0)
             }
         }
-        #[doc = "PWM_OFFSET_L0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_l0::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_l0::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_OFFSET_L0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_l0::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_l0::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmOffsetL0Spec;
         impl crate::RegisterSpec for PwmOffsetL0Spec {
             type Ux = u32;
@@ -11575,10 +11619,8 @@ pub mod pwm {
         impl crate::Writable for PwmOffsetL0Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_OFFSET_L0 to value 0"]
-        impl crate::Resettable for PwmOffsetL0Spec {}
     }
-    #[doc = "PWM_OFFSET_H0 (rw) register accessor: PWM_OFFSET_H0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_h0::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_h0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_offset_h0`] module"]
+    #[doc = "PWM_OFFSET_H0 (rw) register accessor: PWM_OFFSET_H0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_h0::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_h0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_offset_h0`] module"]
     #[doc(alias = "PWM_OFFSET_H0")]
     pub type PwmOffsetH0 = crate::Reg<pwm_offset_h0::PwmOffsetH0Spec>;
     #[doc = "PWM_OFFSET_H0"]
@@ -11605,7 +11647,7 @@ pub mod pwm {
                 PwmOffsetH0W::new(self, 0)
             }
         }
-        #[doc = "PWM_OFFSET_H0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_h0::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_h0::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_OFFSET_H0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_h0::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_h0::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmOffsetH0Spec;
         impl crate::RegisterSpec for PwmOffsetH0Spec {
             type Ux = u32;
@@ -11616,10 +11658,8 @@ pub mod pwm {
         impl crate::Writable for PwmOffsetH0Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_OFFSET_H0 to value 0"]
-        impl crate::Resettable for PwmOffsetH0Spec {}
     }
-    #[doc = "PWM_FREQ_L0 (rw) register accessor: PWM_FREQ_L0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_l0::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_l0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_freq_l0`] module"]
+    #[doc = "PWM_FREQ_L0 (rw) register accessor: PWM_FREQ_L0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_l0::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_l0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_freq_l0`] module"]
     #[doc(alias = "PWM_FREQ_L0")]
     pub type PwmFreqL0 = crate::Reg<pwm_freq_l0::PwmFreqL0Spec>;
     #[doc = "PWM_FREQ_L0"]
@@ -11646,7 +11686,7 @@ pub mod pwm {
                 PwmFreqL0W::new(self, 0)
             }
         }
-        #[doc = "PWM_FREQ_L0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_l0::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_l0::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_FREQ_L0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_l0::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_l0::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmFreqL0Spec;
         impl crate::RegisterSpec for PwmFreqL0Spec {
             type Ux = u32;
@@ -11657,10 +11697,8 @@ pub mod pwm {
         impl crate::Writable for PwmFreqL0Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_FREQ_L0 to value 0"]
-        impl crate::Resettable for PwmFreqL0Spec {}
     }
-    #[doc = "PWM_FREQ_H0 (rw) register accessor: PWM_FREQ_H0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_h0::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_h0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_freq_h0`] module"]
+    #[doc = "PWM_FREQ_H0 (rw) register accessor: PWM_FREQ_H0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_h0::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_h0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_freq_h0`] module"]
     #[doc(alias = "PWM_FREQ_H0")]
     pub type PwmFreqH0 = crate::Reg<pwm_freq_h0::PwmFreqH0Spec>;
     #[doc = "PWM_FREQ_H0"]
@@ -11687,7 +11725,7 @@ pub mod pwm {
                 PwmFreqH0W::new(self, 0)
             }
         }
-        #[doc = "PWM_FREQ_H0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_h0::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_h0::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_FREQ_H0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_h0::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_h0::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmFreqH0Spec;
         impl crate::RegisterSpec for PwmFreqH0Spec {
             type Ux = u32;
@@ -11698,10 +11736,8 @@ pub mod pwm {
         impl crate::Writable for PwmFreqH0Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_FREQ_H0 to value 0"]
-        impl crate::Resettable for PwmFreqH0Spec {}
     }
-    #[doc = "PWM_DUTY_L0 (rw) register accessor: PWM_DUTY_L0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_l0::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_l0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_duty_l0`] module"]
+    #[doc = "PWM_DUTY_L0 (rw) register accessor: PWM_DUTY_L0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_l0::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_l0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_duty_l0`] module"]
     #[doc(alias = "PWM_DUTY_L0")]
     pub type PwmDutyL0 = crate::Reg<pwm_duty_l0::PwmDutyL0Spec>;
     #[doc = "PWM_DUTY_L0"]
@@ -11728,7 +11764,7 @@ pub mod pwm {
                 PwmDutyL0W::new(self, 0)
             }
         }
-        #[doc = "PWM_DUTY_L0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_l0::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_l0::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_DUTY_L0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_l0::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_l0::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmDutyL0Spec;
         impl crate::RegisterSpec for PwmDutyL0Spec {
             type Ux = u32;
@@ -11739,10 +11775,8 @@ pub mod pwm {
         impl crate::Writable for PwmDutyL0Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_DUTY_L0 to value 0"]
-        impl crate::Resettable for PwmDutyL0Spec {}
     }
-    #[doc = "PWM_DUTY_H0 (rw) register accessor: PWM_DUTY_H0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_h0::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_h0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_duty_h0`] module"]
+    #[doc = "PWM_DUTY_H0 (rw) register accessor: PWM_DUTY_H0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_h0::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_h0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_duty_h0`] module"]
     #[doc(alias = "PWM_DUTY_H0")]
     pub type PwmDutyH0 = crate::Reg<pwm_duty_h0::PwmDutyH0Spec>;
     #[doc = "PWM_DUTY_H0"]
@@ -11769,7 +11803,7 @@ pub mod pwm {
                 PwmDutyH0W::new(self, 0)
             }
         }
-        #[doc = "PWM_DUTY_H0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_h0::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_h0::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_DUTY_H0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_h0::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_h0::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmDutyH0Spec;
         impl crate::RegisterSpec for PwmDutyH0Spec {
             type Ux = u32;
@@ -11780,8 +11814,6 @@ pub mod pwm {
         impl crate::Writable for PwmDutyH0Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_DUTY_H0 to value 0"]
-        impl crate::Resettable for PwmDutyH0Spec {}
     }
     #[doc = "PWM_PERIODLOAD_FLAG0 (r) register accessor: PWM_PERIODLOAD_FLAG0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_periodload_flag0::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_periodload_flag0`] module"]
     #[doc(alias = "PWM_PERIODLOAD_FLAG0")]
@@ -11806,10 +11838,8 @@ pub mod pwm {
         }
         #[doc = "`read()` method returns [`pwm_periodload_flag0::R`](R) reader structure"]
         impl crate::Readable for PwmPeriodloadFlag0Spec {}
-        #[doc = "`reset()` method sets PWM_PERIODLOAD_FLAG0 to value 0"]
-        impl crate::Resettable for PwmPeriodloadFlag0Spec {}
     }
-    #[doc = "PWM_PERIOD_VAL0 (rw) register accessor: PWM_PERIOD_VAL0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_period_val0::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_period_val0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_period_val0`] module"]
+    #[doc = "PWM_PERIOD_VAL0 (rw) register accessor: PWM_PERIOD_VAL0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_period_val0::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_period_val0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_period_val0`] module"]
     #[doc(alias = "PWM_PERIOD_VAL0")]
     pub type PwmPeriodVal0 = crate::Reg<pwm_period_val0::PwmPeriodVal0Spec>;
     #[doc = "PWM_PERIOD_VAL0"]
@@ -11836,7 +11866,7 @@ pub mod pwm {
                 PwmPeriodVal0W::new(self, 0)
             }
         }
-        #[doc = "PWM_PERIOD_VAL0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_period_val0::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_period_val0::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_PERIOD_VAL0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_period_val0::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_period_val0::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmPeriodVal0Spec;
         impl crate::RegisterSpec for PwmPeriodVal0Spec {
             type Ux = u32;
@@ -11847,8 +11877,6 @@ pub mod pwm {
         impl crate::Writable for PwmPeriodVal0Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_PERIOD_VAL0 to value 0"]
-        impl crate::Resettable for PwmPeriodVal0Spec {}
     }
     #[doc = "PWM_PERIODCNT0 (r) register accessor: PWM_PERIODCNT0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_periodcnt0::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_periodcnt0`] module"]
     #[doc(alias = "PWM_PERIODCNT0")]
@@ -11873,10 +11901,8 @@ pub mod pwm {
         }
         #[doc = "`read()` method returns [`pwm_periodcnt0::R`](R) reader structure"]
         impl crate::Readable for PwmPeriodcnt0Spec {}
-        #[doc = "`reset()` method sets PWM_PERIODCNT0 to value 0"]
-        impl crate::Resettable for PwmPeriodcnt0Spec {}
     }
-    #[doc = "PWM_EN1 (rw) register accessor: PWM_EN1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_en1::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_en1::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_en1`] module"]
+    #[doc = "PWM_EN1 (rw) register accessor: PWM_EN1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_en1::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_en1::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_en1`] module"]
     #[doc(alias = "PWM_EN1")]
     pub type PwmEn1 = crate::Reg<pwm_en1::PwmEn1Spec>;
     #[doc = "PWM_EN1"]
@@ -11903,7 +11929,7 @@ pub mod pwm {
                 PwmEn1W::new(self, 0)
             }
         }
-        #[doc = "PWM_EN1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_en1::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_en1::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_EN1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_en1::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_en1::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmEn1Spec;
         impl crate::RegisterSpec for PwmEn1Spec {
             type Ux = u32;
@@ -11914,10 +11940,8 @@ pub mod pwm {
         impl crate::Writable for PwmEn1Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_EN1 to value 0"]
-        impl crate::Resettable for PwmEn1Spec {}
     }
-    #[doc = "PWM_PORTITY1 (rw) register accessor: PWM_PORTITY1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_portity1::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_portity1::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_portity1`] module"]
+    #[doc = "PWM_PORTITY1 (rw) register accessor: PWM_PORTITY1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_portity1::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_portity1::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_portity1`] module"]
     #[doc(alias = "PWM_PORTITY1")]
     pub type PwmPortity1 = crate::Reg<pwm_portity1::PwmPortity1Spec>;
     #[doc = "PWM_PORTITY1"]
@@ -11944,7 +11968,7 @@ pub mod pwm {
                 PwmPoarity1W::new(self, 0)
             }
         }
-        #[doc = "PWM_PORTITY1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_portity1::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_portity1::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_PORTITY1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_portity1::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_portity1::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmPortity1Spec;
         impl crate::RegisterSpec for PwmPortity1Spec {
             type Ux = u32;
@@ -11955,10 +11979,8 @@ pub mod pwm {
         impl crate::Writable for PwmPortity1Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_PORTITY1 to value 0"]
-        impl crate::Resettable for PwmPortity1Spec {}
     }
-    #[doc = "PWM_OEN_CFG1 (rw) register accessor: PWM_OEN_CFG1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_oen_cfg1::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_oen_cfg1::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_oen_cfg1`] module"]
+    #[doc = "PWM_OEN_CFG1 (rw) register accessor: PWM_OEN_CFG1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_oen_cfg1::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_oen_cfg1::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_oen_cfg1`] module"]
     #[doc(alias = "PWM_OEN_CFG1")]
     pub type PwmOenCfg1 = crate::Reg<pwm_oen_cfg1::PwmOenCfg1Spec>;
     #[doc = "PWM_OEN_CFG1"]
@@ -11985,7 +12007,7 @@ pub mod pwm {
                 PwmOenCfg1W::new(self, 0)
             }
         }
-        #[doc = "PWM_OEN_CFG1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_oen_cfg1::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_oen_cfg1::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_OEN_CFG1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_oen_cfg1::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_oen_cfg1::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmOenCfg1Spec;
         impl crate::RegisterSpec for PwmOenCfg1Spec {
             type Ux = u32;
@@ -11996,10 +12018,8 @@ pub mod pwm {
         impl crate::Writable for PwmOenCfg1Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_OEN_CFG1 to value 0"]
-        impl crate::Resettable for PwmOenCfg1Spec {}
     }
-    #[doc = "PWM_OFFSET_L1 (rw) register accessor: PWM_OFFSET_L1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_l1::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_l1::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_offset_l1`] module"]
+    #[doc = "PWM_OFFSET_L1 (rw) register accessor: PWM_OFFSET_L1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_l1::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_l1::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_offset_l1`] module"]
     #[doc(alias = "PWM_OFFSET_L1")]
     pub type PwmOffsetL1 = crate::Reg<pwm_offset_l1::PwmOffsetL1Spec>;
     #[doc = "PWM_OFFSET_L1"]
@@ -12026,7 +12046,7 @@ pub mod pwm {
                 PwmOffsetL1W::new(self, 0)
             }
         }
-        #[doc = "PWM_OFFSET_L1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_l1::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_l1::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_OFFSET_L1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_l1::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_l1::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmOffsetL1Spec;
         impl crate::RegisterSpec for PwmOffsetL1Spec {
             type Ux = u32;
@@ -12037,10 +12057,8 @@ pub mod pwm {
         impl crate::Writable for PwmOffsetL1Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_OFFSET_L1 to value 0"]
-        impl crate::Resettable for PwmOffsetL1Spec {}
     }
-    #[doc = "PWM_OFFSET_H1 (rw) register accessor: PWM_OFFSET_H1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_h1::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_h1::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_offset_h1`] module"]
+    #[doc = "PWM_OFFSET_H1 (rw) register accessor: PWM_OFFSET_H1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_h1::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_h1::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_offset_h1`] module"]
     #[doc(alias = "PWM_OFFSET_H1")]
     pub type PwmOffsetH1 = crate::Reg<pwm_offset_h1::PwmOffsetH1Spec>;
     #[doc = "PWM_OFFSET_H1"]
@@ -12067,7 +12085,7 @@ pub mod pwm {
                 PwmOffsetH1W::new(self, 0)
             }
         }
-        #[doc = "PWM_OFFSET_H1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_h1::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_h1::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_OFFSET_H1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_h1::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_h1::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmOffsetH1Spec;
         impl crate::RegisterSpec for PwmOffsetH1Spec {
             type Ux = u32;
@@ -12078,10 +12096,8 @@ pub mod pwm {
         impl crate::Writable for PwmOffsetH1Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_OFFSET_H1 to value 0"]
-        impl crate::Resettable for PwmOffsetH1Spec {}
     }
-    #[doc = "PWM_FREQ_L1 (rw) register accessor: PWM_FREQ_L1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_l1::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_l1::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_freq_l1`] module"]
+    #[doc = "PWM_FREQ_L1 (rw) register accessor: PWM_FREQ_L1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_l1::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_l1::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_freq_l1`] module"]
     #[doc(alias = "PWM_FREQ_L1")]
     pub type PwmFreqL1 = crate::Reg<pwm_freq_l1::PwmFreqL1Spec>;
     #[doc = "PWM_FREQ_L1"]
@@ -12108,7 +12124,7 @@ pub mod pwm {
                 PwmFreqL1W::new(self, 0)
             }
         }
-        #[doc = "PWM_FREQ_L1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_l1::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_l1::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_FREQ_L1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_l1::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_l1::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmFreqL1Spec;
         impl crate::RegisterSpec for PwmFreqL1Spec {
             type Ux = u32;
@@ -12119,10 +12135,8 @@ pub mod pwm {
         impl crate::Writable for PwmFreqL1Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_FREQ_L1 to value 0"]
-        impl crate::Resettable for PwmFreqL1Spec {}
     }
-    #[doc = "PWM_FREQ_H1 (rw) register accessor: PWM_FREQ_H1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_h1::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_h1::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_freq_h1`] module"]
+    #[doc = "PWM_FREQ_H1 (rw) register accessor: PWM_FREQ_H1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_h1::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_h1::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_freq_h1`] module"]
     #[doc(alias = "PWM_FREQ_H1")]
     pub type PwmFreqH1 = crate::Reg<pwm_freq_h1::PwmFreqH1Spec>;
     #[doc = "PWM_FREQ_H1"]
@@ -12149,7 +12163,7 @@ pub mod pwm {
                 PwmFreqH1W::new(self, 0)
             }
         }
-        #[doc = "PWM_FREQ_H1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_h1::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_h1::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_FREQ_H1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_h1::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_h1::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmFreqH1Spec;
         impl crate::RegisterSpec for PwmFreqH1Spec {
             type Ux = u32;
@@ -12160,10 +12174,8 @@ pub mod pwm {
         impl crate::Writable for PwmFreqH1Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_FREQ_H1 to value 0"]
-        impl crate::Resettable for PwmFreqH1Spec {}
     }
-    #[doc = "PWM_DUTY_L1 (rw) register accessor: PWM_DUTY_L1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_l1::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_l1::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_duty_l1`] module"]
+    #[doc = "PWM_DUTY_L1 (rw) register accessor: PWM_DUTY_L1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_l1::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_l1::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_duty_l1`] module"]
     #[doc(alias = "PWM_DUTY_L1")]
     pub type PwmDutyL1 = crate::Reg<pwm_duty_l1::PwmDutyL1Spec>;
     #[doc = "PWM_DUTY_L1"]
@@ -12190,7 +12202,7 @@ pub mod pwm {
                 PwmDutyL1W::new(self, 0)
             }
         }
-        #[doc = "PWM_DUTY_L1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_l1::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_l1::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_DUTY_L1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_l1::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_l1::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmDutyL1Spec;
         impl crate::RegisterSpec for PwmDutyL1Spec {
             type Ux = u32;
@@ -12201,10 +12213,8 @@ pub mod pwm {
         impl crate::Writable for PwmDutyL1Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_DUTY_L1 to value 0"]
-        impl crate::Resettable for PwmDutyL1Spec {}
     }
-    #[doc = "PWM_DUTY_H1 (rw) register accessor: PWM_DUTY_H1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_h1::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_h1::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_duty_h1`] module"]
+    #[doc = "PWM_DUTY_H1 (rw) register accessor: PWM_DUTY_H1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_h1::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_h1::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_duty_h1`] module"]
     #[doc(alias = "PWM_DUTY_H1")]
     pub type PwmDutyH1 = crate::Reg<pwm_duty_h1::PwmDutyH1Spec>;
     #[doc = "PWM_DUTY_H1"]
@@ -12231,7 +12241,7 @@ pub mod pwm {
                 PwmDutyH1W::new(self, 0)
             }
         }
-        #[doc = "PWM_DUTY_H1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_h1::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_h1::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_DUTY_H1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_h1::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_h1::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmDutyH1Spec;
         impl crate::RegisterSpec for PwmDutyH1Spec {
             type Ux = u32;
@@ -12242,8 +12252,6 @@ pub mod pwm {
         impl crate::Writable for PwmDutyH1Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_DUTY_H1 to value 0"]
-        impl crate::Resettable for PwmDutyH1Spec {}
     }
     #[doc = "PWM_PERIODLOAD_FLAG1 (r) register accessor: PWM_PERIODLOAD_FLAG1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_periodload_flag1::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_periodload_flag1`] module"]
     #[doc(alias = "PWM_PERIODLOAD_FLAG1")]
@@ -12268,10 +12276,8 @@ pub mod pwm {
         }
         #[doc = "`read()` method returns [`pwm_periodload_flag1::R`](R) reader structure"]
         impl crate::Readable for PwmPeriodloadFlag1Spec {}
-        #[doc = "`reset()` method sets PWM_PERIODLOAD_FLAG1 to value 0"]
-        impl crate::Resettable for PwmPeriodloadFlag1Spec {}
     }
-    #[doc = "PWM_PERIOD_VAL1 (rw) register accessor: PWM_PERIOD_VAL1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_period_val1::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_period_val1::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_period_val1`] module"]
+    #[doc = "PWM_PERIOD_VAL1 (rw) register accessor: PWM_PERIOD_VAL1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_period_val1::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_period_val1::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_period_val1`] module"]
     #[doc(alias = "PWM_PERIOD_VAL1")]
     pub type PwmPeriodVal1 = crate::Reg<pwm_period_val1::PwmPeriodVal1Spec>;
     #[doc = "PWM_PERIOD_VAL1"]
@@ -12298,7 +12304,7 @@ pub mod pwm {
                 PwmPeriodVal1W::new(self, 0)
             }
         }
-        #[doc = "PWM_PERIOD_VAL1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_period_val1::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_period_val1::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_PERIOD_VAL1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_period_val1::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_period_val1::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmPeriodVal1Spec;
         impl crate::RegisterSpec for PwmPeriodVal1Spec {
             type Ux = u32;
@@ -12309,8 +12315,6 @@ pub mod pwm {
         impl crate::Writable for PwmPeriodVal1Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_PERIOD_VAL1 to value 0"]
-        impl crate::Resettable for PwmPeriodVal1Spec {}
     }
     #[doc = "PWM_PERIODCNT1 (r) register accessor: PWM_PERIODCNT1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_periodcnt1::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_periodcnt1`] module"]
     #[doc(alias = "PWM_PERIODCNT1")]
@@ -12335,10 +12339,8 @@ pub mod pwm {
         }
         #[doc = "`read()` method returns [`pwm_periodcnt1::R`](R) reader structure"]
         impl crate::Readable for PwmPeriodcnt1Spec {}
-        #[doc = "`reset()` method sets PWM_PERIODCNT1 to value 0"]
-        impl crate::Resettable for PwmPeriodcnt1Spec {}
     }
-    #[doc = "PWM_EN2 (rw) register accessor: PWM_EN2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_en2::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_en2::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_en2`] module"]
+    #[doc = "PWM_EN2 (rw) register accessor: PWM_EN2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_en2::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_en2::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_en2`] module"]
     #[doc(alias = "PWM_EN2")]
     pub type PwmEn2 = crate::Reg<pwm_en2::PwmEn2Spec>;
     #[doc = "PWM_EN2"]
@@ -12347,7 +12349,7 @@ pub mod pwm {
         pub type R = crate::R<PwmEn2Spec>;
         #[doc = "Register `PWM_EN2` writer"]
         pub type W = crate::W<PwmEn2Spec>;
-        #[doc = "PWM0 enable: 0=off; 1=on\n\nValue on reset: 0"]
+        #[doc = "PWM0 enable: 0=off; 1=on"]
         #[derive(Clone, Copy, Debug, PartialEq, Eq)]
         pub enum PwmEn2 {
             #[doc = "0: PWM disabled, output low"]
@@ -12414,7 +12416,7 @@ pub mod pwm {
                 PwmEn2W::new(self, 0)
             }
         }
-        #[doc = "PWM_EN2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_en2::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_en2::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_EN2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_en2::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_en2::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmEn2Spec;
         impl crate::RegisterSpec for PwmEn2Spec {
             type Ux = u32;
@@ -12425,10 +12427,8 @@ pub mod pwm {
         impl crate::Writable for PwmEn2Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_EN2 to value 0"]
-        impl crate::Resettable for PwmEn2Spec {}
     }
-    #[doc = "PWM_PORTITY2 (rw) register accessor: PWM_PORTITY2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_portity2::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_portity2::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_portity2`] module"]
+    #[doc = "PWM_PORTITY2 (rw) register accessor: PWM_PORTITY2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_portity2::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_portity2::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_portity2`] module"]
     #[doc(alias = "PWM_PORTITY2")]
     pub type PwmPortity2 = crate::Reg<pwm_portity2::PwmPortity2Spec>;
     #[doc = "PWM_PORTITY2"]
@@ -12437,7 +12437,7 @@ pub mod pwm {
         pub type R = crate::R<PwmPortity2Spec>;
         #[doc = "Register `PWM_PORTITY2` writer"]
         pub type W = crate::W<PwmPortity2Spec>;
-        #[doc = "PWM0 polarity: 0=normal; 1=inverted\n\nValue on reset: 0"]
+        #[doc = "PWM0 polarity: 0=normal; 1=inverted"]
         #[derive(Clone, Copy, Debug, PartialEq, Eq)]
         pub enum PwmPoarity2 {
             #[doc = "0: Normal polarity"]
@@ -12504,7 +12504,7 @@ pub mod pwm {
                 PwmPoarity2W::new(self, 0)
             }
         }
-        #[doc = "PWM_PORTITY2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_portity2::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_portity2::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_PORTITY2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_portity2::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_portity2::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmPortity2Spec;
         impl crate::RegisterSpec for PwmPortity2Spec {
             type Ux = u32;
@@ -12515,10 +12515,8 @@ pub mod pwm {
         impl crate::Writable for PwmPortity2Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_PORTITY2 to value 0"]
-        impl crate::Resettable for PwmPortity2Spec {}
     }
-    #[doc = "PWM_OEN_CFG2 (rw) register accessor: PWM_OEN_CFG2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_oen_cfg2::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_oen_cfg2::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_oen_cfg2`] module"]
+    #[doc = "PWM_OEN_CFG2 (rw) register accessor: PWM_OEN_CFG2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_oen_cfg2::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_oen_cfg2::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_oen_cfg2`] module"]
     #[doc(alias = "PWM_OEN_CFG2")]
     pub type PwmOenCfg2 = crate::Reg<pwm_oen_cfg2::PwmOenCfg2Spec>;
     #[doc = "PWM_OEN_CFG2"]
@@ -12545,7 +12543,7 @@ pub mod pwm {
                 PwmOenCfg2W::new(self, 0)
             }
         }
-        #[doc = "PWM_OEN_CFG2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_oen_cfg2::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_oen_cfg2::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_OEN_CFG2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_oen_cfg2::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_oen_cfg2::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmOenCfg2Spec;
         impl crate::RegisterSpec for PwmOenCfg2Spec {
             type Ux = u32;
@@ -12556,10 +12554,8 @@ pub mod pwm {
         impl crate::Writable for PwmOenCfg2Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_OEN_CFG2 to value 0"]
-        impl crate::Resettable for PwmOenCfg2Spec {}
     }
-    #[doc = "PWM_OFFSET_L2 (rw) register accessor: PWM_OFFSET_L2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_l2::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_l2::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_offset_l2`] module"]
+    #[doc = "PWM_OFFSET_L2 (rw) register accessor: PWM_OFFSET_L2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_l2::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_l2::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_offset_l2`] module"]
     #[doc(alias = "PWM_OFFSET_L2")]
     pub type PwmOffsetL2 = crate::Reg<pwm_offset_l2::PwmOffsetL2Spec>;
     #[doc = "PWM_OFFSET_L2"]
@@ -12586,7 +12582,7 @@ pub mod pwm {
                 PwmOffsetL2W::new(self, 0)
             }
         }
-        #[doc = "PWM_OFFSET_L2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_l2::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_l2::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_OFFSET_L2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_l2::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_l2::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmOffsetL2Spec;
         impl crate::RegisterSpec for PwmOffsetL2Spec {
             type Ux = u32;
@@ -12597,10 +12593,8 @@ pub mod pwm {
         impl crate::Writable for PwmOffsetL2Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_OFFSET_L2 to value 0"]
-        impl crate::Resettable for PwmOffsetL2Spec {}
     }
-    #[doc = "PWM_OFFSET_H2 (rw) register accessor: PWM_OFFSET_H2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_h2::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_h2::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_offset_h2`] module"]
+    #[doc = "PWM_OFFSET_H2 (rw) register accessor: PWM_OFFSET_H2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_h2::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_h2::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_offset_h2`] module"]
     #[doc(alias = "PWM_OFFSET_H2")]
     pub type PwmOffsetH2 = crate::Reg<pwm_offset_h2::PwmOffsetH2Spec>;
     #[doc = "PWM_OFFSET_H2"]
@@ -12627,7 +12621,7 @@ pub mod pwm {
                 PwmOffsetH2W::new(self, 0)
             }
         }
-        #[doc = "PWM_OFFSET_H2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_h2::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_h2::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_OFFSET_H2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_h2::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_h2::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmOffsetH2Spec;
         impl crate::RegisterSpec for PwmOffsetH2Spec {
             type Ux = u32;
@@ -12638,10 +12632,8 @@ pub mod pwm {
         impl crate::Writable for PwmOffsetH2Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_OFFSET_H2 to value 0"]
-        impl crate::Resettable for PwmOffsetH2Spec {}
     }
-    #[doc = "PWM_FREQ_L2 (rw) register accessor: PWM_FREQ_L2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_l2::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_l2::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_freq_l2`] module"]
+    #[doc = "PWM_FREQ_L2 (rw) register accessor: PWM_FREQ_L2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_l2::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_l2::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_freq_l2`] module"]
     #[doc(alias = "PWM_FREQ_L2")]
     pub type PwmFreqL2 = crate::Reg<pwm_freq_l2::PwmFreqL2Spec>;
     #[doc = "PWM_FREQ_L2"]
@@ -12668,7 +12660,7 @@ pub mod pwm {
                 PwmFreqL2W::new(self, 0)
             }
         }
-        #[doc = "PWM_FREQ_L2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_l2::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_l2::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_FREQ_L2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_l2::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_l2::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmFreqL2Spec;
         impl crate::RegisterSpec for PwmFreqL2Spec {
             type Ux = u32;
@@ -12679,10 +12671,8 @@ pub mod pwm {
         impl crate::Writable for PwmFreqL2Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_FREQ_L2 to value 0"]
-        impl crate::Resettable for PwmFreqL2Spec {}
     }
-    #[doc = "PWM_FREQ_H2 (rw) register accessor: PWM_FREQ_H2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_h2::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_h2::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_freq_h2`] module"]
+    #[doc = "PWM_FREQ_H2 (rw) register accessor: PWM_FREQ_H2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_h2::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_h2::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_freq_h2`] module"]
     #[doc(alias = "PWM_FREQ_H2")]
     pub type PwmFreqH2 = crate::Reg<pwm_freq_h2::PwmFreqH2Spec>;
     #[doc = "PWM_FREQ_H2"]
@@ -12709,7 +12699,7 @@ pub mod pwm {
                 PwmFreqH2W::new(self, 0)
             }
         }
-        #[doc = "PWM_FREQ_H2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_h2::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_h2::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_FREQ_H2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_h2::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_h2::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmFreqH2Spec;
         impl crate::RegisterSpec for PwmFreqH2Spec {
             type Ux = u32;
@@ -12720,10 +12710,8 @@ pub mod pwm {
         impl crate::Writable for PwmFreqH2Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_FREQ_H2 to value 0"]
-        impl crate::Resettable for PwmFreqH2Spec {}
     }
-    #[doc = "PWM_DUTY_L2 (rw) register accessor: PWM_DUTY_L2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_l2::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_l2::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_duty_l2`] module"]
+    #[doc = "PWM_DUTY_L2 (rw) register accessor: PWM_DUTY_L2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_l2::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_l2::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_duty_l2`] module"]
     #[doc(alias = "PWM_DUTY_L2")]
     pub type PwmDutyL2 = crate::Reg<pwm_duty_l2::PwmDutyL2Spec>;
     #[doc = "PWM_DUTY_L2"]
@@ -12750,7 +12738,7 @@ pub mod pwm {
                 PwmDutyL2W::new(self, 0)
             }
         }
-        #[doc = "PWM_DUTY_L2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_l2::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_l2::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_DUTY_L2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_l2::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_l2::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmDutyL2Spec;
         impl crate::RegisterSpec for PwmDutyL2Spec {
             type Ux = u32;
@@ -12761,10 +12749,8 @@ pub mod pwm {
         impl crate::Writable for PwmDutyL2Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_DUTY_L2 to value 0"]
-        impl crate::Resettable for PwmDutyL2Spec {}
     }
-    #[doc = "PWM_DUTY_H2 (rw) register accessor: PWM_DUTY_H2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_h2::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_h2::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_duty_h2`] module"]
+    #[doc = "PWM_DUTY_H2 (rw) register accessor: PWM_DUTY_H2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_h2::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_h2::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_duty_h2`] module"]
     #[doc(alias = "PWM_DUTY_H2")]
     pub type PwmDutyH2 = crate::Reg<pwm_duty_h2::PwmDutyH2Spec>;
     #[doc = "PWM_DUTY_H2"]
@@ -12791,7 +12777,7 @@ pub mod pwm {
                 PwmDutyH2W::new(self, 0)
             }
         }
-        #[doc = "PWM_DUTY_H2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_h2::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_h2::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_DUTY_H2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_h2::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_h2::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmDutyH2Spec;
         impl crate::RegisterSpec for PwmDutyH2Spec {
             type Ux = u32;
@@ -12802,8 +12788,6 @@ pub mod pwm {
         impl crate::Writable for PwmDutyH2Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_DUTY_H2 to value 0"]
-        impl crate::Resettable for PwmDutyH2Spec {}
     }
     #[doc = "PWM_PERIODLOAD_FLAG2 (r) register accessor: PWM_PERIODLOAD_FLAG2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_periodload_flag2::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_periodload_flag2`] module"]
     #[doc(alias = "PWM_PERIODLOAD_FLAG2")]
@@ -12828,10 +12812,8 @@ pub mod pwm {
         }
         #[doc = "`read()` method returns [`pwm_periodload_flag2::R`](R) reader structure"]
         impl crate::Readable for PwmPeriodloadFlag2Spec {}
-        #[doc = "`reset()` method sets PWM_PERIODLOAD_FLAG2 to value 0"]
-        impl crate::Resettable for PwmPeriodloadFlag2Spec {}
     }
-    #[doc = "PWM_PERIOD_VAL2 (rw) register accessor: PWM_PERIOD_VAL2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_period_val2::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_period_val2::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_period_val2`] module"]
+    #[doc = "PWM_PERIOD_VAL2 (rw) register accessor: PWM_PERIOD_VAL2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_period_val2::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_period_val2::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_period_val2`] module"]
     #[doc(alias = "PWM_PERIOD_VAL2")]
     pub type PwmPeriodVal2 = crate::Reg<pwm_period_val2::PwmPeriodVal2Spec>;
     #[doc = "PWM_PERIOD_VAL2"]
@@ -12858,7 +12840,7 @@ pub mod pwm {
                 PwmPeriodVal2W::new(self, 0)
             }
         }
-        #[doc = "PWM_PERIOD_VAL2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_period_val2::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_period_val2::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_PERIOD_VAL2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_period_val2::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_period_val2::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmPeriodVal2Spec;
         impl crate::RegisterSpec for PwmPeriodVal2Spec {
             type Ux = u32;
@@ -12869,8 +12851,6 @@ pub mod pwm {
         impl crate::Writable for PwmPeriodVal2Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_PERIOD_VAL2 to value 0"]
-        impl crate::Resettable for PwmPeriodVal2Spec {}
     }
     #[doc = "PWM_PERIODCNT2 (r) register accessor: PWM_PERIODCNT2\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_periodcnt2::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_periodcnt2`] module"]
     #[doc(alias = "PWM_PERIODCNT2")]
@@ -12895,10 +12875,8 @@ pub mod pwm {
         }
         #[doc = "`read()` method returns [`pwm_periodcnt2::R`](R) reader structure"]
         impl crate::Readable for PwmPeriodcnt2Spec {}
-        #[doc = "`reset()` method sets PWM_PERIODCNT2 to value 0"]
-        impl crate::Resettable for PwmPeriodcnt2Spec {}
     }
-    #[doc = "PWM_EN3 (rw) register accessor: PWM_EN3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_en3::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_en3::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_en3`] module"]
+    #[doc = "PWM_EN3 (rw) register accessor: PWM_EN3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_en3::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_en3::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_en3`] module"]
     #[doc(alias = "PWM_EN3")]
     pub type PwmEn3 = crate::Reg<pwm_en3::PwmEn3Spec>;
     #[doc = "PWM_EN3"]
@@ -12907,7 +12885,7 @@ pub mod pwm {
         pub type R = crate::R<PwmEn3Spec>;
         #[doc = "Register `PWM_EN3` writer"]
         pub type W = crate::W<PwmEn3Spec>;
-        #[doc = "PWM0 enable: 0=off; 1=on\n\nValue on reset: 0"]
+        #[doc = "PWM0 enable: 0=off; 1=on"]
         #[derive(Clone, Copy, Debug, PartialEq, Eq)]
         pub enum PwmEn3 {
             #[doc = "0: PWM disabled, output low"]
@@ -12974,7 +12952,7 @@ pub mod pwm {
                 PwmEn3W::new(self, 0)
             }
         }
-        #[doc = "PWM_EN3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_en3::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_en3::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_EN3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_en3::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_en3::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmEn3Spec;
         impl crate::RegisterSpec for PwmEn3Spec {
             type Ux = u32;
@@ -12985,10 +12963,8 @@ pub mod pwm {
         impl crate::Writable for PwmEn3Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_EN3 to value 0"]
-        impl crate::Resettable for PwmEn3Spec {}
     }
-    #[doc = "PWM_PORTITY3 (rw) register accessor: PWM_PORTITY3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_portity3::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_portity3::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_portity3`] module"]
+    #[doc = "PWM_PORTITY3 (rw) register accessor: PWM_PORTITY3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_portity3::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_portity3::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_portity3`] module"]
     #[doc(alias = "PWM_PORTITY3")]
     pub type PwmPortity3 = crate::Reg<pwm_portity3::PwmPortity3Spec>;
     #[doc = "PWM_PORTITY3"]
@@ -12997,7 +12973,7 @@ pub mod pwm {
         pub type R = crate::R<PwmPortity3Spec>;
         #[doc = "Register `PWM_PORTITY3` writer"]
         pub type W = crate::W<PwmPortity3Spec>;
-        #[doc = "PWM0 polarity: 0=normal; 1=inverted\n\nValue on reset: 0"]
+        #[doc = "PWM0 polarity: 0=normal; 1=inverted"]
         #[derive(Clone, Copy, Debug, PartialEq, Eq)]
         pub enum PwmPoarity3 {
             #[doc = "0: Normal polarity"]
@@ -13064,7 +13040,7 @@ pub mod pwm {
                 PwmPoarity3W::new(self, 0)
             }
         }
-        #[doc = "PWM_PORTITY3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_portity3::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_portity3::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_PORTITY3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_portity3::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_portity3::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmPortity3Spec;
         impl crate::RegisterSpec for PwmPortity3Spec {
             type Ux = u32;
@@ -13075,10 +13051,8 @@ pub mod pwm {
         impl crate::Writable for PwmPortity3Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_PORTITY3 to value 0"]
-        impl crate::Resettable for PwmPortity3Spec {}
     }
-    #[doc = "PWM_OEN_CFG3 (rw) register accessor: PWM_OEN_CFG3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_oen_cfg3::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_oen_cfg3::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_oen_cfg3`] module"]
+    #[doc = "PWM_OEN_CFG3 (rw) register accessor: PWM_OEN_CFG3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_oen_cfg3::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_oen_cfg3::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_oen_cfg3`] module"]
     #[doc(alias = "PWM_OEN_CFG3")]
     pub type PwmOenCfg3 = crate::Reg<pwm_oen_cfg3::PwmOenCfg3Spec>;
     #[doc = "PWM_OEN_CFG3"]
@@ -13105,7 +13079,7 @@ pub mod pwm {
                 PwmOenCfg3W::new(self, 0)
             }
         }
-        #[doc = "PWM_OEN_CFG3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_oen_cfg3::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_oen_cfg3::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_OEN_CFG3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_oen_cfg3::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_oen_cfg3::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmOenCfg3Spec;
         impl crate::RegisterSpec for PwmOenCfg3Spec {
             type Ux = u32;
@@ -13116,10 +13090,8 @@ pub mod pwm {
         impl crate::Writable for PwmOenCfg3Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_OEN_CFG3 to value 0"]
-        impl crate::Resettable for PwmOenCfg3Spec {}
     }
-    #[doc = "PWM_OFFSET_L3 (rw) register accessor: PWM_OFFSET_L3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_l3::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_l3::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_offset_l3`] module"]
+    #[doc = "PWM_OFFSET_L3 (rw) register accessor: PWM_OFFSET_L3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_l3::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_l3::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_offset_l3`] module"]
     #[doc(alias = "PWM_OFFSET_L3")]
     pub type PwmOffsetL3 = crate::Reg<pwm_offset_l3::PwmOffsetL3Spec>;
     #[doc = "PWM_OFFSET_L3"]
@@ -13146,7 +13118,7 @@ pub mod pwm {
                 PwmOffsetL3W::new(self, 0)
             }
         }
-        #[doc = "PWM_OFFSET_L3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_l3::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_l3::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_OFFSET_L3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_l3::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_l3::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmOffsetL3Spec;
         impl crate::RegisterSpec for PwmOffsetL3Spec {
             type Ux = u32;
@@ -13157,10 +13129,8 @@ pub mod pwm {
         impl crate::Writable for PwmOffsetL3Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_OFFSET_L3 to value 0"]
-        impl crate::Resettable for PwmOffsetL3Spec {}
     }
-    #[doc = "PWM_OFFSET_H3 (rw) register accessor: PWM_OFFSET_H3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_h3::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_h3::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_offset_h3`] module"]
+    #[doc = "PWM_OFFSET_H3 (rw) register accessor: PWM_OFFSET_H3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_h3::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_h3::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_offset_h3`] module"]
     #[doc(alias = "PWM_OFFSET_H3")]
     pub type PwmOffsetH3 = crate::Reg<pwm_offset_h3::PwmOffsetH3Spec>;
     #[doc = "PWM_OFFSET_H3"]
@@ -13187,7 +13157,7 @@ pub mod pwm {
                 PwmOffsetH3W::new(self, 0)
             }
         }
-        #[doc = "PWM_OFFSET_H3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_h3::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_h3::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_OFFSET_H3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_h3::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_h3::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmOffsetH3Spec;
         impl crate::RegisterSpec for PwmOffsetH3Spec {
             type Ux = u32;
@@ -13198,10 +13168,8 @@ pub mod pwm {
         impl crate::Writable for PwmOffsetH3Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_OFFSET_H3 to value 0"]
-        impl crate::Resettable for PwmOffsetH3Spec {}
     }
-    #[doc = "PWM_FREQ_L3 (rw) register accessor: PWM_FREQ_L3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_l3::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_l3::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_freq_l3`] module"]
+    #[doc = "PWM_FREQ_L3 (rw) register accessor: PWM_FREQ_L3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_l3::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_l3::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_freq_l3`] module"]
     #[doc(alias = "PWM_FREQ_L3")]
     pub type PwmFreqL3 = crate::Reg<pwm_freq_l3::PwmFreqL3Spec>;
     #[doc = "PWM_FREQ_L3"]
@@ -13228,7 +13196,7 @@ pub mod pwm {
                 PwmFreqL3W::new(self, 0)
             }
         }
-        #[doc = "PWM_FREQ_L3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_l3::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_l3::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_FREQ_L3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_l3::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_l3::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmFreqL3Spec;
         impl crate::RegisterSpec for PwmFreqL3Spec {
             type Ux = u32;
@@ -13239,10 +13207,8 @@ pub mod pwm {
         impl crate::Writable for PwmFreqL3Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_FREQ_L3 to value 0"]
-        impl crate::Resettable for PwmFreqL3Spec {}
     }
-    #[doc = "PWM_FREQ_H3 (rw) register accessor: PWM_FREQ_H3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_h3::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_h3::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_freq_h3`] module"]
+    #[doc = "PWM_FREQ_H3 (rw) register accessor: PWM_FREQ_H3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_h3::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_h3::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_freq_h3`] module"]
     #[doc(alias = "PWM_FREQ_H3")]
     pub type PwmFreqH3 = crate::Reg<pwm_freq_h3::PwmFreqH3Spec>;
     #[doc = "PWM_FREQ_H3"]
@@ -13269,7 +13235,7 @@ pub mod pwm {
                 PwmFreqH3W::new(self, 0)
             }
         }
-        #[doc = "PWM_FREQ_H3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_h3::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_h3::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_FREQ_H3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_h3::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_h3::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmFreqH3Spec;
         impl crate::RegisterSpec for PwmFreqH3Spec {
             type Ux = u32;
@@ -13280,10 +13246,8 @@ pub mod pwm {
         impl crate::Writable for PwmFreqH3Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_FREQ_H3 to value 0"]
-        impl crate::Resettable for PwmFreqH3Spec {}
     }
-    #[doc = "PWM_DUTY_L3 (rw) register accessor: PWM_DUTY_L3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_l3::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_l3::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_duty_l3`] module"]
+    #[doc = "PWM_DUTY_L3 (rw) register accessor: PWM_DUTY_L3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_l3::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_l3::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_duty_l3`] module"]
     #[doc(alias = "PWM_DUTY_L3")]
     pub type PwmDutyL3 = crate::Reg<pwm_duty_l3::PwmDutyL3Spec>;
     #[doc = "PWM_DUTY_L3"]
@@ -13310,7 +13274,7 @@ pub mod pwm {
                 PwmDutyL3W::new(self, 0)
             }
         }
-        #[doc = "PWM_DUTY_L3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_l3::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_l3::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_DUTY_L3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_l3::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_l3::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmDutyL3Spec;
         impl crate::RegisterSpec for PwmDutyL3Spec {
             type Ux = u32;
@@ -13321,10 +13285,8 @@ pub mod pwm {
         impl crate::Writable for PwmDutyL3Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_DUTY_L3 to value 0"]
-        impl crate::Resettable for PwmDutyL3Spec {}
     }
-    #[doc = "PWM_DUTY_H3 (rw) register accessor: PWM_DUTY_H3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_h3::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_h3::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_duty_h3`] module"]
+    #[doc = "PWM_DUTY_H3 (rw) register accessor: PWM_DUTY_H3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_h3::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_h3::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_duty_h3`] module"]
     #[doc(alias = "PWM_DUTY_H3")]
     pub type PwmDutyH3 = crate::Reg<pwm_duty_h3::PwmDutyH3Spec>;
     #[doc = "PWM_DUTY_H3"]
@@ -13351,7 +13313,7 @@ pub mod pwm {
                 PwmDutyH3W::new(self, 0)
             }
         }
-        #[doc = "PWM_DUTY_H3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_h3::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_h3::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_DUTY_H3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_h3::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_h3::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmDutyH3Spec;
         impl crate::RegisterSpec for PwmDutyH3Spec {
             type Ux = u32;
@@ -13362,8 +13324,6 @@ pub mod pwm {
         impl crate::Writable for PwmDutyH3Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_DUTY_H3 to value 0"]
-        impl crate::Resettable for PwmDutyH3Spec {}
     }
     #[doc = "PWM_PERIODLOAD_FLAG3 (r) register accessor: PWM_PERIODLOAD_FLAG3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_periodload_flag3::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_periodload_flag3`] module"]
     #[doc(alias = "PWM_PERIODLOAD_FLAG3")]
@@ -13388,10 +13348,8 @@ pub mod pwm {
         }
         #[doc = "`read()` method returns [`pwm_periodload_flag3::R`](R) reader structure"]
         impl crate::Readable for PwmPeriodloadFlag3Spec {}
-        #[doc = "`reset()` method sets PWM_PERIODLOAD_FLAG3 to value 0"]
-        impl crate::Resettable for PwmPeriodloadFlag3Spec {}
     }
-    #[doc = "PWM_PERIOD_VAL3 (rw) register accessor: PWM_PERIOD_VAL3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_period_val3::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_period_val3::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_period_val3`] module"]
+    #[doc = "PWM_PERIOD_VAL3 (rw) register accessor: PWM_PERIOD_VAL3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_period_val3::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_period_val3::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_period_val3`] module"]
     #[doc(alias = "PWM_PERIOD_VAL3")]
     pub type PwmPeriodVal3 = crate::Reg<pwm_period_val3::PwmPeriodVal3Spec>;
     #[doc = "PWM_PERIOD_VAL3"]
@@ -13418,7 +13376,7 @@ pub mod pwm {
                 PwmPeriodVal3W::new(self, 0)
             }
         }
-        #[doc = "PWM_PERIOD_VAL3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_period_val3::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_period_val3::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_PERIOD_VAL3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_period_val3::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_period_val3::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmPeriodVal3Spec;
         impl crate::RegisterSpec for PwmPeriodVal3Spec {
             type Ux = u32;
@@ -13429,8 +13387,6 @@ pub mod pwm {
         impl crate::Writable for PwmPeriodVal3Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_PERIOD_VAL3 to value 0"]
-        impl crate::Resettable for PwmPeriodVal3Spec {}
     }
     #[doc = "PWM_PERIODCNT3 (r) register accessor: PWM_PERIODCNT3\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_periodcnt3::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_periodcnt3`] module"]
     #[doc(alias = "PWM_PERIODCNT3")]
@@ -13455,10 +13411,8 @@ pub mod pwm {
         }
         #[doc = "`read()` method returns [`pwm_periodcnt3::R`](R) reader structure"]
         impl crate::Readable for PwmPeriodcnt3Spec {}
-        #[doc = "`reset()` method sets PWM_PERIODCNT3 to value 0"]
-        impl crate::Resettable for PwmPeriodcnt3Spec {}
     }
-    #[doc = "PWM_EN4 (rw) register accessor: PWM_EN4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_en4::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_en4::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_en4`] module"]
+    #[doc = "PWM_EN4 (rw) register accessor: PWM_EN4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_en4::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_en4::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_en4`] module"]
     #[doc(alias = "PWM_EN4")]
     pub type PwmEn4 = crate::Reg<pwm_en4::PwmEn4Spec>;
     #[doc = "PWM_EN4"]
@@ -13467,7 +13421,7 @@ pub mod pwm {
         pub type R = crate::R<PwmEn4Spec>;
         #[doc = "Register `PWM_EN4` writer"]
         pub type W = crate::W<PwmEn4Spec>;
-        #[doc = "PWM0 enable: 0=off; 1=on\n\nValue on reset: 0"]
+        #[doc = "PWM0 enable: 0=off; 1=on"]
         #[derive(Clone, Copy, Debug, PartialEq, Eq)]
         pub enum PwmEn4 {
             #[doc = "0: PWM disabled, output low"]
@@ -13534,7 +13488,7 @@ pub mod pwm {
                 PwmEn4W::new(self, 0)
             }
         }
-        #[doc = "PWM_EN4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_en4::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_en4::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_EN4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_en4::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_en4::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmEn4Spec;
         impl crate::RegisterSpec for PwmEn4Spec {
             type Ux = u32;
@@ -13545,10 +13499,8 @@ pub mod pwm {
         impl crate::Writable for PwmEn4Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_EN4 to value 0"]
-        impl crate::Resettable for PwmEn4Spec {}
     }
-    #[doc = "PWM_PORTITY4 (rw) register accessor: PWM_PORTITY4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_portity4::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_portity4::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_portity4`] module"]
+    #[doc = "PWM_PORTITY4 (rw) register accessor: PWM_PORTITY4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_portity4::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_portity4::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_portity4`] module"]
     #[doc(alias = "PWM_PORTITY4")]
     pub type PwmPortity4 = crate::Reg<pwm_portity4::PwmPortity4Spec>;
     #[doc = "PWM_PORTITY4"]
@@ -13557,7 +13509,7 @@ pub mod pwm {
         pub type R = crate::R<PwmPortity4Spec>;
         #[doc = "Register `PWM_PORTITY4` writer"]
         pub type W = crate::W<PwmPortity4Spec>;
-        #[doc = "PWM0 polarity: 0=normal; 1=inverted\n\nValue on reset: 0"]
+        #[doc = "PWM0 polarity: 0=normal; 1=inverted"]
         #[derive(Clone, Copy, Debug, PartialEq, Eq)]
         pub enum PwmPoarity4 {
             #[doc = "0: Normal polarity"]
@@ -13624,7 +13576,7 @@ pub mod pwm {
                 PwmPoarity4W::new(self, 0)
             }
         }
-        #[doc = "PWM_PORTITY4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_portity4::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_portity4::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_PORTITY4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_portity4::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_portity4::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmPortity4Spec;
         impl crate::RegisterSpec for PwmPortity4Spec {
             type Ux = u32;
@@ -13635,10 +13587,8 @@ pub mod pwm {
         impl crate::Writable for PwmPortity4Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_PORTITY4 to value 0"]
-        impl crate::Resettable for PwmPortity4Spec {}
     }
-    #[doc = "PWM_OEN_CFG4 (rw) register accessor: PWM_OEN_CFG4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_oen_cfg4::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_oen_cfg4::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_oen_cfg4`] module"]
+    #[doc = "PWM_OEN_CFG4 (rw) register accessor: PWM_OEN_CFG4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_oen_cfg4::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_oen_cfg4::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_oen_cfg4`] module"]
     #[doc(alias = "PWM_OEN_CFG4")]
     pub type PwmOenCfg4 = crate::Reg<pwm_oen_cfg4::PwmOenCfg4Spec>;
     #[doc = "PWM_OEN_CFG4"]
@@ -13665,7 +13615,7 @@ pub mod pwm {
                 PwmOenCfg4W::new(self, 0)
             }
         }
-        #[doc = "PWM_OEN_CFG4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_oen_cfg4::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_oen_cfg4::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_OEN_CFG4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_oen_cfg4::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_oen_cfg4::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmOenCfg4Spec;
         impl crate::RegisterSpec for PwmOenCfg4Spec {
             type Ux = u32;
@@ -13676,10 +13626,8 @@ pub mod pwm {
         impl crate::Writable for PwmOenCfg4Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_OEN_CFG4 to value 0"]
-        impl crate::Resettable for PwmOenCfg4Spec {}
     }
-    #[doc = "PWM_OFFSET_L4 (rw) register accessor: PWM_OFFSET_L4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_l4::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_l4::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_offset_l4`] module"]
+    #[doc = "PWM_OFFSET_L4 (rw) register accessor: PWM_OFFSET_L4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_l4::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_l4::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_offset_l4`] module"]
     #[doc(alias = "PWM_OFFSET_L4")]
     pub type PwmOffsetL4 = crate::Reg<pwm_offset_l4::PwmOffsetL4Spec>;
     #[doc = "PWM_OFFSET_L4"]
@@ -13706,7 +13654,7 @@ pub mod pwm {
                 PwmOffsetL4W::new(self, 0)
             }
         }
-        #[doc = "PWM_OFFSET_L4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_l4::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_l4::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_OFFSET_L4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_l4::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_l4::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmOffsetL4Spec;
         impl crate::RegisterSpec for PwmOffsetL4Spec {
             type Ux = u32;
@@ -13717,10 +13665,8 @@ pub mod pwm {
         impl crate::Writable for PwmOffsetL4Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_OFFSET_L4 to value 0"]
-        impl crate::Resettable for PwmOffsetL4Spec {}
     }
-    #[doc = "PWM_OFFSET_H4 (rw) register accessor: PWM_OFFSET_H4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_h4::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_h4::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_offset_h4`] module"]
+    #[doc = "PWM_OFFSET_H4 (rw) register accessor: PWM_OFFSET_H4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_h4::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_h4::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_offset_h4`] module"]
     #[doc(alias = "PWM_OFFSET_H4")]
     pub type PwmOffsetH4 = crate::Reg<pwm_offset_h4::PwmOffsetH4Spec>;
     #[doc = "PWM_OFFSET_H4"]
@@ -13747,7 +13693,7 @@ pub mod pwm {
                 PwmOffsetH4W::new(self, 0)
             }
         }
-        #[doc = "PWM_OFFSET_H4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_h4::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_h4::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_OFFSET_H4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_h4::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_h4::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmOffsetH4Spec;
         impl crate::RegisterSpec for PwmOffsetH4Spec {
             type Ux = u32;
@@ -13758,10 +13704,8 @@ pub mod pwm {
         impl crate::Writable for PwmOffsetH4Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_OFFSET_H4 to value 0"]
-        impl crate::Resettable for PwmOffsetH4Spec {}
     }
-    #[doc = "PWM_FREQ_L4 (rw) register accessor: PWM_FREQ_L4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_l4::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_l4::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_freq_l4`] module"]
+    #[doc = "PWM_FREQ_L4 (rw) register accessor: PWM_FREQ_L4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_l4::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_l4::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_freq_l4`] module"]
     #[doc(alias = "PWM_FREQ_L4")]
     pub type PwmFreqL4 = crate::Reg<pwm_freq_l4::PwmFreqL4Spec>;
     #[doc = "PWM_FREQ_L4"]
@@ -13788,7 +13732,7 @@ pub mod pwm {
                 PwmFreqL4W::new(self, 0)
             }
         }
-        #[doc = "PWM_FREQ_L4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_l4::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_l4::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_FREQ_L4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_l4::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_l4::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmFreqL4Spec;
         impl crate::RegisterSpec for PwmFreqL4Spec {
             type Ux = u32;
@@ -13799,10 +13743,8 @@ pub mod pwm {
         impl crate::Writable for PwmFreqL4Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_FREQ_L4 to value 0"]
-        impl crate::Resettable for PwmFreqL4Spec {}
     }
-    #[doc = "PWM_FREQ_H4 (rw) register accessor: PWM_FREQ_H4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_h4::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_h4::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_freq_h4`] module"]
+    #[doc = "PWM_FREQ_H4 (rw) register accessor: PWM_FREQ_H4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_h4::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_h4::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_freq_h4`] module"]
     #[doc(alias = "PWM_FREQ_H4")]
     pub type PwmFreqH4 = crate::Reg<pwm_freq_h4::PwmFreqH4Spec>;
     #[doc = "PWM_FREQ_H4"]
@@ -13829,7 +13771,7 @@ pub mod pwm {
                 PwmFreqH4W::new(self, 0)
             }
         }
-        #[doc = "PWM_FREQ_H4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_h4::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_h4::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_FREQ_H4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_h4::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_h4::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmFreqH4Spec;
         impl crate::RegisterSpec for PwmFreqH4Spec {
             type Ux = u32;
@@ -13840,10 +13782,8 @@ pub mod pwm {
         impl crate::Writable for PwmFreqH4Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_FREQ_H4 to value 0"]
-        impl crate::Resettable for PwmFreqH4Spec {}
     }
-    #[doc = "PWM_DUTY_L4 (rw) register accessor: PWM_DUTY_L4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_l4::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_l4::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_duty_l4`] module"]
+    #[doc = "PWM_DUTY_L4 (rw) register accessor: PWM_DUTY_L4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_l4::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_l4::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_duty_l4`] module"]
     #[doc(alias = "PWM_DUTY_L4")]
     pub type PwmDutyL4 = crate::Reg<pwm_duty_l4::PwmDutyL4Spec>;
     #[doc = "PWM_DUTY_L4"]
@@ -13870,7 +13810,7 @@ pub mod pwm {
                 PwmDutyL4W::new(self, 0)
             }
         }
-        #[doc = "PWM_DUTY_L4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_l4::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_l4::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_DUTY_L4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_l4::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_l4::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmDutyL4Spec;
         impl crate::RegisterSpec for PwmDutyL4Spec {
             type Ux = u32;
@@ -13881,10 +13821,8 @@ pub mod pwm {
         impl crate::Writable for PwmDutyL4Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_DUTY_L4 to value 0"]
-        impl crate::Resettable for PwmDutyL4Spec {}
     }
-    #[doc = "PWM_DUTY_H4 (rw) register accessor: PWM_DUTY_H4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_h4::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_h4::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_duty_h4`] module"]
+    #[doc = "PWM_DUTY_H4 (rw) register accessor: PWM_DUTY_H4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_h4::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_h4::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_duty_h4`] module"]
     #[doc(alias = "PWM_DUTY_H4")]
     pub type PwmDutyH4 = crate::Reg<pwm_duty_h4::PwmDutyH4Spec>;
     #[doc = "PWM_DUTY_H4"]
@@ -13911,7 +13849,7 @@ pub mod pwm {
                 PwmDutyH4W::new(self, 0)
             }
         }
-        #[doc = "PWM_DUTY_H4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_h4::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_h4::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_DUTY_H4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_h4::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_h4::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmDutyH4Spec;
         impl crate::RegisterSpec for PwmDutyH4Spec {
             type Ux = u32;
@@ -13922,8 +13860,6 @@ pub mod pwm {
         impl crate::Writable for PwmDutyH4Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_DUTY_H4 to value 0"]
-        impl crate::Resettable for PwmDutyH4Spec {}
     }
     #[doc = "PWM_PERIODLOAD_FLAG4 (r) register accessor: PWM_PERIODLOAD_FLAG4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_periodload_flag4::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_periodload_flag4`] module"]
     #[doc(alias = "PWM_PERIODLOAD_FLAG4")]
@@ -13948,10 +13884,8 @@ pub mod pwm {
         }
         #[doc = "`read()` method returns [`pwm_periodload_flag4::R`](R) reader structure"]
         impl crate::Readable for PwmPeriodloadFlag4Spec {}
-        #[doc = "`reset()` method sets PWM_PERIODLOAD_FLAG4 to value 0"]
-        impl crate::Resettable for PwmPeriodloadFlag4Spec {}
     }
-    #[doc = "PWM_PERIOD_VAL4 (rw) register accessor: PWM_PERIOD_VAL4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_period_val4::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_period_val4::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_period_val4`] module"]
+    #[doc = "PWM_PERIOD_VAL4 (rw) register accessor: PWM_PERIOD_VAL4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_period_val4::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_period_val4::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_period_val4`] module"]
     #[doc(alias = "PWM_PERIOD_VAL4")]
     pub type PwmPeriodVal4 = crate::Reg<pwm_period_val4::PwmPeriodVal4Spec>;
     #[doc = "PWM_PERIOD_VAL4"]
@@ -13978,7 +13912,7 @@ pub mod pwm {
                 PwmPeriodVal4W::new(self, 0)
             }
         }
-        #[doc = "PWM_PERIOD_VAL4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_period_val4::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_period_val4::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_PERIOD_VAL4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_period_val4::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_period_val4::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmPeriodVal4Spec;
         impl crate::RegisterSpec for PwmPeriodVal4Spec {
             type Ux = u32;
@@ -13989,8 +13923,6 @@ pub mod pwm {
         impl crate::Writable for PwmPeriodVal4Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_PERIOD_VAL4 to value 0"]
-        impl crate::Resettable for PwmPeriodVal4Spec {}
     }
     #[doc = "PWM_PERIODCNT4 (r) register accessor: PWM_PERIODCNT4\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_periodcnt4::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_periodcnt4`] module"]
     #[doc(alias = "PWM_PERIODCNT4")]
@@ -14015,10 +13947,8 @@ pub mod pwm {
         }
         #[doc = "`read()` method returns [`pwm_periodcnt4::R`](R) reader structure"]
         impl crate::Readable for PwmPeriodcnt4Spec {}
-        #[doc = "`reset()` method sets PWM_PERIODCNT4 to value 0"]
-        impl crate::Resettable for PwmPeriodcnt4Spec {}
     }
-    #[doc = "PWM_EN5 (rw) register accessor: PWM_EN5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_en5::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_en5::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_en5`] module"]
+    #[doc = "PWM_EN5 (rw) register accessor: PWM_EN5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_en5::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_en5::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_en5`] module"]
     #[doc(alias = "PWM_EN5")]
     pub type PwmEn5 = crate::Reg<pwm_en5::PwmEn5Spec>;
     #[doc = "PWM_EN5"]
@@ -14027,7 +13957,7 @@ pub mod pwm {
         pub type R = crate::R<PwmEn5Spec>;
         #[doc = "Register `PWM_EN5` writer"]
         pub type W = crate::W<PwmEn5Spec>;
-        #[doc = "PWM0 enable: 0=off; 1=on\n\nValue on reset: 0"]
+        #[doc = "PWM0 enable: 0=off; 1=on"]
         #[derive(Clone, Copy, Debug, PartialEq, Eq)]
         pub enum PwmEn5 {
             #[doc = "0: PWM disabled, output low"]
@@ -14094,7 +14024,7 @@ pub mod pwm {
                 PwmEn5W::new(self, 0)
             }
         }
-        #[doc = "PWM_EN5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_en5::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_en5::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_EN5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_en5::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_en5::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmEn5Spec;
         impl crate::RegisterSpec for PwmEn5Spec {
             type Ux = u32;
@@ -14105,10 +14035,8 @@ pub mod pwm {
         impl crate::Writable for PwmEn5Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_EN5 to value 0"]
-        impl crate::Resettable for PwmEn5Spec {}
     }
-    #[doc = "PWM_PORTITY5 (rw) register accessor: PWM_PORTITY5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_portity5::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_portity5::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_portity5`] module"]
+    #[doc = "PWM_PORTITY5 (rw) register accessor: PWM_PORTITY5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_portity5::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_portity5::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_portity5`] module"]
     #[doc(alias = "PWM_PORTITY5")]
     pub type PwmPortity5 = crate::Reg<pwm_portity5::PwmPortity5Spec>;
     #[doc = "PWM_PORTITY5"]
@@ -14117,7 +14045,7 @@ pub mod pwm {
         pub type R = crate::R<PwmPortity5Spec>;
         #[doc = "Register `PWM_PORTITY5` writer"]
         pub type W = crate::W<PwmPortity5Spec>;
-        #[doc = "PWM0 polarity: 0=normal; 1=inverted\n\nValue on reset: 0"]
+        #[doc = "PWM0 polarity: 0=normal; 1=inverted"]
         #[derive(Clone, Copy, Debug, PartialEq, Eq)]
         pub enum PwmPoarity5 {
             #[doc = "0: Normal polarity"]
@@ -14184,7 +14112,7 @@ pub mod pwm {
                 PwmPoarity5W::new(self, 0)
             }
         }
-        #[doc = "PWM_PORTITY5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_portity5::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_portity5::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_PORTITY5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_portity5::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_portity5::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmPortity5Spec;
         impl crate::RegisterSpec for PwmPortity5Spec {
             type Ux = u32;
@@ -14195,10 +14123,8 @@ pub mod pwm {
         impl crate::Writable for PwmPortity5Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_PORTITY5 to value 0"]
-        impl crate::Resettable for PwmPortity5Spec {}
     }
-    #[doc = "PWM_OEN_CFG5 (rw) register accessor: PWM_OEN_CFG5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_oen_cfg5::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_oen_cfg5::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_oen_cfg5`] module"]
+    #[doc = "PWM_OEN_CFG5 (rw) register accessor: PWM_OEN_CFG5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_oen_cfg5::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_oen_cfg5::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_oen_cfg5`] module"]
     #[doc(alias = "PWM_OEN_CFG5")]
     pub type PwmOenCfg5 = crate::Reg<pwm_oen_cfg5::PwmOenCfg5Spec>;
     #[doc = "PWM_OEN_CFG5"]
@@ -14225,7 +14151,7 @@ pub mod pwm {
                 PwmOenCfg5W::new(self, 0)
             }
         }
-        #[doc = "PWM_OEN_CFG5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_oen_cfg5::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_oen_cfg5::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_OEN_CFG5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_oen_cfg5::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_oen_cfg5::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmOenCfg5Spec;
         impl crate::RegisterSpec for PwmOenCfg5Spec {
             type Ux = u32;
@@ -14236,10 +14162,8 @@ pub mod pwm {
         impl crate::Writable for PwmOenCfg5Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_OEN_CFG5 to value 0"]
-        impl crate::Resettable for PwmOenCfg5Spec {}
     }
-    #[doc = "PWM_OFFSET_L5 (rw) register accessor: PWM_OFFSET_L5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_l5::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_l5::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_offset_l5`] module"]
+    #[doc = "PWM_OFFSET_L5 (rw) register accessor: PWM_OFFSET_L5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_l5::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_l5::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_offset_l5`] module"]
     #[doc(alias = "PWM_OFFSET_L5")]
     pub type PwmOffsetL5 = crate::Reg<pwm_offset_l5::PwmOffsetL5Spec>;
     #[doc = "PWM_OFFSET_L5"]
@@ -14266,7 +14190,7 @@ pub mod pwm {
                 PwmOffsetL5W::new(self, 0)
             }
         }
-        #[doc = "PWM_OFFSET_L5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_l5::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_l5::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_OFFSET_L5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_l5::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_l5::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmOffsetL5Spec;
         impl crate::RegisterSpec for PwmOffsetL5Spec {
             type Ux = u32;
@@ -14277,10 +14201,8 @@ pub mod pwm {
         impl crate::Writable for PwmOffsetL5Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_OFFSET_L5 to value 0"]
-        impl crate::Resettable for PwmOffsetL5Spec {}
     }
-    #[doc = "PWM_OFFSET_H5 (rw) register accessor: PWM_OFFSET_H5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_h5::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_h5::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_offset_h5`] module"]
+    #[doc = "PWM_OFFSET_H5 (rw) register accessor: PWM_OFFSET_H5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_h5::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_h5::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_offset_h5`] module"]
     #[doc(alias = "PWM_OFFSET_H5")]
     pub type PwmOffsetH5 = crate::Reg<pwm_offset_h5::PwmOffsetH5Spec>;
     #[doc = "PWM_OFFSET_H5"]
@@ -14307,7 +14229,7 @@ pub mod pwm {
                 PwmOffsetH5W::new(self, 0)
             }
         }
-        #[doc = "PWM_OFFSET_H5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_h5::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_h5::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_OFFSET_H5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_h5::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_h5::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmOffsetH5Spec;
         impl crate::RegisterSpec for PwmOffsetH5Spec {
             type Ux = u32;
@@ -14318,10 +14240,8 @@ pub mod pwm {
         impl crate::Writable for PwmOffsetH5Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_OFFSET_H5 to value 0"]
-        impl crate::Resettable for PwmOffsetH5Spec {}
     }
-    #[doc = "PWM_FREQ_L5 (rw) register accessor: PWM_FREQ_L5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_l5::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_l5::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_freq_l5`] module"]
+    #[doc = "PWM_FREQ_L5 (rw) register accessor: PWM_FREQ_L5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_l5::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_l5::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_freq_l5`] module"]
     #[doc(alias = "PWM_FREQ_L5")]
     pub type PwmFreqL5 = crate::Reg<pwm_freq_l5::PwmFreqL5Spec>;
     #[doc = "PWM_FREQ_L5"]
@@ -14348,7 +14268,7 @@ pub mod pwm {
                 PwmFreqL5W::new(self, 0)
             }
         }
-        #[doc = "PWM_FREQ_L5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_l5::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_l5::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_FREQ_L5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_l5::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_l5::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmFreqL5Spec;
         impl crate::RegisterSpec for PwmFreqL5Spec {
             type Ux = u32;
@@ -14359,10 +14279,8 @@ pub mod pwm {
         impl crate::Writable for PwmFreqL5Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_FREQ_L5 to value 0"]
-        impl crate::Resettable for PwmFreqL5Spec {}
     }
-    #[doc = "PWM_FREQ_H5 (rw) register accessor: PWM_FREQ_H5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_h5::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_h5::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_freq_h5`] module"]
+    #[doc = "PWM_FREQ_H5 (rw) register accessor: PWM_FREQ_H5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_h5::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_h5::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_freq_h5`] module"]
     #[doc(alias = "PWM_FREQ_H5")]
     pub type PwmFreqH5 = crate::Reg<pwm_freq_h5::PwmFreqH5Spec>;
     #[doc = "PWM_FREQ_H5"]
@@ -14389,7 +14307,7 @@ pub mod pwm {
                 PwmFreqH5W::new(self, 0)
             }
         }
-        #[doc = "PWM_FREQ_H5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_h5::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_h5::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_FREQ_H5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_h5::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_h5::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmFreqH5Spec;
         impl crate::RegisterSpec for PwmFreqH5Spec {
             type Ux = u32;
@@ -14400,10 +14318,8 @@ pub mod pwm {
         impl crate::Writable for PwmFreqH5Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_FREQ_H5 to value 0"]
-        impl crate::Resettable for PwmFreqH5Spec {}
     }
-    #[doc = "PWM_DUTY_L5 (rw) register accessor: PWM_DUTY_L5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_l5::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_l5::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_duty_l5`] module"]
+    #[doc = "PWM_DUTY_L5 (rw) register accessor: PWM_DUTY_L5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_l5::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_l5::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_duty_l5`] module"]
     #[doc(alias = "PWM_DUTY_L5")]
     pub type PwmDutyL5 = crate::Reg<pwm_duty_l5::PwmDutyL5Spec>;
     #[doc = "PWM_DUTY_L5"]
@@ -14430,7 +14346,7 @@ pub mod pwm {
                 PwmDutyL5W::new(self, 0)
             }
         }
-        #[doc = "PWM_DUTY_L5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_l5::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_l5::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_DUTY_L5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_l5::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_l5::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmDutyL5Spec;
         impl crate::RegisterSpec for PwmDutyL5Spec {
             type Ux = u32;
@@ -14441,10 +14357,8 @@ pub mod pwm {
         impl crate::Writable for PwmDutyL5Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_DUTY_L5 to value 0"]
-        impl crate::Resettable for PwmDutyL5Spec {}
     }
-    #[doc = "PWM_DUTY_H5 (rw) register accessor: PWM_DUTY_H5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_h5::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_h5::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_duty_h5`] module"]
+    #[doc = "PWM_DUTY_H5 (rw) register accessor: PWM_DUTY_H5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_h5::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_h5::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_duty_h5`] module"]
     #[doc(alias = "PWM_DUTY_H5")]
     pub type PwmDutyH5 = crate::Reg<pwm_duty_h5::PwmDutyH5Spec>;
     #[doc = "PWM_DUTY_H5"]
@@ -14471,7 +14385,7 @@ pub mod pwm {
                 PwmDutyH5W::new(self, 0)
             }
         }
-        #[doc = "PWM_DUTY_H5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_h5::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_h5::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_DUTY_H5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_h5::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_h5::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmDutyH5Spec;
         impl crate::RegisterSpec for PwmDutyH5Spec {
             type Ux = u32;
@@ -14482,8 +14396,6 @@ pub mod pwm {
         impl crate::Writable for PwmDutyH5Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_DUTY_H5 to value 0"]
-        impl crate::Resettable for PwmDutyH5Spec {}
     }
     #[doc = "PWM_PERIODLOAD_FLAG5 (r) register accessor: PWM_PERIODLOAD_FLAG5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_periodload_flag5::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_periodload_flag5`] module"]
     #[doc(alias = "PWM_PERIODLOAD_FLAG5")]
@@ -14508,10 +14420,8 @@ pub mod pwm {
         }
         #[doc = "`read()` method returns [`pwm_periodload_flag5::R`](R) reader structure"]
         impl crate::Readable for PwmPeriodloadFlag5Spec {}
-        #[doc = "`reset()` method sets PWM_PERIODLOAD_FLAG5 to value 0"]
-        impl crate::Resettable for PwmPeriodloadFlag5Spec {}
     }
-    #[doc = "PWM_PERIOD_VAL5 (rw) register accessor: PWM_PERIOD_VAL5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_period_val5::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_period_val5::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_period_val5`] module"]
+    #[doc = "PWM_PERIOD_VAL5 (rw) register accessor: PWM_PERIOD_VAL5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_period_val5::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_period_val5::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_period_val5`] module"]
     #[doc(alias = "PWM_PERIOD_VAL5")]
     pub type PwmPeriodVal5 = crate::Reg<pwm_period_val5::PwmPeriodVal5Spec>;
     #[doc = "PWM_PERIOD_VAL5"]
@@ -14538,7 +14448,7 @@ pub mod pwm {
                 PwmPeriodVal5W::new(self, 0)
             }
         }
-        #[doc = "PWM_PERIOD_VAL5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_period_val5::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_period_val5::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_PERIOD_VAL5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_period_val5::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_period_val5::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmPeriodVal5Spec;
         impl crate::RegisterSpec for PwmPeriodVal5Spec {
             type Ux = u32;
@@ -14549,8 +14459,6 @@ pub mod pwm {
         impl crate::Writable for PwmPeriodVal5Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_PERIOD_VAL5 to value 0"]
-        impl crate::Resettable for PwmPeriodVal5Spec {}
     }
     #[doc = "PWM_PERIODCNT5 (r) register accessor: PWM_PERIODCNT5\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_periodcnt5::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_periodcnt5`] module"]
     #[doc(alias = "PWM_PERIODCNT5")]
@@ -14575,10 +14483,8 @@ pub mod pwm {
         }
         #[doc = "`read()` method returns [`pwm_periodcnt5::R`](R) reader structure"]
         impl crate::Readable for PwmPeriodcnt5Spec {}
-        #[doc = "`reset()` method sets PWM_PERIODCNT5 to value 0"]
-        impl crate::Resettable for PwmPeriodcnt5Spec {}
     }
-    #[doc = "PWM_EN6 (rw) register accessor: PWM_EN6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_en6::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_en6::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_en6`] module"]
+    #[doc = "PWM_EN6 (rw) register accessor: PWM_EN6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_en6::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_en6::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_en6`] module"]
     #[doc(alias = "PWM_EN6")]
     pub type PwmEn6 = crate::Reg<pwm_en6::PwmEn6Spec>;
     #[doc = "PWM_EN6"]
@@ -14587,7 +14493,7 @@ pub mod pwm {
         pub type R = crate::R<PwmEn6Spec>;
         #[doc = "Register `PWM_EN6` writer"]
         pub type W = crate::W<PwmEn6Spec>;
-        #[doc = "PWM0 enable: 0=off; 1=on\n\nValue on reset: 0"]
+        #[doc = "PWM0 enable: 0=off; 1=on"]
         #[derive(Clone, Copy, Debug, PartialEq, Eq)]
         pub enum PwmEn6 {
             #[doc = "0: PWM disabled, output low"]
@@ -14654,7 +14560,7 @@ pub mod pwm {
                 PwmEn6W::new(self, 0)
             }
         }
-        #[doc = "PWM_EN6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_en6::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_en6::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_EN6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_en6::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_en6::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmEn6Spec;
         impl crate::RegisterSpec for PwmEn6Spec {
             type Ux = u32;
@@ -14665,10 +14571,8 @@ pub mod pwm {
         impl crate::Writable for PwmEn6Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_EN6 to value 0"]
-        impl crate::Resettable for PwmEn6Spec {}
     }
-    #[doc = "PWM_PORTITY6 (rw) register accessor: PWM_PORTITY6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_portity6::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_portity6::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_portity6`] module"]
+    #[doc = "PWM_PORTITY6 (rw) register accessor: PWM_PORTITY6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_portity6::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_portity6::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_portity6`] module"]
     #[doc(alias = "PWM_PORTITY6")]
     pub type PwmPortity6 = crate::Reg<pwm_portity6::PwmPortity6Spec>;
     #[doc = "PWM_PORTITY6"]
@@ -14677,7 +14581,7 @@ pub mod pwm {
         pub type R = crate::R<PwmPortity6Spec>;
         #[doc = "Register `PWM_PORTITY6` writer"]
         pub type W = crate::W<PwmPortity6Spec>;
-        #[doc = "PWM0 polarity: 0=normal; 1=inverted\n\nValue on reset: 0"]
+        #[doc = "PWM0 polarity: 0=normal; 1=inverted"]
         #[derive(Clone, Copy, Debug, PartialEq, Eq)]
         pub enum PwmPoarity6 {
             #[doc = "0: Normal polarity"]
@@ -14744,7 +14648,7 @@ pub mod pwm {
                 PwmPoarity6W::new(self, 0)
             }
         }
-        #[doc = "PWM_PORTITY6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_portity6::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_portity6::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_PORTITY6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_portity6::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_portity6::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmPortity6Spec;
         impl crate::RegisterSpec for PwmPortity6Spec {
             type Ux = u32;
@@ -14755,10 +14659,8 @@ pub mod pwm {
         impl crate::Writable for PwmPortity6Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_PORTITY6 to value 0"]
-        impl crate::Resettable for PwmPortity6Spec {}
     }
-    #[doc = "PWM_OEN_CFG6 (rw) register accessor: PWM_OEN_CFG6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_oen_cfg6::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_oen_cfg6::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_oen_cfg6`] module"]
+    #[doc = "PWM_OEN_CFG6 (rw) register accessor: PWM_OEN_CFG6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_oen_cfg6::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_oen_cfg6::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_oen_cfg6`] module"]
     #[doc(alias = "PWM_OEN_CFG6")]
     pub type PwmOenCfg6 = crate::Reg<pwm_oen_cfg6::PwmOenCfg6Spec>;
     #[doc = "PWM_OEN_CFG6"]
@@ -14785,7 +14687,7 @@ pub mod pwm {
                 PwmOenCfg6W::new(self, 0)
             }
         }
-        #[doc = "PWM_OEN_CFG6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_oen_cfg6::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_oen_cfg6::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_OEN_CFG6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_oen_cfg6::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_oen_cfg6::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmOenCfg6Spec;
         impl crate::RegisterSpec for PwmOenCfg6Spec {
             type Ux = u32;
@@ -14796,10 +14698,8 @@ pub mod pwm {
         impl crate::Writable for PwmOenCfg6Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_OEN_CFG6 to value 0"]
-        impl crate::Resettable for PwmOenCfg6Spec {}
     }
-    #[doc = "PWM_OFFSET_L6 (rw) register accessor: PWM_OFFSET_L6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_l6::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_l6::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_offset_l6`] module"]
+    #[doc = "PWM_OFFSET_L6 (rw) register accessor: PWM_OFFSET_L6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_l6::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_l6::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_offset_l6`] module"]
     #[doc(alias = "PWM_OFFSET_L6")]
     pub type PwmOffsetL6 = crate::Reg<pwm_offset_l6::PwmOffsetL6Spec>;
     #[doc = "PWM_OFFSET_L6"]
@@ -14826,7 +14726,7 @@ pub mod pwm {
                 PwmOffsetL6W::new(self, 0)
             }
         }
-        #[doc = "PWM_OFFSET_L6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_l6::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_l6::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_OFFSET_L6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_l6::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_l6::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmOffsetL6Spec;
         impl crate::RegisterSpec for PwmOffsetL6Spec {
             type Ux = u32;
@@ -14837,10 +14737,8 @@ pub mod pwm {
         impl crate::Writable for PwmOffsetL6Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_OFFSET_L6 to value 0"]
-        impl crate::Resettable for PwmOffsetL6Spec {}
     }
-    #[doc = "PWM_OFFSET_H6 (rw) register accessor: PWM_OFFSET_H6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_h6::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_h6::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_offset_h6`] module"]
+    #[doc = "PWM_OFFSET_H6 (rw) register accessor: PWM_OFFSET_H6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_h6::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_h6::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_offset_h6`] module"]
     #[doc(alias = "PWM_OFFSET_H6")]
     pub type PwmOffsetH6 = crate::Reg<pwm_offset_h6::PwmOffsetH6Spec>;
     #[doc = "PWM_OFFSET_H6"]
@@ -14867,7 +14765,7 @@ pub mod pwm {
                 PwmOffsetH6W::new(self, 0)
             }
         }
-        #[doc = "PWM_OFFSET_H6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_h6::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_h6::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_OFFSET_H6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_h6::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_h6::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmOffsetH6Spec;
         impl crate::RegisterSpec for PwmOffsetH6Spec {
             type Ux = u32;
@@ -14878,10 +14776,8 @@ pub mod pwm {
         impl crate::Writable for PwmOffsetH6Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_OFFSET_H6 to value 0"]
-        impl crate::Resettable for PwmOffsetH6Spec {}
     }
-    #[doc = "PWM_FREQ_L6 (rw) register accessor: PWM_FREQ_L6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_l6::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_l6::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_freq_l6`] module"]
+    #[doc = "PWM_FREQ_L6 (rw) register accessor: PWM_FREQ_L6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_l6::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_l6::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_freq_l6`] module"]
     #[doc(alias = "PWM_FREQ_L6")]
     pub type PwmFreqL6 = crate::Reg<pwm_freq_l6::PwmFreqL6Spec>;
     #[doc = "PWM_FREQ_L6"]
@@ -14908,7 +14804,7 @@ pub mod pwm {
                 PwmFreqL6W::new(self, 0)
             }
         }
-        #[doc = "PWM_FREQ_L6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_l6::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_l6::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_FREQ_L6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_l6::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_l6::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmFreqL6Spec;
         impl crate::RegisterSpec for PwmFreqL6Spec {
             type Ux = u32;
@@ -14919,10 +14815,8 @@ pub mod pwm {
         impl crate::Writable for PwmFreqL6Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_FREQ_L6 to value 0"]
-        impl crate::Resettable for PwmFreqL6Spec {}
     }
-    #[doc = "PWM_FREQ_H6 (rw) register accessor: PWM_FREQ_H6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_h6::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_h6::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_freq_h6`] module"]
+    #[doc = "PWM_FREQ_H6 (rw) register accessor: PWM_FREQ_H6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_h6::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_h6::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_freq_h6`] module"]
     #[doc(alias = "PWM_FREQ_H6")]
     pub type PwmFreqH6 = crate::Reg<pwm_freq_h6::PwmFreqH6Spec>;
     #[doc = "PWM_FREQ_H6"]
@@ -14949,7 +14843,7 @@ pub mod pwm {
                 PwmFreqH6W::new(self, 0)
             }
         }
-        #[doc = "PWM_FREQ_H6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_h6::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_h6::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_FREQ_H6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_h6::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_h6::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmFreqH6Spec;
         impl crate::RegisterSpec for PwmFreqH6Spec {
             type Ux = u32;
@@ -14960,10 +14854,8 @@ pub mod pwm {
         impl crate::Writable for PwmFreqH6Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_FREQ_H6 to value 0"]
-        impl crate::Resettable for PwmFreqH6Spec {}
     }
-    #[doc = "PWM_DUTY_L6 (rw) register accessor: PWM_DUTY_L6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_l6::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_l6::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_duty_l6`] module"]
+    #[doc = "PWM_DUTY_L6 (rw) register accessor: PWM_DUTY_L6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_l6::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_l6::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_duty_l6`] module"]
     #[doc(alias = "PWM_DUTY_L6")]
     pub type PwmDutyL6 = crate::Reg<pwm_duty_l6::PwmDutyL6Spec>;
     #[doc = "PWM_DUTY_L6"]
@@ -14990,7 +14882,7 @@ pub mod pwm {
                 PwmDutyL6W::new(self, 0)
             }
         }
-        #[doc = "PWM_DUTY_L6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_l6::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_l6::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_DUTY_L6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_l6::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_l6::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmDutyL6Spec;
         impl crate::RegisterSpec for PwmDutyL6Spec {
             type Ux = u32;
@@ -15001,10 +14893,8 @@ pub mod pwm {
         impl crate::Writable for PwmDutyL6Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_DUTY_L6 to value 0"]
-        impl crate::Resettable for PwmDutyL6Spec {}
     }
-    #[doc = "PWM_DUTY_H6 (rw) register accessor: PWM_DUTY_H6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_h6::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_h6::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_duty_h6`] module"]
+    #[doc = "PWM_DUTY_H6 (rw) register accessor: PWM_DUTY_H6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_h6::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_h6::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_duty_h6`] module"]
     #[doc(alias = "PWM_DUTY_H6")]
     pub type PwmDutyH6 = crate::Reg<pwm_duty_h6::PwmDutyH6Spec>;
     #[doc = "PWM_DUTY_H6"]
@@ -15031,7 +14921,7 @@ pub mod pwm {
                 PwmDutyH6W::new(self, 0)
             }
         }
-        #[doc = "PWM_DUTY_H6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_h6::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_h6::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_DUTY_H6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_h6::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_h6::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmDutyH6Spec;
         impl crate::RegisterSpec for PwmDutyH6Spec {
             type Ux = u32;
@@ -15042,8 +14932,6 @@ pub mod pwm {
         impl crate::Writable for PwmDutyH6Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_DUTY_H6 to value 0"]
-        impl crate::Resettable for PwmDutyH6Spec {}
     }
     #[doc = "PWM_PERIODLOAD_FLAG6 (r) register accessor: PWM_PERIODLOAD_FLAG6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_periodload_flag6::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_periodload_flag6`] module"]
     #[doc(alias = "PWM_PERIODLOAD_FLAG6")]
@@ -15068,10 +14956,8 @@ pub mod pwm {
         }
         #[doc = "`read()` method returns [`pwm_periodload_flag6::R`](R) reader structure"]
         impl crate::Readable for PwmPeriodloadFlag6Spec {}
-        #[doc = "`reset()` method sets PWM_PERIODLOAD_FLAG6 to value 0"]
-        impl crate::Resettable for PwmPeriodloadFlag6Spec {}
     }
-    #[doc = "PWM_PERIOD_VAL6 (rw) register accessor: PWM_PERIOD_VAL6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_period_val6::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_period_val6::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_period_val6`] module"]
+    #[doc = "PWM_PERIOD_VAL6 (rw) register accessor: PWM_PERIOD_VAL6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_period_val6::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_period_val6::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_period_val6`] module"]
     #[doc(alias = "PWM_PERIOD_VAL6")]
     pub type PwmPeriodVal6 = crate::Reg<pwm_period_val6::PwmPeriodVal6Spec>;
     #[doc = "PWM_PERIOD_VAL6"]
@@ -15098,7 +14984,7 @@ pub mod pwm {
                 PwmPeriodVal6W::new(self, 0)
             }
         }
-        #[doc = "PWM_PERIOD_VAL6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_period_val6::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_period_val6::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_PERIOD_VAL6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_period_val6::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_period_val6::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmPeriodVal6Spec;
         impl crate::RegisterSpec for PwmPeriodVal6Spec {
             type Ux = u32;
@@ -15109,8 +14995,6 @@ pub mod pwm {
         impl crate::Writable for PwmPeriodVal6Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_PERIOD_VAL6 to value 0"]
-        impl crate::Resettable for PwmPeriodVal6Spec {}
     }
     #[doc = "PWM_PERIODCNT6 (r) register accessor: PWM_PERIODCNT6\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_periodcnt6::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_periodcnt6`] module"]
     #[doc(alias = "PWM_PERIODCNT6")]
@@ -15135,10 +15019,8 @@ pub mod pwm {
         }
         #[doc = "`read()` method returns [`pwm_periodcnt6::R`](R) reader structure"]
         impl crate::Readable for PwmPeriodcnt6Spec {}
-        #[doc = "`reset()` method sets PWM_PERIODCNT6 to value 0"]
-        impl crate::Resettable for PwmPeriodcnt6Spec {}
     }
-    #[doc = "PWM_EN7 (rw) register accessor: PWM_EN7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_en7::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_en7::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_en7`] module"]
+    #[doc = "PWM_EN7 (rw) register accessor: PWM_EN7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_en7::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_en7::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_en7`] module"]
     #[doc(alias = "PWM_EN7")]
     pub type PwmEn7 = crate::Reg<pwm_en7::PwmEn7Spec>;
     #[doc = "PWM_EN7"]
@@ -15147,7 +15029,7 @@ pub mod pwm {
         pub type R = crate::R<PwmEn7Spec>;
         #[doc = "Register `PWM_EN7` writer"]
         pub type W = crate::W<PwmEn7Spec>;
-        #[doc = "PWM0 enable: 0=off; 1=on\n\nValue on reset: 0"]
+        #[doc = "PWM0 enable: 0=off; 1=on"]
         #[derive(Clone, Copy, Debug, PartialEq, Eq)]
         pub enum PwmEn7 {
             #[doc = "0: PWM disabled, output low"]
@@ -15214,7 +15096,7 @@ pub mod pwm {
                 PwmEn7W::new(self, 0)
             }
         }
-        #[doc = "PWM_EN7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_en7::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_en7::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_EN7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_en7::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_en7::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmEn7Spec;
         impl crate::RegisterSpec for PwmEn7Spec {
             type Ux = u32;
@@ -15225,10 +15107,8 @@ pub mod pwm {
         impl crate::Writable for PwmEn7Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_EN7 to value 0"]
-        impl crate::Resettable for PwmEn7Spec {}
     }
-    #[doc = "PWM_PORTITY7 (rw) register accessor: PWM_PORTITY7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_portity7::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_portity7::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_portity7`] module"]
+    #[doc = "PWM_PORTITY7 (rw) register accessor: PWM_PORTITY7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_portity7::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_portity7::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_portity7`] module"]
     #[doc(alias = "PWM_PORTITY7")]
     pub type PwmPortity7 = crate::Reg<pwm_portity7::PwmPortity7Spec>;
     #[doc = "PWM_PORTITY7"]
@@ -15237,7 +15117,7 @@ pub mod pwm {
         pub type R = crate::R<PwmPortity7Spec>;
         #[doc = "Register `PWM_PORTITY7` writer"]
         pub type W = crate::W<PwmPortity7Spec>;
-        #[doc = "PWM0 polarity: 0=normal; 1=inverted\n\nValue on reset: 0"]
+        #[doc = "PWM0 polarity: 0=normal; 1=inverted"]
         #[derive(Clone, Copy, Debug, PartialEq, Eq)]
         pub enum PwmPoarity7 {
             #[doc = "0: Normal polarity"]
@@ -15304,7 +15184,7 @@ pub mod pwm {
                 PwmPoarity7W::new(self, 0)
             }
         }
-        #[doc = "PWM_PORTITY7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_portity7::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_portity7::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_PORTITY7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_portity7::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_portity7::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmPortity7Spec;
         impl crate::RegisterSpec for PwmPortity7Spec {
             type Ux = u32;
@@ -15315,10 +15195,8 @@ pub mod pwm {
         impl crate::Writable for PwmPortity7Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_PORTITY7 to value 0"]
-        impl crate::Resettable for PwmPortity7Spec {}
     }
-    #[doc = "PWM_OEN_CFG7 (rw) register accessor: PWM_OEN_CFG7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_oen_cfg7::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_oen_cfg7::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_oen_cfg7`] module"]
+    #[doc = "PWM_OEN_CFG7 (rw) register accessor: PWM_OEN_CFG7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_oen_cfg7::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_oen_cfg7::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_oen_cfg7`] module"]
     #[doc(alias = "PWM_OEN_CFG7")]
     pub type PwmOenCfg7 = crate::Reg<pwm_oen_cfg7::PwmOenCfg7Spec>;
     #[doc = "PWM_OEN_CFG7"]
@@ -15345,7 +15223,7 @@ pub mod pwm {
                 PwmOenCfg7W::new(self, 0)
             }
         }
-        #[doc = "PWM_OEN_CFG7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_oen_cfg7::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_oen_cfg7::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_OEN_CFG7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_oen_cfg7::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_oen_cfg7::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmOenCfg7Spec;
         impl crate::RegisterSpec for PwmOenCfg7Spec {
             type Ux = u32;
@@ -15356,10 +15234,8 @@ pub mod pwm {
         impl crate::Writable for PwmOenCfg7Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_OEN_CFG7 to value 0"]
-        impl crate::Resettable for PwmOenCfg7Spec {}
     }
-    #[doc = "PWM_OFFSET_L7 (rw) register accessor: PWM_OFFSET_L7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_l7::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_l7::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_offset_l7`] module"]
+    #[doc = "PWM_OFFSET_L7 (rw) register accessor: PWM_OFFSET_L7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_l7::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_l7::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_offset_l7`] module"]
     #[doc(alias = "PWM_OFFSET_L7")]
     pub type PwmOffsetL7 = crate::Reg<pwm_offset_l7::PwmOffsetL7Spec>;
     #[doc = "PWM_OFFSET_L7"]
@@ -15386,7 +15262,7 @@ pub mod pwm {
                 PwmOffsetL7W::new(self, 0)
             }
         }
-        #[doc = "PWM_OFFSET_L7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_l7::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_l7::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_OFFSET_L7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_l7::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_l7::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmOffsetL7Spec;
         impl crate::RegisterSpec for PwmOffsetL7Spec {
             type Ux = u32;
@@ -15397,10 +15273,8 @@ pub mod pwm {
         impl crate::Writable for PwmOffsetL7Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_OFFSET_L7 to value 0"]
-        impl crate::Resettable for PwmOffsetL7Spec {}
     }
-    #[doc = "PWM_OFFSET_H7 (rw) register accessor: PWM_OFFSET_H7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_h7::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_h7::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_offset_h7`] module"]
+    #[doc = "PWM_OFFSET_H7 (rw) register accessor: PWM_OFFSET_H7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_h7::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_h7::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_offset_h7`] module"]
     #[doc(alias = "PWM_OFFSET_H7")]
     pub type PwmOffsetH7 = crate::Reg<pwm_offset_h7::PwmOffsetH7Spec>;
     #[doc = "PWM_OFFSET_H7"]
@@ -15427,7 +15301,7 @@ pub mod pwm {
                 PwmOffsetH7W::new(self, 0)
             }
         }
-        #[doc = "PWM_OFFSET_H7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_h7::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_h7::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_OFFSET_H7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_offset_h7::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_offset_h7::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmOffsetH7Spec;
         impl crate::RegisterSpec for PwmOffsetH7Spec {
             type Ux = u32;
@@ -15438,10 +15312,8 @@ pub mod pwm {
         impl crate::Writable for PwmOffsetH7Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_OFFSET_H7 to value 0"]
-        impl crate::Resettable for PwmOffsetH7Spec {}
     }
-    #[doc = "PWM_FREQ_L7 (rw) register accessor: PWM_FREQ_L7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_l7::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_l7::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_freq_l7`] module"]
+    #[doc = "PWM_FREQ_L7 (rw) register accessor: PWM_FREQ_L7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_l7::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_l7::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_freq_l7`] module"]
     #[doc(alias = "PWM_FREQ_L7")]
     pub type PwmFreqL7 = crate::Reg<pwm_freq_l7::PwmFreqL7Spec>;
     #[doc = "PWM_FREQ_L7"]
@@ -15468,7 +15340,7 @@ pub mod pwm {
                 PwmFreqL7W::new(self, 0)
             }
         }
-        #[doc = "PWM_FREQ_L7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_l7::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_l7::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_FREQ_L7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_l7::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_l7::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmFreqL7Spec;
         impl crate::RegisterSpec for PwmFreqL7Spec {
             type Ux = u32;
@@ -15479,10 +15351,8 @@ pub mod pwm {
         impl crate::Writable for PwmFreqL7Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_FREQ_L7 to value 0"]
-        impl crate::Resettable for PwmFreqL7Spec {}
     }
-    #[doc = "PWM_FREQ_H7 (rw) register accessor: PWM_FREQ_H7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_h7::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_h7::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_freq_h7`] module"]
+    #[doc = "PWM_FREQ_H7 (rw) register accessor: PWM_FREQ_H7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_h7::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_h7::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_freq_h7`] module"]
     #[doc(alias = "PWM_FREQ_H7")]
     pub type PwmFreqH7 = crate::Reg<pwm_freq_h7::PwmFreqH7Spec>;
     #[doc = "PWM_FREQ_H7"]
@@ -15509,7 +15379,7 @@ pub mod pwm {
                 PwmFreqH7W::new(self, 0)
             }
         }
-        #[doc = "PWM_FREQ_H7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_h7::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_h7::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_FREQ_H7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_freq_h7::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_freq_h7::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmFreqH7Spec;
         impl crate::RegisterSpec for PwmFreqH7Spec {
             type Ux = u32;
@@ -15520,10 +15390,8 @@ pub mod pwm {
         impl crate::Writable for PwmFreqH7Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_FREQ_H7 to value 0"]
-        impl crate::Resettable for PwmFreqH7Spec {}
     }
-    #[doc = "PWM_DUTY_L7 (rw) register accessor: PWM_DUTY_L7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_l7::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_l7::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_duty_l7`] module"]
+    #[doc = "PWM_DUTY_L7 (rw) register accessor: PWM_DUTY_L7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_l7::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_l7::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_duty_l7`] module"]
     #[doc(alias = "PWM_DUTY_L7")]
     pub type PwmDutyL7 = crate::Reg<pwm_duty_l7::PwmDutyL7Spec>;
     #[doc = "PWM_DUTY_L7"]
@@ -15550,7 +15418,7 @@ pub mod pwm {
                 PwmDutyL7W::new(self, 0)
             }
         }
-        #[doc = "PWM_DUTY_L7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_l7::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_l7::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_DUTY_L7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_l7::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_l7::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmDutyL7Spec;
         impl crate::RegisterSpec for PwmDutyL7Spec {
             type Ux = u32;
@@ -15561,10 +15429,8 @@ pub mod pwm {
         impl crate::Writable for PwmDutyL7Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_DUTY_L7 to value 0"]
-        impl crate::Resettable for PwmDutyL7Spec {}
     }
-    #[doc = "PWM_DUTY_H7 (rw) register accessor: PWM_DUTY_H7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_h7::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_h7::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_duty_h7`] module"]
+    #[doc = "PWM_DUTY_H7 (rw) register accessor: PWM_DUTY_H7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_h7::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_h7::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_duty_h7`] module"]
     #[doc(alias = "PWM_DUTY_H7")]
     pub type PwmDutyH7 = crate::Reg<pwm_duty_h7::PwmDutyH7Spec>;
     #[doc = "PWM_DUTY_H7"]
@@ -15591,7 +15457,7 @@ pub mod pwm {
                 PwmDutyH7W::new(self, 0)
             }
         }
-        #[doc = "PWM_DUTY_H7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_h7::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_h7::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_DUTY_H7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_duty_h7::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_duty_h7::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmDutyH7Spec;
         impl crate::RegisterSpec for PwmDutyH7Spec {
             type Ux = u32;
@@ -15602,8 +15468,6 @@ pub mod pwm {
         impl crate::Writable for PwmDutyH7Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_DUTY_H7 to value 0"]
-        impl crate::Resettable for PwmDutyH7Spec {}
     }
     #[doc = "PWM_PERIODLOAD_FLAG7 (r) register accessor: PWM_PERIODLOAD_FLAG7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_periodload_flag7::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_periodload_flag7`] module"]
     #[doc(alias = "PWM_PERIODLOAD_FLAG7")]
@@ -15628,10 +15492,8 @@ pub mod pwm {
         }
         #[doc = "`read()` method returns [`pwm_periodload_flag7::R`](R) reader structure"]
         impl crate::Readable for PwmPeriodloadFlag7Spec {}
-        #[doc = "`reset()` method sets PWM_PERIODLOAD_FLAG7 to value 0"]
-        impl crate::Resettable for PwmPeriodloadFlag7Spec {}
     }
-    #[doc = "PWM_PERIOD_VAL7 (rw) register accessor: PWM_PERIOD_VAL7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_period_val7::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_period_val7::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_period_val7`] module"]
+    #[doc = "PWM_PERIOD_VAL7 (rw) register accessor: PWM_PERIOD_VAL7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_period_val7::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_period_val7::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_period_val7`] module"]
     #[doc(alias = "PWM_PERIOD_VAL7")]
     pub type PwmPeriodVal7 = crate::Reg<pwm_period_val7::PwmPeriodVal7Spec>;
     #[doc = "PWM_PERIOD_VAL7"]
@@ -15658,7 +15520,7 @@ pub mod pwm {
                 PwmPeriodVal7W::new(self, 0)
             }
         }
-        #[doc = "PWM_PERIOD_VAL7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_period_val7::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_period_val7::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_PERIOD_VAL7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_period_val7::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_period_val7::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmPeriodVal7Spec;
         impl crate::RegisterSpec for PwmPeriodVal7Spec {
             type Ux = u32;
@@ -15669,8 +15531,6 @@ pub mod pwm {
         impl crate::Writable for PwmPeriodVal7Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_PERIOD_VAL7 to value 0"]
-        impl crate::Resettable for PwmPeriodVal7Spec {}
     }
     #[doc = "PWM_PERIODCNT7 (r) register accessor: PWM_PERIODCNT7\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_periodcnt7::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_periodcnt7`] module"]
     #[doc(alias = "PWM_PERIODCNT7")]
@@ -15695,8 +15555,6 @@ pub mod pwm {
         }
         #[doc = "`read()` method returns [`pwm_periodcnt7::R`](R) reader structure"]
         impl crate::Readable for PwmPeriodcnt7Spec {}
-        #[doc = "`reset()` method sets PWM_PERIODCNT7 to value 0"]
-        impl crate::Resettable for PwmPeriodcnt7Spec {}
     }
     #[doc = "PWM_ABNOR_STATE0 (r) register accessor: PWM_ABNOR_STATE0\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_abnor_state0::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_abnor_state0`] module"]
     #[doc(alias = "PWM_ABNOR_STATE0")]
@@ -15721,8 +15579,6 @@ pub mod pwm {
         }
         #[doc = "`read()` method returns [`pwm_abnor_state0::R`](R) reader structure"]
         impl crate::Readable for PwmAbnorState0Spec {}
-        #[doc = "`reset()` method sets PWM_ABNOR_STATE0 to value 0"]
-        impl crate::Resettable for PwmAbnorState0Spec {}
     }
     #[doc = "PWM_ABNOR_STATE1 (r) register accessor: PWM_ABNOR_STATE1\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_abnor_state1::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_abnor_state1`] module"]
     #[doc(alias = "PWM_ABNOR_STATE1")]
@@ -15747,20 +15603,18 @@ pub mod pwm {
         }
         #[doc = "`read()` method returns [`pwm_abnor_state1::R`](R) reader structure"]
         impl crate::Readable for PwmAbnorState1Spec {}
-        #[doc = "`reset()` method sets PWM_ABNOR_STATE1 to value 0"]
-        impl crate::Resettable for PwmAbnorState1Spec {}
     }
-    #[doc = "PWM_ABNOR_STATE_CLR0 (w) register accessor: PWM_ABNOR_STATE_CLR0\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_abnor_state_clr0::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_abnor_state_clr0`] module"]
+    #[doc = "PWM_ABNOR_STATE_CLR0 (w) register accessor: PWM_ABNOR_STATE_CLR0\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_abnor_state_clr0::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_abnor_state_clr0`] module"]
     #[doc(alias = "PWM_ABNOR_STATE_CLR0")]
     pub type PwmAbnorStateClr0 = crate::Reg<pwm_abnor_state_clr0::PwmAbnorStateClr0Spec>;
     #[doc = "PWM_ABNOR_STATE_CLR0"]
     pub mod pwm_abnor_state_clr0 {
         #[doc = "Register `PWM_ABNOR_STATE_CLR0` writer"]
         pub type W = crate::W<PwmAbnorStateClr0Spec>;
-        #[doc = "Field `PWM_ABNOR_STATE_CLR0` writer - Clear abnormal state 0 (self-clearing)"]
+        #[doc = "Field `PWM_ABNOR_STATE_CLR0` writer - SDK writes observed abnormal-group bits to acknowledge their events; command readback/self-clear timing unverified"]
         pub type PwmAbnorStateClr0W<'a, REG> = crate::FieldWriter<'a, REG, 16, u16>;
         impl W {
-            #[doc = "Bits 0:15 - Clear abnormal state 0 (self-clearing)"]
+            #[doc = "Bits 0:15 - SDK writes observed abnormal-group bits to acknowledge their events; command readback/self-clear timing unverified"]
             #[inline(always)]
             pub fn pwm_abnor_state_clr0(
                 &mut self,
@@ -15768,7 +15622,7 @@ pub mod pwm {
                 PwmAbnorStateClr0W::new(self, 0)
             }
         }
-        #[doc = "PWM_ABNOR_STATE_CLR0\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_abnor_state_clr0::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_ABNOR_STATE_CLR0\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_abnor_state_clr0::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmAbnorStateClr0Spec;
         impl crate::RegisterSpec for PwmAbnorStateClr0Spec {
             type Ux = u32;
@@ -15777,20 +15631,18 @@ pub mod pwm {
         impl crate::Writable for PwmAbnorStateClr0Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_ABNOR_STATE_CLR0 to value 0"]
-        impl crate::Resettable for PwmAbnorStateClr0Spec {}
     }
-    #[doc = "PWM_ABNOR_STATE_CLR1 (w) register accessor: PWM_ABNOR_STATE_CLR1\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_abnor_state_clr1::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_abnor_state_clr1`] module"]
+    #[doc = "PWM_ABNOR_STATE_CLR1 (w) register accessor: PWM_ABNOR_STATE_CLR1\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_abnor_state_clr1::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_abnor_state_clr1`] module"]
     #[doc(alias = "PWM_ABNOR_STATE_CLR1")]
     pub type PwmAbnorStateClr1 = crate::Reg<pwm_abnor_state_clr1::PwmAbnorStateClr1Spec>;
     #[doc = "PWM_ABNOR_STATE_CLR1"]
     pub mod pwm_abnor_state_clr1 {
         #[doc = "Register `PWM_ABNOR_STATE_CLR1` writer"]
         pub type W = crate::W<PwmAbnorStateClr1Spec>;
-        #[doc = "Field `PWM_ABNOR_STATE_CLR1` writer - Clear abnormal state 1 (self-clearing)"]
+        #[doc = "Field `PWM_ABNOR_STATE_CLR1` writer - SDK writes observed abnormal-count bits to acknowledge their events; command readback/self-clear timing unverified"]
         pub type PwmAbnorStateClr1W<'a, REG> = crate::FieldWriter<'a, REG, 16, u16>;
         impl W {
-            #[doc = "Bits 0:15 - Clear abnormal state 1 (self-clearing)"]
+            #[doc = "Bits 0:15 - SDK writes observed abnormal-count bits to acknowledge their events; command readback/self-clear timing unverified"]
             #[inline(always)]
             pub fn pwm_abnor_state_clr1(
                 &mut self,
@@ -15798,7 +15650,7 @@ pub mod pwm {
                 PwmAbnorStateClr1W::new(self, 0)
             }
         }
-        #[doc = "PWM_ABNOR_STATE_CLR1\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_abnor_state_clr1::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_ABNOR_STATE_CLR1\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_abnor_state_clr1::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmAbnorStateClr1Spec;
         impl crate::RegisterSpec for PwmAbnorStateClr1Spec {
             type Ux = u32;
@@ -15807,10 +15659,8 @@ pub mod pwm {
         impl crate::Writable for PwmAbnorStateClr1Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_ABNOR_STATE_CLR1 to value 0"]
-        impl crate::Resettable for PwmAbnorStateClr1Spec {}
     }
-    #[doc = "PWM_INT_MASK (rw) register accessor: PWM_INT_MASK\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_int_mask::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_int_mask::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_int_mask`] module"]
+    #[doc = "PWM_INT_MASK (rw) register accessor: PWM_INT_MASK\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_int_mask::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_int_mask::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_int_mask`] module"]
     #[doc(alias = "PWM_INT_MASK")]
     pub type PwmIntMask = crate::Reg<pwm_int_mask::PwmIntMaskSpec>;
     #[doc = "PWM_INT_MASK"]
@@ -15819,25 +15669,107 @@ pub mod pwm {
         pub type R = crate::R<PwmIntMaskSpec>;
         #[doc = "Register `PWM_INT_MASK` writer"]
         pub type W = crate::W<PwmIntMaskSpec>;
-        #[doc = "Field `PWM_INT_MASK` reader - Interrupt mask: bit\\[0\\]=abnormal; bit\\[1\\]=stepping cycle end"]
-        pub type PwmIntMaskR = crate::FieldReader;
-        #[doc = "Field `PWM_INT_MASK` writer - Interrupt mask: bit\\[0\\]=abnormal; bit\\[1\\]=stepping cycle end"]
-        pub type PwmIntMaskW<'a, REG> = crate::FieldWriter<'a, REG, 2>;
+        #[doc = "Event enable despite MASK name: bit0 abnormal, bit1 step end; 1 permits, 0 masks, confirmed by SDK init writing 3"]
+        #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+        #[repr(u8)]
+        pub enum PwmIntMask {
+            #[doc = "0: Both event outputs masked"]
+            Disabled = 0,
+            #[doc = "1: Enable abnormal configuration event"]
+            AbnormalOnly = 1,
+            #[doc = "2: Enable step end event"]
+            PeriodEndOnly = 2,
+            #[doc = "3: Enable both event outputs; SDK initialization value"]
+            AllEvents = 3,
+        }
+        impl From<PwmIntMask> for u8 {
+            #[inline(always)]
+            fn from(variant: PwmIntMask) -> Self {
+                variant as _
+            }
+        }
+        impl crate::FieldSpec for PwmIntMask {
+            type Ux = u8;
+        }
+        impl crate::IsEnum for PwmIntMask {}
+        #[doc = "Field `PWM_INT_MASK` reader - Event enable despite MASK name: bit0 abnormal, bit1 step end; 1 permits, 0 masks, confirmed by SDK init writing 3"]
+        pub type PwmIntMaskR = crate::FieldReader<PwmIntMask>;
+        impl PwmIntMaskR {
+            #[doc = "Get enumerated values variant"]
+            #[inline(always)]
+            pub const fn variant(&self) -> PwmIntMask {
+                match self.bits {
+                    0 => PwmIntMask::Disabled,
+                    1 => PwmIntMask::AbnormalOnly,
+                    2 => PwmIntMask::PeriodEndOnly,
+                    3 => PwmIntMask::AllEvents,
+                    _ => unreachable!(),
+                }
+            }
+            #[doc = "Both event outputs masked"]
+            #[inline(always)]
+            pub fn is_disabled(&self) -> bool {
+                *self == PwmIntMask::Disabled
+            }
+            #[doc = "Enable abnormal configuration event"]
+            #[inline(always)]
+            pub fn is_abnormal_only(&self) -> bool {
+                *self == PwmIntMask::AbnormalOnly
+            }
+            #[doc = "Enable step end event"]
+            #[inline(always)]
+            pub fn is_period_end_only(&self) -> bool {
+                *self == PwmIntMask::PeriodEndOnly
+            }
+            #[doc = "Enable both event outputs; SDK initialization value"]
+            #[inline(always)]
+            pub fn is_all_events(&self) -> bool {
+                *self == PwmIntMask::AllEvents
+            }
+        }
+        #[doc = "Field `PWM_INT_MASK` writer - Event enable despite MASK name: bit0 abnormal, bit1 step end; 1 permits, 0 masks, confirmed by SDK init writing 3"]
+        pub type PwmIntMaskW<'a, REG> = crate::FieldWriter<'a, REG, 2, PwmIntMask, crate::Safe>;
+        impl<'a, REG> PwmIntMaskW<'a, REG>
+        where
+            REG: crate::Writable + crate::RegisterSpec,
+            REG::Ux: From<u8>,
+        {
+            #[doc = "Both event outputs masked"]
+            #[inline(always)]
+            pub fn disabled(self) -> &'a mut crate::W<REG> {
+                self.variant(PwmIntMask::Disabled)
+            }
+            #[doc = "Enable abnormal configuration event"]
+            #[inline(always)]
+            pub fn abnormal_only(self) -> &'a mut crate::W<REG> {
+                self.variant(PwmIntMask::AbnormalOnly)
+            }
+            #[doc = "Enable step end event"]
+            #[inline(always)]
+            pub fn period_end_only(self) -> &'a mut crate::W<REG> {
+                self.variant(PwmIntMask::PeriodEndOnly)
+            }
+            #[doc = "Enable both event outputs; SDK initialization value"]
+            #[inline(always)]
+            pub fn all_events(self) -> &'a mut crate::W<REG> {
+                self.variant(PwmIntMask::AllEvents)
+            }
+        }
         impl R {
-            #[doc = "Bits 0:1 - Interrupt mask: bit\\[0\\]=abnormal; bit\\[1\\]=stepping cycle end"]
+            #[doc = "Bits 0:1 - Event enable despite MASK name: bit0 abnormal, bit1 step end; 1 permits, 0 masks, confirmed by SDK init writing 3"]
             #[inline(always)]
             pub fn pwm_int_mask(&self) -> PwmIntMaskR {
                 PwmIntMaskR::new((self.bits & 3) as u8)
             }
         }
         impl W {
-            #[doc = "Bits 0:1 - Interrupt mask: bit\\[0\\]=abnormal; bit\\[1\\]=stepping cycle end"]
+            #[doc = "Bits 0:1 - Event enable despite MASK name: bit0 abnormal, bit1 step end; 1 permits, 0 masks, confirmed by SDK init writing 3"]
             #[inline(always)]
             pub fn pwm_int_mask(&mut self) -> PwmIntMaskW<'_, PwmIntMaskSpec> {
                 PwmIntMaskW::new(self, 0)
             }
         }
-        #[doc = "PWM_INT_MASK\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_int_mask::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_int_mask::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_INT_MASK\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_int_mask::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_int_mask::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmIntMaskSpec;
         impl crate::RegisterSpec for PwmIntMaskSpec {
             type Ux = u32;
@@ -15848,10 +15780,8 @@ pub mod pwm {
         impl crate::Writable for PwmIntMaskSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_INT_MASK to value 0"]
-        impl crate::Resettable for PwmIntMaskSpec {}
     }
-    #[doc = "PWM_DMA_EN (rw) register accessor: PWM_DMA_EN\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_dma_en::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_dma_en::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_dma_en`] module"]
+    #[doc = "PWM_DMA_EN (rw) register accessor: PWM_DMA_EN\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_dma_en::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_dma_en::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_dma_en`] module"]
     #[doc(alias = "PWM_DMA_EN")]
     pub type PwmDmaEn = crate::Reg<pwm_dma_en::PwmDmaEnSpec>;
     #[doc = "PWM_DMA_EN"]
@@ -15878,7 +15808,7 @@ pub mod pwm {
                 PwmDmaEnW::new(self, 0)
             }
         }
-        #[doc = "PWM_DMA_EN\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_dma_en::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_dma_en::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_DMA_EN\n\nYou can [`read`](crate::Reg::read) this register and get [`pwm_dma_en::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_dma_en::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmDmaEnSpec;
         impl crate::RegisterSpec for PwmDmaEnSpec {
             type Ux = u32;
@@ -15889,26 +15819,24 @@ pub mod pwm {
         impl crate::Writable for PwmDmaEnSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_DMA_EN to value 0"]
-        impl crate::Resettable for PwmDmaEnSpec {}
     }
-    #[doc = "PWM_CFG_INT_CLR0 (w) register accessor: PWM_CFG_INT_CLR0\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_cfg_int_clr0::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_cfg_int_clr0`] module"]
+    #[doc = "PWM_CFG_INT_CLR0 (w) register accessor: PWM_CFG_INT_CLR0\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_cfg_int_clr0::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pwm_cfg_int_clr0`] module"]
     #[doc(alias = "PWM_CFG_INT_CLR0")]
     pub type PwmCfgIntClr0 = crate::Reg<pwm_cfg_int_clr0::PwmCfgIntClr0Spec>;
     #[doc = "PWM_CFG_INT_CLR0"]
     pub mod pwm_cfg_int_clr0 {
         #[doc = "Register `PWM_CFG_INT_CLR0` writer"]
         pub type W = crate::W<PwmCfgIntClr0Spec>;
-        #[doc = "Field `PWM_CFG_INT_CLR0` writer - Stepping cycle end interrupt clear (self-clearing)"]
+        #[doc = "Field `PWM_CFG_INT_CLR0` writer - SDK writes channel bit to acknowledge step-end event; command readback/self-clear timing unverified"]
         pub type PwmCfgIntClr0W<'a, REG> = crate::FieldWriter<'a, REG, 16, u16>;
         impl W {
-            #[doc = "Bits 0:15 - Stepping cycle end interrupt clear (self-clearing)"]
+            #[doc = "Bits 0:15 - SDK writes channel bit to acknowledge step-end event; command readback/self-clear timing unverified"]
             #[inline(always)]
             pub fn pwm_cfg_int_clr0(&mut self) -> PwmCfgIntClr0W<'_, PwmCfgIntClr0Spec> {
                 PwmCfgIntClr0W::new(self, 0)
             }
         }
-        #[doc = "PWM_CFG_INT_CLR0\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_cfg_int_clr0::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "PWM_CFG_INT_CLR0\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pwm_cfg_int_clr0::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct PwmCfgIntClr0Spec;
         impl crate::RegisterSpec for PwmCfgIntClr0Spec {
             type Ux = u32;
@@ -15917,8 +15845,6 @@ pub mod pwm {
         impl crate::Writable for PwmCfgIntClr0Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets PWM_CFG_INT_CLR0 to value 0"]
-        impl crate::Resettable for PwmCfgIntClr0Spec {}
     }
 }
 #[doc = "i2c0"]

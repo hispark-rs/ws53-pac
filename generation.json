@@ -1,6 +1,6 @@
 {
   "source": "https://github.com/hispark-rs/hisi-registers",
-  "commit": "0ddce57fa32d75650b99d076550b1d1ed714216c",
+  "commit": "f188fd4c651af7c9f886b368159d51cc39637284",
   "dirty": false,
   "profile": "ws53_liteos_app/acore/MCU_MODE_1",
   "svd2rust": "0.37.1",
@@ -23,7 +23,7 @@
     "rdl/chips/ws53/adc-v155.rdl": "abd8eb6d3c2ea78a76d00b6b86d002d48060984c462707c9045d2b473013450a",
     "rdl/chips/ws53/efuse-read.rdl": "ff2098881aff1cd3b7b5240fe9afe26e07ae0e691de52835d797a9cc4dcc7e1d",
     "rdl/chips/ws53/glb-ctl.rdl": "fa81e83f75bd0707db2c61fb3c3a2edf1e79bb1198b00f297123ed32502084e3",
-    "rdl/chips/ws53/m-crg.rdl": "a3f73fc8d7c31c55d03432e275ebc0940ded322b285f612e60c9062b0311b08f",
+    "rdl/chips/ws53/m-crg.rdl": "3244675b5adf233e6b6f8148f36eb8701c1ed46941698c7f735e9ce7cd2098a6",
     "rdl/chips/ws53/mdma-v151.rdl": "a541c7deaadcc455b95737ae076eb3b6d3e1ed274d693489ee8a36ee099e54a1",
     "rdl/chips/ws53/pinctrl.rdl": "e1f2690aba6fe2e144f29af73cf8606befbd172c8f02204f201417addb9e5550",
     "rdl/chips/ws53/sdio-v151.rdl": "1e635aa40a5cbedda5854fb51377ab4fe993ff55eaf4758ebe87b36fc3343ba6",
@@ -31,7 +31,7 @@
     "rdl/chips/ws53/system-memory.rdl": "0392b17ff9ec8fc7a2d747b9edb1ccfbfd60a9eba7bac937d7339d63595270fc",
     "rdl/chips/ws53/trng.rdl": "75e3a5cc88ca1d2b91312f38c5d43138b39753dc6f9ea591a3e34d8e9a0e8f74",
     "rdl/chips/ws53/tsensor.rdl": "66a6e2ab719aa72b59e263e73818f5b03b1baf41bd9e2d5f6ab7c3d01feb162b",
-    "rdl/chips/ws53.rdl": "8a69b3a5ed360b704653bf519cadb88d19b7d3c9a806eb372847a6bbf4cd9953",
+    "rdl/chips/ws53.rdl": "f1ce70d846117c605a926957ab414717660c5162e5ea9550497f505e5d84d3f7",
     "rdl/chips/ws63/peripherals/bt_em_ctl.rdl": "96d045b6ed1984d43822e7833f93f90dd77cfb2553bcffb423f86f5e5404a563",
     "rdl/chips/ws63/peripherals/cldo_crg.rdl": "b5289461723351d3643ec982df334dbd795d78fe185435c29c9dee868153d77d",
     "rdl/chips/ws63/peripherals/cmu.rdl": "9e5e37d420c350d9529c5186451db5ce2dccc354bfdec64bba7a6a8060db8a9a",
@@ -80,8 +80,8 @@
     "rust-toolchain.toml": "4a55a5c6ce672e0024729f0739b0a82a0897538c9332528927201459bda83585"
   },
   "outputs": {
-    "src/lib.rs": "d8300294b737fb3e360524d4ae0dce53c69430a2c7f3691fda47d36d4a67271e",
+    "src/lib.rs": "c44b51fef5c1dfd5216c7e26db7ad12f7f17e0179ed4368ea53a3dc736cc714e",
     "device.x": "b732da88f67fc24ca2cdce044efc37da252563f855f19ca7975359951be95eba",
-    "svd/WS53.svd": "a09872b2b7ce392aaf39894832e7e540d2b8383b8f37f371b466d07b55e2e382"
+    "svd/WS53.svd": "93d6221d2e8076930492adb454e74764e78c8871459510ce63f6c411a7686b74"
   }
 }

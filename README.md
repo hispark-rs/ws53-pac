@@ -101,7 +101,7 @@ restart specifies the actual SDK key `0x5a5a5a5a`. STATUS bit0 is 0 free /
 assumed. These corrections do not prove watchdog expiry, lock protection range,
 clock rate, NMI delivery or recovery. The SDK has conflicting NMI_CWDT bit
 assignments; the application WDT is not assigned the control-core B_WDT IRQ.
-There is no watchdog HAL or hardware reset qualification yet.
+This PAC does not itself provide a watchdog HAL or hardware reset qualification.
 
 For the pinned `ws53_liteos_app` source configuration, the SDK target resolver
 selects `non_os`, excluding the old ROM-header components. Its application
@@ -109,3 +109,14 @@ watchdog source is NMI bit1. M_CRG exposes halfword NMI enable/raw/masked status
 at offsets 0x700/0x704/0x708; status is RO and reset values are unknown. This
 resolves the source-profile header choice, not CPU NMI semantics or the board's
 installed firmware. The PAC deliberately adds no guessed local WDT interrupt.
+
+PWM exposes the application profile's four groups/eight channels at 0x52082000,
+with local causes 71/72. All 115 register slots have source-layout evidence;
+unknown resets and command self-clear claims are withheld. START and the three
+event-clear words have no read/modify interface. INT_MASK is an event enable:
+named Disabled/AbnormalOnly/PeriodEndOnly/AllEvents values encode 0/1/2/3. The
+halfword PWM_M_DIV3 at M_CRG+0x7c describes enable/load/divider fields from the
+source port, not a measured 32MHz clock or exclusive ownership of shared clocks.
+The source's 255-tick period and 32767-cycle API limits are not hardware-width
+claims; high count halves remain source-defined 16-bit slots. Register presence
+does not establish usable pins, shadow-latch timing, pulse waveforms or a PWM HAL.
