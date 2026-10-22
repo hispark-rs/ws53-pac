@@ -93,3 +93,10 @@ assumed. These corrections do not prove watchdog expiry, lock protection range,
 clock rate, NMI delivery or recovery. The SDK has conflicting NMI_CWDT bit
 assignments; the application WDT is not assigned the control-core B_WDT IRQ.
 There is no watchdog HAL or hardware reset qualification yet.
+
+For the pinned `ws53_liteos_app` source configuration, the SDK target resolver
+selects `non_os`, excluding the old ROM-header components. Its application
+watchdog source is NMI bit1. M_CRG exposes halfword NMI enable/raw/masked status
+at offsets 0x700/0x704/0x708; status is RO and reset values are unknown. This
+resolves the source-profile header choice, not CPU NMI semantics or the board's
+installed firmware. The PAC deliberately adds no guessed local WDT interrupt.

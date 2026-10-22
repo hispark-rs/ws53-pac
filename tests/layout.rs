@@ -723,3 +723,53 @@ fn watchdog_asymmetric_views_and_field_encodings_match_sdk() {
     assert!(r.ccvr_status().read().valid().bit());
     assert!(r.wdt_status().read().wdt_status().bit());
 }
+
+assert_not_impl!(
+    ws53_pac::m_crg::nmi_raw_status::NmiRawStatusSpec,
+    ws53_pac::generic::Writable
+);
+assert_not_impl!(
+    ws53_pac::m_crg::nmi_masked_status::NmiMaskedStatusSpec,
+    ws53_pac::generic::Writable
+);
+assert_not_impl!(
+    ws53_pac::m_crg::nmi_enable::NmiEnableSpec,
+    ws53_pac::generic::Resettable
+);
+
+#[test]
+fn application_nmi_halfwords_preserve_unknown_source_bits() {
+    let r: ws53_pac::m_crg::RegisterBlock = unsafe { core::mem::zeroed() };
+    assert_eq!(offset(&r, r.nmi_enable()), 0x700);
+    assert_eq!(offset(&r, r.nmi_raw_status()), 0x704);
+    assert_eq!(offset(&r, r.nmi_masked_status()), 0x708);
+    assert_eq!(size_of_val(r.nmi_enable()), 2);
+    assert_eq!(size_of_val(r.nmi_raw_status()), 2);
+    assert_eq!(size_of_val(r.nmi_masked_status()), 2);
+    // Host RAM only: no CPU NMI delivery/priority or device MMIO is simulated.
+    unsafe { r.nmi_enable().write_with_zero(|w| w.bits(0xa5c1)) };
+    r.nmi_enable().modify(|_, w| {
+        w.watchdog()
+            .set_bit()
+            .xip_control()
+            .set_bit()
+            .xip_cache()
+            .set_bit()
+            .mdma()
+            .set_bit()
+            .smdma()
+            .set_bit()
+    });
+    assert_eq!(r.nmi_enable().read().bits(), 0xa5ff);
+    r.nmi_enable().modify(|_, w| w.watchdog().clear_bit());
+    assert_eq!(r.nmi_enable().read().bits(), 0xa5fd);
+    unsafe {
+        r.nmi_raw_status().as_ptr().write_volatile(2);
+        r.nmi_masked_status().as_ptr().write_volatile(0x3c);
+    }
+    assert!(r.nmi_raw_status().read().watchdog().bit());
+    let status = r.nmi_masked_status().read();
+    assert!(!status.watchdog().bit());
+    assert!(status.xip_control().bit() && status.xip_cache().bit());
+    assert!(status.mdma().bit() && status.smdma().bit());
+}

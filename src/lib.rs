@@ -976,9 +976,15 @@ pub mod m_crg {
         global_clken: GlobalClken,
         _reserved7: [u8; 0x12],
         spi_clock: SpiClock,
-        _reserved8: [u8; 0x03f2],
+        _reserved8: [u8; 0x01a2],
+        nmi_enable: NmiEnable,
+        _reserved9: [u8; 0x02],
+        nmi_raw_status: NmiRawStatus,
+        _reserved10: [u8; 0x02],
+        nmi_masked_status: NmiMaskedStatus,
+        _reserved11: [u8; 0x0246],
         spi_device_mode: SpiDeviceMode,
-        _reserved9: [u8; 0x0cae],
+        _reserved12: [u8; 0x0cae],
         trng_ring_control: TrngRingControl,
     }
     impl RegisterBlock {
@@ -1021,6 +1027,21 @@ pub mod m_crg {
         #[inline(always)]
         pub const fn spi_clock(&self) -> &SpiClock {
             &self.spi_clock
+        }
+        #[doc = "0x700 - NMI_ENABLE"]
+        #[inline(always)]
+        pub const fn nmi_enable(&self) -> &NmiEnable {
+            &self.nmi_enable
+        }
+        #[doc = "0x704 - NMI_RAW_STATUS"]
+        #[inline(always)]
+        pub const fn nmi_raw_status(&self) -> &NmiRawStatus {
+            &self.nmi_raw_status
+        }
+        #[doc = "0x708 - NMI_MASKED_STATUS"]
+        #[inline(always)]
+        pub const fn nmi_masked_status(&self) -> &NmiMaskedStatus {
+            &self.nmi_masked_status
         }
         #[doc = "0x950 - SPI_DEVICE_MODE"]
         #[inline(always)]
@@ -1750,6 +1771,205 @@ pub mod m_crg {
         impl crate::Writable for SpiClockSpec {
             type Safety = crate::Unsafe;
         }
+    }
+    #[doc = "NMI_ENABLE (rw) register accessor: NMI_ENABLE\n\nYou can [`read`](crate::Reg::read) this register and get [`nmi_enable::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`nmi_enable::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@nmi_enable`] module"]
+    #[doc(alias = "NMI_ENABLE")]
+    pub type NmiEnable = crate::Reg<nmi_enable::NmiEnableSpec>;
+    #[doc = "NMI_ENABLE"]
+    pub mod nmi_enable {
+        #[doc = "Register `NMI_ENABLE` reader"]
+        pub type R = crate::R<NmiEnableSpec>;
+        #[doc = "Register `NMI_ENABLE` writer"]
+        pub type W = crate::W<NmiEnableSpec>;
+        #[doc = "Field `WATCHDOG` reader - watchdog"]
+        pub type WatchdogR = crate::BitReader;
+        #[doc = "Field `WATCHDOG` writer - watchdog"]
+        pub type WatchdogW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `XIP_CONTROL` reader - xip_control"]
+        pub type XipControlR = crate::BitReader;
+        #[doc = "Field `XIP_CONTROL` writer - xip_control"]
+        pub type XipControlW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `XIP_CACHE` reader - xip_cache"]
+        pub type XipCacheR = crate::BitReader;
+        #[doc = "Field `XIP_CACHE` writer - xip_cache"]
+        pub type XipCacheW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `MDMA` reader - mdma"]
+        pub type MdmaR = crate::BitReader;
+        #[doc = "Field `MDMA` writer - mdma"]
+        pub type MdmaW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `SMDMA` reader - smdma"]
+        pub type SmdmaR = crate::BitReader;
+        #[doc = "Field `SMDMA` writer - smdma"]
+        pub type SmdmaW<'a, REG> = crate::BitWriter<'a, REG>;
+        impl R {
+            #[doc = "Bit 1 - watchdog"]
+            #[inline(always)]
+            pub fn watchdog(&self) -> WatchdogR {
+                WatchdogR::new(((self.bits >> 1) & 1) != 0)
+            }
+            #[doc = "Bit 2 - xip_control"]
+            #[inline(always)]
+            pub fn xip_control(&self) -> XipControlR {
+                XipControlR::new(((self.bits >> 2) & 1) != 0)
+            }
+            #[doc = "Bit 3 - xip_cache"]
+            #[inline(always)]
+            pub fn xip_cache(&self) -> XipCacheR {
+                XipCacheR::new(((self.bits >> 3) & 1) != 0)
+            }
+            #[doc = "Bit 4 - mdma"]
+            #[inline(always)]
+            pub fn mdma(&self) -> MdmaR {
+                MdmaR::new(((self.bits >> 4) & 1) != 0)
+            }
+            #[doc = "Bit 5 - smdma"]
+            #[inline(always)]
+            pub fn smdma(&self) -> SmdmaR {
+                SmdmaR::new(((self.bits >> 5) & 1) != 0)
+            }
+        }
+        impl W {
+            #[doc = "Bit 1 - watchdog"]
+            #[inline(always)]
+            pub fn watchdog(&mut self) -> WatchdogW<'_, NmiEnableSpec> {
+                WatchdogW::new(self, 1)
+            }
+            #[doc = "Bit 2 - xip_control"]
+            #[inline(always)]
+            pub fn xip_control(&mut self) -> XipControlW<'_, NmiEnableSpec> {
+                XipControlW::new(self, 2)
+            }
+            #[doc = "Bit 3 - xip_cache"]
+            #[inline(always)]
+            pub fn xip_cache(&mut self) -> XipCacheW<'_, NmiEnableSpec> {
+                XipCacheW::new(self, 3)
+            }
+            #[doc = "Bit 4 - mdma"]
+            #[inline(always)]
+            pub fn mdma(&mut self) -> MdmaW<'_, NmiEnableSpec> {
+                MdmaW::new(self, 4)
+            }
+            #[doc = "Bit 5 - smdma"]
+            #[inline(always)]
+            pub fn smdma(&mut self) -> SmdmaW<'_, NmiEnableSpec> {
+                SmdmaW::new(self, 5)
+            }
+        }
+        #[doc = "NMI_ENABLE\n\nYou can [`read`](crate::Reg::read) this register and get [`nmi_enable::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`nmi_enable::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct NmiEnableSpec;
+        impl crate::RegisterSpec for NmiEnableSpec {
+            type Ux = u16;
+        }
+        #[doc = "`read()` method returns [`nmi_enable::R`](R) reader structure"]
+        impl crate::Readable for NmiEnableSpec {}
+        #[doc = "`write(|w| ..)` method takes [`nmi_enable::W`](W) writer structure"]
+        impl crate::Writable for NmiEnableSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "NMI_RAW_STATUS (r) register accessor: NMI_RAW_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`nmi_raw_status::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@nmi_raw_status`] module"]
+    #[doc(alias = "NMI_RAW_STATUS")]
+    pub type NmiRawStatus = crate::Reg<nmi_raw_status::NmiRawStatusSpec>;
+    #[doc = "NMI_RAW_STATUS"]
+    pub mod nmi_raw_status {
+        #[doc = "Register `NMI_RAW_STATUS` reader"]
+        pub type R = crate::R<NmiRawStatusSpec>;
+        #[doc = "Field `WATCHDOG` reader - watchdog"]
+        pub type WatchdogR = crate::BitReader;
+        #[doc = "Field `XIP_CONTROL` reader - xip_control"]
+        pub type XipControlR = crate::BitReader;
+        #[doc = "Field `XIP_CACHE` reader - xip_cache"]
+        pub type XipCacheR = crate::BitReader;
+        #[doc = "Field `MDMA` reader - mdma"]
+        pub type MdmaR = crate::BitReader;
+        #[doc = "Field `SMDMA` reader - smdma"]
+        pub type SmdmaR = crate::BitReader;
+        impl R {
+            #[doc = "Bit 1 - watchdog"]
+            #[inline(always)]
+            pub fn watchdog(&self) -> WatchdogR {
+                WatchdogR::new(((self.bits >> 1) & 1) != 0)
+            }
+            #[doc = "Bit 2 - xip_control"]
+            #[inline(always)]
+            pub fn xip_control(&self) -> XipControlR {
+                XipControlR::new(((self.bits >> 2) & 1) != 0)
+            }
+            #[doc = "Bit 3 - xip_cache"]
+            #[inline(always)]
+            pub fn xip_cache(&self) -> XipCacheR {
+                XipCacheR::new(((self.bits >> 3) & 1) != 0)
+            }
+            #[doc = "Bit 4 - mdma"]
+            #[inline(always)]
+            pub fn mdma(&self) -> MdmaR {
+                MdmaR::new(((self.bits >> 4) & 1) != 0)
+            }
+            #[doc = "Bit 5 - smdma"]
+            #[inline(always)]
+            pub fn smdma(&self) -> SmdmaR {
+                SmdmaR::new(((self.bits >> 5) & 1) != 0)
+            }
+        }
+        #[doc = "NMI_RAW_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`nmi_raw_status::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct NmiRawStatusSpec;
+        impl crate::RegisterSpec for NmiRawStatusSpec {
+            type Ux = u16;
+        }
+        #[doc = "`read()` method returns [`nmi_raw_status::R`](R) reader structure"]
+        impl crate::Readable for NmiRawStatusSpec {}
+    }
+    #[doc = "NMI_MASKED_STATUS (r) register accessor: NMI_MASKED_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`nmi_masked_status::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@nmi_masked_status`] module"]
+    #[doc(alias = "NMI_MASKED_STATUS")]
+    pub type NmiMaskedStatus = crate::Reg<nmi_masked_status::NmiMaskedStatusSpec>;
+    #[doc = "NMI_MASKED_STATUS"]
+    pub mod nmi_masked_status {
+        #[doc = "Register `NMI_MASKED_STATUS` reader"]
+        pub type R = crate::R<NmiMaskedStatusSpec>;
+        #[doc = "Field `WATCHDOG` reader - watchdog"]
+        pub type WatchdogR = crate::BitReader;
+        #[doc = "Field `XIP_CONTROL` reader - xip_control"]
+        pub type XipControlR = crate::BitReader;
+        #[doc = "Field `XIP_CACHE` reader - xip_cache"]
+        pub type XipCacheR = crate::BitReader;
+        #[doc = "Field `MDMA` reader - mdma"]
+        pub type MdmaR = crate::BitReader;
+        #[doc = "Field `SMDMA` reader - smdma"]
+        pub type SmdmaR = crate::BitReader;
+        impl R {
+            #[doc = "Bit 1 - watchdog"]
+            #[inline(always)]
+            pub fn watchdog(&self) -> WatchdogR {
+                WatchdogR::new(((self.bits >> 1) & 1) != 0)
+            }
+            #[doc = "Bit 2 - xip_control"]
+            #[inline(always)]
+            pub fn xip_control(&self) -> XipControlR {
+                XipControlR::new(((self.bits >> 2) & 1) != 0)
+            }
+            #[doc = "Bit 3 - xip_cache"]
+            #[inline(always)]
+            pub fn xip_cache(&self) -> XipCacheR {
+                XipCacheR::new(((self.bits >> 3) & 1) != 0)
+            }
+            #[doc = "Bit 4 - mdma"]
+            #[inline(always)]
+            pub fn mdma(&self) -> MdmaR {
+                MdmaR::new(((self.bits >> 4) & 1) != 0)
+            }
+            #[doc = "Bit 5 - smdma"]
+            #[inline(always)]
+            pub fn smdma(&self) -> SmdmaR {
+                SmdmaR::new(((self.bits >> 5) & 1) != 0)
+            }
+        }
+        #[doc = "NMI_MASKED_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`nmi_masked_status::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct NmiMaskedStatusSpec;
+        impl crate::RegisterSpec for NmiMaskedStatusSpec {
+            type Ux = u16;
+        }
+        #[doc = "`read()` method returns [`nmi_masked_status::R`](R) reader structure"]
+        impl crate::Readable for NmiMaskedStatusSpec {}
     }
     #[doc = "SPI_DEVICE_MODE (rw) register accessor: SPI_DEVICE_MODE\n\nYou can [`read`](crate::Reg::read) this register and get [`spi_device_mode::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`spi_device_mode::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@spi_device_mode`] module"]
     #[doc(alias = "SPI_DEVICE_MODE")]
