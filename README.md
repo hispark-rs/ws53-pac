@@ -84,3 +84,12 @@ its source-selection encoding is not established. EOI/SET/CLR have WO command
 interfaces, and no GPIO reset values are assumed. Pin aliases, GPIO0 holes and
 the SGPIO/SWD reservation must be enforced by the future HAL. LOCK, low-power
 state and MULTISYSTEM register semantics are not claimed by this PAC.
+
+WDT uses an SDK-audited application view of the shared v151 register layout.
+LOCK command/status and counter-latch request/status are separate WO/RO views;
+restart specifies the actual SDK key `0x5a5a5a5a`. STATUS bit0 is 0 free /
+1 busy, and EOI has an explicit read side effect. No WDT reset value is
+assumed. These corrections do not prove watchdog expiry, lock protection range,
+clock rate, NMI delivery or recovery. The SDK has conflicting NMI_CWDT bit
+assignments; the application WDT is not assigned the control-core B_WDT IRQ.
+There is no watchdog HAL or hardware reset qualification yet.

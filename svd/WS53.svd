@@ -13307,17 +13307,32 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
       </addressBlock>
       <registers>
         <register>
-          <name>WDT_LOCK</name>
-          <description>WDT_LOCK</description>
+          <name>LOCK_STATUS</name>
+          <description>LOCK_STATUS</description>
+          <addressOffset>0x0</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <fields>
+            <field>
+              <name>LOCKED</name>
+              <description>0 unlocked, 1 locked; not the last written key</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>LOCK_COMMAND</name>
+          <description>LOCK_COMMAND</description>
+          <alternateRegister>LOCK_STATUS</alternateRegister>
           <addressOffset>0x0</addressOffset>
           <size>32</size>
           <access>write-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
-              <name>WDT_LOCK</name>
-              <description>Write 0x5A5A5A5A to unlock, other values lock</description>
+              <name>KEY</name>
+              <description>0x5A5A5A5A unlocks; any other value locks</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
               <access>write-only</access>
@@ -13330,8 +13345,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x4</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFF00</resetMask>
           <fields>
             <field>
               <name>WDT_LOAD</name>
@@ -13348,15 +13361,19 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x8</addressOffset>
           <size>32</size>
           <access>write-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
               <name>WDT_RESTART</name>
-              <description>Write anything except 0x5A5A5A5A to restart counter</description>
+              <description>SDK kick writes 0x5A5A5A5A; other keys have contradictory SDK comments and are not specified</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
               <access>write-only</access>
+              <writeConstraint>
+                <range>
+                  <minimum>1515870810</minimum>
+                  <maximum>1515870810</maximum>
+                </range>
+              </writeConstraint>
             </field>
           </fields>
         </register>
@@ -13366,15 +13383,15 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0xC</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
+          <readAction>modifyExternal</readAction>
           <fields>
             <field>
               <name>WDT_EOI</name>
-              <description>Read to clear watchdog interrupt</description>
+              <description>Read returns zero and clears interrupt per SDK register comment; SDK clear helper reads then writes 1, independent write-only clear behavior unverified</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-only</access>
+              <readAction>modifyExternal</readAction>
             </field>
           </fields>
         </register>
@@ -13384,8 +13401,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x10</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x000000FD</resetMask>
           <fields>
             <field>
               <name>WDT_EN</name>
@@ -13417,19 +13432,19 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
             </field>
             <field>
               <name>WDT_MODE</name>
-              <description>Mode: 0=one interrupt then reset; 1=two interrupts then reset</description>
+              <description>0 reset on first expiry interrupt, 1 reset on second expiry interrupt; reset still gated by RST_EN</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-write</access>
               <enumeratedValues>
                 <enumeratedValue>
-                  <name>Mode1</name>
-                  <description>Single interrupt then reset</description>
+                  <name>ResetOnFirst</name>
+                  <description>Reset on first expiry interrupt when RST_EN is set</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
-                  <name>Mode2</name>
-                  <description>Two interrupts then reset</description>
+                  <name>ResetOnSecond</name>
+                  <description>Reset on second expiry interrupt when RST_EN is set</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -13442,8 +13457,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x14</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
               <name>WDT_CNT</name>
@@ -13460,8 +13473,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x18</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>WDT_RAW_INTR</name>
@@ -13478,8 +13489,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x1C</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>WDT_INTR</name>
@@ -13496,8 +13505,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x20</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000007</resetMask>
           <fields>
             <field>
               <name>WDT_LPIF_STATE</name>
@@ -13514,12 +13521,10 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x24</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>WDT_STATUS</name>
-              <description>Status: 0=busy; 1=free</description>
+              <description>SDK register definition: 0 free, 1 busy</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-only</access>
@@ -13527,26 +13532,41 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           </fields>
         </register>
         <register>
-          <name>WDT_CCVR_EN</name>
-          <description>WDT_CCVR_EN</description>
+          <name>CCVR_STATUS</name>
+          <description>CCVR_STATUS</description>
           <addressOffset>0x28</addressOffset>
           <size>32</size>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000003</resetMask>
+          <access>read-only</access>
           <fields>
             <field>
-              <name>CCVR_REQ</name>
-              <description>Write 1 to request current counter value</description>
-              <bitOffset>0</bitOffset>
-              <bitWidth>1</bitWidth>
-              <access>write-only</access>
-            </field>
-            <field>
-              <name>CCVR_ACK</name>
-              <description>Acknowledge: 1=counter value valid</description>
+              <name>VALID</name>
+              <description>Counter latch valid; inspect after requesting a snapshot</description>
               <bitOffset>1</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CCVR_REQUEST</name>
+          <description>CCVR_REQUEST</description>
+          <alternateRegister>CCVR_STATUS</alternateRegister>
+          <addressOffset>0x28</addressOffset>
+          <size>32</size>
+          <access>write-only</access>
+          <fields>
+            <field>
+              <name>REQUEST</name>
+              <description>request</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>write-only</access>
+              <writeConstraint>
+                <range>
+                  <minimum>1</minimum>
+                  <maximum>1</maximum>
+                </range>
+              </writeConstraint>
             </field>
           </fields>
         </register>

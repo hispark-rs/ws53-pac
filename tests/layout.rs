@@ -625,3 +625,101 @@ fn efuse_read_window_preserves_two_bytes_per_word_and_command_alias() {
     };
     assert_eq!(efuse.mode_status().read().bits(), 0xabcd5a5a);
 }
+
+// WDT command aliases must never expose a read-modify-write interface. The
+// status aliases must not be writable, and unknown resets must stay absent.
+assert_not_impl!(
+    ws53_pac::wdt::lock_command::LockCommandSpec,
+    ws53_pac::generic::Readable
+);
+assert_not_impl!(
+    ws53_pac::wdt::lock_status::LockStatusSpec,
+    ws53_pac::generic::Writable
+);
+assert_not_impl!(
+    ws53_pac::wdt::wdt_restart::WdtRestartSpec,
+    ws53_pac::generic::Readable
+);
+assert_not_impl!(
+    ws53_pac::wdt::wdt_eoi::WdtEoiSpec,
+    ws53_pac::generic::Writable
+);
+assert_not_impl!(
+    ws53_pac::wdt::ccvr_request::CcvrRequestSpec,
+    ws53_pac::generic::Readable
+);
+assert_not_impl!(
+    ws53_pac::wdt::ccvr_status::CcvrStatusSpec,
+    ws53_pac::generic::Writable
+);
+assert_not_impl!(
+    ws53_pac::wdt::wdt_cr::WdtCrSpec,
+    ws53_pac::generic::Resettable
+);
+assert_not_impl!(
+    ws53_pac::wdt::wdt_load::WdtLoadSpec,
+    ws53_pac::generic::Resettable
+);
+assert_not_impl!(
+    ws53_pac::wdt::lock_command::LockCommandSpec,
+    ws53_pac::generic::Resettable
+);
+assert_not_impl!(
+    ws53_pac::wdt::ccvr_request::CcvrRequestSpec,
+    ws53_pac::generic::Resettable
+);
+
+#[test]
+fn watchdog_asymmetric_views_and_field_encodings_match_sdk() {
+    let r: ws53_pac::wdt::RegisterBlock = unsafe { core::mem::zeroed() };
+    assert_eq!(ws53_pac::Wdt::PTR as usize, 0x5702b000);
+    assert_eq!(size_of_val(&r), 0x2c);
+    assert_eq!(offset(&r, r.lock_command()), 0);
+    assert_eq!(offset(&r, r.lock_status()), 0);
+    assert_eq!(offset(&r, r.wdt_restart()), 8);
+    assert_eq!(offset(&r, r.wdt_eoi()), 12);
+    assert_eq!(offset(&r, r.wdt_cr()), 16);
+    assert_eq!(offset(&r, r.wdt_cnt()), 20);
+    assert_eq!(offset(&r, r.wdt_status()), 36);
+    assert_eq!(offset(&r, r.ccvr_request()), 40);
+    assert_eq!(offset(&r, r.ccvr_status()), 40);
+    // This is a host RAM encoding test, not a simulated watchdog or silicon.
+    unsafe {
+        r.lock_command()
+            .write_with_zero(|w| w.key().bits(0x5a5a5a5a));
+        assert_eq!(r.lock_command().as_ptr().read_volatile(), 0x5a5a5a5a);
+        r.wdt_restart()
+            .write_with_zero(|w| w.wdt_restart().bits(0x5a5a5a5a));
+        assert_eq!(r.wdt_restart().as_ptr().read_volatile(), 0x5a5a5a5a);
+        r.wdt_load().write_with_zero(|w| w.bits(0xa5));
+        r.wdt_cr().write_with_zero(|w| w.bits(0xa5a50002));
+    }
+    r.wdt_load()
+        .modify(|_, w| unsafe { w.wdt_load().bits(0x123456) });
+    assert_eq!(r.wdt_load().read().bits(), 0x123456a5);
+    r.wdt_cr().modify(|_, w| unsafe {
+        w.wdt_en()
+            .set_bit()
+            .rst_en()
+            .set_bit()
+            .rst_pl()
+            .bits(7)
+            .wdt_imsk()
+            .set_bit()
+            .wdt_mode()
+            .reset_on_second()
+    });
+    assert_eq!(r.wdt_cr().read().bits(), 0xa5a500ff);
+    r.wdt_cr().modify(|_, w| w.wdt_mode().reset_on_first());
+    assert_eq!(r.wdt_cr().read().bits(), 0xa5a5007f);
+    unsafe {
+        r.lock_status().as_ptr().write_volatile(1);
+        r.ccvr_request().write_with_zero(|w| w.request().set_bit());
+        assert_eq!(r.ccvr_request().as_ptr().read_volatile(), 1);
+        r.ccvr_status().as_ptr().write_volatile(2);
+        r.wdt_status().as_ptr().write_volatile(1);
+    }
+    assert!(r.lock_status().read().locked().bit());
+    assert!(r.ccvr_status().read().valid().bit());
+    assert!(r.wdt_status().read().wdt_status().bit());
+}

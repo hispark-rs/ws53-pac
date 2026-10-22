@@ -31229,7 +31229,7 @@ pub mod wdt {
     #[repr(C)]
     #[doc = "Register block"]
     pub struct RegisterBlock {
-        wdt_lock: WdtLock,
+        _reserved_0_lock: [u8; 0x04],
         wdt_load: WdtLoad,
         wdt_restart: WdtRestart,
         wdt_eoi: WdtEoi,
@@ -31239,13 +31239,18 @@ pub mod wdt {
         wdt_intr: WdtIntr,
         wdt_lpif_state: WdtLpifState,
         wdt_status: WdtStatus,
-        wdt_ccvr_en: WdtCcvrEn,
+        _reserved_10_ccvr: [u8; 0x04],
     }
     impl RegisterBlock {
-        #[doc = "0x00 - WDT_LOCK"]
+        #[doc = "0x00 - LOCK_COMMAND"]
         #[inline(always)]
-        pub const fn wdt_lock(&self) -> &WdtLock {
-            &self.wdt_lock
+        pub const fn lock_command(&self) -> &LockCommand {
+            unsafe { &*core::ptr::from_ref(self).cast::<u8>().cast() }
+        }
+        #[doc = "0x00 - LOCK_STATUS"]
+        #[inline(always)]
+        pub const fn lock_status(&self) -> &LockStatus {
+            unsafe { &*core::ptr::from_ref(self).cast::<u8>().cast() }
         }
         #[doc = "0x04 - WDT_LOAD"]
         #[inline(always)]
@@ -31292,41 +31297,68 @@ pub mod wdt {
         pub const fn wdt_status(&self) -> &WdtStatus {
             &self.wdt_status
         }
-        #[doc = "0x28 - WDT_CCVR_EN"]
+        #[doc = "0x28 - CCVR_REQUEST"]
         #[inline(always)]
-        pub const fn wdt_ccvr_en(&self) -> &WdtCcvrEn {
-            &self.wdt_ccvr_en
+        pub const fn ccvr_request(&self) -> &CcvrRequest {
+            unsafe { &*core::ptr::from_ref(self).cast::<u8>().add(40).cast() }
+        }
+        #[doc = "0x28 - CCVR_STATUS"]
+        #[inline(always)]
+        pub const fn ccvr_status(&self) -> &CcvrStatus {
+            unsafe { &*core::ptr::from_ref(self).cast::<u8>().add(40).cast() }
         }
     }
-    #[doc = "WDT_LOCK (w) register accessor: WDT_LOCK\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`wdt_lock::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@wdt_lock`] module"]
-    #[doc(alias = "WDT_LOCK")]
-    pub type WdtLock = crate::Reg<wdt_lock::WdtLockSpec>;
-    #[doc = "WDT_LOCK"]
-    pub mod wdt_lock {
-        #[doc = "Register `WDT_LOCK` writer"]
-        pub type W = crate::W<WdtLockSpec>;
-        #[doc = "Field `WDT_LOCK` writer - Write 0x5A5A5A5A to unlock, other values lock"]
-        pub type WdtLockW<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
-        impl W {
-            #[doc = "Bits 0:31 - Write 0x5A5A5A5A to unlock, other values lock"]
+    #[doc = "LOCK_STATUS (r) register accessor: LOCK_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`lock_status::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@lock_status`] module"]
+    #[doc(alias = "LOCK_STATUS")]
+    pub type LockStatus = crate::Reg<lock_status::LockStatusSpec>;
+    #[doc = "LOCK_STATUS"]
+    pub mod lock_status {
+        #[doc = "Register `LOCK_STATUS` reader"]
+        pub type R = crate::R<LockStatusSpec>;
+        #[doc = "Field `LOCKED` reader - 0 unlocked, 1 locked; not the last written key"]
+        pub type LockedR = crate::BitReader;
+        impl R {
+            #[doc = "Bit 0 - 0 unlocked, 1 locked; not the last written key"]
             #[inline(always)]
-            pub fn wdt_lock(&mut self) -> WdtLockW<'_, WdtLockSpec> {
-                WdtLockW::new(self, 0)
+            pub fn locked(&self) -> LockedR {
+                LockedR::new((self.bits & 1) != 0)
             }
         }
-        #[doc = "WDT_LOCK\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`wdt_lock::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
-        pub struct WdtLockSpec;
-        impl crate::RegisterSpec for WdtLockSpec {
+        #[doc = "LOCK_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`lock_status::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct LockStatusSpec;
+        impl crate::RegisterSpec for LockStatusSpec {
             type Ux = u32;
         }
-        #[doc = "`write(|w| ..)` method takes [`wdt_lock::W`](W) writer structure"]
-        impl crate::Writable for WdtLockSpec {
+        #[doc = "`read()` method returns [`lock_status::R`](R) reader structure"]
+        impl crate::Readable for LockStatusSpec {}
+    }
+    #[doc = "LOCK_COMMAND (w) register accessor: LOCK_COMMAND\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`lock_command::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@lock_command`] module"]
+    #[doc(alias = "LOCK_COMMAND")]
+    pub type LockCommand = crate::Reg<lock_command::LockCommandSpec>;
+    #[doc = "LOCK_COMMAND"]
+    pub mod lock_command {
+        #[doc = "Register `LOCK_COMMAND` writer"]
+        pub type W = crate::W<LockCommandSpec>;
+        #[doc = "Field `KEY` writer - 0x5A5A5A5A unlocks; any other value locks"]
+        pub type KeyW<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
+        impl W {
+            #[doc = "Bits 0:31 - 0x5A5A5A5A unlocks; any other value locks"]
+            #[inline(always)]
+            pub fn key(&mut self) -> KeyW<'_, LockCommandSpec> {
+                KeyW::new(self, 0)
+            }
+        }
+        #[doc = "LOCK_COMMAND\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`lock_command::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct LockCommandSpec;
+        impl crate::RegisterSpec for LockCommandSpec {
+            type Ux = u32;
+        }
+        #[doc = "`write(|w| ..)` method takes [`lock_command::W`](W) writer structure"]
+        impl crate::Writable for LockCommandSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets WDT_LOCK to value 0"]
-        impl crate::Resettable for WdtLockSpec {}
     }
-    #[doc = "WDT_LOAD (rw) register accessor: WDT_LOAD\n\nYou can [`read`](crate::Reg::read) this register and get [`wdt_load::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`wdt_load::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@wdt_load`] module"]
+    #[doc = "WDT_LOAD (rw) register accessor: WDT_LOAD\n\nYou can [`read`](crate::Reg::read) this register and get [`wdt_load::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`wdt_load::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@wdt_load`] module"]
     #[doc(alias = "WDT_LOAD")]
     pub type WdtLoad = crate::Reg<wdt_load::WdtLoadSpec>;
     #[doc = "WDT_LOAD"]
@@ -31353,7 +31385,7 @@ pub mod wdt {
                 WdtLoadW::new(self, 8)
             }
         }
-        #[doc = "WDT_LOAD\n\nYou can [`read`](crate::Reg::read) this register and get [`wdt_load::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`wdt_load::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "WDT_LOAD\n\nYou can [`read`](crate::Reg::read) this register and get [`wdt_load::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`wdt_load::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct WdtLoadSpec;
         impl crate::RegisterSpec for WdtLoadSpec {
             type Ux = u32;
@@ -31364,26 +31396,24 @@ pub mod wdt {
         impl crate::Writable for WdtLoadSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets WDT_LOAD to value 0"]
-        impl crate::Resettable for WdtLoadSpec {}
     }
-    #[doc = "WDT_RESTART (w) register accessor: WDT_RESTART\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`wdt_restart::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@wdt_restart`] module"]
+    #[doc = "WDT_RESTART (w) register accessor: WDT_RESTART\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`wdt_restart::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@wdt_restart`] module"]
     #[doc(alias = "WDT_RESTART")]
     pub type WdtRestart = crate::Reg<wdt_restart::WdtRestartSpec>;
     #[doc = "WDT_RESTART"]
     pub mod wdt_restart {
         #[doc = "Register `WDT_RESTART` writer"]
         pub type W = crate::W<WdtRestartSpec>;
-        #[doc = "Field `WDT_RESTART` writer - Write anything except 0x5A5A5A5A to restart counter"]
+        #[doc = "Field `WDT_RESTART` writer - SDK kick writes 0x5A5A5A5A; other keys have contradictory SDK comments and are not specified"]
         pub type WdtRestartW<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
         impl W {
-            #[doc = "Bits 0:31 - Write anything except 0x5A5A5A5A to restart counter"]
+            #[doc = "Bits 0:31 - SDK kick writes 0x5A5A5A5A; other keys have contradictory SDK comments and are not specified"]
             #[inline(always)]
             pub fn wdt_restart(&mut self) -> WdtRestartW<'_, WdtRestartSpec> {
                 WdtRestartW::new(self, 0)
             }
         }
-        #[doc = "WDT_RESTART\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`wdt_restart::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "WDT_RESTART\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`wdt_restart::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct WdtRestartSpec;
         impl crate::RegisterSpec for WdtRestartSpec {
             type Ux = u32;
@@ -31392,36 +31422,32 @@ pub mod wdt {
         impl crate::Writable for WdtRestartSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets WDT_RESTART to value 0"]
-        impl crate::Resettable for WdtRestartSpec {}
     }
-    #[doc = "WDT_EOI (r) register accessor: WDT_EOI\n\nYou can [`read`](crate::Reg::read) this register and get [`wdt_eoi::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@wdt_eoi`] module"]
+    #[doc = "WDT_EOI (r) register accessor: WDT_EOI\n\nYou can [`read`](crate::Reg::read) this register and get [`wdt_eoi::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\n<div class=\"warning\">One or more dependent resources other than the current register are immediately affected by a read operation.</div>\n\nFor information about available fields see [`mod@wdt_eoi`] module"]
     #[doc(alias = "WDT_EOI")]
     pub type WdtEoi = crate::Reg<wdt_eoi::WdtEoiSpec>;
     #[doc = "WDT_EOI"]
     pub mod wdt_eoi {
         #[doc = "Register `WDT_EOI` reader"]
         pub type R = crate::R<WdtEoiSpec>;
-        #[doc = "Field `WDT_EOI` reader - Read to clear watchdog interrupt"]
+        #[doc = "Field `WDT_EOI` reader - Read returns zero and clears interrupt per SDK register comment; SDK clear helper reads then writes 1, independent write-only clear behavior unverified\n\n<div class=\"warning\">One or more dependent resources other than the current field are immediately affected by a read operation.</div>"]
         pub type WdtEoiR = crate::BitReader;
         impl R {
-            #[doc = "Bit 0 - Read to clear watchdog interrupt"]
+            #[doc = "Bit 0 - Read returns zero and clears interrupt per SDK register comment; SDK clear helper reads then writes 1, independent write-only clear behavior unverified"]
             #[inline(always)]
             pub fn wdt_eoi(&self) -> WdtEoiR {
                 WdtEoiR::new((self.bits & 1) != 0)
             }
         }
-        #[doc = "WDT_EOI\n\nYou can [`read`](crate::Reg::read) this register and get [`wdt_eoi::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "WDT_EOI\n\nYou can [`read`](crate::Reg::read) this register and get [`wdt_eoi::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\n<div class=\"warning\">One or more dependent resources other than the current register are immediately affected by a read operation.</div>"]
         pub struct WdtEoiSpec;
         impl crate::RegisterSpec for WdtEoiSpec {
             type Ux = u32;
         }
         #[doc = "`read()` method returns [`wdt_eoi::R`](R) reader structure"]
         impl crate::Readable for WdtEoiSpec {}
-        #[doc = "`reset()` method sets WDT_EOI to value 0"]
-        impl crate::Resettable for WdtEoiSpec {}
     }
-    #[doc = "WDT_CR (rw) register accessor: WDT_CR\n\nYou can [`read`](crate::Reg::read) this register and get [`wdt_cr::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`wdt_cr::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@wdt_cr`] module"]
+    #[doc = "WDT_CR (rw) register accessor: WDT_CR\n\nYou can [`read`](crate::Reg::read) this register and get [`wdt_cr::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`wdt_cr::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@wdt_cr`] module"]
     #[doc(alias = "WDT_CR")]
     pub type WdtCr = crate::Reg<wdt_cr::WdtCrSpec>;
     #[doc = "WDT_CR"]
@@ -31446,13 +31472,13 @@ pub mod wdt {
         pub type WdtImskR = crate::BitReader;
         #[doc = "Field `WDT_IMSK` writer - Interrupt mask: 0=unmasked; 1=masked"]
         pub type WdtImskW<'a, REG> = crate::BitWriter<'a, REG>;
-        #[doc = "Mode: 0=one interrupt then reset; 1=two interrupts then reset\n\nValue on reset: 0"]
+        #[doc = "0 reset on first expiry interrupt, 1 reset on second expiry interrupt; reset still gated by RST_EN"]
         #[derive(Clone, Copy, Debug, PartialEq, Eq)]
         pub enum WdtMode {
-            #[doc = "0: Single interrupt then reset"]
-            Mode1 = 0,
-            #[doc = "1: Two interrupts then reset"]
-            Mode2 = 1,
+            #[doc = "0: Reset on first expiry interrupt when RST_EN is set"]
+            ResetOnFirst = 0,
+            #[doc = "1: Reset on second expiry interrupt when RST_EN is set"]
+            ResetOnSecond = 1,
         }
         impl From<WdtMode> for bool {
             #[inline(always)]
@@ -31460,43 +31486,43 @@ pub mod wdt {
                 variant as u8 != 0
             }
         }
-        #[doc = "Field `WDT_MODE` reader - Mode: 0=one interrupt then reset; 1=two interrupts then reset"]
+        #[doc = "Field `WDT_MODE` reader - 0 reset on first expiry interrupt, 1 reset on second expiry interrupt; reset still gated by RST_EN"]
         pub type WdtModeR = crate::BitReader<WdtMode>;
         impl WdtModeR {
             #[doc = "Get enumerated values variant"]
             #[inline(always)]
             pub const fn variant(&self) -> WdtMode {
                 match self.bits {
-                    false => WdtMode::Mode1,
-                    true => WdtMode::Mode2,
+                    false => WdtMode::ResetOnFirst,
+                    true => WdtMode::ResetOnSecond,
                 }
             }
-            #[doc = "Single interrupt then reset"]
+            #[doc = "Reset on first expiry interrupt when RST_EN is set"]
             #[inline(always)]
-            pub fn is_mode1(&self) -> bool {
-                *self == WdtMode::Mode1
+            pub fn is_reset_on_first(&self) -> bool {
+                *self == WdtMode::ResetOnFirst
             }
-            #[doc = "Two interrupts then reset"]
+            #[doc = "Reset on second expiry interrupt when RST_EN is set"]
             #[inline(always)]
-            pub fn is_mode2(&self) -> bool {
-                *self == WdtMode::Mode2
+            pub fn is_reset_on_second(&self) -> bool {
+                *self == WdtMode::ResetOnSecond
             }
         }
-        #[doc = "Field `WDT_MODE` writer - Mode: 0=one interrupt then reset; 1=two interrupts then reset"]
+        #[doc = "Field `WDT_MODE` writer - 0 reset on first expiry interrupt, 1 reset on second expiry interrupt; reset still gated by RST_EN"]
         pub type WdtModeW<'a, REG> = crate::BitWriter<'a, REG, WdtMode>;
         impl<'a, REG> WdtModeW<'a, REG>
         where
             REG: crate::Writable + crate::RegisterSpec,
         {
-            #[doc = "Single interrupt then reset"]
+            #[doc = "Reset on first expiry interrupt when RST_EN is set"]
             #[inline(always)]
-            pub fn mode1(self) -> &'a mut crate::W<REG> {
-                self.variant(WdtMode::Mode1)
+            pub fn reset_on_first(self) -> &'a mut crate::W<REG> {
+                self.variant(WdtMode::ResetOnFirst)
             }
-            #[doc = "Two interrupts then reset"]
+            #[doc = "Reset on second expiry interrupt when RST_EN is set"]
             #[inline(always)]
-            pub fn mode2(self) -> &'a mut crate::W<REG> {
-                self.variant(WdtMode::Mode2)
+            pub fn reset_on_second(self) -> &'a mut crate::W<REG> {
+                self.variant(WdtMode::ResetOnSecond)
             }
         }
         impl R {
@@ -31520,7 +31546,7 @@ pub mod wdt {
             pub fn wdt_imsk(&self) -> WdtImskR {
                 WdtImskR::new(((self.bits >> 6) & 1) != 0)
             }
-            #[doc = "Bit 7 - Mode: 0=one interrupt then reset; 1=two interrupts then reset"]
+            #[doc = "Bit 7 - 0 reset on first expiry interrupt, 1 reset on second expiry interrupt; reset still gated by RST_EN"]
             #[inline(always)]
             pub fn wdt_mode(&self) -> WdtModeR {
                 WdtModeR::new(((self.bits >> 7) & 1) != 0)
@@ -31547,13 +31573,13 @@ pub mod wdt {
             pub fn wdt_imsk(&mut self) -> WdtImskW<'_, WdtCrSpec> {
                 WdtImskW::new(self, 6)
             }
-            #[doc = "Bit 7 - Mode: 0=one interrupt then reset; 1=two interrupts then reset"]
+            #[doc = "Bit 7 - 0 reset on first expiry interrupt, 1 reset on second expiry interrupt; reset still gated by RST_EN"]
             #[inline(always)]
             pub fn wdt_mode(&mut self) -> WdtModeW<'_, WdtCrSpec> {
                 WdtModeW::new(self, 7)
             }
         }
-        #[doc = "WDT_CR\n\nYou can [`read`](crate::Reg::read) this register and get [`wdt_cr::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`wdt_cr::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "WDT_CR\n\nYou can [`read`](crate::Reg::read) this register and get [`wdt_cr::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`wdt_cr::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct WdtCrSpec;
         impl crate::RegisterSpec for WdtCrSpec {
             type Ux = u32;
@@ -31564,8 +31590,6 @@ pub mod wdt {
         impl crate::Writable for WdtCrSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets WDT_CR to value 0"]
-        impl crate::Resettable for WdtCrSpec {}
     }
     #[doc = "WDT_CNT (r) register accessor: WDT_CNT\n\nYou can [`read`](crate::Reg::read) this register and get [`wdt_cnt::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@wdt_cnt`] module"]
     #[doc(alias = "WDT_CNT")]
@@ -31590,8 +31614,6 @@ pub mod wdt {
         }
         #[doc = "`read()` method returns [`wdt_cnt::R`](R) reader structure"]
         impl crate::Readable for WdtCntSpec {}
-        #[doc = "`reset()` method sets WDT_CNT to value 0"]
-        impl crate::Resettable for WdtCntSpec {}
     }
     #[doc = "WDT_RAW_INTR (r) register accessor: WDT_RAW_INTR\n\nYou can [`read`](crate::Reg::read) this register and get [`wdt_raw_intr::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@wdt_raw_intr`] module"]
     #[doc(alias = "WDT_RAW_INTR")]
@@ -31616,8 +31638,6 @@ pub mod wdt {
         }
         #[doc = "`read()` method returns [`wdt_raw_intr::R`](R) reader structure"]
         impl crate::Readable for WdtRawIntrSpec {}
-        #[doc = "`reset()` method sets WDT_RAW_INTR to value 0"]
-        impl crate::Resettable for WdtRawIntrSpec {}
     }
     #[doc = "WDT_INTR (r) register accessor: WDT_INTR\n\nYou can [`read`](crate::Reg::read) this register and get [`wdt_intr::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@wdt_intr`] module"]
     #[doc(alias = "WDT_INTR")]
@@ -31642,8 +31662,6 @@ pub mod wdt {
         }
         #[doc = "`read()` method returns [`wdt_intr::R`](R) reader structure"]
         impl crate::Readable for WdtIntrSpec {}
-        #[doc = "`reset()` method sets WDT_INTR to value 0"]
-        impl crate::Resettable for WdtIntrSpec {}
     }
     #[doc = "WDT_LPIF_STATE (r) register accessor: WDT_LPIF_STATE\n\nYou can [`read`](crate::Reg::read) this register and get [`wdt_lpif_state::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@wdt_lpif_state`] module"]
     #[doc(alias = "WDT_LPIF_STATE")]
@@ -31668,8 +31686,6 @@ pub mod wdt {
         }
         #[doc = "`read()` method returns [`wdt_lpif_state::R`](R) reader structure"]
         impl crate::Readable for WdtLpifStateSpec {}
-        #[doc = "`reset()` method sets WDT_LPIF_STATE to value 0"]
-        impl crate::Resettable for WdtLpifStateSpec {}
     }
     #[doc = "WDT_STATUS (r) register accessor: WDT_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`wdt_status::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@wdt_status`] module"]
     #[doc(alias = "WDT_STATUS")]
@@ -31678,10 +31694,10 @@ pub mod wdt {
     pub mod wdt_status {
         #[doc = "Register `WDT_STATUS` reader"]
         pub type R = crate::R<WdtStatusSpec>;
-        #[doc = "Field `WDT_STATUS` reader - Status: 0=busy; 1=free"]
+        #[doc = "Field `WDT_STATUS` reader - SDK register definition: 0 free, 1 busy"]
         pub type WdtStatusR = crate::BitReader;
         impl R {
-            #[doc = "Bit 0 - Status: 0=busy; 1=free"]
+            #[doc = "Bit 0 - SDK register definition: 0 free, 1 busy"]
             #[inline(always)]
             pub fn wdt_status(&self) -> WdtStatusR {
                 WdtStatusR::new((self.bits & 1) != 0)
@@ -31694,49 +31710,56 @@ pub mod wdt {
         }
         #[doc = "`read()` method returns [`wdt_status::R`](R) reader structure"]
         impl crate::Readable for WdtStatusSpec {}
-        #[doc = "`reset()` method sets WDT_STATUS to value 0"]
-        impl crate::Resettable for WdtStatusSpec {}
     }
-    #[doc = "WDT_CCVR_EN (rw) register accessor: WDT_CCVR_EN\n\nYou can [`read`](crate::Reg::read) this register and get [`wdt_ccvr_en::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`wdt_ccvr_en::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@wdt_ccvr_en`] module"]
-    #[doc(alias = "WDT_CCVR_EN")]
-    pub type WdtCcvrEn = crate::Reg<wdt_ccvr_en::WdtCcvrEnSpec>;
-    #[doc = "WDT_CCVR_EN"]
-    pub mod wdt_ccvr_en {
-        #[doc = "Register `WDT_CCVR_EN` reader"]
-        pub type R = crate::R<WdtCcvrEnSpec>;
-        #[doc = "Register `WDT_CCVR_EN` writer"]
-        pub type W = crate::W<WdtCcvrEnSpec>;
-        #[doc = "Field `CCVR_REQ` writer - Write 1 to request current counter value"]
-        pub type CcvrReqW<'a, REG> = crate::BitWriter<'a, REG>;
-        #[doc = "Field `CCVR_ACK` reader - Acknowledge: 1=counter value valid"]
-        pub type CcvrAckR = crate::BitReader;
+    #[doc = "CCVR_STATUS (r) register accessor: CCVR_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`ccvr_status::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@ccvr_status`] module"]
+    #[doc(alias = "CCVR_STATUS")]
+    pub type CcvrStatus = crate::Reg<ccvr_status::CcvrStatusSpec>;
+    #[doc = "CCVR_STATUS"]
+    pub mod ccvr_status {
+        #[doc = "Register `CCVR_STATUS` reader"]
+        pub type R = crate::R<CcvrStatusSpec>;
+        #[doc = "Field `VALID` reader - Counter latch valid; inspect after requesting a snapshot"]
+        pub type ValidR = crate::BitReader;
         impl R {
-            #[doc = "Bit 1 - Acknowledge: 1=counter value valid"]
+            #[doc = "Bit 1 - Counter latch valid; inspect after requesting a snapshot"]
             #[inline(always)]
-            pub fn ccvr_ack(&self) -> CcvrAckR {
-                CcvrAckR::new(((self.bits >> 1) & 1) != 0)
+            pub fn valid(&self) -> ValidR {
+                ValidR::new(((self.bits >> 1) & 1) != 0)
             }
         }
-        impl W {
-            #[doc = "Bit 0 - Write 1 to request current counter value"]
-            #[inline(always)]
-            pub fn ccvr_req(&mut self) -> CcvrReqW<'_, WdtCcvrEnSpec> {
-                CcvrReqW::new(self, 0)
-            }
-        }
-        #[doc = "WDT_CCVR_EN\n\nYou can [`read`](crate::Reg::read) this register and get [`wdt_ccvr_en::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`wdt_ccvr_en::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
-        pub struct WdtCcvrEnSpec;
-        impl crate::RegisterSpec for WdtCcvrEnSpec {
+        #[doc = "CCVR_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`ccvr_status::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct CcvrStatusSpec;
+        impl crate::RegisterSpec for CcvrStatusSpec {
             type Ux = u32;
         }
-        #[doc = "`read()` method returns [`wdt_ccvr_en::R`](R) reader structure"]
-        impl crate::Readable for WdtCcvrEnSpec {}
-        #[doc = "`write(|w| ..)` method takes [`wdt_ccvr_en::W`](W) writer structure"]
-        impl crate::Writable for WdtCcvrEnSpec {
+        #[doc = "`read()` method returns [`ccvr_status::R`](R) reader structure"]
+        impl crate::Readable for CcvrStatusSpec {}
+    }
+    #[doc = "CCVR_REQUEST (w) register accessor: CCVR_REQUEST\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`ccvr_request::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@ccvr_request`] module"]
+    #[doc(alias = "CCVR_REQUEST")]
+    pub type CcvrRequest = crate::Reg<ccvr_request::CcvrRequestSpec>;
+    #[doc = "CCVR_REQUEST"]
+    pub mod ccvr_request {
+        #[doc = "Register `CCVR_REQUEST` writer"]
+        pub type W = crate::W<CcvrRequestSpec>;
+        #[doc = "Field `REQUEST` writer - request"]
+        pub type RequestW<'a, REG> = crate::BitWriter<'a, REG>;
+        impl W {
+            #[doc = "Bit 0 - request"]
+            #[inline(always)]
+            pub fn request(&mut self) -> RequestW<'_, CcvrRequestSpec> {
+                RequestW::new(self, 0)
+            }
+        }
+        #[doc = "CCVR_REQUEST\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`ccvr_request::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct CcvrRequestSpec;
+        impl crate::RegisterSpec for CcvrRequestSpec {
+            type Ux = u32;
+        }
+        #[doc = "`write(|w| ..)` method takes [`ccvr_request::W`](W) writer structure"]
+        impl crate::Writable for CcvrRequestSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets WDT_CCVR_EN to value 0"]
-        impl crate::Resettable for WdtCcvrEnSpec {}
     }
 }
 #[doc = "system_memory"]
