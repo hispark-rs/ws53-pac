@@ -14,7 +14,10 @@ source, root = map(Path, sys.argv[1:])
 def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
-inputs = sorted((source / "rdl").rglob("*.rdl")) + [source / "scripts/export_svd.py", source / "pyproject.toml", source / "uv.lock"]
+inputs = sorted((source / "rdl").rglob("*.rdl")) + [
+    source / path for path in ("scripts/export_svd.py", "scripts/check_schema.py",
+                              "schema/CMSIS-SVD-1.3.9.xsd", "pyproject.toml", "uv.lock")
+]
 recipe = ["scripts/regen.sh", "scripts/postprocess.py", "scripts/provenance.py",
           "ws53-settings.yaml", "rust-toolchain.toml"]
 record = {
