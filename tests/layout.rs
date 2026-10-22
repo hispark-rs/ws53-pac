@@ -112,6 +112,78 @@ assert_not_impl!(
     ws53_pac::tsensor::control::ControlSpec,
     ws53_pac::generic::Resettable
 );
+assert_not_impl!(
+    ws53_pac::sdio::global_interrupt_ack::GlobalInterruptAckSpec,
+    ws53_pac::generic::Readable
+);
+assert_not_impl!(
+    ws53_pac::sdio::global_interrupt_status::GlobalInterruptStatusSpec,
+    ws53_pac::generic::Writable
+);
+assert_not_impl!(
+    ws53_pac::sdio::function0_interrupt_ack::Function0InterruptAckSpec,
+    ws53_pac::generic::Readable
+);
+assert_not_impl!(
+    ws53_pac::sdio::function1_interrupt_ack::Function1InterruptAckSpec,
+    ws53_pac::generic::Readable
+);
+assert_not_impl!(
+    ws53_pac::sdio::function0_reset_command::Function0ResetCommandSpec,
+    ws53_pac::generic::Readable
+);
+assert_not_impl!(
+    ws53_pac::sdio::function1_send_command::Function1SendCommandSpec,
+    ws53_pac::generic::Readable
+);
+assert_not_impl!(
+    ws53_pac::sdio::adma_table::AdmaTableSpec,
+    ws53_pac::generic::Readable
+);
+assert_not_impl!(
+    ws53_pac::sdio::global_interrupt_enable::GlobalInterruptEnableSpec,
+    ws53_pac::generic::Resettable
+);
+
+#[test]
+fn sdio_device_layout_keeps_command_views_and_cmd53_fields() {
+    let sdio: ws53_pac::sdio::RegisterBlock = unsafe { core::mem::zeroed() };
+    assert_eq!(ws53_pac::Sdio::PTR as usize, 0x52060000);
+    assert_eq!(ws53_pac::interrupt::ExternalInterrupt::SDIO as u16, 46);
+    assert_eq!(size_of::<ws53_pac::sdio::RegisterBlock>(), 0x25c);
+    assert_eq!(offset(&sdio, sdio.global_interrupt_ack()), 0x1c);
+    assert_eq!(offset(&sdio, sdio.global_interrupt_status()), 0x1c);
+    assert_eq!(offset(&sdio, sdio.function0_interrupt_ack()), 0x38);
+    assert_eq!(offset(&sdio, sdio.function0_interrupt_status()), 0x38);
+    assert_eq!(offset(&sdio, sdio.function0_reset_command()), 0x3c);
+    assert_eq!(offset(&sdio, sdio.function0_reset_status()), 0x3c);
+    assert_eq!(offset(&sdio, sdio.adma_table()), 0x40);
+    assert_eq!(offset(&sdio, sdio.host_clock()), 0x44);
+    assert_eq!(offset(&sdio, sdio.function1_send_command()), 0x104);
+    assert_eq!(offset(&sdio, sdio.function1_send_status()), 0x104);
+    assert_eq!(offset(&sdio, sdio.function1_interrupt_ack()), 0x110);
+    assert_eq!(offset(&sdio, sdio.function1_interrupt_status()), 0x110);
+    assert_eq!(offset(&sdio, sdio.cmd53_argument()), 0x254);
+    assert_eq!(offset(&sdio, sdio.function1_block_size()), 0x258);
+    // Stack-backed read injection: verifies protocol bit extraction only.
+    for count in [0, 1, 511] {
+        for address in [0, 0x1ffff] {
+            let raw = (1 << 31) | (7 << 28) | (1 << 27) | (1 << 26) | (address << 9) | count;
+            unsafe { sdio.cmd53_argument().as_ptr().write_volatile(raw) };
+            let arg = sdio.cmd53_argument().read();
+            assert_eq!(arg.count().bits(), count as u16);
+            assert_eq!(arg.address().bits(), address);
+            assert_eq!(arg.function().bits(), 7);
+            assert!(arg.write().bit() && arg.block_mode().bit() && arg.increment().bit());
+        }
+    }
+    unsafe {
+        sdio.function1_block_size()
+            .as_ptr()
+            .write_volatile(0xffff_ffff)
+    };
+    assert_eq!(sdio.function1_block_size().read().bytes().bits(), 0xfff);
+}
 
 #[test]
 fn temperature_status_decodes_ten_bit_code_without_a_clear_write_api() {

@@ -1,6 +1,6 @@
 {
   "source": "https://github.com/hispark-rs/hisi-registers",
-  "commit": "a8af2fe1070ee3809fae318d2403542c9dbf5f5d",
+  "commit": "cbd778268841c230a8bca42a61f395252870aaf9",
   "dirty": false,
   "profile": "ws53_liteos_app/acore/MCU_MODE_1",
   "svd2rust": "0.37.1",
@@ -24,10 +24,11 @@
     "rdl/chips/ws53/m-crg.rdl": "e7c19404c90f2e4daa6dcd62b7b06e42b588b37f0cbd2f104e436c38acfd6145",
     "rdl/chips/ws53/mdma-v151.rdl": "a541c7deaadcc455b95737ae076eb3b6d3e1ed274d693489ee8a36ee099e54a1",
     "rdl/chips/ws53/pinctrl.rdl": "e1f2690aba6fe2e144f29af73cf8606befbd172c8f02204f201417addb9e5550",
+    "rdl/chips/ws53/sdio-v151.rdl": "1e635aa40a5cbedda5854fb51377ab4fe993ff55eaf4758ebe87b36fc3343ba6",
     "rdl/chips/ws53/spi-v151-100.rdl": "480ed9bb4402491ccab378e4e6f3a44c3202b0a7ef9aaecb17be9124fe121136",
     "rdl/chips/ws53/system-memory.rdl": "0392b17ff9ec8fc7a2d747b9edb1ccfbfd60a9eba7bac937d7339d63595270fc",
     "rdl/chips/ws53/tsensor.rdl": "66a6e2ab719aa72b59e263e73818f5b03b1baf41bd9e2d5f6ab7c3d01feb162b",
-    "rdl/chips/ws53.rdl": "290158b4201a553c0c7182768fa0e69e2524edd81694da1a5b3d19236d4cffa0",
+    "rdl/chips/ws53.rdl": "0405697cca99d1f81a9ce532c66e0dce2dd512a9bc77b365cf7c0f7ed522fc80",
     "rdl/chips/ws63/peripherals/bt_em_ctl.rdl": "96d045b6ed1984d43822e7833f93f90dd77cfb2553bcffb423f86f5e5404a563",
     "rdl/chips/ws63/peripherals/cldo_crg.rdl": "b5289461723351d3643ec982df334dbd795d78fe185435c29c9dee868153d77d",
     "rdl/chips/ws63/peripherals/cmu.rdl": "9e5e37d420c350d9529c5186451db5ce2dccc354bfdec64bba7a6a8060db8a9a",
@@ -76,8 +77,8 @@
     "rust-toolchain.toml": "4a55a5c6ce672e0024729f0739b0a82a0897538c9332528927201459bda83585"
   },
   "outputs": {
-    "src/lib.rs": "f9e47486a0b0f6e73ace2deb5e0225a80a5642710e8b143d383ea5d135ba3c5c",
-    "device.x": "1a6ee60a3d09b1e1aa6ac9b6b4044a045444fcb0cd54d416289966ad800e3923",
-    "svd/WS53.svd": "432be278116a201dd1fa4cff0acf36fe34d093264e0b396650de44e8c8a8916d"
+    "src/lib.rs": "e4b5a3ad9425eb5fc5fcd56b832d7d196b25a06b99c932190c209737658b5bd3",
+    "device.x": "b732da88f67fc24ca2cdce044efc37da252563f855f19ca7975359951be95eba",
+    "svd/WS53.svd": "82474751038ddf5e45ff20aa64d68083439e1960d36e01cf3380b4ea0fe8743d"
   }
 }

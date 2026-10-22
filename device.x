@@ -6,6 +6,7 @@ PROVIDE(UART_0 = DefaultHandler);
 PROVIDE(UART_1 = DefaultHandler);
 PROVIDE(UART_2 = DefaultHandler);
 PROVIDE(QSPI0_2CS = DefaultHandler);
+PROVIDE(SDIO = DefaultHandler);
 PROVIDE(RTC_0 = DefaultHandler);
 PROVIDE(RTC_1 = DefaultHandler);
 PROVIDE(TIMER_0 = DefaultHandler);
