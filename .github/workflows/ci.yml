@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+
+env:
+  CARGO_TERM_COLOR: always
+  TOOLCHAIN: nightly-2026-07-09
+  TARGET: riscv32imfc-unknown-none-elf
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: nightly-2026-07-09
+          components: rust-src,rustfmt,clippy
+      - name: Host API and singleton tests
+        run: cargo test --locked --all-features --target x86_64-unknown-linux-gnu
+      - name: RISC-V and minimal feature builds
+        run: |
+          cargo check -Zbuild-std=core --locked --all-features --target "$TARGET"
+          cargo check -Zbuild-std=core --locked --no-default-features --target "$TARGET"
+      - name: Format and host lint
+        run: |
+          cargo fmt --all -- --check
+          cargo clippy --locked --all-targets --all-features --target x86_64-unknown-linux-gnu -- -D warnings
+      - name: Standalone package and lockfile
+        run: |
+          cargo package --locked --target x86_64-unknown-linux-gnu
+          git diff --exit-code -- Cargo.lock
+
+  regenerate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v7
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: nightly-2026-07-09
+          components: rustfmt
+      - name: Fetch the recorded register-source commit
+        env:
+          HISI_REGISTERS: ${{ runner.temp }}/hisi-registers
+        run: |
+          test "$(jq -r .dirty generation.json)" = false
+          test "$(jq -r .source generation.json)" = https://github.com/hispark-rs/hisi-registers
+          revision="$(jq -er '.commit | select(test("^[0-9a-f]{40}$"))' generation.json)"
+          git init "$HISI_REGISTERS"
+          git -C "$HISI_REGISTERS" remote add origin https://github.com/hispark-rs/hisi-registers.git
+          git -C "$HISI_REGISTERS" fetch --depth=1 origin "$revision"
+          git -C "$HISI_REGISTERS" checkout --detach FETCH_HEAD
+      - name: Install fixed generator
+        run: cargo install svd2rust --version 0.37.1 --locked
+      - name: Regenerate and compare all tracked outputs and provenance
+        env:
+          HISI_REGISTERS: ${{ runner.temp }}/hisi-registers
+        run: |
+          bash scripts/regen.sh
+          git diff --exit-code -- src/lib.rs svd/WS53.svd device.x generation.json
