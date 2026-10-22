@@ -30636,7 +30636,7 @@ pub mod rtc0 {
             &self.intr
         }
     }
-    #[doc = "LOAD_COUNT0 (rw) register accessor: LOAD_COUNT0\n\nYou can [`read`](crate::Reg::read) this register and get [`load_count0::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`load_count0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@load_count0`] module"]
+    #[doc = "LOAD_COUNT0 (rw) register accessor: LOAD_COUNT0\n\nYou can [`read`](crate::Reg::read) this register and get [`load_count0::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`load_count0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@load_count0`] module"]
     #[doc(alias = "LOAD_COUNT0")]
     pub type LoadCount0 = crate::Reg<load_count0::LoadCount0Spec>;
     #[doc = "LOAD_COUNT0"]
@@ -30663,7 +30663,7 @@ pub mod rtc0 {
                 LoadCount0W::new(self, 0)
             }
         }
-        #[doc = "LOAD_COUNT0\n\nYou can [`read`](crate::Reg::read) this register and get [`load_count0::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`load_count0::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "LOAD_COUNT0\n\nYou can [`read`](crate::Reg::read) this register and get [`load_count0::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`load_count0::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct LoadCount0Spec;
         impl crate::RegisterSpec for LoadCount0Spec {
             type Ux = u32;
@@ -30674,10 +30674,8 @@ pub mod rtc0 {
         impl crate::Writable for LoadCount0Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets LOAD_COUNT0 to value 0"]
-        impl crate::Resettable for LoadCount0Spec {}
     }
-    #[doc = "LOAD_COUNT1 (rw) register accessor: LOAD_COUNT1\n\nYou can [`read`](crate::Reg::read) this register and get [`load_count1::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`load_count1::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@load_count1`] module"]
+    #[doc = "LOAD_COUNT1 (rw) register accessor: LOAD_COUNT1\n\nYou can [`read`](crate::Reg::read) this register and get [`load_count1::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`load_count1::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@load_count1`] module"]
     #[doc(alias = "LOAD_COUNT1")]
     pub type LoadCount1 = crate::Reg<load_count1::LoadCount1Spec>;
     #[doc = "LOAD_COUNT1"]
@@ -30704,7 +30702,7 @@ pub mod rtc0 {
                 LoadCount1W::new(self, 0)
             }
         }
-        #[doc = "LOAD_COUNT1\n\nYou can [`read`](crate::Reg::read) this register and get [`load_count1::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`load_count1::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "LOAD_COUNT1\n\nYou can [`read`](crate::Reg::read) this register and get [`load_count1::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`load_count1::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct LoadCount1Spec;
         impl crate::RegisterSpec for LoadCount1Spec {
             type Ux = u32;
@@ -30715,8 +30713,6 @@ pub mod rtc0 {
         impl crate::Writable for LoadCount1Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets LOAD_COUNT1 to value 0"]
-        impl crate::Resettable for LoadCount1Spec {}
     }
     #[doc = "CURRENT_VALUE0 (r) register accessor: CURRENT_VALUE0\n\nYou can [`read`](crate::Reg::read) this register and get [`current_value0::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@current_value0`] module"]
     #[doc(alias = "CURRENT_VALUE0")]
@@ -30741,8 +30737,6 @@ pub mod rtc0 {
         }
         #[doc = "`read()` method returns [`current_value0::R`](R) reader structure"]
         impl crate::Readable for CurrentValue0Spec {}
-        #[doc = "`reset()` method sets CURRENT_VALUE0 to value 0"]
-        impl crate::Resettable for CurrentValue0Spec {}
     }
     #[doc = "CURRENT_VALUE1 (r) register accessor: CURRENT_VALUE1\n\nYou can [`read`](crate::Reg::read) this register and get [`current_value1::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@current_value1`] module"]
     #[doc(alias = "CURRENT_VALUE1")]
@@ -30767,10 +30761,8 @@ pub mod rtc0 {
         }
         #[doc = "`read()` method returns [`current_value1::R`](R) reader structure"]
         impl crate::Readable for CurrentValue1Spec {}
-        #[doc = "`reset()` method sets CURRENT_VALUE1 to value 0"]
-        impl crate::Resettable for CurrentValue1Spec {}
     }
-    #[doc = "CONTROL (rw) register accessor: CONTROL\n\nYou can [`read`](crate::Reg::read) this register and get [`control::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`control::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@control`] module"]
+    #[doc = "CONTROL (rw) register accessor: CONTROL\n\nYou can [`read`](crate::Reg::read) this register and get [`control::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`control::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@control`] module"]
     #[doc(alias = "CONTROL")]
     pub type Control = crate::Reg<control::ControlSpec>;
     #[doc = "CONTROL"]
@@ -30783,10 +30775,92 @@ pub mod rtc0 {
         pub type EnableR = crate::BitReader;
         #[doc = "Field `ENABLE` writer - enable"]
         pub type EnableW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "mode"]
+        #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+        #[repr(u8)]
+        pub enum Mode {
+            #[doc = "0: SDK one-shot mode"]
+            OneShot = 0,
+            #[doc = "1: SDK periodic mode"]
+            Periodic = 1,
+            #[doc = "2: SDK alias of one-shot mode"]
+            OneShotAlternate = 2,
+            #[doc = "3: SDK free-run mode"]
+            FreeRun = 3,
+        }
+        impl From<Mode> for u8 {
+            #[inline(always)]
+            fn from(variant: Mode) -> Self {
+                variant as _
+            }
+        }
+        impl crate::FieldSpec for Mode {
+            type Ux = u8;
+        }
+        impl crate::IsEnum for Mode {}
         #[doc = "Field `MODE` reader - mode"]
-        pub type ModeR = crate::FieldReader;
+        pub type ModeR = crate::FieldReader<Mode>;
+        impl ModeR {
+            #[doc = "Get enumerated values variant"]
+            #[inline(always)]
+            pub const fn variant(&self) -> Mode {
+                match self.bits {
+                    0 => Mode::OneShot,
+                    1 => Mode::Periodic,
+                    2 => Mode::OneShotAlternate,
+                    3 => Mode::FreeRun,
+                    _ => unreachable!(),
+                }
+            }
+            #[doc = "SDK one-shot mode"]
+            #[inline(always)]
+            pub fn is_one_shot(&self) -> bool {
+                *self == Mode::OneShot
+            }
+            #[doc = "SDK periodic mode"]
+            #[inline(always)]
+            pub fn is_periodic(&self) -> bool {
+                *self == Mode::Periodic
+            }
+            #[doc = "SDK alias of one-shot mode"]
+            #[inline(always)]
+            pub fn is_one_shot_alternate(&self) -> bool {
+                *self == Mode::OneShotAlternate
+            }
+            #[doc = "SDK free-run mode"]
+            #[inline(always)]
+            pub fn is_free_run(&self) -> bool {
+                *self == Mode::FreeRun
+            }
+        }
         #[doc = "Field `MODE` writer - mode"]
-        pub type ModeW<'a, REG> = crate::FieldWriter<'a, REG, 2>;
+        pub type ModeW<'a, REG> = crate::FieldWriter<'a, REG, 2, Mode, crate::Safe>;
+        impl<'a, REG> ModeW<'a, REG>
+        where
+            REG: crate::Writable + crate::RegisterSpec,
+            REG::Ux: From<u8>,
+        {
+            #[doc = "SDK one-shot mode"]
+            #[inline(always)]
+            pub fn one_shot(self) -> &'a mut crate::W<REG> {
+                self.variant(Mode::OneShot)
+            }
+            #[doc = "SDK periodic mode"]
+            #[inline(always)]
+            pub fn periodic(self) -> &'a mut crate::W<REG> {
+                self.variant(Mode::Periodic)
+            }
+            #[doc = "SDK alias of one-shot mode"]
+            #[inline(always)]
+            pub fn one_shot_alternate(self) -> &'a mut crate::W<REG> {
+                self.variant(Mode::OneShotAlternate)
+            }
+            #[doc = "SDK free-run mode"]
+            #[inline(always)]
+            pub fn free_run(self) -> &'a mut crate::W<REG> {
+                self.variant(Mode::FreeRun)
+            }
+        }
         #[doc = "Field `INT_MASK` reader - int_mask"]
         pub type IntMaskR = crate::BitReader;
         #[doc = "Field `INT_MASK` writer - int_mask"]
@@ -30799,10 +30873,8 @@ pub mod rtc0 {
         pub type CntReqR = crate::BitReader;
         #[doc = "Field `CNT_REQ` writer - cnt_req"]
         pub type CntReqW<'a, REG> = crate::BitWriter<'a, REG>;
-        #[doc = "Field `CNT_LOCK` reader - cnt_lock"]
+        #[doc = "Field `CNT_LOCK` reader - Snapshot ready status, polled after CNT_REQ; no software setter in SDK"]
         pub type CntLockR = crate::BitReader;
-        #[doc = "Field `CNT_LOCK` writer - cnt_lock"]
-        pub type CntLockW<'a, REG> = crate::BitWriter<'a, REG>;
         impl R {
             #[doc = "Bit 0 - enable"]
             #[inline(always)]
@@ -30829,7 +30901,7 @@ pub mod rtc0 {
             pub fn cnt_req(&self) -> CntReqR {
                 CntReqR::new(((self.bits >> 5) & 1) != 0)
             }
-            #[doc = "Bit 6 - cnt_lock"]
+            #[doc = "Bit 6 - Snapshot ready status, polled after CNT_REQ; no software setter in SDK"]
             #[inline(always)]
             pub fn cnt_lock(&self) -> CntLockR {
                 CntLockR::new(((self.bits >> 6) & 1) != 0)
@@ -30861,13 +30933,8 @@ pub mod rtc0 {
             pub fn cnt_req(&mut self) -> CntReqW<'_, ControlSpec> {
                 CntReqW::new(self, 5)
             }
-            #[doc = "Bit 6 - cnt_lock"]
-            #[inline(always)]
-            pub fn cnt_lock(&mut self) -> CntLockW<'_, ControlSpec> {
-                CntLockW::new(self, 6)
-            }
         }
-        #[doc = "CONTROL\n\nYou can [`read`](crate::Reg::read) this register and get [`control::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`control::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "CONTROL\n\nYou can [`read`](crate::Reg::read) this register and get [`control::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`control::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct ControlSpec;
         impl crate::RegisterSpec for ControlSpec {
             type Ux = u32;
@@ -30878,63 +30945,42 @@ pub mod rtc0 {
         impl crate::Writable for ControlSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets CONTROL to value 0"]
-        impl crate::Resettable for ControlSpec {}
     }
-    #[doc = "EOI_REN (rw) register accessor: EOI_REN\n\nYou can [`read`](crate::Reg::read) this register and get [`eoi_ren::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`eoi_ren::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@eoi_ren`] module"]
+    #[doc = "EOI_REN (w) register accessor: EOI_REN\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`eoi_ren::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@eoi_ren`] module"]
     #[doc(alias = "EOI_REN")]
     pub type EoiRen = crate::Reg<eoi_ren::EoiRenSpec>;
     #[doc = "EOI_REN"]
     pub mod eoi_ren {
-        #[doc = "Register `EOI_REN` reader"]
-        pub type R = crate::R<EoiRenSpec>;
         #[doc = "Register `EOI_REN` writer"]
         pub type W = crate::W<EoiRenSpec>;
-        #[doc = "Field `EOI` reader - eoi"]
-        pub type EoiR = crate::BitReader;
-        #[doc = "Field `EOI` writer - eoi"]
+        #[doc = "Field `EOI` writer - SDK acknowledges by writing one. Header claims read-clear but driver never reads; read behavior withheld"]
         pub type EoiW<'a, REG> = crate::BitWriter<'a, REG>;
-        impl R {
-            #[doc = "Bit 0 - eoi"]
-            #[inline(always)]
-            pub fn eoi(&self) -> EoiR {
-                EoiR::new((self.bits & 1) != 0)
-            }
-        }
         impl W {
-            #[doc = "Bit 0 - eoi"]
+            #[doc = "Bit 0 - SDK acknowledges by writing one. Header claims read-clear but driver never reads; read behavior withheld"]
             #[inline(always)]
             pub fn eoi(&mut self) -> EoiW<'_, EoiRenSpec> {
                 EoiW::new(self, 0)
             }
         }
-        #[doc = "EOI_REN\n\nYou can [`read`](crate::Reg::read) this register and get [`eoi_ren::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`eoi_ren::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "EOI_REN\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`eoi_ren::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct EoiRenSpec;
         impl crate::RegisterSpec for EoiRenSpec {
             type Ux = u32;
         }
-        #[doc = "`read()` method returns [`eoi_ren::R`](R) reader structure"]
-        impl crate::Readable for EoiRenSpec {}
         #[doc = "`write(|w| ..)` method takes [`eoi_ren::W`](W) writer structure"]
         impl crate::Writable for EoiRenSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets EOI_REN to value 0"]
-        impl crate::Resettable for EoiRenSpec {}
     }
-    #[doc = "RAW_INTR (rw) register accessor: RAW_INTR\n\nYou can [`read`](crate::Reg::read) this register and get [`raw_intr::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`raw_intr::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@raw_intr`] module"]
+    #[doc = "RAW_INTR (r) register accessor: RAW_INTR\n\nYou can [`read`](crate::Reg::read) this register and get [`raw_intr::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@raw_intr`] module"]
     #[doc(alias = "RAW_INTR")]
     pub type RawIntr = crate::Reg<raw_intr::RawIntrSpec>;
     #[doc = "RAW_INTR"]
     pub mod raw_intr {
         #[doc = "Register `RAW_INTR` reader"]
         pub type R = crate::R<RawIntrSpec>;
-        #[doc = "Register `RAW_INTR` writer"]
-        pub type W = crate::W<RawIntrSpec>;
         #[doc = "Field `INT_STATUS` reader - int_status"]
         pub type IntStatusR = crate::BitReader;
-        #[doc = "Field `INT_STATUS` writer - int_status"]
-        pub type IntStatusW<'a, REG> = crate::BitWriter<'a, REG>;
         impl R {
             #[doc = "Bit 0 - int_status"]
             #[inline(always)]
@@ -30942,40 +30988,23 @@ pub mod rtc0 {
                 IntStatusR::new((self.bits & 1) != 0)
             }
         }
-        impl W {
-            #[doc = "Bit 0 - int_status"]
-            #[inline(always)]
-            pub fn int_status(&mut self) -> IntStatusW<'_, RawIntrSpec> {
-                IntStatusW::new(self, 0)
-            }
-        }
-        #[doc = "RAW_INTR\n\nYou can [`read`](crate::Reg::read) this register and get [`raw_intr::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`raw_intr::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "RAW_INTR\n\nYou can [`read`](crate::Reg::read) this register and get [`raw_intr::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct RawIntrSpec;
         impl crate::RegisterSpec for RawIntrSpec {
             type Ux = u32;
         }
         #[doc = "`read()` method returns [`raw_intr::R`](R) reader structure"]
         impl crate::Readable for RawIntrSpec {}
-        #[doc = "`write(|w| ..)` method takes [`raw_intr::W`](W) writer structure"]
-        impl crate::Writable for RawIntrSpec {
-            type Safety = crate::Unsafe;
-        }
-        #[doc = "`reset()` method sets RAW_INTR to value 0"]
-        impl crate::Resettable for RawIntrSpec {}
     }
-    #[doc = "INTR (rw) register accessor: INTR\n\nYou can [`read`](crate::Reg::read) this register and get [`intr::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`intr::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@intr`] module"]
+    #[doc = "INTR (r) register accessor: INTR\n\nYou can [`read`](crate::Reg::read) this register and get [`intr::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@intr`] module"]
     #[doc(alias = "INTR")]
     pub type Intr = crate::Reg<intr::IntrSpec>;
     #[doc = "INTR"]
     pub mod intr {
         #[doc = "Register `INTR` reader"]
         pub type R = crate::R<IntrSpec>;
-        #[doc = "Register `INTR` writer"]
-        pub type W = crate::W<IntrSpec>;
         #[doc = "Field `INT_STATUS` reader - int_status"]
         pub type IntStatusR = crate::BitReader;
-        #[doc = "Field `INT_STATUS` writer - int_status"]
-        pub type IntStatusW<'a, REG> = crate::BitWriter<'a, REG>;
         impl R {
             #[doc = "Bit 0 - int_status"]
             #[inline(always)]
@@ -30983,26 +31012,13 @@ pub mod rtc0 {
                 IntStatusR::new((self.bits & 1) != 0)
             }
         }
-        impl W {
-            #[doc = "Bit 0 - int_status"]
-            #[inline(always)]
-            pub fn int_status(&mut self) -> IntStatusW<'_, IntrSpec> {
-                IntStatusW::new(self, 0)
-            }
-        }
-        #[doc = "INTR\n\nYou can [`read`](crate::Reg::read) this register and get [`intr::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`intr::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "INTR\n\nYou can [`read`](crate::Reg::read) this register and get [`intr::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct IntrSpec;
         impl crate::RegisterSpec for IntrSpec {
             type Ux = u32;
         }
         #[doc = "`read()` method returns [`intr::R`](R) reader structure"]
         impl crate::Readable for IntrSpec {}
-        #[doc = "`write(|w| ..)` method takes [`intr::W`](W) writer structure"]
-        impl crate::Writable for IntrSpec {
-            type Safety = crate::Unsafe;
-        }
-        #[doc = "`reset()` method sets INTR to value 0"]
-        impl crate::Resettable for IntrSpec {}
     }
 }
 #[doc = "rtc1"]
@@ -31068,7 +31084,7 @@ pub mod rtc1 {
             &self.intr
         }
     }
-    #[doc = "LOAD_COUNT0 (rw) register accessor: LOAD_COUNT0\n\nYou can [`read`](crate::Reg::read) this register and get [`load_count0::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`load_count0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@load_count0`] module"]
+    #[doc = "LOAD_COUNT0 (rw) register accessor: LOAD_COUNT0\n\nYou can [`read`](crate::Reg::read) this register and get [`load_count0::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`load_count0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@load_count0`] module"]
     #[doc(alias = "LOAD_COUNT0")]
     pub type LoadCount0 = crate::Reg<load_count0::LoadCount0Spec>;
     #[doc = "LOAD_COUNT0"]
@@ -31095,7 +31111,7 @@ pub mod rtc1 {
                 LoadCount0W::new(self, 0)
             }
         }
-        #[doc = "LOAD_COUNT0\n\nYou can [`read`](crate::Reg::read) this register and get [`load_count0::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`load_count0::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "LOAD_COUNT0\n\nYou can [`read`](crate::Reg::read) this register and get [`load_count0::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`load_count0::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct LoadCount0Spec;
         impl crate::RegisterSpec for LoadCount0Spec {
             type Ux = u32;
@@ -31106,10 +31122,8 @@ pub mod rtc1 {
         impl crate::Writable for LoadCount0Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets LOAD_COUNT0 to value 0"]
-        impl crate::Resettable for LoadCount0Spec {}
     }
-    #[doc = "LOAD_COUNT1 (rw) register accessor: LOAD_COUNT1\n\nYou can [`read`](crate::Reg::read) this register and get [`load_count1::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`load_count1::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@load_count1`] module"]
+    #[doc = "LOAD_COUNT1 (rw) register accessor: LOAD_COUNT1\n\nYou can [`read`](crate::Reg::read) this register and get [`load_count1::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`load_count1::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@load_count1`] module"]
     #[doc(alias = "LOAD_COUNT1")]
     pub type LoadCount1 = crate::Reg<load_count1::LoadCount1Spec>;
     #[doc = "LOAD_COUNT1"]
@@ -31136,7 +31150,7 @@ pub mod rtc1 {
                 LoadCount1W::new(self, 0)
             }
         }
-        #[doc = "LOAD_COUNT1\n\nYou can [`read`](crate::Reg::read) this register and get [`load_count1::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`load_count1::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "LOAD_COUNT1\n\nYou can [`read`](crate::Reg::read) this register and get [`load_count1::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`load_count1::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct LoadCount1Spec;
         impl crate::RegisterSpec for LoadCount1Spec {
             type Ux = u32;
@@ -31147,8 +31161,6 @@ pub mod rtc1 {
         impl crate::Writable for LoadCount1Spec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets LOAD_COUNT1 to value 0"]
-        impl crate::Resettable for LoadCount1Spec {}
     }
     #[doc = "CURRENT_VALUE0 (r) register accessor: CURRENT_VALUE0\n\nYou can [`read`](crate::Reg::read) this register and get [`current_value0::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@current_value0`] module"]
     #[doc(alias = "CURRENT_VALUE0")]
@@ -31173,8 +31185,6 @@ pub mod rtc1 {
         }
         #[doc = "`read()` method returns [`current_value0::R`](R) reader structure"]
         impl crate::Readable for CurrentValue0Spec {}
-        #[doc = "`reset()` method sets CURRENT_VALUE0 to value 0"]
-        impl crate::Resettable for CurrentValue0Spec {}
     }
     #[doc = "CURRENT_VALUE1 (r) register accessor: CURRENT_VALUE1\n\nYou can [`read`](crate::Reg::read) this register and get [`current_value1::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@current_value1`] module"]
     #[doc(alias = "CURRENT_VALUE1")]
@@ -31199,10 +31209,8 @@ pub mod rtc1 {
         }
         #[doc = "`read()` method returns [`current_value1::R`](R) reader structure"]
         impl crate::Readable for CurrentValue1Spec {}
-        #[doc = "`reset()` method sets CURRENT_VALUE1 to value 0"]
-        impl crate::Resettable for CurrentValue1Spec {}
     }
-    #[doc = "CONTROL (rw) register accessor: CONTROL\n\nYou can [`read`](crate::Reg::read) this register and get [`control::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`control::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@control`] module"]
+    #[doc = "CONTROL (rw) register accessor: CONTROL\n\nYou can [`read`](crate::Reg::read) this register and get [`control::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`control::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@control`] module"]
     #[doc(alias = "CONTROL")]
     pub type Control = crate::Reg<control::ControlSpec>;
     #[doc = "CONTROL"]
@@ -31215,10 +31223,92 @@ pub mod rtc1 {
         pub type EnableR = crate::BitReader;
         #[doc = "Field `ENABLE` writer - enable"]
         pub type EnableW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "mode"]
+        #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+        #[repr(u8)]
+        pub enum Mode {
+            #[doc = "0: SDK one-shot mode"]
+            OneShot = 0,
+            #[doc = "1: SDK periodic mode"]
+            Periodic = 1,
+            #[doc = "2: SDK alias of one-shot mode"]
+            OneShotAlternate = 2,
+            #[doc = "3: SDK free-run mode"]
+            FreeRun = 3,
+        }
+        impl From<Mode> for u8 {
+            #[inline(always)]
+            fn from(variant: Mode) -> Self {
+                variant as _
+            }
+        }
+        impl crate::FieldSpec for Mode {
+            type Ux = u8;
+        }
+        impl crate::IsEnum for Mode {}
         #[doc = "Field `MODE` reader - mode"]
-        pub type ModeR = crate::FieldReader;
+        pub type ModeR = crate::FieldReader<Mode>;
+        impl ModeR {
+            #[doc = "Get enumerated values variant"]
+            #[inline(always)]
+            pub const fn variant(&self) -> Mode {
+                match self.bits {
+                    0 => Mode::OneShot,
+                    1 => Mode::Periodic,
+                    2 => Mode::OneShotAlternate,
+                    3 => Mode::FreeRun,
+                    _ => unreachable!(),
+                }
+            }
+            #[doc = "SDK one-shot mode"]
+            #[inline(always)]
+            pub fn is_one_shot(&self) -> bool {
+                *self == Mode::OneShot
+            }
+            #[doc = "SDK periodic mode"]
+            #[inline(always)]
+            pub fn is_periodic(&self) -> bool {
+                *self == Mode::Periodic
+            }
+            #[doc = "SDK alias of one-shot mode"]
+            #[inline(always)]
+            pub fn is_one_shot_alternate(&self) -> bool {
+                *self == Mode::OneShotAlternate
+            }
+            #[doc = "SDK free-run mode"]
+            #[inline(always)]
+            pub fn is_free_run(&self) -> bool {
+                *self == Mode::FreeRun
+            }
+        }
         #[doc = "Field `MODE` writer - mode"]
-        pub type ModeW<'a, REG> = crate::FieldWriter<'a, REG, 2>;
+        pub type ModeW<'a, REG> = crate::FieldWriter<'a, REG, 2, Mode, crate::Safe>;
+        impl<'a, REG> ModeW<'a, REG>
+        where
+            REG: crate::Writable + crate::RegisterSpec,
+            REG::Ux: From<u8>,
+        {
+            #[doc = "SDK one-shot mode"]
+            #[inline(always)]
+            pub fn one_shot(self) -> &'a mut crate::W<REG> {
+                self.variant(Mode::OneShot)
+            }
+            #[doc = "SDK periodic mode"]
+            #[inline(always)]
+            pub fn periodic(self) -> &'a mut crate::W<REG> {
+                self.variant(Mode::Periodic)
+            }
+            #[doc = "SDK alias of one-shot mode"]
+            #[inline(always)]
+            pub fn one_shot_alternate(self) -> &'a mut crate::W<REG> {
+                self.variant(Mode::OneShotAlternate)
+            }
+            #[doc = "SDK free-run mode"]
+            #[inline(always)]
+            pub fn free_run(self) -> &'a mut crate::W<REG> {
+                self.variant(Mode::FreeRun)
+            }
+        }
         #[doc = "Field `INT_MASK` reader - int_mask"]
         pub type IntMaskR = crate::BitReader;
         #[doc = "Field `INT_MASK` writer - int_mask"]
@@ -31231,10 +31321,8 @@ pub mod rtc1 {
         pub type CntReqR = crate::BitReader;
         #[doc = "Field `CNT_REQ` writer - cnt_req"]
         pub type CntReqW<'a, REG> = crate::BitWriter<'a, REG>;
-        #[doc = "Field `CNT_LOCK` reader - cnt_lock"]
+        #[doc = "Field `CNT_LOCK` reader - Snapshot ready status, polled after CNT_REQ; no software setter in SDK"]
         pub type CntLockR = crate::BitReader;
-        #[doc = "Field `CNT_LOCK` writer - cnt_lock"]
-        pub type CntLockW<'a, REG> = crate::BitWriter<'a, REG>;
         impl R {
             #[doc = "Bit 0 - enable"]
             #[inline(always)]
@@ -31261,7 +31349,7 @@ pub mod rtc1 {
             pub fn cnt_req(&self) -> CntReqR {
                 CntReqR::new(((self.bits >> 5) & 1) != 0)
             }
-            #[doc = "Bit 6 - cnt_lock"]
+            #[doc = "Bit 6 - Snapshot ready status, polled after CNT_REQ; no software setter in SDK"]
             #[inline(always)]
             pub fn cnt_lock(&self) -> CntLockR {
                 CntLockR::new(((self.bits >> 6) & 1) != 0)
@@ -31293,13 +31381,8 @@ pub mod rtc1 {
             pub fn cnt_req(&mut self) -> CntReqW<'_, ControlSpec> {
                 CntReqW::new(self, 5)
             }
-            #[doc = "Bit 6 - cnt_lock"]
-            #[inline(always)]
-            pub fn cnt_lock(&mut self) -> CntLockW<'_, ControlSpec> {
-                CntLockW::new(self, 6)
-            }
         }
-        #[doc = "CONTROL\n\nYou can [`read`](crate::Reg::read) this register and get [`control::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`control::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "CONTROL\n\nYou can [`read`](crate::Reg::read) this register and get [`control::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`control::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct ControlSpec;
         impl crate::RegisterSpec for ControlSpec {
             type Ux = u32;
@@ -31310,63 +31393,42 @@ pub mod rtc1 {
         impl crate::Writable for ControlSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets CONTROL to value 0"]
-        impl crate::Resettable for ControlSpec {}
     }
-    #[doc = "EOI_REN (rw) register accessor: EOI_REN\n\nYou can [`read`](crate::Reg::read) this register and get [`eoi_ren::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`eoi_ren::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@eoi_ren`] module"]
+    #[doc = "EOI_REN (w) register accessor: EOI_REN\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`eoi_ren::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@eoi_ren`] module"]
     #[doc(alias = "EOI_REN")]
     pub type EoiRen = crate::Reg<eoi_ren::EoiRenSpec>;
     #[doc = "EOI_REN"]
     pub mod eoi_ren {
-        #[doc = "Register `EOI_REN` reader"]
-        pub type R = crate::R<EoiRenSpec>;
         #[doc = "Register `EOI_REN` writer"]
         pub type W = crate::W<EoiRenSpec>;
-        #[doc = "Field `EOI` reader - eoi"]
-        pub type EoiR = crate::BitReader;
-        #[doc = "Field `EOI` writer - eoi"]
+        #[doc = "Field `EOI` writer - SDK acknowledges by writing one. Header claims read-clear but driver never reads; read behavior withheld"]
         pub type EoiW<'a, REG> = crate::BitWriter<'a, REG>;
-        impl R {
-            #[doc = "Bit 0 - eoi"]
-            #[inline(always)]
-            pub fn eoi(&self) -> EoiR {
-                EoiR::new((self.bits & 1) != 0)
-            }
-        }
         impl W {
-            #[doc = "Bit 0 - eoi"]
+            #[doc = "Bit 0 - SDK acknowledges by writing one. Header claims read-clear but driver never reads; read behavior withheld"]
             #[inline(always)]
             pub fn eoi(&mut self) -> EoiW<'_, EoiRenSpec> {
                 EoiW::new(self, 0)
             }
         }
-        #[doc = "EOI_REN\n\nYou can [`read`](crate::Reg::read) this register and get [`eoi_ren::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`eoi_ren::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "EOI_REN\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`eoi_ren::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct EoiRenSpec;
         impl crate::RegisterSpec for EoiRenSpec {
             type Ux = u32;
         }
-        #[doc = "`read()` method returns [`eoi_ren::R`](R) reader structure"]
-        impl crate::Readable for EoiRenSpec {}
         #[doc = "`write(|w| ..)` method takes [`eoi_ren::W`](W) writer structure"]
         impl crate::Writable for EoiRenSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets EOI_REN to value 0"]
-        impl crate::Resettable for EoiRenSpec {}
     }
-    #[doc = "RAW_INTR (rw) register accessor: RAW_INTR\n\nYou can [`read`](crate::Reg::read) this register and get [`raw_intr::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`raw_intr::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@raw_intr`] module"]
+    #[doc = "RAW_INTR (r) register accessor: RAW_INTR\n\nYou can [`read`](crate::Reg::read) this register and get [`raw_intr::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@raw_intr`] module"]
     #[doc(alias = "RAW_INTR")]
     pub type RawIntr = crate::Reg<raw_intr::RawIntrSpec>;
     #[doc = "RAW_INTR"]
     pub mod raw_intr {
         #[doc = "Register `RAW_INTR` reader"]
         pub type R = crate::R<RawIntrSpec>;
-        #[doc = "Register `RAW_INTR` writer"]
-        pub type W = crate::W<RawIntrSpec>;
         #[doc = "Field `INT_STATUS` reader - int_status"]
         pub type IntStatusR = crate::BitReader;
-        #[doc = "Field `INT_STATUS` writer - int_status"]
-        pub type IntStatusW<'a, REG> = crate::BitWriter<'a, REG>;
         impl R {
             #[doc = "Bit 0 - int_status"]
             #[inline(always)]
@@ -31374,40 +31436,23 @@ pub mod rtc1 {
                 IntStatusR::new((self.bits & 1) != 0)
             }
         }
-        impl W {
-            #[doc = "Bit 0 - int_status"]
-            #[inline(always)]
-            pub fn int_status(&mut self) -> IntStatusW<'_, RawIntrSpec> {
-                IntStatusW::new(self, 0)
-            }
-        }
-        #[doc = "RAW_INTR\n\nYou can [`read`](crate::Reg::read) this register and get [`raw_intr::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`raw_intr::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "RAW_INTR\n\nYou can [`read`](crate::Reg::read) this register and get [`raw_intr::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct RawIntrSpec;
         impl crate::RegisterSpec for RawIntrSpec {
             type Ux = u32;
         }
         #[doc = "`read()` method returns [`raw_intr::R`](R) reader structure"]
         impl crate::Readable for RawIntrSpec {}
-        #[doc = "`write(|w| ..)` method takes [`raw_intr::W`](W) writer structure"]
-        impl crate::Writable for RawIntrSpec {
-            type Safety = crate::Unsafe;
-        }
-        #[doc = "`reset()` method sets RAW_INTR to value 0"]
-        impl crate::Resettable for RawIntrSpec {}
     }
-    #[doc = "INTR (rw) register accessor: INTR\n\nYou can [`read`](crate::Reg::read) this register and get [`intr::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`intr::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@intr`] module"]
+    #[doc = "INTR (r) register accessor: INTR\n\nYou can [`read`](crate::Reg::read) this register and get [`intr::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@intr`] module"]
     #[doc(alias = "INTR")]
     pub type Intr = crate::Reg<intr::IntrSpec>;
     #[doc = "INTR"]
     pub mod intr {
         #[doc = "Register `INTR` reader"]
         pub type R = crate::R<IntrSpec>;
-        #[doc = "Register `INTR` writer"]
-        pub type W = crate::W<IntrSpec>;
         #[doc = "Field `INT_STATUS` reader - int_status"]
         pub type IntStatusR = crate::BitReader;
-        #[doc = "Field `INT_STATUS` writer - int_status"]
-        pub type IntStatusW<'a, REG> = crate::BitWriter<'a, REG>;
         impl R {
             #[doc = "Bit 0 - int_status"]
             #[inline(always)]
@@ -31415,26 +31460,13 @@ pub mod rtc1 {
                 IntStatusR::new((self.bits & 1) != 0)
             }
         }
-        impl W {
-            #[doc = "Bit 0 - int_status"]
-            #[inline(always)]
-            pub fn int_status(&mut self) -> IntStatusW<'_, IntrSpec> {
-                IntStatusW::new(self, 0)
-            }
-        }
-        #[doc = "INTR\n\nYou can [`read`](crate::Reg::read) this register and get [`intr::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`intr::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "INTR\n\nYou can [`read`](crate::Reg::read) this register and get [`intr::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct IntrSpec;
         impl crate::RegisterSpec for IntrSpec {
             type Ux = u32;
         }
         #[doc = "`read()` method returns [`intr::R`](R) reader structure"]
         impl crate::Readable for IntrSpec {}
-        #[doc = "`write(|w| ..)` method takes [`intr::W`](W) writer structure"]
-        impl crate::Writable for IntrSpec {
-            type Safety = crate::Unsafe;
-        }
-        #[doc = "`reset()` method sets INTR to value 0"]
-        impl crate::Resettable for IntrSpec {}
     }
 }
 #[doc = "wdt"]

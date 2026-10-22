@@ -16,6 +16,15 @@ reserved tail padding. RX/TX FIFO views and interrupt-clear command views
 intentionally restrict generated access APIs. These checks establish register
 layout and API shape, not peripheral behavior or safe DMA buffer ownership.
 
+RTC0/1 expose the SDK v150 channel layout with local causes 49/50. Snapshot-ready
+and interrupt status are read-only, acknowledgement is a write-one command, and
+unknown reset values are omitted. The SDK header's read-clear comment is not
+enough to expose an EOI read API. The reference application uses 32-bit counters;
+the high-word slots do not establish permission to use 64-bit mode or the shared
+common-bank unlock path. No board crystal, clock setup, IRQ behavior or ROM
+implementation is validated by this PAC. The SDK source's start/stop delays and
+ambiguous timeout/zero result must be handled in the integration driver.
+
 `rt` supplies `device.x`. The custom interrupt controller is not a PLIC; IRQ
 numbers are absolute HiSilicon local interrupt cause numbers. This PAC does not
 initialize clocks, release the control core, or establish peripheral ownership.

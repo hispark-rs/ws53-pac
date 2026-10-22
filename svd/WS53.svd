@@ -13057,8 +13057,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x0</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
               <name>LOAD_COUNT0</name>
@@ -13075,8 +13073,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x4</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
               <name>LOAD_COUNT1</name>
@@ -13093,8 +13089,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x8</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
               <name>CURRENT_VALUE0</name>
@@ -13111,8 +13105,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0xC</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
               <name>CURRENT_VALUE1</name>
@@ -13128,9 +13120,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <description>CONTROL</description>
           <addressOffset>0x10</addressOffset>
           <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000007F</resetMask>
           <fields>
             <field>
               <name>ENABLE</name>
@@ -13145,6 +13134,28 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
               <bitOffset>1</bitOffset>
               <bitWidth>2</bitWidth>
               <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>OneShot</name>
+                  <description>SDK one-shot mode</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Periodic</name>
+                  <description>SDK periodic mode</description>
+                  <value>1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>OneShotAlternate</name>
+                  <description>SDK alias of one-shot mode</description>
+                  <value>2</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>FreeRun</name>
+                  <description>SDK free-run mode</description>
+                  <value>3</value>
+                </enumeratedValue>
+              </enumeratedValues>
             </field>
             <field>
               <name>INT_MASK</name>
@@ -13169,10 +13180,10 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
             </field>
             <field>
               <name>CNT_LOCK</name>
-              <description>cnt_lock</description>
+              <description>Snapshot ready status, polled after CNT_REQ; no software setter in SDK</description>
               <bitOffset>6</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
           </fields>
         </register>
@@ -13181,16 +13192,20 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <description>EOI_REN</description>
           <addressOffset>0x14</addressOffset>
           <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
+          <access>write-only</access>
           <fields>
             <field>
               <name>EOI</name>
-              <description>eoi</description>
+              <description>SDK acknowledges by writing one. Header claims read-clear but driver never reads; read behavior withheld</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>write-only</access>
+              <writeConstraint>
+                <range>
+                  <minimum>1</minimum>
+                  <maximum>1</maximum>
+                </range>
+              </writeConstraint>
             </field>
           </fields>
         </register>
@@ -13199,16 +13214,14 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <description>RAW_INTR</description>
           <addressOffset>0x18</addressOffset>
           <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
+          <access>read-only</access>
           <fields>
             <field>
               <name>INT_STATUS</name>
               <description>int_status</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
           </fields>
         </register>
@@ -13217,16 +13230,14 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <description>INTR</description>
           <addressOffset>0x1C</addressOffset>
           <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
+          <access>read-only</access>
           <fields>
             <field>
               <name>INT_STATUS</name>
               <description>int_status</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
           </fields>
         </register>
@@ -13253,8 +13264,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x0</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
               <name>LOAD_COUNT0</name>
@@ -13271,8 +13280,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x4</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
               <name>LOAD_COUNT1</name>
@@ -13289,8 +13296,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x8</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
               <name>CURRENT_VALUE0</name>
@@ -13307,8 +13312,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0xC</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
               <name>CURRENT_VALUE1</name>
@@ -13324,9 +13327,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <description>CONTROL</description>
           <addressOffset>0x10</addressOffset>
           <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000007F</resetMask>
           <fields>
             <field>
               <name>ENABLE</name>
@@ -13341,6 +13341,28 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
               <bitOffset>1</bitOffset>
               <bitWidth>2</bitWidth>
               <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>OneShot</name>
+                  <description>SDK one-shot mode</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Periodic</name>
+                  <description>SDK periodic mode</description>
+                  <value>1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>OneShotAlternate</name>
+                  <description>SDK alias of one-shot mode</description>
+                  <value>2</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>FreeRun</name>
+                  <description>SDK free-run mode</description>
+                  <value>3</value>
+                </enumeratedValue>
+              </enumeratedValues>
             </field>
             <field>
               <name>INT_MASK</name>
@@ -13365,10 +13387,10 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
             </field>
             <field>
               <name>CNT_LOCK</name>
-              <description>cnt_lock</description>
+              <description>Snapshot ready status, polled after CNT_REQ; no software setter in SDK</description>
               <bitOffset>6</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
           </fields>
         </register>
@@ -13377,16 +13399,20 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <description>EOI_REN</description>
           <addressOffset>0x14</addressOffset>
           <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
+          <access>write-only</access>
           <fields>
             <field>
               <name>EOI</name>
-              <description>eoi</description>
+              <description>SDK acknowledges by writing one. Header claims read-clear but driver never reads; read behavior withheld</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>write-only</access>
+              <writeConstraint>
+                <range>
+                  <minimum>1</minimum>
+                  <maximum>1</maximum>
+                </range>
+              </writeConstraint>
             </field>
           </fields>
         </register>
@@ -13395,16 +13421,14 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <description>RAW_INTR</description>
           <addressOffset>0x18</addressOffset>
           <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
+          <access>read-only</access>
           <fields>
             <field>
               <name>INT_STATUS</name>
               <description>int_status</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
           </fields>
         </register>
@@ -13413,16 +13437,14 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <description>INTR</description>
           <addressOffset>0x1C</addressOffset>
           <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
+          <access>read-only</access>
           <fields>
             <field>
               <name>INT_STATUS</name>
               <description>int_status</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
           </fields>
         </register>

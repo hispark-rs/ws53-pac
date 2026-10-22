@@ -109,6 +109,71 @@ macro_rules! assert_not_impl {
         };
     };
 }
+macro_rules! rtc_access_api {
+    ($module:ident) => {
+        assert_not_impl!(
+            ws53_pac::$module::eoi_ren::EoiRenSpec,
+            ws53_pac::generic::Readable
+        );
+        assert_not_impl!(
+            ws53_pac::$module::raw_intr::RawIntrSpec,
+            ws53_pac::generic::Writable
+        );
+        assert_not_impl!(
+            ws53_pac::$module::intr::IntrSpec,
+            ws53_pac::generic::Writable
+        );
+        assert_not_impl!(
+            ws53_pac::$module::control::ControlSpec,
+            ws53_pac::generic::Resettable
+        );
+        assert_not_impl!(
+            ws53_pac::$module::load_count0::LoadCount0Spec,
+            ws53_pac::generic::Resettable
+        );
+    };
+}
+rtc_access_api!(rtc0);
+rtc_access_api!(rtc1);
+
+#[test]
+fn rtc_channels_preserve_status_and_use_the_v150_mask_and_modes() {
+    assert_eq!(ws53_pac::Rtc0::PTR as usize, 0x57029100);
+    assert_eq!(ws53_pac::Rtc1::PTR as usize, 0x57029200);
+    assert_eq!(ws53_pac::interrupt::ExternalInterrupt::RTC_0 as u16, 49);
+    assert_eq!(ws53_pac::interrupt::ExternalInterrupt::RTC_1 as u16, 50);
+    macro_rules! check {
+        ($module:ident) => {{
+            let regs: ws53_pac::$module::RegisterBlock = unsafe { core::mem::zeroed() };
+            assert_eq!(size_of_val(&regs), 32);
+            assert_eq!(offset(&regs, regs.load_count0()), 0);
+            assert_eq!(offset(&regs, regs.load_count1()), 4);
+            assert_eq!(offset(&regs, regs.current_value0()), 8);
+            assert_eq!(offset(&regs, regs.current_value1()), 12);
+            assert_eq!(offset(&regs, regs.control()), 16);
+            assert_eq!(offset(&regs, regs.eoi_ren()), 20);
+            assert_eq!(offset(&regs, regs.raw_intr()), 24);
+            assert_eq!(offset(&regs, regs.intr()), 28);
+            // Host RAM setup for field-encoding checks; no physical status write.
+            unsafe {
+                regs.control().write_with_zero(|w| w.bits(0xa5000040));
+            }
+            regs.control()
+                .modify(|_, w| w.mode().periodic().int_mask().set_bit().enable().set_bit());
+            assert_eq!(regs.control().read().bits(), 0xa500004b);
+            assert!(regs.control().read().cnt_lock().bit_is_set());
+            regs.control()
+                .modify(|_, w| w.mode().free_run().cnt_req().set_bit());
+            assert_eq!(regs.control().read().bits(), 0xa500006f);
+            regs.control().modify(|_, w| w.mode().one_shot_alternate());
+            assert_eq!(regs.control().read().mode().bits(), 2);
+            regs.control().modify(|_, w| w.mode().one_shot());
+            assert_eq!(regs.control().read().mode().bits(), 0);
+        }};
+    }
+    check!(rtc0);
+    check!(rtc1);
+}
 macro_rules! gpio_command_api {
     ($module:ident) => {
         assert_not_impl!(
