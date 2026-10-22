@@ -1,0 +1,2 @@
+riscv_config:
+  base_isa: rv32i

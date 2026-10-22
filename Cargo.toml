@@ -1,0 +1,22 @@
+[package]
+name = "ws53-pac"
+version = "0.1.0-alpha.1"
+edition = "2024"
+license = "Apache-2.0"
+description = "WS53 application-core register access generated from hisi-registers"
+repository = "https://github.com/hispark-rs/ws53-pac"
+
+[dependencies]
+vcell = "0.1"
+critical-section = { version = "1", optional = true }
+
+[target.'cfg(target_arch = "riscv32")'.dependencies]
+riscv = "0.13"
+
+[target.'cfg(not(target_arch = "riscv32"))'.dev-dependencies]
+critical-section = { version = "1", features = ["std"] }
+
+[features]
+default = ["critical-section"]
+rt = []
+
