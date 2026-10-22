@@ -12049,8 +12049,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x0</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x007FFFFF</resetMask>
           <fields>
             <field>
               <name>GPIO_SW_OUT</name>
@@ -12067,27 +12065,29 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x4</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x007FFFFF</resetValue>
-          <resetMask>0x007FFFFF</resetMask>
           <fields>
             <field>
-              <name>GPIO_SW_OEN</name>
-              <description>GPIO direction: 0=output; 1=input (default)</description>
+              <name>PINS</name>
+              <description>Direction bitmap: each 0 bit selects output, each 1 bit selects input; not a whole-register mode enum</description>
               <bitOffset>0</bitOffset>
               <bitWidth>23</bitWidth>
               <access>read-write</access>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>Output</name>
-                  <description>Output direction</description>
-                  <value>0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Input</name>
-                  <description>Input direction</description>
-                  <value>1</value>
-                </enumeratedValue>
-              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>GPIO_SW_CTL</name>
+          <description>GPIO_SW_CTL</description>
+          <addressOffset>0x8</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <fields>
+            <field>
+              <name>GPIO_SW_CTL</name>
+              <description>Per-pin data source control; SDK supplies bit get/set helpers but does not establish selection encodings</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>23</bitWidth>
+              <access>read-write</access>
             </field>
           </fields>
         </register>
@@ -12097,8 +12097,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0xC</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x007FFFFF</resetMask>
           <fields>
             <field>
               <name>GPIO_INT_EN</name>
@@ -12115,8 +12113,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x10</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x007FFFFF</resetMask>
           <fields>
             <field>
               <name>GPIO_INT_MASK</name>
@@ -12133,27 +12129,13 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x14</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x007FFFFF</resetMask>
           <fields>
             <field>
-              <name>GPIO_INT_TYPE</name>
-              <description>Interrupt type: 0=level; 1=edge</description>
+              <name>PINS</name>
+              <description>Trigger bitmap: each 0 bit selects level, each 1 bit selects edge</description>
               <bitOffset>0</bitOffset>
               <bitWidth>23</bitWidth>
               <access>read-write</access>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>Level</name>
-                  <description>Level-sensitive</description>
-                  <value>0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Edge</name>
-                  <description>Edge-triggered</description>
-                  <value>1</value>
-                </enumeratedValue>
-              </enumeratedValues>
             </field>
           </fields>
         </register>
@@ -12163,27 +12145,13 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x18</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x007FFFFF</resetMask>
           <fields>
             <field>
-              <name>GPIO_INT_POLARITY</name>
-              <description>Interrupt polarity: 0=low/falling; 1=high/rising</description>
+              <name>PINS</name>
+              <description>Polarity bitmap: each 0 bit selects low/falling, each 1 bit high/rising</description>
               <bitOffset>0</bitOffset>
               <bitWidth>23</bitWidth>
               <access>read-write</access>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>LowFalling</name>
-                  <description>Low level or falling edge</description>
-                  <value>0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>HighRising</name>
-                  <description>High level or rising edge</description>
-                  <value>1</value>
-                </enumeratedValue>
-              </enumeratedValues>
             </field>
           </fields>
         </register>
@@ -12193,27 +12161,13 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x1C</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x007FFFFF</resetMask>
           <fields>
             <field>
-              <name>GPIO_INT_DEDGE</name>
-              <description>Dual-edge interrupt enable: 0=disabled; 1=enabled</description>
+              <name>PINS</name>
+              <description>Dual-edge bitmap: each 1 bit enables detection on both edges of that input</description>
               <bitOffset>0</bitOffset>
               <bitWidth>23</bitWidth>
               <access>read-write</access>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>Disabled</name>
-                  <description>Single-edge mode</description>
-                  <value>0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Enabled</name>
-                  <description>Dual-edge triggered</description>
-                  <value>1</value>
-                </enumeratedValue>
-              </enumeratedValues>
             </field>
           </fields>
         </register>
@@ -12223,8 +12177,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x20</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x007FFFFF</resetMask>
           <fields>
             <field>
               <name>GPIO_INT_DEBOUNCE</name>
@@ -12241,8 +12193,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x24</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x007FFFFF</resetMask>
           <fields>
             <field>
               <name>GPIO_INT_RAW</name>
@@ -12259,8 +12209,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x28</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x007FFFFF</resetMask>
           <fields>
             <field>
               <name>GPIO_INTR</name>
@@ -12277,8 +12225,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x2C</addressOffset>
           <size>32</size>
           <access>write-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x007FFFFF</resetMask>
           <fields>
             <field>
               <name>GPIO_INT_EOI</name>
@@ -12286,6 +12232,7 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
               <bitOffset>0</bitOffset>
               <bitWidth>23</bitWidth>
               <access>write-only</access>
+              <modifiedWriteValues>oneToClear</modifiedWriteValues>
             </field>
           </fields>
         </register>
@@ -12295,8 +12242,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x30</addressOffset>
           <size>32</size>
           <access>write-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x007FFFFF</resetMask>
           <fields>
             <field>
               <name>GPIO_DATA_SET</name>
@@ -12304,6 +12249,7 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
               <bitOffset>0</bitOffset>
               <bitWidth>23</bitWidth>
               <access>write-only</access>
+              <modifiedWriteValues>oneToSet</modifiedWriteValues>
             </field>
           </fields>
         </register>
@@ -12313,8 +12259,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x34</addressOffset>
           <size>32</size>
           <access>write-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x007FFFFF</resetMask>
           <fields>
             <field>
               <name>GPIO_DATA_CLR</name>
@@ -12322,6 +12266,7 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
               <bitOffset>0</bitOffset>
               <bitWidth>23</bitWidth>
               <access>write-only</access>
+              <modifiedWriteValues>oneToClear</modifiedWriteValues>
             </field>
           </fields>
         </register>
@@ -12348,8 +12293,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x0</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000007</resetMask>
           <fields>
             <field>
               <name>GPIO_SW_OUT</name>
@@ -12366,27 +12309,29 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x4</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000007</resetValue>
-          <resetMask>0x00000007</resetMask>
           <fields>
             <field>
-              <name>GPIO_SW_OEN</name>
-              <description>GPIO direction: 0=output; 1=input (default)</description>
+              <name>PINS</name>
+              <description>Direction bitmap: each 0 bit selects output, each 1 bit selects input; not a whole-register mode enum</description>
               <bitOffset>0</bitOffset>
               <bitWidth>3</bitWidth>
               <access>read-write</access>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>Output</name>
-                  <description>Output direction</description>
-                  <value>0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Input</name>
-                  <description>Input direction</description>
-                  <value>1</value>
-                </enumeratedValue>
-              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>GPIO_SW_CTL</name>
+          <description>GPIO_SW_CTL</description>
+          <addressOffset>0x8</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <fields>
+            <field>
+              <name>GPIO_SW_CTL</name>
+              <description>Per-pin data source control; SDK supplies bit get/set helpers but does not establish selection encodings</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>3</bitWidth>
+              <access>read-write</access>
             </field>
           </fields>
         </register>
@@ -12396,8 +12341,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0xC</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000007</resetMask>
           <fields>
             <field>
               <name>GPIO_INT_EN</name>
@@ -12414,8 +12357,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x10</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000007</resetMask>
           <fields>
             <field>
               <name>GPIO_INT_MASK</name>
@@ -12432,27 +12373,13 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x14</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000007</resetMask>
           <fields>
             <field>
-              <name>GPIO_INT_TYPE</name>
-              <description>Interrupt type: 0=level; 1=edge</description>
+              <name>PINS</name>
+              <description>Trigger bitmap: each 0 bit selects level, each 1 bit selects edge</description>
               <bitOffset>0</bitOffset>
               <bitWidth>3</bitWidth>
               <access>read-write</access>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>Level</name>
-                  <description>Level-sensitive</description>
-                  <value>0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Edge</name>
-                  <description>Edge-triggered</description>
-                  <value>1</value>
-                </enumeratedValue>
-              </enumeratedValues>
             </field>
           </fields>
         </register>
@@ -12462,27 +12389,13 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x18</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000007</resetMask>
           <fields>
             <field>
-              <name>GPIO_INT_POLARITY</name>
-              <description>Interrupt polarity: 0=low/falling; 1=high/rising</description>
+              <name>PINS</name>
+              <description>Polarity bitmap: each 0 bit selects low/falling, each 1 bit high/rising</description>
               <bitOffset>0</bitOffset>
               <bitWidth>3</bitWidth>
               <access>read-write</access>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>LowFalling</name>
-                  <description>Low level or falling edge</description>
-                  <value>0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>HighRising</name>
-                  <description>High level or rising edge</description>
-                  <value>1</value>
-                </enumeratedValue>
-              </enumeratedValues>
             </field>
           </fields>
         </register>
@@ -12492,27 +12405,13 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x1C</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000007</resetMask>
           <fields>
             <field>
-              <name>GPIO_INT_DEDGE</name>
-              <description>Dual-edge interrupt enable: 0=disabled; 1=enabled</description>
+              <name>PINS</name>
+              <description>Dual-edge bitmap: each 1 bit enables detection on both edges of that input</description>
               <bitOffset>0</bitOffset>
               <bitWidth>3</bitWidth>
               <access>read-write</access>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>Disabled</name>
-                  <description>Single-edge mode</description>
-                  <value>0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Enabled</name>
-                  <description>Dual-edge triggered</description>
-                  <value>1</value>
-                </enumeratedValue>
-              </enumeratedValues>
             </field>
           </fields>
         </register>
@@ -12522,8 +12421,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x20</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000007</resetMask>
           <fields>
             <field>
               <name>GPIO_INT_DEBOUNCE</name>
@@ -12540,8 +12437,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x24</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000007</resetMask>
           <fields>
             <field>
               <name>GPIO_INT_RAW</name>
@@ -12558,8 +12453,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x28</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000007</resetMask>
           <fields>
             <field>
               <name>GPIO_INTR</name>
@@ -12576,8 +12469,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x2C</addressOffset>
           <size>32</size>
           <access>write-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000007</resetMask>
           <fields>
             <field>
               <name>GPIO_INT_EOI</name>
@@ -12585,6 +12476,7 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
               <bitOffset>0</bitOffset>
               <bitWidth>3</bitWidth>
               <access>write-only</access>
+              <modifiedWriteValues>oneToClear</modifiedWriteValues>
             </field>
           </fields>
         </register>
@@ -12594,8 +12486,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x30</addressOffset>
           <size>32</size>
           <access>write-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000007</resetMask>
           <fields>
             <field>
               <name>GPIO_DATA_SET</name>
@@ -12603,6 +12493,7 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
               <bitOffset>0</bitOffset>
               <bitWidth>3</bitWidth>
               <access>write-only</access>
+              <modifiedWriteValues>oneToSet</modifiedWriteValues>
             </field>
           </fields>
         </register>
@@ -12612,8 +12503,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x34</addressOffset>
           <size>32</size>
           <access>write-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000007</resetMask>
           <fields>
             <field>
               <name>GPIO_DATA_CLR</name>
@@ -12621,6 +12510,7 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
               <bitOffset>0</bitOffset>
               <bitWidth>3</bitWidth>
               <access>write-only</access>
+              <modifiedWriteValues>oneToClear</modifiedWriteValues>
             </field>
           </fields>
         </register>
@@ -12791,8 +12681,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x0</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000FFF</resetMask>
           <fields>
             <field>
               <name>GPIO_SW_OUT</name>
@@ -12809,27 +12697,29 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x4</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000FFF</resetValue>
-          <resetMask>0x00000FFF</resetMask>
           <fields>
             <field>
-              <name>GPIO_SW_OEN</name>
-              <description>GPIO direction: 0=output; 1=input (default)</description>
+              <name>PINS</name>
+              <description>Direction bitmap: each 0 bit selects output, each 1 bit selects input; not a whole-register mode enum</description>
               <bitOffset>0</bitOffset>
               <bitWidth>12</bitWidth>
               <access>read-write</access>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>Output</name>
-                  <description>Output direction</description>
-                  <value>0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Input</name>
-                  <description>Input direction</description>
-                  <value>1</value>
-                </enumeratedValue>
-              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>GPIO_SW_CTL</name>
+          <description>GPIO_SW_CTL</description>
+          <addressOffset>0x8</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <fields>
+            <field>
+              <name>GPIO_SW_CTL</name>
+              <description>Per-pin data source control; SDK supplies bit get/set helpers but does not establish selection encodings</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>12</bitWidth>
+              <access>read-write</access>
             </field>
           </fields>
         </register>
@@ -12839,8 +12729,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0xC</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000FFF</resetMask>
           <fields>
             <field>
               <name>GPIO_INT_EN</name>
@@ -12857,8 +12745,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x10</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000FFF</resetMask>
           <fields>
             <field>
               <name>GPIO_INT_MASK</name>
@@ -12875,27 +12761,13 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x14</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000FFF</resetMask>
           <fields>
             <field>
-              <name>GPIO_INT_TYPE</name>
-              <description>Interrupt type: 0=level; 1=edge</description>
+              <name>PINS</name>
+              <description>Trigger bitmap: each 0 bit selects level, each 1 bit selects edge</description>
               <bitOffset>0</bitOffset>
               <bitWidth>12</bitWidth>
               <access>read-write</access>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>Level</name>
-                  <description>Level-sensitive</description>
-                  <value>0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Edge</name>
-                  <description>Edge-triggered</description>
-                  <value>1</value>
-                </enumeratedValue>
-              </enumeratedValues>
             </field>
           </fields>
         </register>
@@ -12905,27 +12777,13 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x18</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000FFF</resetMask>
           <fields>
             <field>
-              <name>GPIO_INT_POLARITY</name>
-              <description>Interrupt polarity: 0=low/falling; 1=high/rising</description>
+              <name>PINS</name>
+              <description>Polarity bitmap: each 0 bit selects low/falling, each 1 bit high/rising</description>
               <bitOffset>0</bitOffset>
               <bitWidth>12</bitWidth>
               <access>read-write</access>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>LowFalling</name>
-                  <description>Low level or falling edge</description>
-                  <value>0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>HighRising</name>
-                  <description>High level or rising edge</description>
-                  <value>1</value>
-                </enumeratedValue>
-              </enumeratedValues>
             </field>
           </fields>
         </register>
@@ -12935,27 +12793,13 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x1C</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000FFF</resetMask>
           <fields>
             <field>
-              <name>GPIO_INT_DEDGE</name>
-              <description>Dual-edge interrupt enable: 0=disabled; 1=enabled</description>
+              <name>PINS</name>
+              <description>Dual-edge bitmap: each 1 bit enables detection on both edges of that input</description>
               <bitOffset>0</bitOffset>
               <bitWidth>12</bitWidth>
               <access>read-write</access>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>Disabled</name>
-                  <description>Single-edge mode</description>
-                  <value>0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Enabled</name>
-                  <description>Dual-edge triggered</description>
-                  <value>1</value>
-                </enumeratedValue>
-              </enumeratedValues>
             </field>
           </fields>
         </register>
@@ -12965,8 +12809,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x20</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000FFF</resetMask>
           <fields>
             <field>
               <name>GPIO_INT_DEBOUNCE</name>
@@ -12983,8 +12825,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x24</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000FFF</resetMask>
           <fields>
             <field>
               <name>GPIO_INT_RAW</name>
@@ -13001,8 +12841,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x28</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000FFF</resetMask>
           <fields>
             <field>
               <name>GPIO_INTR</name>
@@ -13019,8 +12857,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x2C</addressOffset>
           <size>32</size>
           <access>write-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000FFF</resetMask>
           <fields>
             <field>
               <name>GPIO_INT_EOI</name>
@@ -13028,6 +12864,7 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
               <bitOffset>0</bitOffset>
               <bitWidth>12</bitWidth>
               <access>write-only</access>
+              <modifiedWriteValues>oneToClear</modifiedWriteValues>
             </field>
           </fields>
         </register>
@@ -13037,8 +12874,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x30</addressOffset>
           <size>32</size>
           <access>write-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000FFF</resetMask>
           <fields>
             <field>
               <name>GPIO_DATA_SET</name>
@@ -13046,6 +12881,7 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
               <bitOffset>0</bitOffset>
               <bitWidth>12</bitWidth>
               <access>write-only</access>
+              <modifiedWriteValues>oneToSet</modifiedWriteValues>
             </field>
           </fields>
         </register>
@@ -13055,8 +12891,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x34</addressOffset>
           <size>32</size>
           <access>write-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000FFF</resetMask>
           <fields>
             <field>
               <name>GPIO_DATA_CLR</name>
@@ -13064,6 +12898,7 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
               <bitOffset>0</bitOffset>
               <bitWidth>12</bitWidth>
               <access>write-only</access>
+              <modifiedWriteValues>oneToClear</modifiedWriteValues>
             </field>
           </fields>
         </register>

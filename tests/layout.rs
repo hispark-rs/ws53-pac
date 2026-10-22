@@ -64,6 +64,36 @@ fn uart_reset_controls_preserve_other_halfword_bits() {
     assert_eq!(g.uart_soft_reset().read().bits(), 0x5ada);
 }
 
+#[test]
+fn gpio_banks_use_word_slots_and_per_pin_bitmaps() {
+    macro_rules! bank {
+        ($module:ident, $width:expr) => {{
+            let r: ws53_pac::$module::RegisterBlock = unsafe { core::mem::zeroed() };
+            assert_eq!(offset(&r, r.gpio_sw_ctl()), 8);
+            assert_eq!(offset(&r, r.gpio_int_eoi()), 0x2c);
+            assert_eq!(offset(&r, r.gpio_data_set()), 0x30);
+            assert_eq!(offset(&r, r.gpio_data_clr()), 0x34);
+            assert_eq!(size_of_val(r.gpio_sw_oen()), 4);
+            let top = 1 << ($width - 1);
+            // Local-memory field encoding only; no hardware access or reset claim.
+            r.gpio_sw_oen().modify(|_, w| unsafe { w.pins().bits(top) });
+            r.gpio_int_type()
+                .modify(|_, w| unsafe { w.pins().bits(top) });
+            r.gpio_int_polarity()
+                .modify(|_, w| unsafe { w.pins().bits(top) });
+            r.gpio_int_dedge()
+                .modify(|_, w| unsafe { w.pins().bits(top) });
+            assert_eq!(r.gpio_sw_oen().read().pins().bits(), top);
+            assert_eq!(r.gpio_int_type().read().pins().bits(), top);
+            assert_eq!(r.gpio_int_polarity().read().pins().bits(), top);
+            assert_eq!(r.gpio_int_dedge().read().pins().bits(), top);
+        }};
+    }
+    bank!(gpio0, 23);
+    bank!(gpio1, 12);
+    bank!(gpio2, 3);
+}
+
 // An inferred marker type is unambiguous only if the forbidden trait is absent.
 // These are compile-time API checks: FIFO windows must never acquire modify().
 macro_rules! assert_not_impl {
@@ -79,6 +109,29 @@ macro_rules! assert_not_impl {
         };
     };
 }
+macro_rules! gpio_command_api {
+    ($module:ident) => {
+        assert_not_impl!(
+            ws53_pac::$module::gpio_int_eoi::GpioIntEoiSpec,
+            ws53_pac::generic::Readable
+        );
+        assert_not_impl!(
+            ws53_pac::$module::gpio_data_set::GpioDataSetSpec,
+            ws53_pac::generic::Readable
+        );
+        assert_not_impl!(
+            ws53_pac::$module::gpio_data_clr::GpioDataClrSpec,
+            ws53_pac::generic::Readable
+        );
+        assert_not_impl!(
+            ws53_pac::$module::gpio_sw_oen::GpioSwOenSpec,
+            ws53_pac::generic::Resettable
+        );
+    };
+}
+gpio_command_api!(gpio0);
+gpio_command_api!(gpio1);
+gpio_command_api!(gpio2);
 assert_not_impl!(
     ws53_pac::glb_ctl::uart_l0_irq_route_command::UartL0IrqRouteCommandSpec,
     ws53_pac::generic::Readable

@@ -28400,7 +28400,7 @@ pub mod gpio0 {
     pub struct RegisterBlock {
         gpio_sw_out: GpioSwOut,
         gpio_sw_oen: GpioSwOen,
-        _reserved2: [u8; 0x04],
+        gpio_sw_ctl: GpioSwCtl,
         gpio_int_en: GpioIntEn,
         gpio_int_mask: GpioIntMask,
         gpio_int_type: GpioIntType,
@@ -28423,6 +28423,11 @@ pub mod gpio0 {
         #[inline(always)]
         pub const fn gpio_sw_oen(&self) -> &GpioSwOen {
             &self.gpio_sw_oen
+        }
+        #[doc = "0x08 - GPIO_SW_CTL"]
+        #[inline(always)]
+        pub const fn gpio_sw_ctl(&self) -> &GpioSwCtl {
+            &self.gpio_sw_ctl
         }
         #[doc = "0x0c - GPIO_INT_EN"]
         #[inline(always)]
@@ -28480,7 +28485,7 @@ pub mod gpio0 {
             &self.gpio_data_clr
         }
     }
-    #[doc = "GPIO_SW_OUT (rw) register accessor: GPIO_SW_OUT\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_sw_out::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_sw_out::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_sw_out`] module"]
+    #[doc = "GPIO_SW_OUT (rw) register accessor: GPIO_SW_OUT\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_sw_out::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_sw_out::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_sw_out`] module"]
     #[doc(alias = "GPIO_SW_OUT")]
     pub type GpioSwOut = crate::Reg<gpio_sw_out::GpioSwOutSpec>;
     #[doc = "GPIO_SW_OUT"]
@@ -28507,7 +28512,7 @@ pub mod gpio0 {
                 GpioSwOutW::new(self, 0)
             }
         }
-        #[doc = "GPIO_SW_OUT\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_sw_out::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_sw_out::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "GPIO_SW_OUT\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_sw_out::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_sw_out::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct GpioSwOutSpec;
         impl crate::RegisterSpec for GpioSwOutSpec {
             type Ux = u32;
@@ -28518,10 +28523,8 @@ pub mod gpio0 {
         impl crate::Writable for GpioSwOutSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets GPIO_SW_OUT to value 0"]
-        impl crate::Resettable for GpioSwOutSpec {}
     }
-    #[doc = "GPIO_SW_OEN (rw) register accessor: GPIO_SW_OEN\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_sw_oen::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_sw_oen::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_sw_oen`] module"]
+    #[doc = "GPIO_SW_OEN (rw) register accessor: GPIO_SW_OEN\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_sw_oen::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_sw_oen::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_sw_oen`] module"]
     #[doc(alias = "GPIO_SW_OEN")]
     pub type GpioSwOen = crate::Reg<gpio_sw_oen::GpioSwOenSpec>;
     #[doc = "GPIO_SW_OEN"]
@@ -28530,81 +28533,25 @@ pub mod gpio0 {
         pub type R = crate::R<GpioSwOenSpec>;
         #[doc = "Register `GPIO_SW_OEN` writer"]
         pub type W = crate::W<GpioSwOenSpec>;
-        #[doc = "GPIO direction: 0=output; 1=input (default)\n\nValue on reset: 8388607"]
-        #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-        #[repr(u32)]
-        pub enum GpioSwOen {
-            #[doc = "0: Output direction"]
-            Output = 0,
-            #[doc = "1: Input direction"]
-            Input = 1,
-        }
-        impl From<GpioSwOen> for u32 {
-            #[inline(always)]
-            fn from(variant: GpioSwOen) -> Self {
-                variant as _
-            }
-        }
-        impl crate::FieldSpec for GpioSwOen {
-            type Ux = u32;
-        }
-        impl crate::IsEnum for GpioSwOen {}
-        #[doc = "Field `GPIO_SW_OEN` reader - GPIO direction: 0=output; 1=input (default)"]
-        pub type GpioSwOenR = crate::FieldReader<GpioSwOen>;
-        impl GpioSwOenR {
-            #[doc = "Get enumerated values variant"]
-            #[inline(always)]
-            pub const fn variant(&self) -> Option<GpioSwOen> {
-                match self.bits {
-                    0 => Some(GpioSwOen::Output),
-                    1 => Some(GpioSwOen::Input),
-                    _ => None,
-                }
-            }
-            #[doc = "Output direction"]
-            #[inline(always)]
-            pub fn is_output(&self) -> bool {
-                *self == GpioSwOen::Output
-            }
-            #[doc = "Input direction"]
-            #[inline(always)]
-            pub fn is_input(&self) -> bool {
-                *self == GpioSwOen::Input
-            }
-        }
-        #[doc = "Field `GPIO_SW_OEN` writer - GPIO direction: 0=output; 1=input (default)"]
-        pub type GpioSwOenW<'a, REG> = crate::FieldWriter<'a, REG, 23, GpioSwOen>;
-        impl<'a, REG> GpioSwOenW<'a, REG>
-        where
-            REG: crate::Writable + crate::RegisterSpec,
-            REG::Ux: From<u32>,
-        {
-            #[doc = "Output direction"]
-            #[inline(always)]
-            pub fn output(self) -> &'a mut crate::W<REG> {
-                self.variant(GpioSwOen::Output)
-            }
-            #[doc = "Input direction"]
-            #[inline(always)]
-            pub fn input(self) -> &'a mut crate::W<REG> {
-                self.variant(GpioSwOen::Input)
-            }
-        }
+        #[doc = "Field `PINS` reader - Direction bitmap: each 0 bit selects output, each 1 bit selects input; not a whole-register mode enum"]
+        pub type PinsR = crate::FieldReader<u32>;
+        #[doc = "Field `PINS` writer - Direction bitmap: each 0 bit selects output, each 1 bit selects input; not a whole-register mode enum"]
+        pub type PinsW<'a, REG> = crate::FieldWriter<'a, REG, 23, u32>;
         impl R {
-            #[doc = "Bits 0:22 - GPIO direction: 0=output; 1=input (default)"]
+            #[doc = "Bits 0:22 - Direction bitmap: each 0 bit selects output, each 1 bit selects input; not a whole-register mode enum"]
             #[inline(always)]
-            pub fn gpio_sw_oen(&self) -> GpioSwOenR {
-                GpioSwOenR::new(self.bits & 0x007f_ffff)
+            pub fn pins(&self) -> PinsR {
+                PinsR::new(self.bits & 0x007f_ffff)
             }
         }
         impl W {
-            #[doc = "Bits 0:22 - GPIO direction: 0=output; 1=input (default)"]
+            #[doc = "Bits 0:22 - Direction bitmap: each 0 bit selects output, each 1 bit selects input; not a whole-register mode enum"]
             #[inline(always)]
-            pub fn gpio_sw_oen(&mut self) -> GpioSwOenW<'_, GpioSwOenSpec> {
-                GpioSwOenW::new(self, 0)
+            pub fn pins(&mut self) -> PinsW<'_, GpioSwOenSpec> {
+                PinsW::new(self, 0)
             }
         }
-        #[doc = "GPIO_SW_OEN\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_sw_oen::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_sw_oen::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "GPIO_SW_OEN\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_sw_oen::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_sw_oen::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct GpioSwOenSpec;
         impl crate::RegisterSpec for GpioSwOenSpec {
             type Ux = u32;
@@ -28615,12 +28562,47 @@ pub mod gpio0 {
         impl crate::Writable for GpioSwOenSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets GPIO_SW_OEN to value 0x007f_ffff"]
-        impl crate::Resettable for GpioSwOenSpec {
-            const RESET_VALUE: u32 = 0x007f_ffff;
+    }
+    #[doc = "GPIO_SW_CTL (rw) register accessor: GPIO_SW_CTL\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_sw_ctl::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_sw_ctl::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_sw_ctl`] module"]
+    #[doc(alias = "GPIO_SW_CTL")]
+    pub type GpioSwCtl = crate::Reg<gpio_sw_ctl::GpioSwCtlSpec>;
+    #[doc = "GPIO_SW_CTL"]
+    pub mod gpio_sw_ctl {
+        #[doc = "Register `GPIO_SW_CTL` reader"]
+        pub type R = crate::R<GpioSwCtlSpec>;
+        #[doc = "Register `GPIO_SW_CTL` writer"]
+        pub type W = crate::W<GpioSwCtlSpec>;
+        #[doc = "Field `GPIO_SW_CTL` reader - Per-pin data source control; SDK supplies bit get/set helpers but does not establish selection encodings"]
+        pub type GpioSwCtlR = crate::FieldReader<u32>;
+        #[doc = "Field `GPIO_SW_CTL` writer - Per-pin data source control; SDK supplies bit get/set helpers but does not establish selection encodings"]
+        pub type GpioSwCtlW<'a, REG> = crate::FieldWriter<'a, REG, 23, u32>;
+        impl R {
+            #[doc = "Bits 0:22 - Per-pin data source control; SDK supplies bit get/set helpers but does not establish selection encodings"]
+            #[inline(always)]
+            pub fn gpio_sw_ctl(&self) -> GpioSwCtlR {
+                GpioSwCtlR::new(self.bits & 0x007f_ffff)
+            }
+        }
+        impl W {
+            #[doc = "Bits 0:22 - Per-pin data source control; SDK supplies bit get/set helpers but does not establish selection encodings"]
+            #[inline(always)]
+            pub fn gpio_sw_ctl(&mut self) -> GpioSwCtlW<'_, GpioSwCtlSpec> {
+                GpioSwCtlW::new(self, 0)
+            }
+        }
+        #[doc = "GPIO_SW_CTL\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_sw_ctl::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_sw_ctl::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct GpioSwCtlSpec;
+        impl crate::RegisterSpec for GpioSwCtlSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`gpio_sw_ctl::R`](R) reader structure"]
+        impl crate::Readable for GpioSwCtlSpec {}
+        #[doc = "`write(|w| ..)` method takes [`gpio_sw_ctl::W`](W) writer structure"]
+        impl crate::Writable for GpioSwCtlSpec {
+            type Safety = crate::Unsafe;
         }
     }
-    #[doc = "GPIO_INT_EN (rw) register accessor: GPIO_INT_EN\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_en::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_en::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_en`] module"]
+    #[doc = "GPIO_INT_EN (rw) register accessor: GPIO_INT_EN\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_en::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_en::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_en`] module"]
     #[doc(alias = "GPIO_INT_EN")]
     pub type GpioIntEn = crate::Reg<gpio_int_en::GpioIntEnSpec>;
     #[doc = "GPIO_INT_EN"]
@@ -28647,7 +28629,7 @@ pub mod gpio0 {
                 GpioIntEnW::new(self, 0)
             }
         }
-        #[doc = "GPIO_INT_EN\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_en::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_en::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "GPIO_INT_EN\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_en::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_en::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct GpioIntEnSpec;
         impl crate::RegisterSpec for GpioIntEnSpec {
             type Ux = u32;
@@ -28658,10 +28640,8 @@ pub mod gpio0 {
         impl crate::Writable for GpioIntEnSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets GPIO_INT_EN to value 0"]
-        impl crate::Resettable for GpioIntEnSpec {}
     }
-    #[doc = "GPIO_INT_MASK (rw) register accessor: GPIO_INT_MASK\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_mask::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_mask::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_mask`] module"]
+    #[doc = "GPIO_INT_MASK (rw) register accessor: GPIO_INT_MASK\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_mask::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_mask::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_mask`] module"]
     #[doc(alias = "GPIO_INT_MASK")]
     pub type GpioIntMask = crate::Reg<gpio_int_mask::GpioIntMaskSpec>;
     #[doc = "GPIO_INT_MASK"]
@@ -28688,7 +28668,7 @@ pub mod gpio0 {
                 GpioIntMaskW::new(self, 0)
             }
         }
-        #[doc = "GPIO_INT_MASK\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_mask::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_mask::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "GPIO_INT_MASK\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_mask::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_mask::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct GpioIntMaskSpec;
         impl crate::RegisterSpec for GpioIntMaskSpec {
             type Ux = u32;
@@ -28699,10 +28679,8 @@ pub mod gpio0 {
         impl crate::Writable for GpioIntMaskSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets GPIO_INT_MASK to value 0"]
-        impl crate::Resettable for GpioIntMaskSpec {}
     }
-    #[doc = "GPIO_INT_TYPE (rw) register accessor: GPIO_INT_TYPE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_type::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_type::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_type`] module"]
+    #[doc = "GPIO_INT_TYPE (rw) register accessor: GPIO_INT_TYPE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_type::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_type::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_type`] module"]
     #[doc(alias = "GPIO_INT_TYPE")]
     pub type GpioIntType = crate::Reg<gpio_int_type::GpioIntTypeSpec>;
     #[doc = "GPIO_INT_TYPE"]
@@ -28711,81 +28689,25 @@ pub mod gpio0 {
         pub type R = crate::R<GpioIntTypeSpec>;
         #[doc = "Register `GPIO_INT_TYPE` writer"]
         pub type W = crate::W<GpioIntTypeSpec>;
-        #[doc = "Interrupt type: 0=level; 1=edge\n\nValue on reset: 0"]
-        #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-        #[repr(u32)]
-        pub enum GpioIntType {
-            #[doc = "0: Level-sensitive"]
-            Level = 0,
-            #[doc = "1: Edge-triggered"]
-            Edge = 1,
-        }
-        impl From<GpioIntType> for u32 {
-            #[inline(always)]
-            fn from(variant: GpioIntType) -> Self {
-                variant as _
-            }
-        }
-        impl crate::FieldSpec for GpioIntType {
-            type Ux = u32;
-        }
-        impl crate::IsEnum for GpioIntType {}
-        #[doc = "Field `GPIO_INT_TYPE` reader - Interrupt type: 0=level; 1=edge"]
-        pub type GpioIntTypeR = crate::FieldReader<GpioIntType>;
-        impl GpioIntTypeR {
-            #[doc = "Get enumerated values variant"]
-            #[inline(always)]
-            pub const fn variant(&self) -> Option<GpioIntType> {
-                match self.bits {
-                    0 => Some(GpioIntType::Level),
-                    1 => Some(GpioIntType::Edge),
-                    _ => None,
-                }
-            }
-            #[doc = "Level-sensitive"]
-            #[inline(always)]
-            pub fn is_level(&self) -> bool {
-                *self == GpioIntType::Level
-            }
-            #[doc = "Edge-triggered"]
-            #[inline(always)]
-            pub fn is_edge(&self) -> bool {
-                *self == GpioIntType::Edge
-            }
-        }
-        #[doc = "Field `GPIO_INT_TYPE` writer - Interrupt type: 0=level; 1=edge"]
-        pub type GpioIntTypeW<'a, REG> = crate::FieldWriter<'a, REG, 23, GpioIntType>;
-        impl<'a, REG> GpioIntTypeW<'a, REG>
-        where
-            REG: crate::Writable + crate::RegisterSpec,
-            REG::Ux: From<u32>,
-        {
-            #[doc = "Level-sensitive"]
-            #[inline(always)]
-            pub fn level(self) -> &'a mut crate::W<REG> {
-                self.variant(GpioIntType::Level)
-            }
-            #[doc = "Edge-triggered"]
-            #[inline(always)]
-            pub fn edge(self) -> &'a mut crate::W<REG> {
-                self.variant(GpioIntType::Edge)
-            }
-        }
+        #[doc = "Field `PINS` reader - Trigger bitmap: each 0 bit selects level, each 1 bit selects edge"]
+        pub type PinsR = crate::FieldReader<u32>;
+        #[doc = "Field `PINS` writer - Trigger bitmap: each 0 bit selects level, each 1 bit selects edge"]
+        pub type PinsW<'a, REG> = crate::FieldWriter<'a, REG, 23, u32>;
         impl R {
-            #[doc = "Bits 0:22 - Interrupt type: 0=level; 1=edge"]
+            #[doc = "Bits 0:22 - Trigger bitmap: each 0 bit selects level, each 1 bit selects edge"]
             #[inline(always)]
-            pub fn gpio_int_type(&self) -> GpioIntTypeR {
-                GpioIntTypeR::new(self.bits & 0x007f_ffff)
+            pub fn pins(&self) -> PinsR {
+                PinsR::new(self.bits & 0x007f_ffff)
             }
         }
         impl W {
-            #[doc = "Bits 0:22 - Interrupt type: 0=level; 1=edge"]
+            #[doc = "Bits 0:22 - Trigger bitmap: each 0 bit selects level, each 1 bit selects edge"]
             #[inline(always)]
-            pub fn gpio_int_type(&mut self) -> GpioIntTypeW<'_, GpioIntTypeSpec> {
-                GpioIntTypeW::new(self, 0)
+            pub fn pins(&mut self) -> PinsW<'_, GpioIntTypeSpec> {
+                PinsW::new(self, 0)
             }
         }
-        #[doc = "GPIO_INT_TYPE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_type::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_type::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "GPIO_INT_TYPE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_type::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_type::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct GpioIntTypeSpec;
         impl crate::RegisterSpec for GpioIntTypeSpec {
             type Ux = u32;
@@ -28796,10 +28718,8 @@ pub mod gpio0 {
         impl crate::Writable for GpioIntTypeSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets GPIO_INT_TYPE to value 0"]
-        impl crate::Resettable for GpioIntTypeSpec {}
     }
-    #[doc = "GPIO_INT_POLARITY (rw) register accessor: GPIO_INT_POLARITY\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_polarity::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_polarity::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_polarity`] module"]
+    #[doc = "GPIO_INT_POLARITY (rw) register accessor: GPIO_INT_POLARITY\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_polarity::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_polarity::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_polarity`] module"]
     #[doc(alias = "GPIO_INT_POLARITY")]
     pub type GpioIntPolarity = crate::Reg<gpio_int_polarity::GpioIntPolaritySpec>;
     #[doc = "GPIO_INT_POLARITY"]
@@ -28808,81 +28728,25 @@ pub mod gpio0 {
         pub type R = crate::R<GpioIntPolaritySpec>;
         #[doc = "Register `GPIO_INT_POLARITY` writer"]
         pub type W = crate::W<GpioIntPolaritySpec>;
-        #[doc = "Interrupt polarity: 0=low/falling; 1=high/rising\n\nValue on reset: 0"]
-        #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-        #[repr(u32)]
-        pub enum GpioIntPolarity {
-            #[doc = "0: Low level or falling edge"]
-            LowFalling = 0,
-            #[doc = "1: High level or rising edge"]
-            HighRising = 1,
-        }
-        impl From<GpioIntPolarity> for u32 {
-            #[inline(always)]
-            fn from(variant: GpioIntPolarity) -> Self {
-                variant as _
-            }
-        }
-        impl crate::FieldSpec for GpioIntPolarity {
-            type Ux = u32;
-        }
-        impl crate::IsEnum for GpioIntPolarity {}
-        #[doc = "Field `GPIO_INT_POLARITY` reader - Interrupt polarity: 0=low/falling; 1=high/rising"]
-        pub type GpioIntPolarityR = crate::FieldReader<GpioIntPolarity>;
-        impl GpioIntPolarityR {
-            #[doc = "Get enumerated values variant"]
-            #[inline(always)]
-            pub const fn variant(&self) -> Option<GpioIntPolarity> {
-                match self.bits {
-                    0 => Some(GpioIntPolarity::LowFalling),
-                    1 => Some(GpioIntPolarity::HighRising),
-                    _ => None,
-                }
-            }
-            #[doc = "Low level or falling edge"]
-            #[inline(always)]
-            pub fn is_low_falling(&self) -> bool {
-                *self == GpioIntPolarity::LowFalling
-            }
-            #[doc = "High level or rising edge"]
-            #[inline(always)]
-            pub fn is_high_rising(&self) -> bool {
-                *self == GpioIntPolarity::HighRising
-            }
-        }
-        #[doc = "Field `GPIO_INT_POLARITY` writer - Interrupt polarity: 0=low/falling; 1=high/rising"]
-        pub type GpioIntPolarityW<'a, REG> = crate::FieldWriter<'a, REG, 23, GpioIntPolarity>;
-        impl<'a, REG> GpioIntPolarityW<'a, REG>
-        where
-            REG: crate::Writable + crate::RegisterSpec,
-            REG::Ux: From<u32>,
-        {
-            #[doc = "Low level or falling edge"]
-            #[inline(always)]
-            pub fn low_falling(self) -> &'a mut crate::W<REG> {
-                self.variant(GpioIntPolarity::LowFalling)
-            }
-            #[doc = "High level or rising edge"]
-            #[inline(always)]
-            pub fn high_rising(self) -> &'a mut crate::W<REG> {
-                self.variant(GpioIntPolarity::HighRising)
-            }
-        }
+        #[doc = "Field `PINS` reader - Polarity bitmap: each 0 bit selects low/falling, each 1 bit high/rising"]
+        pub type PinsR = crate::FieldReader<u32>;
+        #[doc = "Field `PINS` writer - Polarity bitmap: each 0 bit selects low/falling, each 1 bit high/rising"]
+        pub type PinsW<'a, REG> = crate::FieldWriter<'a, REG, 23, u32>;
         impl R {
-            #[doc = "Bits 0:22 - Interrupt polarity: 0=low/falling; 1=high/rising"]
+            #[doc = "Bits 0:22 - Polarity bitmap: each 0 bit selects low/falling, each 1 bit high/rising"]
             #[inline(always)]
-            pub fn gpio_int_polarity(&self) -> GpioIntPolarityR {
-                GpioIntPolarityR::new(self.bits & 0x007f_ffff)
+            pub fn pins(&self) -> PinsR {
+                PinsR::new(self.bits & 0x007f_ffff)
             }
         }
         impl W {
-            #[doc = "Bits 0:22 - Interrupt polarity: 0=low/falling; 1=high/rising"]
+            #[doc = "Bits 0:22 - Polarity bitmap: each 0 bit selects low/falling, each 1 bit high/rising"]
             #[inline(always)]
-            pub fn gpio_int_polarity(&mut self) -> GpioIntPolarityW<'_, GpioIntPolaritySpec> {
-                GpioIntPolarityW::new(self, 0)
+            pub fn pins(&mut self) -> PinsW<'_, GpioIntPolaritySpec> {
+                PinsW::new(self, 0)
             }
         }
-        #[doc = "GPIO_INT_POLARITY\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_polarity::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_polarity::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "GPIO_INT_POLARITY\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_polarity::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_polarity::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct GpioIntPolaritySpec;
         impl crate::RegisterSpec for GpioIntPolaritySpec {
             type Ux = u32;
@@ -28893,10 +28757,8 @@ pub mod gpio0 {
         impl crate::Writable for GpioIntPolaritySpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets GPIO_INT_POLARITY to value 0"]
-        impl crate::Resettable for GpioIntPolaritySpec {}
     }
-    #[doc = "GPIO_INT_DEDGE (rw) register accessor: GPIO_INT_DEDGE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_dedge::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_dedge::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_dedge`] module"]
+    #[doc = "GPIO_INT_DEDGE (rw) register accessor: GPIO_INT_DEDGE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_dedge::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_dedge::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_dedge`] module"]
     #[doc(alias = "GPIO_INT_DEDGE")]
     pub type GpioIntDedge = crate::Reg<gpio_int_dedge::GpioIntDedgeSpec>;
     #[doc = "GPIO_INT_DEDGE"]
@@ -28905,81 +28767,25 @@ pub mod gpio0 {
         pub type R = crate::R<GpioIntDedgeSpec>;
         #[doc = "Register `GPIO_INT_DEDGE` writer"]
         pub type W = crate::W<GpioIntDedgeSpec>;
-        #[doc = "Dual-edge interrupt enable: 0=disabled; 1=enabled\n\nValue on reset: 0"]
-        #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-        #[repr(u32)]
-        pub enum GpioIntDedge {
-            #[doc = "0: Single-edge mode"]
-            Disabled = 0,
-            #[doc = "1: Dual-edge triggered"]
-            Enabled = 1,
-        }
-        impl From<GpioIntDedge> for u32 {
-            #[inline(always)]
-            fn from(variant: GpioIntDedge) -> Self {
-                variant as _
-            }
-        }
-        impl crate::FieldSpec for GpioIntDedge {
-            type Ux = u32;
-        }
-        impl crate::IsEnum for GpioIntDedge {}
-        #[doc = "Field `GPIO_INT_DEDGE` reader - Dual-edge interrupt enable: 0=disabled; 1=enabled"]
-        pub type GpioIntDedgeR = crate::FieldReader<GpioIntDedge>;
-        impl GpioIntDedgeR {
-            #[doc = "Get enumerated values variant"]
-            #[inline(always)]
-            pub const fn variant(&self) -> Option<GpioIntDedge> {
-                match self.bits {
-                    0 => Some(GpioIntDedge::Disabled),
-                    1 => Some(GpioIntDedge::Enabled),
-                    _ => None,
-                }
-            }
-            #[doc = "Single-edge mode"]
-            #[inline(always)]
-            pub fn is_disabled(&self) -> bool {
-                *self == GpioIntDedge::Disabled
-            }
-            #[doc = "Dual-edge triggered"]
-            #[inline(always)]
-            pub fn is_enabled(&self) -> bool {
-                *self == GpioIntDedge::Enabled
-            }
-        }
-        #[doc = "Field `GPIO_INT_DEDGE` writer - Dual-edge interrupt enable: 0=disabled; 1=enabled"]
-        pub type GpioIntDedgeW<'a, REG> = crate::FieldWriter<'a, REG, 23, GpioIntDedge>;
-        impl<'a, REG> GpioIntDedgeW<'a, REG>
-        where
-            REG: crate::Writable + crate::RegisterSpec,
-            REG::Ux: From<u32>,
-        {
-            #[doc = "Single-edge mode"]
-            #[inline(always)]
-            pub fn disabled(self) -> &'a mut crate::W<REG> {
-                self.variant(GpioIntDedge::Disabled)
-            }
-            #[doc = "Dual-edge triggered"]
-            #[inline(always)]
-            pub fn enabled(self) -> &'a mut crate::W<REG> {
-                self.variant(GpioIntDedge::Enabled)
-            }
-        }
+        #[doc = "Field `PINS` reader - Dual-edge bitmap: each 1 bit enables detection on both edges of that input"]
+        pub type PinsR = crate::FieldReader<u32>;
+        #[doc = "Field `PINS` writer - Dual-edge bitmap: each 1 bit enables detection on both edges of that input"]
+        pub type PinsW<'a, REG> = crate::FieldWriter<'a, REG, 23, u32>;
         impl R {
-            #[doc = "Bits 0:22 - Dual-edge interrupt enable: 0=disabled; 1=enabled"]
+            #[doc = "Bits 0:22 - Dual-edge bitmap: each 1 bit enables detection on both edges of that input"]
             #[inline(always)]
-            pub fn gpio_int_dedge(&self) -> GpioIntDedgeR {
-                GpioIntDedgeR::new(self.bits & 0x007f_ffff)
+            pub fn pins(&self) -> PinsR {
+                PinsR::new(self.bits & 0x007f_ffff)
             }
         }
         impl W {
-            #[doc = "Bits 0:22 - Dual-edge interrupt enable: 0=disabled; 1=enabled"]
+            #[doc = "Bits 0:22 - Dual-edge bitmap: each 1 bit enables detection on both edges of that input"]
             #[inline(always)]
-            pub fn gpio_int_dedge(&mut self) -> GpioIntDedgeW<'_, GpioIntDedgeSpec> {
-                GpioIntDedgeW::new(self, 0)
+            pub fn pins(&mut self) -> PinsW<'_, GpioIntDedgeSpec> {
+                PinsW::new(self, 0)
             }
         }
-        #[doc = "GPIO_INT_DEDGE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_dedge::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_dedge::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "GPIO_INT_DEDGE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_dedge::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_dedge::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct GpioIntDedgeSpec;
         impl crate::RegisterSpec for GpioIntDedgeSpec {
             type Ux = u32;
@@ -28990,10 +28796,8 @@ pub mod gpio0 {
         impl crate::Writable for GpioIntDedgeSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets GPIO_INT_DEDGE to value 0"]
-        impl crate::Resettable for GpioIntDedgeSpec {}
     }
-    #[doc = "GPIO_INT_DEBOUNCE (rw) register accessor: GPIO_INT_DEBOUNCE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_debounce::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_debounce::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_debounce`] module"]
+    #[doc = "GPIO_INT_DEBOUNCE (rw) register accessor: GPIO_INT_DEBOUNCE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_debounce::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_debounce::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_debounce`] module"]
     #[doc(alias = "GPIO_INT_DEBOUNCE")]
     pub type GpioIntDebounce = crate::Reg<gpio_int_debounce::GpioIntDebounceSpec>;
     #[doc = "GPIO_INT_DEBOUNCE"]
@@ -29020,7 +28824,7 @@ pub mod gpio0 {
                 GpioIntDebounceW::new(self, 0)
             }
         }
-        #[doc = "GPIO_INT_DEBOUNCE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_debounce::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_debounce::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "GPIO_INT_DEBOUNCE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_debounce::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_debounce::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct GpioIntDebounceSpec;
         impl crate::RegisterSpec for GpioIntDebounceSpec {
             type Ux = u32;
@@ -29031,8 +28835,6 @@ pub mod gpio0 {
         impl crate::Writable for GpioIntDebounceSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets GPIO_INT_DEBOUNCE to value 0"]
-        impl crate::Resettable for GpioIntDebounceSpec {}
     }
     #[doc = "GPIO_INT_RAW (r) register accessor: GPIO_INT_RAW\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_raw::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_raw`] module"]
     #[doc(alias = "GPIO_INT_RAW")]
@@ -29057,8 +28859,6 @@ pub mod gpio0 {
         }
         #[doc = "`read()` method returns [`gpio_int_raw::R`](R) reader structure"]
         impl crate::Readable for GpioIntRawSpec {}
-        #[doc = "`reset()` method sets GPIO_INT_RAW to value 0"]
-        impl crate::Resettable for GpioIntRawSpec {}
     }
     #[doc = "GPIO_INTR (r) register accessor: GPIO_INTR\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_intr::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_intr`] module"]
     #[doc(alias = "GPIO_INTR")]
@@ -29083,10 +28883,8 @@ pub mod gpio0 {
         }
         #[doc = "`read()` method returns [`gpio_intr::R`](R) reader structure"]
         impl crate::Readable for GpioIntrSpec {}
-        #[doc = "`reset()` method sets GPIO_INTR to value 0"]
-        impl crate::Resettable for GpioIntrSpec {}
     }
-    #[doc = "GPIO_INT_EOI (w) register accessor: GPIO_INT_EOI\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_eoi::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_eoi`] module"]
+    #[doc = "GPIO_INT_EOI (w) register accessor: GPIO_INT_EOI\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_eoi::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_eoi`] module"]
     #[doc(alias = "GPIO_INT_EOI")]
     pub type GpioIntEoi = crate::Reg<gpio_int_eoi::GpioIntEoiSpec>;
     #[doc = "GPIO_INT_EOI"]
@@ -29102,7 +28900,7 @@ pub mod gpio0 {
                 GpioIntEoiW::new(self, 0)
             }
         }
-        #[doc = "GPIO_INT_EOI\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_eoi::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "GPIO_INT_EOI\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_eoi::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct GpioIntEoiSpec;
         impl crate::RegisterSpec for GpioIntEoiSpec {
             type Ux = u32;
@@ -29110,11 +28908,10 @@ pub mod gpio0 {
         #[doc = "`write(|w| ..)` method takes [`gpio_int_eoi::W`](W) writer structure"]
         impl crate::Writable for GpioIntEoiSpec {
             type Safety = crate::Unsafe;
+            const ONE_TO_MODIFY_FIELDS_BITMAP: u32 = 0x007f_ffff;
         }
-        #[doc = "`reset()` method sets GPIO_INT_EOI to value 0"]
-        impl crate::Resettable for GpioIntEoiSpec {}
     }
-    #[doc = "GPIO_DATA_SET (w) register accessor: GPIO_DATA_SET\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_data_set::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_data_set`] module"]
+    #[doc = "GPIO_DATA_SET (w) register accessor: GPIO_DATA_SET\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_data_set::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_data_set`] module"]
     #[doc(alias = "GPIO_DATA_SET")]
     pub type GpioDataSet = crate::Reg<gpio_data_set::GpioDataSetSpec>;
     #[doc = "GPIO_DATA_SET"]
@@ -29130,7 +28927,7 @@ pub mod gpio0 {
                 GpioDataSetW::new(self, 0)
             }
         }
-        #[doc = "GPIO_DATA_SET\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_data_set::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "GPIO_DATA_SET\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_data_set::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct GpioDataSetSpec;
         impl crate::RegisterSpec for GpioDataSetSpec {
             type Ux = u32;
@@ -29138,11 +28935,10 @@ pub mod gpio0 {
         #[doc = "`write(|w| ..)` method takes [`gpio_data_set::W`](W) writer structure"]
         impl crate::Writable for GpioDataSetSpec {
             type Safety = crate::Unsafe;
+            const ONE_TO_MODIFY_FIELDS_BITMAP: u32 = 0x007f_ffff;
         }
-        #[doc = "`reset()` method sets GPIO_DATA_SET to value 0"]
-        impl crate::Resettable for GpioDataSetSpec {}
     }
-    #[doc = "GPIO_DATA_CLR (w) register accessor: GPIO_DATA_CLR\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_data_clr::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_data_clr`] module"]
+    #[doc = "GPIO_DATA_CLR (w) register accessor: GPIO_DATA_CLR\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_data_clr::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_data_clr`] module"]
     #[doc(alias = "GPIO_DATA_CLR")]
     pub type GpioDataClr = crate::Reg<gpio_data_clr::GpioDataClrSpec>;
     #[doc = "GPIO_DATA_CLR"]
@@ -29158,7 +28954,7 @@ pub mod gpio0 {
                 GpioDataClrW::new(self, 0)
             }
         }
-        #[doc = "GPIO_DATA_CLR\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_data_clr::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "GPIO_DATA_CLR\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_data_clr::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct GpioDataClrSpec;
         impl crate::RegisterSpec for GpioDataClrSpec {
             type Ux = u32;
@@ -29166,9 +28962,8 @@ pub mod gpio0 {
         #[doc = "`write(|w| ..)` method takes [`gpio_data_clr::W`](W) writer structure"]
         impl crate::Writable for GpioDataClrSpec {
             type Safety = crate::Unsafe;
+            const ONE_TO_MODIFY_FIELDS_BITMAP: u32 = 0x007f_ffff;
         }
-        #[doc = "`reset()` method sets GPIO_DATA_CLR to value 0"]
-        impl crate::Resettable for GpioDataClrSpec {}
     }
 }
 #[doc = "gpio2"]
@@ -29185,7 +28980,7 @@ pub mod gpio2 {
     pub struct RegisterBlock {
         gpio_sw_out: GpioSwOut,
         gpio_sw_oen: GpioSwOen,
-        _reserved2: [u8; 0x04],
+        gpio_sw_ctl: GpioSwCtl,
         gpio_int_en: GpioIntEn,
         gpio_int_mask: GpioIntMask,
         gpio_int_type: GpioIntType,
@@ -29208,6 +29003,11 @@ pub mod gpio2 {
         #[inline(always)]
         pub const fn gpio_sw_oen(&self) -> &GpioSwOen {
             &self.gpio_sw_oen
+        }
+        #[doc = "0x08 - GPIO_SW_CTL"]
+        #[inline(always)]
+        pub const fn gpio_sw_ctl(&self) -> &GpioSwCtl {
+            &self.gpio_sw_ctl
         }
         #[doc = "0x0c - GPIO_INT_EN"]
         #[inline(always)]
@@ -29265,7 +29065,7 @@ pub mod gpio2 {
             &self.gpio_data_clr
         }
     }
-    #[doc = "GPIO_SW_OUT (rw) register accessor: GPIO_SW_OUT\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_sw_out::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_sw_out::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_sw_out`] module"]
+    #[doc = "GPIO_SW_OUT (rw) register accessor: GPIO_SW_OUT\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_sw_out::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_sw_out::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_sw_out`] module"]
     #[doc(alias = "GPIO_SW_OUT")]
     pub type GpioSwOut = crate::Reg<gpio_sw_out::GpioSwOutSpec>;
     #[doc = "GPIO_SW_OUT"]
@@ -29292,7 +29092,7 @@ pub mod gpio2 {
                 GpioSwOutW::new(self, 0)
             }
         }
-        #[doc = "GPIO_SW_OUT\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_sw_out::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_sw_out::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "GPIO_SW_OUT\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_sw_out::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_sw_out::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct GpioSwOutSpec;
         impl crate::RegisterSpec for GpioSwOutSpec {
             type Ux = u32;
@@ -29303,10 +29103,8 @@ pub mod gpio2 {
         impl crate::Writable for GpioSwOutSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets GPIO_SW_OUT to value 0"]
-        impl crate::Resettable for GpioSwOutSpec {}
     }
-    #[doc = "GPIO_SW_OEN (rw) register accessor: GPIO_SW_OEN\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_sw_oen::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_sw_oen::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_sw_oen`] module"]
+    #[doc = "GPIO_SW_OEN (rw) register accessor: GPIO_SW_OEN\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_sw_oen::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_sw_oen::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_sw_oen`] module"]
     #[doc(alias = "GPIO_SW_OEN")]
     pub type GpioSwOen = crate::Reg<gpio_sw_oen::GpioSwOenSpec>;
     #[doc = "GPIO_SW_OEN"]
@@ -29315,81 +29113,25 @@ pub mod gpio2 {
         pub type R = crate::R<GpioSwOenSpec>;
         #[doc = "Register `GPIO_SW_OEN` writer"]
         pub type W = crate::W<GpioSwOenSpec>;
-        #[doc = "GPIO direction: 0=output; 1=input (default)\n\nValue on reset: 7"]
-        #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-        #[repr(u8)]
-        pub enum GpioSwOen {
-            #[doc = "0: Output direction"]
-            Output = 0,
-            #[doc = "1: Input direction"]
-            Input = 1,
-        }
-        impl From<GpioSwOen> for u8 {
-            #[inline(always)]
-            fn from(variant: GpioSwOen) -> Self {
-                variant as _
-            }
-        }
-        impl crate::FieldSpec for GpioSwOen {
-            type Ux = u8;
-        }
-        impl crate::IsEnum for GpioSwOen {}
-        #[doc = "Field `GPIO_SW_OEN` reader - GPIO direction: 0=output; 1=input (default)"]
-        pub type GpioSwOenR = crate::FieldReader<GpioSwOen>;
-        impl GpioSwOenR {
-            #[doc = "Get enumerated values variant"]
-            #[inline(always)]
-            pub const fn variant(&self) -> Option<GpioSwOen> {
-                match self.bits {
-                    0 => Some(GpioSwOen::Output),
-                    1 => Some(GpioSwOen::Input),
-                    _ => None,
-                }
-            }
-            #[doc = "Output direction"]
-            #[inline(always)]
-            pub fn is_output(&self) -> bool {
-                *self == GpioSwOen::Output
-            }
-            #[doc = "Input direction"]
-            #[inline(always)]
-            pub fn is_input(&self) -> bool {
-                *self == GpioSwOen::Input
-            }
-        }
-        #[doc = "Field `GPIO_SW_OEN` writer - GPIO direction: 0=output; 1=input (default)"]
-        pub type GpioSwOenW<'a, REG> = crate::FieldWriter<'a, REG, 3, GpioSwOen>;
-        impl<'a, REG> GpioSwOenW<'a, REG>
-        where
-            REG: crate::Writable + crate::RegisterSpec,
-            REG::Ux: From<u8>,
-        {
-            #[doc = "Output direction"]
-            #[inline(always)]
-            pub fn output(self) -> &'a mut crate::W<REG> {
-                self.variant(GpioSwOen::Output)
-            }
-            #[doc = "Input direction"]
-            #[inline(always)]
-            pub fn input(self) -> &'a mut crate::W<REG> {
-                self.variant(GpioSwOen::Input)
-            }
-        }
+        #[doc = "Field `PINS` reader - Direction bitmap: each 0 bit selects output, each 1 bit selects input; not a whole-register mode enum"]
+        pub type PinsR = crate::FieldReader;
+        #[doc = "Field `PINS` writer - Direction bitmap: each 0 bit selects output, each 1 bit selects input; not a whole-register mode enum"]
+        pub type PinsW<'a, REG> = crate::FieldWriter<'a, REG, 3>;
         impl R {
-            #[doc = "Bits 0:2 - GPIO direction: 0=output; 1=input (default)"]
+            #[doc = "Bits 0:2 - Direction bitmap: each 0 bit selects output, each 1 bit selects input; not a whole-register mode enum"]
             #[inline(always)]
-            pub fn gpio_sw_oen(&self) -> GpioSwOenR {
-                GpioSwOenR::new((self.bits & 7) as u8)
+            pub fn pins(&self) -> PinsR {
+                PinsR::new((self.bits & 7) as u8)
             }
         }
         impl W {
-            #[doc = "Bits 0:2 - GPIO direction: 0=output; 1=input (default)"]
+            #[doc = "Bits 0:2 - Direction bitmap: each 0 bit selects output, each 1 bit selects input; not a whole-register mode enum"]
             #[inline(always)]
-            pub fn gpio_sw_oen(&mut self) -> GpioSwOenW<'_, GpioSwOenSpec> {
-                GpioSwOenW::new(self, 0)
+            pub fn pins(&mut self) -> PinsW<'_, GpioSwOenSpec> {
+                PinsW::new(self, 0)
             }
         }
-        #[doc = "GPIO_SW_OEN\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_sw_oen::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_sw_oen::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "GPIO_SW_OEN\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_sw_oen::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_sw_oen::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct GpioSwOenSpec;
         impl crate::RegisterSpec for GpioSwOenSpec {
             type Ux = u32;
@@ -29400,12 +29142,47 @@ pub mod gpio2 {
         impl crate::Writable for GpioSwOenSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets GPIO_SW_OEN to value 0x07"]
-        impl crate::Resettable for GpioSwOenSpec {
-            const RESET_VALUE: u32 = 0x07;
+    }
+    #[doc = "GPIO_SW_CTL (rw) register accessor: GPIO_SW_CTL\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_sw_ctl::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_sw_ctl::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_sw_ctl`] module"]
+    #[doc(alias = "GPIO_SW_CTL")]
+    pub type GpioSwCtl = crate::Reg<gpio_sw_ctl::GpioSwCtlSpec>;
+    #[doc = "GPIO_SW_CTL"]
+    pub mod gpio_sw_ctl {
+        #[doc = "Register `GPIO_SW_CTL` reader"]
+        pub type R = crate::R<GpioSwCtlSpec>;
+        #[doc = "Register `GPIO_SW_CTL` writer"]
+        pub type W = crate::W<GpioSwCtlSpec>;
+        #[doc = "Field `GPIO_SW_CTL` reader - Per-pin data source control; SDK supplies bit get/set helpers but does not establish selection encodings"]
+        pub type GpioSwCtlR = crate::FieldReader;
+        #[doc = "Field `GPIO_SW_CTL` writer - Per-pin data source control; SDK supplies bit get/set helpers but does not establish selection encodings"]
+        pub type GpioSwCtlW<'a, REG> = crate::FieldWriter<'a, REG, 3>;
+        impl R {
+            #[doc = "Bits 0:2 - Per-pin data source control; SDK supplies bit get/set helpers but does not establish selection encodings"]
+            #[inline(always)]
+            pub fn gpio_sw_ctl(&self) -> GpioSwCtlR {
+                GpioSwCtlR::new((self.bits & 7) as u8)
+            }
+        }
+        impl W {
+            #[doc = "Bits 0:2 - Per-pin data source control; SDK supplies bit get/set helpers but does not establish selection encodings"]
+            #[inline(always)]
+            pub fn gpio_sw_ctl(&mut self) -> GpioSwCtlW<'_, GpioSwCtlSpec> {
+                GpioSwCtlW::new(self, 0)
+            }
+        }
+        #[doc = "GPIO_SW_CTL\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_sw_ctl::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_sw_ctl::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct GpioSwCtlSpec;
+        impl crate::RegisterSpec for GpioSwCtlSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`gpio_sw_ctl::R`](R) reader structure"]
+        impl crate::Readable for GpioSwCtlSpec {}
+        #[doc = "`write(|w| ..)` method takes [`gpio_sw_ctl::W`](W) writer structure"]
+        impl crate::Writable for GpioSwCtlSpec {
+            type Safety = crate::Unsafe;
         }
     }
-    #[doc = "GPIO_INT_EN (rw) register accessor: GPIO_INT_EN\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_en::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_en::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_en`] module"]
+    #[doc = "GPIO_INT_EN (rw) register accessor: GPIO_INT_EN\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_en::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_en::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_en`] module"]
     #[doc(alias = "GPIO_INT_EN")]
     pub type GpioIntEn = crate::Reg<gpio_int_en::GpioIntEnSpec>;
     #[doc = "GPIO_INT_EN"]
@@ -29432,7 +29209,7 @@ pub mod gpio2 {
                 GpioIntEnW::new(self, 0)
             }
         }
-        #[doc = "GPIO_INT_EN\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_en::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_en::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "GPIO_INT_EN\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_en::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_en::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct GpioIntEnSpec;
         impl crate::RegisterSpec for GpioIntEnSpec {
             type Ux = u32;
@@ -29443,10 +29220,8 @@ pub mod gpio2 {
         impl crate::Writable for GpioIntEnSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets GPIO_INT_EN to value 0"]
-        impl crate::Resettable for GpioIntEnSpec {}
     }
-    #[doc = "GPIO_INT_MASK (rw) register accessor: GPIO_INT_MASK\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_mask::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_mask::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_mask`] module"]
+    #[doc = "GPIO_INT_MASK (rw) register accessor: GPIO_INT_MASK\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_mask::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_mask::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_mask`] module"]
     #[doc(alias = "GPIO_INT_MASK")]
     pub type GpioIntMask = crate::Reg<gpio_int_mask::GpioIntMaskSpec>;
     #[doc = "GPIO_INT_MASK"]
@@ -29473,7 +29248,7 @@ pub mod gpio2 {
                 GpioIntMaskW::new(self, 0)
             }
         }
-        #[doc = "GPIO_INT_MASK\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_mask::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_mask::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "GPIO_INT_MASK\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_mask::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_mask::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct GpioIntMaskSpec;
         impl crate::RegisterSpec for GpioIntMaskSpec {
             type Ux = u32;
@@ -29484,10 +29259,8 @@ pub mod gpio2 {
         impl crate::Writable for GpioIntMaskSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets GPIO_INT_MASK to value 0"]
-        impl crate::Resettable for GpioIntMaskSpec {}
     }
-    #[doc = "GPIO_INT_TYPE (rw) register accessor: GPIO_INT_TYPE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_type::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_type::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_type`] module"]
+    #[doc = "GPIO_INT_TYPE (rw) register accessor: GPIO_INT_TYPE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_type::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_type::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_type`] module"]
     #[doc(alias = "GPIO_INT_TYPE")]
     pub type GpioIntType = crate::Reg<gpio_int_type::GpioIntTypeSpec>;
     #[doc = "GPIO_INT_TYPE"]
@@ -29496,81 +29269,25 @@ pub mod gpio2 {
         pub type R = crate::R<GpioIntTypeSpec>;
         #[doc = "Register `GPIO_INT_TYPE` writer"]
         pub type W = crate::W<GpioIntTypeSpec>;
-        #[doc = "Interrupt type: 0=level; 1=edge\n\nValue on reset: 0"]
-        #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-        #[repr(u8)]
-        pub enum GpioIntType {
-            #[doc = "0: Level-sensitive"]
-            Level = 0,
-            #[doc = "1: Edge-triggered"]
-            Edge = 1,
-        }
-        impl From<GpioIntType> for u8 {
-            #[inline(always)]
-            fn from(variant: GpioIntType) -> Self {
-                variant as _
-            }
-        }
-        impl crate::FieldSpec for GpioIntType {
-            type Ux = u8;
-        }
-        impl crate::IsEnum for GpioIntType {}
-        #[doc = "Field `GPIO_INT_TYPE` reader - Interrupt type: 0=level; 1=edge"]
-        pub type GpioIntTypeR = crate::FieldReader<GpioIntType>;
-        impl GpioIntTypeR {
-            #[doc = "Get enumerated values variant"]
-            #[inline(always)]
-            pub const fn variant(&self) -> Option<GpioIntType> {
-                match self.bits {
-                    0 => Some(GpioIntType::Level),
-                    1 => Some(GpioIntType::Edge),
-                    _ => None,
-                }
-            }
-            #[doc = "Level-sensitive"]
-            #[inline(always)]
-            pub fn is_level(&self) -> bool {
-                *self == GpioIntType::Level
-            }
-            #[doc = "Edge-triggered"]
-            #[inline(always)]
-            pub fn is_edge(&self) -> bool {
-                *self == GpioIntType::Edge
-            }
-        }
-        #[doc = "Field `GPIO_INT_TYPE` writer - Interrupt type: 0=level; 1=edge"]
-        pub type GpioIntTypeW<'a, REG> = crate::FieldWriter<'a, REG, 3, GpioIntType>;
-        impl<'a, REG> GpioIntTypeW<'a, REG>
-        where
-            REG: crate::Writable + crate::RegisterSpec,
-            REG::Ux: From<u8>,
-        {
-            #[doc = "Level-sensitive"]
-            #[inline(always)]
-            pub fn level(self) -> &'a mut crate::W<REG> {
-                self.variant(GpioIntType::Level)
-            }
-            #[doc = "Edge-triggered"]
-            #[inline(always)]
-            pub fn edge(self) -> &'a mut crate::W<REG> {
-                self.variant(GpioIntType::Edge)
-            }
-        }
+        #[doc = "Field `PINS` reader - Trigger bitmap: each 0 bit selects level, each 1 bit selects edge"]
+        pub type PinsR = crate::FieldReader;
+        #[doc = "Field `PINS` writer - Trigger bitmap: each 0 bit selects level, each 1 bit selects edge"]
+        pub type PinsW<'a, REG> = crate::FieldWriter<'a, REG, 3>;
         impl R {
-            #[doc = "Bits 0:2 - Interrupt type: 0=level; 1=edge"]
+            #[doc = "Bits 0:2 - Trigger bitmap: each 0 bit selects level, each 1 bit selects edge"]
             #[inline(always)]
-            pub fn gpio_int_type(&self) -> GpioIntTypeR {
-                GpioIntTypeR::new((self.bits & 7) as u8)
+            pub fn pins(&self) -> PinsR {
+                PinsR::new((self.bits & 7) as u8)
             }
         }
         impl W {
-            #[doc = "Bits 0:2 - Interrupt type: 0=level; 1=edge"]
+            #[doc = "Bits 0:2 - Trigger bitmap: each 0 bit selects level, each 1 bit selects edge"]
             #[inline(always)]
-            pub fn gpio_int_type(&mut self) -> GpioIntTypeW<'_, GpioIntTypeSpec> {
-                GpioIntTypeW::new(self, 0)
+            pub fn pins(&mut self) -> PinsW<'_, GpioIntTypeSpec> {
+                PinsW::new(self, 0)
             }
         }
-        #[doc = "GPIO_INT_TYPE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_type::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_type::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "GPIO_INT_TYPE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_type::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_type::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct GpioIntTypeSpec;
         impl crate::RegisterSpec for GpioIntTypeSpec {
             type Ux = u32;
@@ -29581,10 +29298,8 @@ pub mod gpio2 {
         impl crate::Writable for GpioIntTypeSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets GPIO_INT_TYPE to value 0"]
-        impl crate::Resettable for GpioIntTypeSpec {}
     }
-    #[doc = "GPIO_INT_POLARITY (rw) register accessor: GPIO_INT_POLARITY\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_polarity::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_polarity::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_polarity`] module"]
+    #[doc = "GPIO_INT_POLARITY (rw) register accessor: GPIO_INT_POLARITY\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_polarity::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_polarity::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_polarity`] module"]
     #[doc(alias = "GPIO_INT_POLARITY")]
     pub type GpioIntPolarity = crate::Reg<gpio_int_polarity::GpioIntPolaritySpec>;
     #[doc = "GPIO_INT_POLARITY"]
@@ -29593,81 +29308,25 @@ pub mod gpio2 {
         pub type R = crate::R<GpioIntPolaritySpec>;
         #[doc = "Register `GPIO_INT_POLARITY` writer"]
         pub type W = crate::W<GpioIntPolaritySpec>;
-        #[doc = "Interrupt polarity: 0=low/falling; 1=high/rising\n\nValue on reset: 0"]
-        #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-        #[repr(u8)]
-        pub enum GpioIntPolarity {
-            #[doc = "0: Low level or falling edge"]
-            LowFalling = 0,
-            #[doc = "1: High level or rising edge"]
-            HighRising = 1,
-        }
-        impl From<GpioIntPolarity> for u8 {
-            #[inline(always)]
-            fn from(variant: GpioIntPolarity) -> Self {
-                variant as _
-            }
-        }
-        impl crate::FieldSpec for GpioIntPolarity {
-            type Ux = u8;
-        }
-        impl crate::IsEnum for GpioIntPolarity {}
-        #[doc = "Field `GPIO_INT_POLARITY` reader - Interrupt polarity: 0=low/falling; 1=high/rising"]
-        pub type GpioIntPolarityR = crate::FieldReader<GpioIntPolarity>;
-        impl GpioIntPolarityR {
-            #[doc = "Get enumerated values variant"]
-            #[inline(always)]
-            pub const fn variant(&self) -> Option<GpioIntPolarity> {
-                match self.bits {
-                    0 => Some(GpioIntPolarity::LowFalling),
-                    1 => Some(GpioIntPolarity::HighRising),
-                    _ => None,
-                }
-            }
-            #[doc = "Low level or falling edge"]
-            #[inline(always)]
-            pub fn is_low_falling(&self) -> bool {
-                *self == GpioIntPolarity::LowFalling
-            }
-            #[doc = "High level or rising edge"]
-            #[inline(always)]
-            pub fn is_high_rising(&self) -> bool {
-                *self == GpioIntPolarity::HighRising
-            }
-        }
-        #[doc = "Field `GPIO_INT_POLARITY` writer - Interrupt polarity: 0=low/falling; 1=high/rising"]
-        pub type GpioIntPolarityW<'a, REG> = crate::FieldWriter<'a, REG, 3, GpioIntPolarity>;
-        impl<'a, REG> GpioIntPolarityW<'a, REG>
-        where
-            REG: crate::Writable + crate::RegisterSpec,
-            REG::Ux: From<u8>,
-        {
-            #[doc = "Low level or falling edge"]
-            #[inline(always)]
-            pub fn low_falling(self) -> &'a mut crate::W<REG> {
-                self.variant(GpioIntPolarity::LowFalling)
-            }
-            #[doc = "High level or rising edge"]
-            #[inline(always)]
-            pub fn high_rising(self) -> &'a mut crate::W<REG> {
-                self.variant(GpioIntPolarity::HighRising)
-            }
-        }
+        #[doc = "Field `PINS` reader - Polarity bitmap: each 0 bit selects low/falling, each 1 bit high/rising"]
+        pub type PinsR = crate::FieldReader;
+        #[doc = "Field `PINS` writer - Polarity bitmap: each 0 bit selects low/falling, each 1 bit high/rising"]
+        pub type PinsW<'a, REG> = crate::FieldWriter<'a, REG, 3>;
         impl R {
-            #[doc = "Bits 0:2 - Interrupt polarity: 0=low/falling; 1=high/rising"]
+            #[doc = "Bits 0:2 - Polarity bitmap: each 0 bit selects low/falling, each 1 bit high/rising"]
             #[inline(always)]
-            pub fn gpio_int_polarity(&self) -> GpioIntPolarityR {
-                GpioIntPolarityR::new((self.bits & 7) as u8)
+            pub fn pins(&self) -> PinsR {
+                PinsR::new((self.bits & 7) as u8)
             }
         }
         impl W {
-            #[doc = "Bits 0:2 - Interrupt polarity: 0=low/falling; 1=high/rising"]
+            #[doc = "Bits 0:2 - Polarity bitmap: each 0 bit selects low/falling, each 1 bit high/rising"]
             #[inline(always)]
-            pub fn gpio_int_polarity(&mut self) -> GpioIntPolarityW<'_, GpioIntPolaritySpec> {
-                GpioIntPolarityW::new(self, 0)
+            pub fn pins(&mut self) -> PinsW<'_, GpioIntPolaritySpec> {
+                PinsW::new(self, 0)
             }
         }
-        #[doc = "GPIO_INT_POLARITY\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_polarity::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_polarity::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "GPIO_INT_POLARITY\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_polarity::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_polarity::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct GpioIntPolaritySpec;
         impl crate::RegisterSpec for GpioIntPolaritySpec {
             type Ux = u32;
@@ -29678,10 +29337,8 @@ pub mod gpio2 {
         impl crate::Writable for GpioIntPolaritySpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets GPIO_INT_POLARITY to value 0"]
-        impl crate::Resettable for GpioIntPolaritySpec {}
     }
-    #[doc = "GPIO_INT_DEDGE (rw) register accessor: GPIO_INT_DEDGE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_dedge::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_dedge::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_dedge`] module"]
+    #[doc = "GPIO_INT_DEDGE (rw) register accessor: GPIO_INT_DEDGE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_dedge::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_dedge::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_dedge`] module"]
     #[doc(alias = "GPIO_INT_DEDGE")]
     pub type GpioIntDedge = crate::Reg<gpio_int_dedge::GpioIntDedgeSpec>;
     #[doc = "GPIO_INT_DEDGE"]
@@ -29690,81 +29347,25 @@ pub mod gpio2 {
         pub type R = crate::R<GpioIntDedgeSpec>;
         #[doc = "Register `GPIO_INT_DEDGE` writer"]
         pub type W = crate::W<GpioIntDedgeSpec>;
-        #[doc = "Dual-edge interrupt enable: 0=disabled; 1=enabled\n\nValue on reset: 0"]
-        #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-        #[repr(u8)]
-        pub enum GpioIntDedge {
-            #[doc = "0: Single-edge mode"]
-            Disabled = 0,
-            #[doc = "1: Dual-edge triggered"]
-            Enabled = 1,
-        }
-        impl From<GpioIntDedge> for u8 {
-            #[inline(always)]
-            fn from(variant: GpioIntDedge) -> Self {
-                variant as _
-            }
-        }
-        impl crate::FieldSpec for GpioIntDedge {
-            type Ux = u8;
-        }
-        impl crate::IsEnum for GpioIntDedge {}
-        #[doc = "Field `GPIO_INT_DEDGE` reader - Dual-edge interrupt enable: 0=disabled; 1=enabled"]
-        pub type GpioIntDedgeR = crate::FieldReader<GpioIntDedge>;
-        impl GpioIntDedgeR {
-            #[doc = "Get enumerated values variant"]
-            #[inline(always)]
-            pub const fn variant(&self) -> Option<GpioIntDedge> {
-                match self.bits {
-                    0 => Some(GpioIntDedge::Disabled),
-                    1 => Some(GpioIntDedge::Enabled),
-                    _ => None,
-                }
-            }
-            #[doc = "Single-edge mode"]
-            #[inline(always)]
-            pub fn is_disabled(&self) -> bool {
-                *self == GpioIntDedge::Disabled
-            }
-            #[doc = "Dual-edge triggered"]
-            #[inline(always)]
-            pub fn is_enabled(&self) -> bool {
-                *self == GpioIntDedge::Enabled
-            }
-        }
-        #[doc = "Field `GPIO_INT_DEDGE` writer - Dual-edge interrupt enable: 0=disabled; 1=enabled"]
-        pub type GpioIntDedgeW<'a, REG> = crate::FieldWriter<'a, REG, 3, GpioIntDedge>;
-        impl<'a, REG> GpioIntDedgeW<'a, REG>
-        where
-            REG: crate::Writable + crate::RegisterSpec,
-            REG::Ux: From<u8>,
-        {
-            #[doc = "Single-edge mode"]
-            #[inline(always)]
-            pub fn disabled(self) -> &'a mut crate::W<REG> {
-                self.variant(GpioIntDedge::Disabled)
-            }
-            #[doc = "Dual-edge triggered"]
-            #[inline(always)]
-            pub fn enabled(self) -> &'a mut crate::W<REG> {
-                self.variant(GpioIntDedge::Enabled)
-            }
-        }
+        #[doc = "Field `PINS` reader - Dual-edge bitmap: each 1 bit enables detection on both edges of that input"]
+        pub type PinsR = crate::FieldReader;
+        #[doc = "Field `PINS` writer - Dual-edge bitmap: each 1 bit enables detection on both edges of that input"]
+        pub type PinsW<'a, REG> = crate::FieldWriter<'a, REG, 3>;
         impl R {
-            #[doc = "Bits 0:2 - Dual-edge interrupt enable: 0=disabled; 1=enabled"]
+            #[doc = "Bits 0:2 - Dual-edge bitmap: each 1 bit enables detection on both edges of that input"]
             #[inline(always)]
-            pub fn gpio_int_dedge(&self) -> GpioIntDedgeR {
-                GpioIntDedgeR::new((self.bits & 7) as u8)
+            pub fn pins(&self) -> PinsR {
+                PinsR::new((self.bits & 7) as u8)
             }
         }
         impl W {
-            #[doc = "Bits 0:2 - Dual-edge interrupt enable: 0=disabled; 1=enabled"]
+            #[doc = "Bits 0:2 - Dual-edge bitmap: each 1 bit enables detection on both edges of that input"]
             #[inline(always)]
-            pub fn gpio_int_dedge(&mut self) -> GpioIntDedgeW<'_, GpioIntDedgeSpec> {
-                GpioIntDedgeW::new(self, 0)
+            pub fn pins(&mut self) -> PinsW<'_, GpioIntDedgeSpec> {
+                PinsW::new(self, 0)
             }
         }
-        #[doc = "GPIO_INT_DEDGE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_dedge::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_dedge::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "GPIO_INT_DEDGE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_dedge::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_dedge::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct GpioIntDedgeSpec;
         impl crate::RegisterSpec for GpioIntDedgeSpec {
             type Ux = u32;
@@ -29775,10 +29376,8 @@ pub mod gpio2 {
         impl crate::Writable for GpioIntDedgeSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets GPIO_INT_DEDGE to value 0"]
-        impl crate::Resettable for GpioIntDedgeSpec {}
     }
-    #[doc = "GPIO_INT_DEBOUNCE (rw) register accessor: GPIO_INT_DEBOUNCE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_debounce::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_debounce::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_debounce`] module"]
+    #[doc = "GPIO_INT_DEBOUNCE (rw) register accessor: GPIO_INT_DEBOUNCE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_debounce::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_debounce::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_debounce`] module"]
     #[doc(alias = "GPIO_INT_DEBOUNCE")]
     pub type GpioIntDebounce = crate::Reg<gpio_int_debounce::GpioIntDebounceSpec>;
     #[doc = "GPIO_INT_DEBOUNCE"]
@@ -29805,7 +29404,7 @@ pub mod gpio2 {
                 GpioIntDebounceW::new(self, 0)
             }
         }
-        #[doc = "GPIO_INT_DEBOUNCE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_debounce::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_debounce::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "GPIO_INT_DEBOUNCE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_debounce::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_debounce::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct GpioIntDebounceSpec;
         impl crate::RegisterSpec for GpioIntDebounceSpec {
             type Ux = u32;
@@ -29816,8 +29415,6 @@ pub mod gpio2 {
         impl crate::Writable for GpioIntDebounceSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets GPIO_INT_DEBOUNCE to value 0"]
-        impl crate::Resettable for GpioIntDebounceSpec {}
     }
     #[doc = "GPIO_INT_RAW (r) register accessor: GPIO_INT_RAW\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_raw::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_raw`] module"]
     #[doc(alias = "GPIO_INT_RAW")]
@@ -29842,8 +29439,6 @@ pub mod gpio2 {
         }
         #[doc = "`read()` method returns [`gpio_int_raw::R`](R) reader structure"]
         impl crate::Readable for GpioIntRawSpec {}
-        #[doc = "`reset()` method sets GPIO_INT_RAW to value 0"]
-        impl crate::Resettable for GpioIntRawSpec {}
     }
     #[doc = "GPIO_INTR (r) register accessor: GPIO_INTR\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_intr::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_intr`] module"]
     #[doc(alias = "GPIO_INTR")]
@@ -29868,10 +29463,8 @@ pub mod gpio2 {
         }
         #[doc = "`read()` method returns [`gpio_intr::R`](R) reader structure"]
         impl crate::Readable for GpioIntrSpec {}
-        #[doc = "`reset()` method sets GPIO_INTR to value 0"]
-        impl crate::Resettable for GpioIntrSpec {}
     }
-    #[doc = "GPIO_INT_EOI (w) register accessor: GPIO_INT_EOI\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_eoi::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_eoi`] module"]
+    #[doc = "GPIO_INT_EOI (w) register accessor: GPIO_INT_EOI\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_eoi::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_eoi`] module"]
     #[doc(alias = "GPIO_INT_EOI")]
     pub type GpioIntEoi = crate::Reg<gpio_int_eoi::GpioIntEoiSpec>;
     #[doc = "GPIO_INT_EOI"]
@@ -29887,7 +29480,7 @@ pub mod gpio2 {
                 GpioIntEoiW::new(self, 0)
             }
         }
-        #[doc = "GPIO_INT_EOI\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_eoi::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "GPIO_INT_EOI\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_eoi::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct GpioIntEoiSpec;
         impl crate::RegisterSpec for GpioIntEoiSpec {
             type Ux = u32;
@@ -29895,11 +29488,10 @@ pub mod gpio2 {
         #[doc = "`write(|w| ..)` method takes [`gpio_int_eoi::W`](W) writer structure"]
         impl crate::Writable for GpioIntEoiSpec {
             type Safety = crate::Unsafe;
+            const ONE_TO_MODIFY_FIELDS_BITMAP: u32 = 0x07;
         }
-        #[doc = "`reset()` method sets GPIO_INT_EOI to value 0"]
-        impl crate::Resettable for GpioIntEoiSpec {}
     }
-    #[doc = "GPIO_DATA_SET (w) register accessor: GPIO_DATA_SET\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_data_set::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_data_set`] module"]
+    #[doc = "GPIO_DATA_SET (w) register accessor: GPIO_DATA_SET\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_data_set::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_data_set`] module"]
     #[doc(alias = "GPIO_DATA_SET")]
     pub type GpioDataSet = crate::Reg<gpio_data_set::GpioDataSetSpec>;
     #[doc = "GPIO_DATA_SET"]
@@ -29915,7 +29507,7 @@ pub mod gpio2 {
                 GpioDataSetW::new(self, 0)
             }
         }
-        #[doc = "GPIO_DATA_SET\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_data_set::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "GPIO_DATA_SET\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_data_set::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct GpioDataSetSpec;
         impl crate::RegisterSpec for GpioDataSetSpec {
             type Ux = u32;
@@ -29923,11 +29515,10 @@ pub mod gpio2 {
         #[doc = "`write(|w| ..)` method takes [`gpio_data_set::W`](W) writer structure"]
         impl crate::Writable for GpioDataSetSpec {
             type Safety = crate::Unsafe;
+            const ONE_TO_MODIFY_FIELDS_BITMAP: u32 = 0x07;
         }
-        #[doc = "`reset()` method sets GPIO_DATA_SET to value 0"]
-        impl crate::Resettable for GpioDataSetSpec {}
     }
-    #[doc = "GPIO_DATA_CLR (w) register accessor: GPIO_DATA_CLR\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_data_clr::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_data_clr`] module"]
+    #[doc = "GPIO_DATA_CLR (w) register accessor: GPIO_DATA_CLR\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_data_clr::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_data_clr`] module"]
     #[doc(alias = "GPIO_DATA_CLR")]
     pub type GpioDataClr = crate::Reg<gpio_data_clr::GpioDataClrSpec>;
     #[doc = "GPIO_DATA_CLR"]
@@ -29943,7 +29534,7 @@ pub mod gpio2 {
                 GpioDataClrW::new(self, 0)
             }
         }
-        #[doc = "GPIO_DATA_CLR\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_data_clr::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "GPIO_DATA_CLR\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_data_clr::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct GpioDataClrSpec;
         impl crate::RegisterSpec for GpioDataClrSpec {
             type Ux = u32;
@@ -29951,9 +29542,8 @@ pub mod gpio2 {
         #[doc = "`write(|w| ..)` method takes [`gpio_data_clr::W`](W) writer structure"]
         impl crate::Writable for GpioDataClrSpec {
             type Safety = crate::Unsafe;
+            const ONE_TO_MODIFY_FIELDS_BITMAP: u32 = 0x07;
         }
-        #[doc = "`reset()` method sets GPIO_DATA_CLR to value 0"]
-        impl crate::Resettable for GpioDataClrSpec {}
     }
 }
 #[doc = "uart2"]
@@ -30197,7 +29787,7 @@ pub mod gpio1 {
     pub struct RegisterBlock {
         gpio_sw_out: GpioSwOut,
         gpio_sw_oen: GpioSwOen,
-        _reserved2: [u8; 0x04],
+        gpio_sw_ctl: GpioSwCtl,
         gpio_int_en: GpioIntEn,
         gpio_int_mask: GpioIntMask,
         gpio_int_type: GpioIntType,
@@ -30220,6 +29810,11 @@ pub mod gpio1 {
         #[inline(always)]
         pub const fn gpio_sw_oen(&self) -> &GpioSwOen {
             &self.gpio_sw_oen
+        }
+        #[doc = "0x08 - GPIO_SW_CTL"]
+        #[inline(always)]
+        pub const fn gpio_sw_ctl(&self) -> &GpioSwCtl {
+            &self.gpio_sw_ctl
         }
         #[doc = "0x0c - GPIO_INT_EN"]
         #[inline(always)]
@@ -30277,7 +29872,7 @@ pub mod gpio1 {
             &self.gpio_data_clr
         }
     }
-    #[doc = "GPIO_SW_OUT (rw) register accessor: GPIO_SW_OUT\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_sw_out::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_sw_out::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_sw_out`] module"]
+    #[doc = "GPIO_SW_OUT (rw) register accessor: GPIO_SW_OUT\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_sw_out::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_sw_out::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_sw_out`] module"]
     #[doc(alias = "GPIO_SW_OUT")]
     pub type GpioSwOut = crate::Reg<gpio_sw_out::GpioSwOutSpec>;
     #[doc = "GPIO_SW_OUT"]
@@ -30304,7 +29899,7 @@ pub mod gpio1 {
                 GpioSwOutW::new(self, 0)
             }
         }
-        #[doc = "GPIO_SW_OUT\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_sw_out::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_sw_out::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "GPIO_SW_OUT\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_sw_out::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_sw_out::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct GpioSwOutSpec;
         impl crate::RegisterSpec for GpioSwOutSpec {
             type Ux = u32;
@@ -30315,10 +29910,8 @@ pub mod gpio1 {
         impl crate::Writable for GpioSwOutSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets GPIO_SW_OUT to value 0"]
-        impl crate::Resettable for GpioSwOutSpec {}
     }
-    #[doc = "GPIO_SW_OEN (rw) register accessor: GPIO_SW_OEN\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_sw_oen::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_sw_oen::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_sw_oen`] module"]
+    #[doc = "GPIO_SW_OEN (rw) register accessor: GPIO_SW_OEN\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_sw_oen::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_sw_oen::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_sw_oen`] module"]
     #[doc(alias = "GPIO_SW_OEN")]
     pub type GpioSwOen = crate::Reg<gpio_sw_oen::GpioSwOenSpec>;
     #[doc = "GPIO_SW_OEN"]
@@ -30327,81 +29920,25 @@ pub mod gpio1 {
         pub type R = crate::R<GpioSwOenSpec>;
         #[doc = "Register `GPIO_SW_OEN` writer"]
         pub type W = crate::W<GpioSwOenSpec>;
-        #[doc = "GPIO direction: 0=output; 1=input (default)\n\nValue on reset: 4095"]
-        #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-        #[repr(u16)]
-        pub enum GpioSwOen {
-            #[doc = "0: Output direction"]
-            Output = 0,
-            #[doc = "1: Input direction"]
-            Input = 1,
-        }
-        impl From<GpioSwOen> for u16 {
-            #[inline(always)]
-            fn from(variant: GpioSwOen) -> Self {
-                variant as _
-            }
-        }
-        impl crate::FieldSpec for GpioSwOen {
-            type Ux = u16;
-        }
-        impl crate::IsEnum for GpioSwOen {}
-        #[doc = "Field `GPIO_SW_OEN` reader - GPIO direction: 0=output; 1=input (default)"]
-        pub type GpioSwOenR = crate::FieldReader<GpioSwOen>;
-        impl GpioSwOenR {
-            #[doc = "Get enumerated values variant"]
-            #[inline(always)]
-            pub const fn variant(&self) -> Option<GpioSwOen> {
-                match self.bits {
-                    0 => Some(GpioSwOen::Output),
-                    1 => Some(GpioSwOen::Input),
-                    _ => None,
-                }
-            }
-            #[doc = "Output direction"]
-            #[inline(always)]
-            pub fn is_output(&self) -> bool {
-                *self == GpioSwOen::Output
-            }
-            #[doc = "Input direction"]
-            #[inline(always)]
-            pub fn is_input(&self) -> bool {
-                *self == GpioSwOen::Input
-            }
-        }
-        #[doc = "Field `GPIO_SW_OEN` writer - GPIO direction: 0=output; 1=input (default)"]
-        pub type GpioSwOenW<'a, REG> = crate::FieldWriter<'a, REG, 12, GpioSwOen>;
-        impl<'a, REG> GpioSwOenW<'a, REG>
-        where
-            REG: crate::Writable + crate::RegisterSpec,
-            REG::Ux: From<u16>,
-        {
-            #[doc = "Output direction"]
-            #[inline(always)]
-            pub fn output(self) -> &'a mut crate::W<REG> {
-                self.variant(GpioSwOen::Output)
-            }
-            #[doc = "Input direction"]
-            #[inline(always)]
-            pub fn input(self) -> &'a mut crate::W<REG> {
-                self.variant(GpioSwOen::Input)
-            }
-        }
+        #[doc = "Field `PINS` reader - Direction bitmap: each 0 bit selects output, each 1 bit selects input; not a whole-register mode enum"]
+        pub type PinsR = crate::FieldReader<u16>;
+        #[doc = "Field `PINS` writer - Direction bitmap: each 0 bit selects output, each 1 bit selects input; not a whole-register mode enum"]
+        pub type PinsW<'a, REG> = crate::FieldWriter<'a, REG, 12, u16>;
         impl R {
-            #[doc = "Bits 0:11 - GPIO direction: 0=output; 1=input (default)"]
+            #[doc = "Bits 0:11 - Direction bitmap: each 0 bit selects output, each 1 bit selects input; not a whole-register mode enum"]
             #[inline(always)]
-            pub fn gpio_sw_oen(&self) -> GpioSwOenR {
-                GpioSwOenR::new((self.bits & 0x0fff) as u16)
+            pub fn pins(&self) -> PinsR {
+                PinsR::new((self.bits & 0x0fff) as u16)
             }
         }
         impl W {
-            #[doc = "Bits 0:11 - GPIO direction: 0=output; 1=input (default)"]
+            #[doc = "Bits 0:11 - Direction bitmap: each 0 bit selects output, each 1 bit selects input; not a whole-register mode enum"]
             #[inline(always)]
-            pub fn gpio_sw_oen(&mut self) -> GpioSwOenW<'_, GpioSwOenSpec> {
-                GpioSwOenW::new(self, 0)
+            pub fn pins(&mut self) -> PinsW<'_, GpioSwOenSpec> {
+                PinsW::new(self, 0)
             }
         }
-        #[doc = "GPIO_SW_OEN\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_sw_oen::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_sw_oen::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "GPIO_SW_OEN\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_sw_oen::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_sw_oen::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct GpioSwOenSpec;
         impl crate::RegisterSpec for GpioSwOenSpec {
             type Ux = u32;
@@ -30412,12 +29949,47 @@ pub mod gpio1 {
         impl crate::Writable for GpioSwOenSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets GPIO_SW_OEN to value 0x0fff"]
-        impl crate::Resettable for GpioSwOenSpec {
-            const RESET_VALUE: u32 = 0x0fff;
+    }
+    #[doc = "GPIO_SW_CTL (rw) register accessor: GPIO_SW_CTL\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_sw_ctl::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_sw_ctl::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_sw_ctl`] module"]
+    #[doc(alias = "GPIO_SW_CTL")]
+    pub type GpioSwCtl = crate::Reg<gpio_sw_ctl::GpioSwCtlSpec>;
+    #[doc = "GPIO_SW_CTL"]
+    pub mod gpio_sw_ctl {
+        #[doc = "Register `GPIO_SW_CTL` reader"]
+        pub type R = crate::R<GpioSwCtlSpec>;
+        #[doc = "Register `GPIO_SW_CTL` writer"]
+        pub type W = crate::W<GpioSwCtlSpec>;
+        #[doc = "Field `GPIO_SW_CTL` reader - Per-pin data source control; SDK supplies bit get/set helpers but does not establish selection encodings"]
+        pub type GpioSwCtlR = crate::FieldReader<u16>;
+        #[doc = "Field `GPIO_SW_CTL` writer - Per-pin data source control; SDK supplies bit get/set helpers but does not establish selection encodings"]
+        pub type GpioSwCtlW<'a, REG> = crate::FieldWriter<'a, REG, 12, u16>;
+        impl R {
+            #[doc = "Bits 0:11 - Per-pin data source control; SDK supplies bit get/set helpers but does not establish selection encodings"]
+            #[inline(always)]
+            pub fn gpio_sw_ctl(&self) -> GpioSwCtlR {
+                GpioSwCtlR::new((self.bits & 0x0fff) as u16)
+            }
+        }
+        impl W {
+            #[doc = "Bits 0:11 - Per-pin data source control; SDK supplies bit get/set helpers but does not establish selection encodings"]
+            #[inline(always)]
+            pub fn gpio_sw_ctl(&mut self) -> GpioSwCtlW<'_, GpioSwCtlSpec> {
+                GpioSwCtlW::new(self, 0)
+            }
+        }
+        #[doc = "GPIO_SW_CTL\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_sw_ctl::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_sw_ctl::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct GpioSwCtlSpec;
+        impl crate::RegisterSpec for GpioSwCtlSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`gpio_sw_ctl::R`](R) reader structure"]
+        impl crate::Readable for GpioSwCtlSpec {}
+        #[doc = "`write(|w| ..)` method takes [`gpio_sw_ctl::W`](W) writer structure"]
+        impl crate::Writable for GpioSwCtlSpec {
+            type Safety = crate::Unsafe;
         }
     }
-    #[doc = "GPIO_INT_EN (rw) register accessor: GPIO_INT_EN\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_en::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_en::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_en`] module"]
+    #[doc = "GPIO_INT_EN (rw) register accessor: GPIO_INT_EN\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_en::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_en::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_en`] module"]
     #[doc(alias = "GPIO_INT_EN")]
     pub type GpioIntEn = crate::Reg<gpio_int_en::GpioIntEnSpec>;
     #[doc = "GPIO_INT_EN"]
@@ -30444,7 +30016,7 @@ pub mod gpio1 {
                 GpioIntEnW::new(self, 0)
             }
         }
-        #[doc = "GPIO_INT_EN\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_en::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_en::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "GPIO_INT_EN\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_en::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_en::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct GpioIntEnSpec;
         impl crate::RegisterSpec for GpioIntEnSpec {
             type Ux = u32;
@@ -30455,10 +30027,8 @@ pub mod gpio1 {
         impl crate::Writable for GpioIntEnSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets GPIO_INT_EN to value 0"]
-        impl crate::Resettable for GpioIntEnSpec {}
     }
-    #[doc = "GPIO_INT_MASK (rw) register accessor: GPIO_INT_MASK\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_mask::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_mask::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_mask`] module"]
+    #[doc = "GPIO_INT_MASK (rw) register accessor: GPIO_INT_MASK\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_mask::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_mask::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_mask`] module"]
     #[doc(alias = "GPIO_INT_MASK")]
     pub type GpioIntMask = crate::Reg<gpio_int_mask::GpioIntMaskSpec>;
     #[doc = "GPIO_INT_MASK"]
@@ -30485,7 +30055,7 @@ pub mod gpio1 {
                 GpioIntMaskW::new(self, 0)
             }
         }
-        #[doc = "GPIO_INT_MASK\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_mask::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_mask::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "GPIO_INT_MASK\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_mask::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_mask::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct GpioIntMaskSpec;
         impl crate::RegisterSpec for GpioIntMaskSpec {
             type Ux = u32;
@@ -30496,10 +30066,8 @@ pub mod gpio1 {
         impl crate::Writable for GpioIntMaskSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets GPIO_INT_MASK to value 0"]
-        impl crate::Resettable for GpioIntMaskSpec {}
     }
-    #[doc = "GPIO_INT_TYPE (rw) register accessor: GPIO_INT_TYPE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_type::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_type::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_type`] module"]
+    #[doc = "GPIO_INT_TYPE (rw) register accessor: GPIO_INT_TYPE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_type::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_type::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_type`] module"]
     #[doc(alias = "GPIO_INT_TYPE")]
     pub type GpioIntType = crate::Reg<gpio_int_type::GpioIntTypeSpec>;
     #[doc = "GPIO_INT_TYPE"]
@@ -30508,81 +30076,25 @@ pub mod gpio1 {
         pub type R = crate::R<GpioIntTypeSpec>;
         #[doc = "Register `GPIO_INT_TYPE` writer"]
         pub type W = crate::W<GpioIntTypeSpec>;
-        #[doc = "Interrupt type: 0=level; 1=edge\n\nValue on reset: 0"]
-        #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-        #[repr(u16)]
-        pub enum GpioIntType {
-            #[doc = "0: Level-sensitive"]
-            Level = 0,
-            #[doc = "1: Edge-triggered"]
-            Edge = 1,
-        }
-        impl From<GpioIntType> for u16 {
-            #[inline(always)]
-            fn from(variant: GpioIntType) -> Self {
-                variant as _
-            }
-        }
-        impl crate::FieldSpec for GpioIntType {
-            type Ux = u16;
-        }
-        impl crate::IsEnum for GpioIntType {}
-        #[doc = "Field `GPIO_INT_TYPE` reader - Interrupt type: 0=level; 1=edge"]
-        pub type GpioIntTypeR = crate::FieldReader<GpioIntType>;
-        impl GpioIntTypeR {
-            #[doc = "Get enumerated values variant"]
-            #[inline(always)]
-            pub const fn variant(&self) -> Option<GpioIntType> {
-                match self.bits {
-                    0 => Some(GpioIntType::Level),
-                    1 => Some(GpioIntType::Edge),
-                    _ => None,
-                }
-            }
-            #[doc = "Level-sensitive"]
-            #[inline(always)]
-            pub fn is_level(&self) -> bool {
-                *self == GpioIntType::Level
-            }
-            #[doc = "Edge-triggered"]
-            #[inline(always)]
-            pub fn is_edge(&self) -> bool {
-                *self == GpioIntType::Edge
-            }
-        }
-        #[doc = "Field `GPIO_INT_TYPE` writer - Interrupt type: 0=level; 1=edge"]
-        pub type GpioIntTypeW<'a, REG> = crate::FieldWriter<'a, REG, 12, GpioIntType>;
-        impl<'a, REG> GpioIntTypeW<'a, REG>
-        where
-            REG: crate::Writable + crate::RegisterSpec,
-            REG::Ux: From<u16>,
-        {
-            #[doc = "Level-sensitive"]
-            #[inline(always)]
-            pub fn level(self) -> &'a mut crate::W<REG> {
-                self.variant(GpioIntType::Level)
-            }
-            #[doc = "Edge-triggered"]
-            #[inline(always)]
-            pub fn edge(self) -> &'a mut crate::W<REG> {
-                self.variant(GpioIntType::Edge)
-            }
-        }
+        #[doc = "Field `PINS` reader - Trigger bitmap: each 0 bit selects level, each 1 bit selects edge"]
+        pub type PinsR = crate::FieldReader<u16>;
+        #[doc = "Field `PINS` writer - Trigger bitmap: each 0 bit selects level, each 1 bit selects edge"]
+        pub type PinsW<'a, REG> = crate::FieldWriter<'a, REG, 12, u16>;
         impl R {
-            #[doc = "Bits 0:11 - Interrupt type: 0=level; 1=edge"]
+            #[doc = "Bits 0:11 - Trigger bitmap: each 0 bit selects level, each 1 bit selects edge"]
             #[inline(always)]
-            pub fn gpio_int_type(&self) -> GpioIntTypeR {
-                GpioIntTypeR::new((self.bits & 0x0fff) as u16)
+            pub fn pins(&self) -> PinsR {
+                PinsR::new((self.bits & 0x0fff) as u16)
             }
         }
         impl W {
-            #[doc = "Bits 0:11 - Interrupt type: 0=level; 1=edge"]
+            #[doc = "Bits 0:11 - Trigger bitmap: each 0 bit selects level, each 1 bit selects edge"]
             #[inline(always)]
-            pub fn gpio_int_type(&mut self) -> GpioIntTypeW<'_, GpioIntTypeSpec> {
-                GpioIntTypeW::new(self, 0)
+            pub fn pins(&mut self) -> PinsW<'_, GpioIntTypeSpec> {
+                PinsW::new(self, 0)
             }
         }
-        #[doc = "GPIO_INT_TYPE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_type::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_type::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "GPIO_INT_TYPE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_type::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_type::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct GpioIntTypeSpec;
         impl crate::RegisterSpec for GpioIntTypeSpec {
             type Ux = u32;
@@ -30593,10 +30105,8 @@ pub mod gpio1 {
         impl crate::Writable for GpioIntTypeSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets GPIO_INT_TYPE to value 0"]
-        impl crate::Resettable for GpioIntTypeSpec {}
     }
-    #[doc = "GPIO_INT_POLARITY (rw) register accessor: GPIO_INT_POLARITY\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_polarity::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_polarity::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_polarity`] module"]
+    #[doc = "GPIO_INT_POLARITY (rw) register accessor: GPIO_INT_POLARITY\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_polarity::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_polarity::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_polarity`] module"]
     #[doc(alias = "GPIO_INT_POLARITY")]
     pub type GpioIntPolarity = crate::Reg<gpio_int_polarity::GpioIntPolaritySpec>;
     #[doc = "GPIO_INT_POLARITY"]
@@ -30605,81 +30115,25 @@ pub mod gpio1 {
         pub type R = crate::R<GpioIntPolaritySpec>;
         #[doc = "Register `GPIO_INT_POLARITY` writer"]
         pub type W = crate::W<GpioIntPolaritySpec>;
-        #[doc = "Interrupt polarity: 0=low/falling; 1=high/rising\n\nValue on reset: 0"]
-        #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-        #[repr(u16)]
-        pub enum GpioIntPolarity {
-            #[doc = "0: Low level or falling edge"]
-            LowFalling = 0,
-            #[doc = "1: High level or rising edge"]
-            HighRising = 1,
-        }
-        impl From<GpioIntPolarity> for u16 {
-            #[inline(always)]
-            fn from(variant: GpioIntPolarity) -> Self {
-                variant as _
-            }
-        }
-        impl crate::FieldSpec for GpioIntPolarity {
-            type Ux = u16;
-        }
-        impl crate::IsEnum for GpioIntPolarity {}
-        #[doc = "Field `GPIO_INT_POLARITY` reader - Interrupt polarity: 0=low/falling; 1=high/rising"]
-        pub type GpioIntPolarityR = crate::FieldReader<GpioIntPolarity>;
-        impl GpioIntPolarityR {
-            #[doc = "Get enumerated values variant"]
-            #[inline(always)]
-            pub const fn variant(&self) -> Option<GpioIntPolarity> {
-                match self.bits {
-                    0 => Some(GpioIntPolarity::LowFalling),
-                    1 => Some(GpioIntPolarity::HighRising),
-                    _ => None,
-                }
-            }
-            #[doc = "Low level or falling edge"]
-            #[inline(always)]
-            pub fn is_low_falling(&self) -> bool {
-                *self == GpioIntPolarity::LowFalling
-            }
-            #[doc = "High level or rising edge"]
-            #[inline(always)]
-            pub fn is_high_rising(&self) -> bool {
-                *self == GpioIntPolarity::HighRising
-            }
-        }
-        #[doc = "Field `GPIO_INT_POLARITY` writer - Interrupt polarity: 0=low/falling; 1=high/rising"]
-        pub type GpioIntPolarityW<'a, REG> = crate::FieldWriter<'a, REG, 12, GpioIntPolarity>;
-        impl<'a, REG> GpioIntPolarityW<'a, REG>
-        where
-            REG: crate::Writable + crate::RegisterSpec,
-            REG::Ux: From<u16>,
-        {
-            #[doc = "Low level or falling edge"]
-            #[inline(always)]
-            pub fn low_falling(self) -> &'a mut crate::W<REG> {
-                self.variant(GpioIntPolarity::LowFalling)
-            }
-            #[doc = "High level or rising edge"]
-            #[inline(always)]
-            pub fn high_rising(self) -> &'a mut crate::W<REG> {
-                self.variant(GpioIntPolarity::HighRising)
-            }
-        }
+        #[doc = "Field `PINS` reader - Polarity bitmap: each 0 bit selects low/falling, each 1 bit high/rising"]
+        pub type PinsR = crate::FieldReader<u16>;
+        #[doc = "Field `PINS` writer - Polarity bitmap: each 0 bit selects low/falling, each 1 bit high/rising"]
+        pub type PinsW<'a, REG> = crate::FieldWriter<'a, REG, 12, u16>;
         impl R {
-            #[doc = "Bits 0:11 - Interrupt polarity: 0=low/falling; 1=high/rising"]
+            #[doc = "Bits 0:11 - Polarity bitmap: each 0 bit selects low/falling, each 1 bit high/rising"]
             #[inline(always)]
-            pub fn gpio_int_polarity(&self) -> GpioIntPolarityR {
-                GpioIntPolarityR::new((self.bits & 0x0fff) as u16)
+            pub fn pins(&self) -> PinsR {
+                PinsR::new((self.bits & 0x0fff) as u16)
             }
         }
         impl W {
-            #[doc = "Bits 0:11 - Interrupt polarity: 0=low/falling; 1=high/rising"]
+            #[doc = "Bits 0:11 - Polarity bitmap: each 0 bit selects low/falling, each 1 bit high/rising"]
             #[inline(always)]
-            pub fn gpio_int_polarity(&mut self) -> GpioIntPolarityW<'_, GpioIntPolaritySpec> {
-                GpioIntPolarityW::new(self, 0)
+            pub fn pins(&mut self) -> PinsW<'_, GpioIntPolaritySpec> {
+                PinsW::new(self, 0)
             }
         }
-        #[doc = "GPIO_INT_POLARITY\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_polarity::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_polarity::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "GPIO_INT_POLARITY\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_polarity::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_polarity::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct GpioIntPolaritySpec;
         impl crate::RegisterSpec for GpioIntPolaritySpec {
             type Ux = u32;
@@ -30690,10 +30144,8 @@ pub mod gpio1 {
         impl crate::Writable for GpioIntPolaritySpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets GPIO_INT_POLARITY to value 0"]
-        impl crate::Resettable for GpioIntPolaritySpec {}
     }
-    #[doc = "GPIO_INT_DEDGE (rw) register accessor: GPIO_INT_DEDGE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_dedge::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_dedge::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_dedge`] module"]
+    #[doc = "GPIO_INT_DEDGE (rw) register accessor: GPIO_INT_DEDGE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_dedge::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_dedge::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_dedge`] module"]
     #[doc(alias = "GPIO_INT_DEDGE")]
     pub type GpioIntDedge = crate::Reg<gpio_int_dedge::GpioIntDedgeSpec>;
     #[doc = "GPIO_INT_DEDGE"]
@@ -30702,81 +30154,25 @@ pub mod gpio1 {
         pub type R = crate::R<GpioIntDedgeSpec>;
         #[doc = "Register `GPIO_INT_DEDGE` writer"]
         pub type W = crate::W<GpioIntDedgeSpec>;
-        #[doc = "Dual-edge interrupt enable: 0=disabled; 1=enabled\n\nValue on reset: 0"]
-        #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-        #[repr(u16)]
-        pub enum GpioIntDedge {
-            #[doc = "0: Single-edge mode"]
-            Disabled = 0,
-            #[doc = "1: Dual-edge triggered"]
-            Enabled = 1,
-        }
-        impl From<GpioIntDedge> for u16 {
-            #[inline(always)]
-            fn from(variant: GpioIntDedge) -> Self {
-                variant as _
-            }
-        }
-        impl crate::FieldSpec for GpioIntDedge {
-            type Ux = u16;
-        }
-        impl crate::IsEnum for GpioIntDedge {}
-        #[doc = "Field `GPIO_INT_DEDGE` reader - Dual-edge interrupt enable: 0=disabled; 1=enabled"]
-        pub type GpioIntDedgeR = crate::FieldReader<GpioIntDedge>;
-        impl GpioIntDedgeR {
-            #[doc = "Get enumerated values variant"]
-            #[inline(always)]
-            pub const fn variant(&self) -> Option<GpioIntDedge> {
-                match self.bits {
-                    0 => Some(GpioIntDedge::Disabled),
-                    1 => Some(GpioIntDedge::Enabled),
-                    _ => None,
-                }
-            }
-            #[doc = "Single-edge mode"]
-            #[inline(always)]
-            pub fn is_disabled(&self) -> bool {
-                *self == GpioIntDedge::Disabled
-            }
-            #[doc = "Dual-edge triggered"]
-            #[inline(always)]
-            pub fn is_enabled(&self) -> bool {
-                *self == GpioIntDedge::Enabled
-            }
-        }
-        #[doc = "Field `GPIO_INT_DEDGE` writer - Dual-edge interrupt enable: 0=disabled; 1=enabled"]
-        pub type GpioIntDedgeW<'a, REG> = crate::FieldWriter<'a, REG, 12, GpioIntDedge>;
-        impl<'a, REG> GpioIntDedgeW<'a, REG>
-        where
-            REG: crate::Writable + crate::RegisterSpec,
-            REG::Ux: From<u16>,
-        {
-            #[doc = "Single-edge mode"]
-            #[inline(always)]
-            pub fn disabled(self) -> &'a mut crate::W<REG> {
-                self.variant(GpioIntDedge::Disabled)
-            }
-            #[doc = "Dual-edge triggered"]
-            #[inline(always)]
-            pub fn enabled(self) -> &'a mut crate::W<REG> {
-                self.variant(GpioIntDedge::Enabled)
-            }
-        }
+        #[doc = "Field `PINS` reader - Dual-edge bitmap: each 1 bit enables detection on both edges of that input"]
+        pub type PinsR = crate::FieldReader<u16>;
+        #[doc = "Field `PINS` writer - Dual-edge bitmap: each 1 bit enables detection on both edges of that input"]
+        pub type PinsW<'a, REG> = crate::FieldWriter<'a, REG, 12, u16>;
         impl R {
-            #[doc = "Bits 0:11 - Dual-edge interrupt enable: 0=disabled; 1=enabled"]
+            #[doc = "Bits 0:11 - Dual-edge bitmap: each 1 bit enables detection on both edges of that input"]
             #[inline(always)]
-            pub fn gpio_int_dedge(&self) -> GpioIntDedgeR {
-                GpioIntDedgeR::new((self.bits & 0x0fff) as u16)
+            pub fn pins(&self) -> PinsR {
+                PinsR::new((self.bits & 0x0fff) as u16)
             }
         }
         impl W {
-            #[doc = "Bits 0:11 - Dual-edge interrupt enable: 0=disabled; 1=enabled"]
+            #[doc = "Bits 0:11 - Dual-edge bitmap: each 1 bit enables detection on both edges of that input"]
             #[inline(always)]
-            pub fn gpio_int_dedge(&mut self) -> GpioIntDedgeW<'_, GpioIntDedgeSpec> {
-                GpioIntDedgeW::new(self, 0)
+            pub fn pins(&mut self) -> PinsW<'_, GpioIntDedgeSpec> {
+                PinsW::new(self, 0)
             }
         }
-        #[doc = "GPIO_INT_DEDGE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_dedge::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_dedge::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "GPIO_INT_DEDGE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_dedge::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_dedge::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct GpioIntDedgeSpec;
         impl crate::RegisterSpec for GpioIntDedgeSpec {
             type Ux = u32;
@@ -30787,10 +30183,8 @@ pub mod gpio1 {
         impl crate::Writable for GpioIntDedgeSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets GPIO_INT_DEDGE to value 0"]
-        impl crate::Resettable for GpioIntDedgeSpec {}
     }
-    #[doc = "GPIO_INT_DEBOUNCE (rw) register accessor: GPIO_INT_DEBOUNCE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_debounce::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_debounce::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_debounce`] module"]
+    #[doc = "GPIO_INT_DEBOUNCE (rw) register accessor: GPIO_INT_DEBOUNCE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_debounce::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_debounce::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_debounce`] module"]
     #[doc(alias = "GPIO_INT_DEBOUNCE")]
     pub type GpioIntDebounce = crate::Reg<gpio_int_debounce::GpioIntDebounceSpec>;
     #[doc = "GPIO_INT_DEBOUNCE"]
@@ -30817,7 +30211,7 @@ pub mod gpio1 {
                 GpioIntDebounceW::new(self, 0)
             }
         }
-        #[doc = "GPIO_INT_DEBOUNCE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_debounce::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_debounce::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "GPIO_INT_DEBOUNCE\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_debounce::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_debounce::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct GpioIntDebounceSpec;
         impl crate::RegisterSpec for GpioIntDebounceSpec {
             type Ux = u32;
@@ -30828,8 +30222,6 @@ pub mod gpio1 {
         impl crate::Writable for GpioIntDebounceSpec {
             type Safety = crate::Unsafe;
         }
-        #[doc = "`reset()` method sets GPIO_INT_DEBOUNCE to value 0"]
-        impl crate::Resettable for GpioIntDebounceSpec {}
     }
     #[doc = "GPIO_INT_RAW (r) register accessor: GPIO_INT_RAW\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_int_raw::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_raw`] module"]
     #[doc(alias = "GPIO_INT_RAW")]
@@ -30854,8 +30246,6 @@ pub mod gpio1 {
         }
         #[doc = "`read()` method returns [`gpio_int_raw::R`](R) reader structure"]
         impl crate::Readable for GpioIntRawSpec {}
-        #[doc = "`reset()` method sets GPIO_INT_RAW to value 0"]
-        impl crate::Resettable for GpioIntRawSpec {}
     }
     #[doc = "GPIO_INTR (r) register accessor: GPIO_INTR\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_intr::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_intr`] module"]
     #[doc(alias = "GPIO_INTR")]
@@ -30880,10 +30270,8 @@ pub mod gpio1 {
         }
         #[doc = "`read()` method returns [`gpio_intr::R`](R) reader structure"]
         impl crate::Readable for GpioIntrSpec {}
-        #[doc = "`reset()` method sets GPIO_INTR to value 0"]
-        impl crate::Resettable for GpioIntrSpec {}
     }
-    #[doc = "GPIO_INT_EOI (w) register accessor: GPIO_INT_EOI\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_eoi::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_eoi`] module"]
+    #[doc = "GPIO_INT_EOI (w) register accessor: GPIO_INT_EOI\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_eoi::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_int_eoi`] module"]
     #[doc(alias = "GPIO_INT_EOI")]
     pub type GpioIntEoi = crate::Reg<gpio_int_eoi::GpioIntEoiSpec>;
     #[doc = "GPIO_INT_EOI"]
@@ -30899,7 +30287,7 @@ pub mod gpio1 {
                 GpioIntEoiW::new(self, 0)
             }
         }
-        #[doc = "GPIO_INT_EOI\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_eoi::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "GPIO_INT_EOI\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_int_eoi::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct GpioIntEoiSpec;
         impl crate::RegisterSpec for GpioIntEoiSpec {
             type Ux = u32;
@@ -30907,11 +30295,10 @@ pub mod gpio1 {
         #[doc = "`write(|w| ..)` method takes [`gpio_int_eoi::W`](W) writer structure"]
         impl crate::Writable for GpioIntEoiSpec {
             type Safety = crate::Unsafe;
+            const ONE_TO_MODIFY_FIELDS_BITMAP: u32 = 0x0fff;
         }
-        #[doc = "`reset()` method sets GPIO_INT_EOI to value 0"]
-        impl crate::Resettable for GpioIntEoiSpec {}
     }
-    #[doc = "GPIO_DATA_SET (w) register accessor: GPIO_DATA_SET\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_data_set::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_data_set`] module"]
+    #[doc = "GPIO_DATA_SET (w) register accessor: GPIO_DATA_SET\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_data_set::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_data_set`] module"]
     #[doc(alias = "GPIO_DATA_SET")]
     pub type GpioDataSet = crate::Reg<gpio_data_set::GpioDataSetSpec>;
     #[doc = "GPIO_DATA_SET"]
@@ -30927,7 +30314,7 @@ pub mod gpio1 {
                 GpioDataSetW::new(self, 0)
             }
         }
-        #[doc = "GPIO_DATA_SET\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_data_set::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "GPIO_DATA_SET\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_data_set::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct GpioDataSetSpec;
         impl crate::RegisterSpec for GpioDataSetSpec {
             type Ux = u32;
@@ -30935,11 +30322,10 @@ pub mod gpio1 {
         #[doc = "`write(|w| ..)` method takes [`gpio_data_set::W`](W) writer structure"]
         impl crate::Writable for GpioDataSetSpec {
             type Safety = crate::Unsafe;
+            const ONE_TO_MODIFY_FIELDS_BITMAP: u32 = 0x0fff;
         }
-        #[doc = "`reset()` method sets GPIO_DATA_SET to value 0"]
-        impl crate::Resettable for GpioDataSetSpec {}
     }
-    #[doc = "GPIO_DATA_CLR (w) register accessor: GPIO_DATA_CLR\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_data_clr::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_data_clr`] module"]
+    #[doc = "GPIO_DATA_CLR (w) register accessor: GPIO_DATA_CLR\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_data_clr::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_data_clr`] module"]
     #[doc(alias = "GPIO_DATA_CLR")]
     pub type GpioDataClr = crate::Reg<gpio_data_clr::GpioDataClrSpec>;
     #[doc = "GPIO_DATA_CLR"]
@@ -30955,7 +30341,7 @@ pub mod gpio1 {
                 GpioDataClrW::new(self, 0)
             }
         }
-        #[doc = "GPIO_DATA_CLR\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_data_clr::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "GPIO_DATA_CLR\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_data_clr::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct GpioDataClrSpec;
         impl crate::RegisterSpec for GpioDataClrSpec {
             type Ux = u32;
@@ -30963,9 +30349,8 @@ pub mod gpio1 {
         #[doc = "`write(|w| ..)` method takes [`gpio_data_clr::W`](W) writer structure"]
         impl crate::Writable for GpioDataClrSpec {
             type Safety = crate::Unsafe;
+            const ONE_TO_MODIFY_FIELDS_BITMAP: u32 = 0x0fff;
         }
-        #[doc = "`reset()` method sets GPIO_DATA_CLR to value 0"]
-        impl crate::Resettable for GpioDataClrSpec {}
     }
 }
 #[doc = "rtc0"]

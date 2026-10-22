@@ -76,3 +76,11 @@ skips its debug UART. GLB_CTL +0x48 is a restricted WO command view of the SDK's
 full-word acore-only IRQ route value 1, with no speculative read API. These are
 shared controls, not application-exclusive resources. Conflicting H1/L0 clock
 gate enums are omitted, so the PAC does not claim a complete UART clock tree.
+
+GPIO has three basic banks with 23/12/3 bit spans, not three equal groups of
+bonded pins. Direction/type/polarity/dual-edge use per-pin `pins()` bitmaps;
+the value 1 is never presented as a whole-bank input mode. SW_CTL is opaque:
+its source-selection encoding is not established. EOI/SET/CLR have WO command
+interfaces, and no GPIO reset values are assumed. Pin aliases, GPIO0 holes and
+the SGPIO/SWD reservation must be enforced by the future HAL. LOCK, low-power
+state and MULTISYSTEM register semantics are not claimed by this PAC.
