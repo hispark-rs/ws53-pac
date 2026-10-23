@@ -1327,3 +1327,45 @@ fn i2s_commands_and_fifos_have_no_unsafe_direction_or_reset_api() {
     no_write!(rx_sta, RxStaSpec);
     no_write!(tx_sta, TxStaSpec);
 }
+
+#[test]
+fn i2s_word_clock_alias_preserves_pwm_and_unknown_upper_halfword() {
+    let r: ws53_pac::m_crg::RegisterBlock = unsafe { core::mem::zeroed() };
+    let cmu: ws53_pac::audio_cmu::RegisterBlock = unsafe { core::mem::zeroed() };
+    assert_eq!(offset(&r, r.m_clken0()), 0x40);
+    assert_eq!(offset(&r, r.m_clken0_word()), 0x40);
+    assert_eq!(size_of_val(r.m_clken0()), 2);
+    assert_eq!(size_of_val(r.m_clken0_word()), 4);
+    assert_eq!(ws53_pac::AudioCmu::PTR as usize, 0x57008600);
+    assert_eq!(offset(&cmu, cmu.new_cfg0()), 0);
+    assert_eq!(size_of_val(cmu.new_cfg0()), 4);
+    // Test the two generated access widths on the same local bytes. No physical
+    // clock/power/reset state or upper-half behavior is inferred from this RAM.
+    unsafe {
+        r.m_clken0_word().write_with_zero(|w| w.bits(0x5aa54081));
+        r.m_clken1().write_with_zero(|w| w.bits(0xa55a));
+        cmu.new_cfg0().write_with_zero(|w| w.bits(0xa55a1230));
+    }
+    cmu.new_cfg0()
+        .modify(|_, w| w.audio_divider_reset_n().set_bit());
+    r.m_clken0_word().modify(|_, w| w.i2s_enable().set_bit());
+    assert_eq!(r.m_clken0_word().read().bits(), 0x5aa54085);
+    assert_eq!(r.m_clken0().read().bits(), 0x4085);
+    assert_eq!(cmu.new_cfg0().read().bits(), 0xa55a1231);
+    r.m_clken0().modify(|_, w| w.pwm_enable().clear_bit());
+    assert_eq!(r.m_clken0_word().read().bits(), 0x5aa54005);
+    r.m_clken0_word().modify(|_, w| w.i2s_enable().clear_bit());
+    assert_eq!(r.m_clken0_word().read().bits(), 0x5aa54001);
+    assert_eq!(r.m_clken1().read().bits(), 0xa55a);
+    cmu.new_cfg0()
+        .modify(|_, w| w.audio_divider_reset_n().clear_bit());
+    assert_eq!(cmu.new_cfg0().read().bits(), 0xa55a1230);
+    assert_not_impl!(
+        ws53_pac::m_crg::m_clken0_word::MClken0WordSpec,
+        ws53_pac::generic::Resettable
+    );
+    assert_not_impl!(
+        ws53_pac::audio_cmu::new_cfg0::NewCfg0Spec,
+        ws53_pac::generic::Resettable
+    );
+}

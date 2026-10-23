@@ -148,6 +148,10 @@ TX/RX enables at12/13, RX width at5:3, six interrupt causes and split/merged
 FIFOs. RX data reads consume FIFO entries; TX, interrupt-clear and CT_SET/CLR
 are write-only views. The latter have no claimed readback/zero-write semantics.
 Unknown reset values are omitted. These checks do not establish clock handoff,
-drain completion or wire timing. The SDK's 32-bit audio clock accesses still
-require integration with the existing 16-bit shared M_CLKEN0 view; this PAC
+drain completion or wire timing. `M_CLKEN0_WORD` now gives a 32-bit access view
+of the same low-half fields as the unchanged 16-bit `M_CLKEN0`; it is the same
+resource and preserves unknown upper bits on RMW. `AUDIO_CMU.NEW_CFG0` describes
+only the shared audio divider reset-release bit0. Neither view has a reset value.
+Source macros and local PAC RAM tests preserve neighboring/upper bits, but
+actual clock/reset ownership and frequency still require a handoff. This PAC
 correction alone is not a usable I2S HAL or a claim of silicon support.

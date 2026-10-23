@@ -961,8 +961,7 @@ pub mod m_crg {
     #[doc = "Register block"]
     pub struct RegisterBlock {
         _reserved0: [u8; 0x40],
-        m_clken0: MClken0,
-        _reserved1: [u8; 0x02],
+        _reserved_0_m_clken: [u8; 0x04],
         m_clken1: MClken1,
         _reserved2: [u8; 0x0e],
         soft_reset1: SoftReset1,
@@ -994,10 +993,15 @@ pub mod m_crg {
         trng_ring_control: TrngRingControl,
     }
     impl RegisterBlock {
+        #[doc = "0x40 - 32-bit little-endian access view of M_CLKEN0; same low-half fields, upper bits unmodeled; preserve them on RMW. SDK 163d9150: pwm_porting uses halfword access; sio_porting_clock_enable uses uapi_reg_setbit/clrbit with 32-bit unsigned int at the same address; upper bits unmodeled"]
+        #[inline(always)]
+        pub const fn m_clken0_word(&self) -> &MClken0Word {
+            unsafe { &*core::ptr::from_ref(self).cast::<u8>().add(64).cast() }
+        }
         #[doc = "0x40 - M_CLKEN0"]
         #[inline(always)]
         pub const fn m_clken0(&self) -> &MClken0 {
-            &self.m_clken0
+            unsafe { &*core::ptr::from_ref(self).cast::<u8>().add(64).cast() }
         }
         #[doc = "0x44 - M_CLKEN1"]
         #[inline(always)]
@@ -1181,6 +1185,117 @@ pub mod m_crg {
         impl crate::Readable for MClken0Spec {}
         #[doc = "`write(|w| ..)` method takes [`m_clken0::W`](W) writer structure"]
         impl crate::Writable for MClken0Spec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "M_CLKEN0_WORD (rw) register accessor: 32-bit little-endian access view of M_CLKEN0; same low-half fields, upper bits unmodeled; preserve them on RMW. SDK 163d9150: pwm_porting uses halfword access; sio_porting_clock_enable uses uapi_reg_setbit/clrbit with 32-bit unsigned int at the same address; upper bits unmodeled\n\nYou can [`read`](crate::Reg::read) this register and get [`m_clken0_word::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`m_clken0_word::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@m_clken0_word`] module"]
+    #[doc(alias = "M_CLKEN0_WORD")]
+    pub type MClken0Word = crate::Reg<m_clken0_word::MClken0WordSpec>;
+    #[doc = "32-bit little-endian access view of M_CLKEN0; same low-half fields, upper bits unmodeled; preserve them on RMW. SDK 163d9150: pwm_porting uses halfword access; sio_porting_clock_enable uses uapi_reg_setbit/clrbit with 32-bit unsigned int at the same address; upper bits unmodeled"]
+    pub mod m_clken0_word {
+        #[doc = "Register `M_CLKEN0_WORD` reader"]
+        pub type R = crate::R<MClken0WordSpec>;
+        #[doc = "Register `M_CLKEN0_WORD` writer"]
+        pub type W = crate::W<MClken0WordSpec>;
+        #[doc = "Field `MDIAG_ENABLE` reader - mdiag_enable"]
+        pub type MdiagEnableR = crate::BitReader;
+        #[doc = "Field `MDIAG_ENABLE` writer - mdiag_enable"]
+        pub type MdiagEnableW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `I2S_ENABLE` reader - i2s_enable"]
+        pub type I2sEnableR = crate::BitReader;
+        #[doc = "Field `I2S_ENABLE` writer - i2s_enable"]
+        pub type I2sEnableW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `MTOP_GLUE_TRIGGER_ENABLE` reader - mtop_glue_trigger_enable"]
+        pub type MtopGlueTriggerEnableR = crate::BitReader;
+        #[doc = "Field `MTOP_GLUE_TRIGGER_ENABLE` writer - mtop_glue_trigger_enable"]
+        pub type MtopGlueTriggerEnableW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `PWM_ENABLE` reader - pwm_enable"]
+        pub type PwmEnableR = crate::BitReader;
+        #[doc = "Field `PWM_ENABLE` writer - pwm_enable"]
+        pub type PwmEnableW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `SDIO_DEVICE_ENABLE` reader - sdio_device_enable"]
+        pub type SdioDeviceEnableR = crate::BitReader;
+        #[doc = "Field `SDIO_DEVICE_ENABLE` writer - sdio_device_enable"]
+        pub type SdioDeviceEnableW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `SECURE_PWM_ENABLE` reader - secure_pwm_enable"]
+        pub type SecurePwmEnableR = crate::BitReader;
+        #[doc = "Field `SECURE_PWM_ENABLE` writer - secure_pwm_enable"]
+        pub type SecurePwmEnableW<'a, REG> = crate::BitWriter<'a, REG>;
+        impl R {
+            #[doc = "Bit 1 - mdiag_enable"]
+            #[inline(always)]
+            pub fn mdiag_enable(&self) -> MdiagEnableR {
+                MdiagEnableR::new(((self.bits >> 1) & 1) != 0)
+            }
+            #[doc = "Bit 2 - i2s_enable"]
+            #[inline(always)]
+            pub fn i2s_enable(&self) -> I2sEnableR {
+                I2sEnableR::new(((self.bits >> 2) & 1) != 0)
+            }
+            #[doc = "Bit 6 - mtop_glue_trigger_enable"]
+            #[inline(always)]
+            pub fn mtop_glue_trigger_enable(&self) -> MtopGlueTriggerEnableR {
+                MtopGlueTriggerEnableR::new(((self.bits >> 6) & 1) != 0)
+            }
+            #[doc = "Bit 7 - pwm_enable"]
+            #[inline(always)]
+            pub fn pwm_enable(&self) -> PwmEnableR {
+                PwmEnableR::new(((self.bits >> 7) & 1) != 0)
+            }
+            #[doc = "Bit 11 - sdio_device_enable"]
+            #[inline(always)]
+            pub fn sdio_device_enable(&self) -> SdioDeviceEnableR {
+                SdioDeviceEnableR::new(((self.bits >> 11) & 1) != 0)
+            }
+            #[doc = "Bit 14 - secure_pwm_enable"]
+            #[inline(always)]
+            pub fn secure_pwm_enable(&self) -> SecurePwmEnableR {
+                SecurePwmEnableR::new(((self.bits >> 14) & 1) != 0)
+            }
+        }
+        impl W {
+            #[doc = "Bit 1 - mdiag_enable"]
+            #[inline(always)]
+            pub fn mdiag_enable(&mut self) -> MdiagEnableW<'_, MClken0WordSpec> {
+                MdiagEnableW::new(self, 1)
+            }
+            #[doc = "Bit 2 - i2s_enable"]
+            #[inline(always)]
+            pub fn i2s_enable(&mut self) -> I2sEnableW<'_, MClken0WordSpec> {
+                I2sEnableW::new(self, 2)
+            }
+            #[doc = "Bit 6 - mtop_glue_trigger_enable"]
+            #[inline(always)]
+            pub fn mtop_glue_trigger_enable(
+                &mut self,
+            ) -> MtopGlueTriggerEnableW<'_, MClken0WordSpec> {
+                MtopGlueTriggerEnableW::new(self, 6)
+            }
+            #[doc = "Bit 7 - pwm_enable"]
+            #[inline(always)]
+            pub fn pwm_enable(&mut self) -> PwmEnableW<'_, MClken0WordSpec> {
+                PwmEnableW::new(self, 7)
+            }
+            #[doc = "Bit 11 - sdio_device_enable"]
+            #[inline(always)]
+            pub fn sdio_device_enable(&mut self) -> SdioDeviceEnableW<'_, MClken0WordSpec> {
+                SdioDeviceEnableW::new(self, 11)
+            }
+            #[doc = "Bit 14 - secure_pwm_enable"]
+            #[inline(always)]
+            pub fn secure_pwm_enable(&mut self) -> SecurePwmEnableW<'_, MClken0WordSpec> {
+                SecurePwmEnableW::new(self, 14)
+            }
+        }
+        #[doc = "32-bit little-endian access view of M_CLKEN0; same low-half fields, upper bits unmodeled; preserve them on RMW. SDK 163d9150: pwm_porting uses halfword access; sio_porting_clock_enable uses uapi_reg_setbit/clrbit with 32-bit unsigned int at the same address; upper bits unmodeled\n\nYou can [`read`](crate::Reg::read) this register and get [`m_clken0_word::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`m_clken0_word::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct MClken0WordSpec;
+        impl crate::RegisterSpec for MClken0WordSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`m_clken0_word::R`](R) reader structure"]
+        impl crate::Readable for MClken0WordSpec {}
+        #[doc = "`write(|w| ..)` method takes [`m_clken0_word::W`](W) writer structure"]
+        impl crate::Writable for MClken0WordSpec {
             type Safety = crate::Unsafe;
         }
     }
@@ -27932,6 +28047,67 @@ pub mod tcxo {
         impl crate::Readable for TcxoCount3Spec {}
     }
 }
+#[doc = "audio_cmu"]
+pub type AudioCmu = crate::Periph<audio_cmu::RegisterBlock, 0x5700_8600>;
+impl core::fmt::Debug for AudioCmu {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("AudioCmu").finish()
+    }
+}
+#[doc = "audio_cmu"]
+pub mod audio_cmu {
+    #[repr(C)]
+    #[doc = "Register block"]
+    pub struct RegisterBlock {
+        new_cfg0: NewCfg0,
+    }
+    impl RegisterBlock {
+        #[doc = "0x00 - CMU_NEW_CFG0 partial view; preserve all other bits"]
+        #[inline(always)]
+        pub const fn new_cfg0(&self) -> &NewCfg0 {
+            &self.new_cfg0
+        }
+    }
+    #[doc = "NEW_CFG0 (rw) register accessor: CMU_NEW_CFG0 partial view; preserve all other bits\n\nYou can [`read`](crate::Reg::read) this register and get [`new_cfg0::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`new_cfg0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@new_cfg0`] module"]
+    #[doc(alias = "NEW_CFG0")]
+    pub type NewCfg0 = crate::Reg<new_cfg0::NewCfg0Spec>;
+    #[doc = "CMU_NEW_CFG0 partial view; preserve all other bits"]
+    pub mod new_cfg0 {
+        #[doc = "Register `NEW_CFG0` reader"]
+        pub type R = crate::R<NewCfg0Spec>;
+        #[doc = "Register `NEW_CFG0` writer"]
+        pub type W = crate::W<NewCfg0Spec>;
+        #[doc = "Field `AUDIO_DIVIDER_RESET_N` reader - CMU_DIV_AD_RSTN_SYNC_BIT: SDK sets before I2S gate, clears before disabling gate; shared audio reset ownership required"]
+        pub type AudioDividerResetNR = crate::BitReader;
+        #[doc = "Field `AUDIO_DIVIDER_RESET_N` writer - CMU_DIV_AD_RSTN_SYNC_BIT: SDK sets before I2S gate, clears before disabling gate; shared audio reset ownership required"]
+        pub type AudioDividerResetNW<'a, REG> = crate::BitWriter<'a, REG>;
+        impl R {
+            #[doc = "Bit 0 - CMU_DIV_AD_RSTN_SYNC_BIT: SDK sets before I2S gate, clears before disabling gate; shared audio reset ownership required"]
+            #[inline(always)]
+            pub fn audio_divider_reset_n(&self) -> AudioDividerResetNR {
+                AudioDividerResetNR::new((self.bits & 1) != 0)
+            }
+        }
+        impl W {
+            #[doc = "Bit 0 - CMU_DIV_AD_RSTN_SYNC_BIT: SDK sets before I2S gate, clears before disabling gate; shared audio reset ownership required"]
+            #[inline(always)]
+            pub fn audio_divider_reset_n(&mut self) -> AudioDividerResetNW<'_, NewCfg0Spec> {
+                AudioDividerResetNW::new(self, 0)
+            }
+        }
+        #[doc = "CMU_NEW_CFG0 partial view; preserve all other bits\n\nYou can [`read`](crate::Reg::read) this register and get [`new_cfg0::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`new_cfg0::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct NewCfg0Spec;
+        impl crate::RegisterSpec for NewCfg0Spec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`new_cfg0::R`](R) reader structure"]
+        impl crate::Readable for NewCfg0Spec {}
+        #[doc = "`write(|w| ..)` method takes [`new_cfg0::W`](W) writer structure"]
+        impl crate::Writable for NewCfg0Spec {
+            type Safety = crate::Unsafe;
+        }
+    }
+}
 #[doc = "gpio0"]
 pub type Gpio0 = crate::Periph<gpio0::RegisterBlock, 0x5700_c000>;
 impl core::fmt::Debug for Gpio0 {
@@ -35150,6 +35326,8 @@ pub struct Peripherals {
     pub glb_ctl: GlbCtl,
     #[doc = "TCXO"]
     pub tcxo: Tcxo,
+    #[doc = "AUDIO_CMU"]
+    pub audio_cmu: AudioCmu,
     #[doc = "GPIO0"]
     pub gpio0: Gpio0,
     #[doc = "GPIO2"]
@@ -35216,6 +35394,7 @@ impl Peripherals {
                 sfc_cfg: SfcCfg::steal(),
                 glb_ctl: GlbCtl::steal(),
                 tcxo: Tcxo::steal(),
+                audio_cmu: AudioCmu::steal(),
                 gpio0: Gpio0::steal(),
                 gpio2: Gpio2::steal(),
                 uart2: Uart2::steal(),

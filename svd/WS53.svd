@@ -68,6 +68,58 @@
           </fields>
         </register>
         <register>
+          <name>M_CLKEN0_WORD</name>
+          <description>32-bit little-endian access view of M_CLKEN0; same low-half fields, upper bits unmodeled; preserve them on RMW. SDK 163d9150: pwm_porting uses halfword access; sio_porting_clock_enable uses uapi_reg_setbit/clrbit with 32-bit unsigned int at the same address; upper bits unmodeled</description>
+          <alternateRegister>M_CLKEN0</alternateRegister>
+          <addressOffset>0x40</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <fields>
+            <field>
+              <name>MDIAG_ENABLE</name>
+              <description>mdiag_enable</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2S_ENABLE</name>
+              <description>i2s_enable</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>MTOP_GLUE_TRIGGER_ENABLE</name>
+              <description>mtop_glue_trigger_enable</description>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>PWM_ENABLE</name>
+              <description>pwm_enable</description>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>SDIO_DEVICE_ENABLE</name>
+              <description>sdio_device_enable</description>
+              <bitOffset>11</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>SECURE_PWM_ENABLE</name>
+              <description>secure_pwm_enable</description>
+              <bitOffset>14</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
           <name>M_CLKEN1</name>
           <description>M_CLKEN1</description>
           <addressOffset>0x44</addressOffset>
@@ -12340,6 +12392,34 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
               <bitOffset>0</bitOffset>
               <bitWidth>16</bitWidth>
               <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+      </registers>
+    </peripheral>
+    <peripheral>
+      <name>AUDIO_CMU</name>
+      <description>audio_cmu</description>
+      <baseAddress>0x57008600</baseAddress>
+      <addressBlock>
+        <offset>0x0</offset>
+        <size>0x4</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <register>
+          <name>NEW_CFG0</name>
+          <description>CMU_NEW_CFG0 partial view; preserve all other bits</description>
+          <addressOffset>0x0</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <fields>
+            <field>
+              <name>AUDIO_DIVIDER_RESET_N</name>
+              <description>CMU_DIV_AD_RSTN_SYNC_BIT: SDK sets before I2S gate, clears before disabling gate; shared audio reset ownership required</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
             </field>
           </fields>
         </register>
