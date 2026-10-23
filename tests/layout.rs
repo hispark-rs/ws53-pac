@@ -1116,3 +1116,94 @@ fn i2c_halfword_gates_preserve_neighbor_clock_ownership() {
     clocks.m_clken1().modify(|_, w| w.i2c0_enable().clear_bit());
     assert_eq!(clocks.m_clken1().read().bits(), 0xa581);
 }
+
+#[test]
+fn qspi_clock_chain_is_halfword_and_preserves_shared_neighbors() {
+    let clocks: m_crg::RegisterBlock = unsafe { core::mem::zeroed() };
+    assert_eq!(offset(&clocks, clocks.xip_qspi_clock()), 0x574);
+    assert_eq!(offset(&clocks, clocks.xip_clock_enable()), 0x1240);
+    assert_eq!(size_of_val(clocks.xip_qspi_clock()), 2);
+    assert_eq!(size_of_val(clocks.xip_clock_enable()), 2);
+    assert_not_impl!(
+        m_crg::xip_qspi_clock::XipQspiClockSpec,
+        ws53_pac::generic::Resettable
+    );
+    assert_not_impl!(
+        m_crg::xip_clock_enable::XipClockEnableSpec,
+        ws53_pac::generic::Resettable
+    );
+    unsafe {
+        clocks.xip_qspi_clock().write_with_zero(|w| w.bits(0xfeaa));
+        clocks
+            .xip_clock_enable()
+            .write_with_zero(|w| w.bits(0x8210));
+        clocks.global_clken().write_with_zero(|w| w.bits(0x1001));
+    }
+    clocks
+        .xip_qspi_clock()
+        .modify(|_, w| unsafe { w.control().bits(1) });
+    clocks.xip_clock_enable().modify(|_, w| {
+        w.qspi1_divider_enable()
+            .set_bit()
+            .qspi1_divider_clock_enable()
+            .set_bit()
+            .qspi1_enable()
+            .set_bit()
+    });
+    clocks
+        .global_clken()
+        .modify(|_, w| w.xip_qspi_enable().set_bit());
+    assert_eq!(clocks.xip_qspi_clock().read().bits(), 0xfe01);
+    assert_eq!(clocks.xip_clock_enable().read().bits(), 0x823a);
+    assert_eq!(clocks.global_clken().read().bits(), 0x1081);
+    clocks
+        .xip_qspi_clock()
+        .modify(|_, w| unsafe { w.control().bits(0) });
+    clocks.xip_clock_enable().modify(|_, w| {
+        w.qspi1_divider_enable()
+            .clear_bit()
+            .qspi1_divider_clock_enable()
+            .clear_bit()
+            .qspi1_enable()
+            .clear_bit()
+    });
+    clocks
+        .global_clken()
+        .modify(|_, w| w.xip_qspi_enable().clear_bit());
+    assert_eq!(clocks.xip_qspi_clock().read().bits(), 0xfe00);
+    assert_eq!(clocks.xip_clock_enable().read().bits(), 0x8210);
+    assert_eq!(clocks.global_clken().read().bits(), 0x1001);
+}
+
+#[test]
+fn spi_and_qspi_field_encodings_and_directional_access_stay_distinct() {
+    macro_rules! check {
+        ($module:ident, $frame:expr, $phase:expr, $busy:expr, $tx_dma:expr, $tx_irq:expr) => {{
+            let r: ws53_pac::$module::RegisterBlock = unsafe { core::mem::zeroed() };
+            r.control()
+                .modify(|_, w| unsafe { w.frame_size32().bits(7).phase().set_bit() });
+            assert_eq!(r.control().read().bits(), (7 << $frame) | (1 << $phase));
+            r.dma_control().modify(|_, w| w.tx_enable().set_bit());
+            assert_eq!(r.dma_control().read().bits(), 1 << $tx_dma);
+            r.interrupt_mask().modify(|_, w| w.tx_empty().set_bit());
+            assert_eq!(r.interrupt_mask().read().bits(), 1 << $tx_irq);
+            // Inject read-only status in a local object, never a real device.
+            unsafe {
+                r.status().as_ptr().write_volatile(1 << $busy);
+            }
+            assert!(r.status().read().busy().bit());
+            assert_not_impl!(
+                ws53_pac::$module::status::StatusSpec,
+                ws53_pac::generic::Writable
+            );
+            assert_not_impl!(
+                ws53_pac::$module::clear_all::ClearAllSpec,
+                ws53_pac::generic::Writable
+            );
+            assert_not_impl!(ws53_pac::$module::rx::RxSpec, ws53_pac::generic::Writable);
+            assert_not_impl!(ws53_pac::$module::tx::TxSpec, ws53_pac::generic::Readable);
+        }};
+    }
+    check!(spi0, 13, 3, 15, 0, 7);
+    check!(qspi1, 16, 6, 0, 1, 0);
+}

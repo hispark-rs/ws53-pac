@@ -1,6 +1,6 @@
 {
   "source": "https://github.com/hispark-rs/hisi-registers",
-  "commit": "01dcce55fd249a7b5aa06f0255064808d65b6725",
+  "commit": "04ced9c0640a0e3c9715769e51a252d989bba7a5",
   "dirty": false,
   "profile": "ws53_liteos_app/acore/MCU_MODE_1",
   "svd2rust": "0.37.1",
@@ -23,11 +23,11 @@
     "rdl/chips/ws53/adc-v155.rdl": "abd8eb6d3c2ea78a76d00b6b86d002d48060984c462707c9045d2b473013450a",
     "rdl/chips/ws53/efuse-read.rdl": "ff2098881aff1cd3b7b5240fe9afe26e07ae0e691de52835d797a9cc4dcc7e1d",
     "rdl/chips/ws53/glb-ctl.rdl": "fa81e83f75bd0707db2c61fb3c3a2edf1e79bb1198b00f297123ed32502084e3",
-    "rdl/chips/ws53/m-crg.rdl": "3244675b5adf233e6b6f8148f36eb8701c1ed46941698c7f735e9ce7cd2098a6",
+    "rdl/chips/ws53/m-crg.rdl": "df8d8af40178d67f099611839844488801dd12f3d5bf18d878acb7f5a85e69df",
     "rdl/chips/ws53/mdma-v151.rdl": "a541c7deaadcc455b95737ae076eb3b6d3e1ed274d693489ee8a36ee099e54a1",
     "rdl/chips/ws53/pinctrl.rdl": "e1f2690aba6fe2e144f29af73cf8606befbd172c8f02204f201417addb9e5550",
     "rdl/chips/ws53/sdio-v151.rdl": "1e635aa40a5cbedda5854fb51377ab4fe993ff55eaf4758ebe87b36fc3343ba6",
-    "rdl/chips/ws53/spi-v151-100.rdl": "480ed9bb4402491ccab378e4e6f3a44c3202b0a7ef9aaecb17be9124fe121136",
+    "rdl/chips/ws53/spi-v151-100.rdl": "a6014d20bc78e0e48709086ce058c81cddb103fb34e8b8633355a40ffe4ef68d",
     "rdl/chips/ws53/system-memory.rdl": "0392b17ff9ec8fc7a2d747b9edb1ccfbfd60a9eba7bac937d7339d63595270fc",
     "rdl/chips/ws53/trng.rdl": "75e3a5cc88ca1d2b91312f38c5d43138b39753dc6f9ea591a3e34d8e9a0e8f74",
     "rdl/chips/ws53/tsensor.rdl": "66a6e2ab719aa72b59e263e73818f5b03b1baf41bd9e2d5f6ab7c3d01feb162b",
@@ -80,8 +80,8 @@
     "rust-toolchain.toml": "4a55a5c6ce672e0024729f0739b0a82a0897538c9332528927201459bda83585"
   },
   "outputs": {
-    "src/lib.rs": "c53623628f5acd04ee4add3e00fd95c59d20d8b9f11c530988980c552593061e",
+    "src/lib.rs": "8fb4e4c06bab15b34e1af6859b9d8baab84e7ae4f7ae8ff200641a8d57c5386f",
     "device.x": "b732da88f67fc24ca2cdce044efc37da252563f855f19ca7975359951be95eba",
-    "svd/WS53.svd": "f01b474970cddad70383ce9e725a645ee9ca79f55de96b43fa938455cfa7a180"
+    "svd/WS53.svd": "7ba3afe057024120842f16f7e2c4e04234e6a19df6995758ee493c52fa591659"
   }
 }

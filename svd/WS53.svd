@@ -353,6 +353,13 @@
           <access>read-write</access>
           <fields>
             <field>
+              <name>XIP_QSPI_ENABLE</name>
+              <description>SPI_BUS_1 port enables the XIP QSPI global path; shared with XIP users</description>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
               <name>LSADC_ENABLE</name>
               <description>ADC port GLB_CLKEN_LSADC_OFFSET</description>
               <bitOffset>12</bitOffset>
@@ -373,6 +380,22 @@
               <description>SPI_BUS_0 port writes 1 to enable, 0 to disable; other fields unmodeled</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>XIP_QSPI_CLOCK</name>
+          <description>XIP_QSPI_CLOCK</description>
+          <addressOffset>0x574</addressOffset>
+          <size>16</size>
+          <access>read-write</access>
+          <fields>
+            <field>
+              <name>CONTROL</name>
+              <description>control</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>9</bitWidth>
               <access>read-write</access>
             </field>
           </fields>
@@ -520,6 +543,50 @@
               <name>MASTER</name>
               <description>SPI_BUS_0: 0 slave, 1 master; QSPI bus1 is master-only</description>
               <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>XIP_CLOCK_ENABLE</name>
+          <description>XIP_CLOCK_ENABLE</description>
+          <addressOffset>0x1240</addressOffset>
+          <size>16</size>
+          <access>read-write</access>
+          <fields>
+            <field>
+              <name>QSPI1_DIVIDER_ENABLE</name>
+              <description>qspi1_divider_enable</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>QSPI1_DIVIDER_CLOCK_ENABLE</name>
+              <description>qspi1_divider_clock_enable</description>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>XIP_BUS_ENABLE</name>
+              <description>xip_bus_enable</description>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>QSPI1_ENABLE</name>
+              <description>qspi1_enable</description>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>QSPI1_XIP_ENABLE</name>
+              <description>qspi1_xip_enable</description>
+              <bitOffset>9</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-write</access>
             </field>
@@ -9293,7 +9360,7 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <fields>
             <field>
               <name>VALUE</name>
-              <description>value</description>
+              <description>SDK header: even divider 2..65534, bit0 fixed zero; zero disables SCK. Setter truncates to 16 bits and does not round; silicon behavior unverified</description>
               <bitOffset>0</bitOffset>
               <bitWidth>16</bitWidth>
               <access>read-write</access>
@@ -10492,7 +10559,7 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <fields>
             <field>
               <name>VALUE</name>
-              <description>value</description>
+              <description>SDK header: even divider 2..65534, bit0 fixed zero; zero disables SCK. Setter truncates to 16 bits and does not round; silicon behavior unverified</description>
               <bitOffset>0</bitOffset>
               <bitWidth>16</bitWidth>
               <access>read-write</access>

@@ -978,15 +978,19 @@ pub mod m_crg {
         global_clken: GlobalClken,
         _reserved8: [u8; 0x12],
         spi_clock: SpiClock,
-        _reserved9: [u8; 0x01a2],
+        _reserved9: [u8; 0x16],
+        xip_qspi_clock: XipQspiClock,
+        _reserved10: [u8; 0x018a],
         nmi_enable: NmiEnable,
-        _reserved10: [u8; 0x02],
-        nmi_raw_status: NmiRawStatus,
         _reserved11: [u8; 0x02],
+        nmi_raw_status: NmiRawStatus,
+        _reserved12: [u8; 0x02],
         nmi_masked_status: NmiMaskedStatus,
-        _reserved12: [u8; 0x0246],
+        _reserved13: [u8; 0x0246],
         spi_device_mode: SpiDeviceMode,
-        _reserved13: [u8; 0x0cae],
+        _reserved14: [u8; 0x08ee],
+        xip_clock_enable: XipClockEnable,
+        _reserved15: [u8; 0x03be],
         trng_ring_control: TrngRingControl,
     }
     impl RegisterBlock {
@@ -1035,6 +1039,11 @@ pub mod m_crg {
         pub const fn spi_clock(&self) -> &SpiClock {
             &self.spi_clock
         }
+        #[doc = "0x574 - XIP_QSPI_CLOCK"]
+        #[inline(always)]
+        pub const fn xip_qspi_clock(&self) -> &XipQspiClock {
+            &self.xip_qspi_clock
+        }
         #[doc = "0x700 - NMI_ENABLE"]
         #[inline(always)]
         pub const fn nmi_enable(&self) -> &NmiEnable {
@@ -1054,6 +1063,11 @@ pub mod m_crg {
         #[inline(always)]
         pub const fn spi_device_mode(&self) -> &SpiDeviceMode {
             &self.spi_device_mode
+        }
+        #[doc = "0x1240 - XIP_CLOCK_ENABLE"]
+        #[inline(always)]
+        pub const fn xip_clock_enable(&self) -> &XipClockEnable {
+            &self.xip_clock_enable
         }
         #[doc = "0x1600 - TRNG_SEC_CFB: volatile shared ring control; SDK waits 200 us after enabling"]
         #[inline(always)]
@@ -1777,11 +1791,20 @@ pub mod m_crg {
         pub type R = crate::R<GlobalClkenSpec>;
         #[doc = "Register `GLOBAL_CLKEN` writer"]
         pub type W = crate::W<GlobalClkenSpec>;
+        #[doc = "Field `XIP_QSPI_ENABLE` reader - SPI_BUS_1 port enables the XIP QSPI global path; shared with XIP users"]
+        pub type XipQspiEnableR = crate::BitReader;
+        #[doc = "Field `XIP_QSPI_ENABLE` writer - SPI_BUS_1 port enables the XIP QSPI global path; shared with XIP users"]
+        pub type XipQspiEnableW<'a, REG> = crate::BitWriter<'a, REG>;
         #[doc = "Field `LSADC_ENABLE` reader - ADC port GLB_CLKEN_LSADC_OFFSET"]
         pub type LsadcEnableR = crate::BitReader;
         #[doc = "Field `LSADC_ENABLE` writer - ADC port GLB_CLKEN_LSADC_OFFSET"]
         pub type LsadcEnableW<'a, REG> = crate::BitWriter<'a, REG>;
         impl R {
+            #[doc = "Bit 7 - SPI_BUS_1 port enables the XIP QSPI global path; shared with XIP users"]
+            #[inline(always)]
+            pub fn xip_qspi_enable(&self) -> XipQspiEnableR {
+                XipQspiEnableR::new(((self.bits >> 7) & 1) != 0)
+            }
             #[doc = "Bit 12 - ADC port GLB_CLKEN_LSADC_OFFSET"]
             #[inline(always)]
             pub fn lsadc_enable(&self) -> LsadcEnableR {
@@ -1789,6 +1812,11 @@ pub mod m_crg {
             }
         }
         impl W {
+            #[doc = "Bit 7 - SPI_BUS_1 port enables the XIP QSPI global path; shared with XIP users"]
+            #[inline(always)]
+            pub fn xip_qspi_enable(&mut self) -> XipQspiEnableW<'_, GlobalClkenSpec> {
+                XipQspiEnableW::new(self, 7)
+            }
             #[doc = "Bit 12 - ADC port GLB_CLKEN_LSADC_OFFSET"]
             #[inline(always)]
             pub fn lsadc_enable(&mut self) -> LsadcEnableW<'_, GlobalClkenSpec> {
@@ -1843,6 +1871,45 @@ pub mod m_crg {
         impl crate::Readable for SpiClockSpec {}
         #[doc = "`write(|w| ..)` method takes [`spi_clock::W`](W) writer structure"]
         impl crate::Writable for SpiClockSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "XIP_QSPI_CLOCK (rw) register accessor: XIP_QSPI_CLOCK\n\nYou can [`read`](crate::Reg::read) this register and get [`xip_qspi_clock::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`xip_qspi_clock::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@xip_qspi_clock`] module"]
+    #[doc(alias = "XIP_QSPI_CLOCK")]
+    pub type XipQspiClock = crate::Reg<xip_qspi_clock::XipQspiClockSpec>;
+    #[doc = "XIP_QSPI_CLOCK"]
+    pub mod xip_qspi_clock {
+        #[doc = "Register `XIP_QSPI_CLOCK` reader"]
+        pub type R = crate::R<XipQspiClockSpec>;
+        #[doc = "Register `XIP_QSPI_CLOCK` writer"]
+        pub type W = crate::W<XipQspiClockSpec>;
+        #[doc = "Field `CONTROL` reader - control"]
+        pub type ControlR = crate::FieldReader<u16>;
+        #[doc = "Field `CONTROL` writer - control"]
+        pub type ControlW<'a, REG> = crate::FieldWriter<'a, REG, 9, u16>;
+        impl R {
+            #[doc = "Bits 0:8 - control"]
+            #[inline(always)]
+            pub fn control(&self) -> ControlR {
+                ControlR::new(self.bits & 0x01ff)
+            }
+        }
+        impl W {
+            #[doc = "Bits 0:8 - control"]
+            #[inline(always)]
+            pub fn control(&mut self) -> ControlW<'_, XipQspiClockSpec> {
+                ControlW::new(self, 0)
+            }
+        }
+        #[doc = "XIP_QSPI_CLOCK\n\nYou can [`read`](crate::Reg::read) this register and get [`xip_qspi_clock::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`xip_qspi_clock::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct XipQspiClockSpec;
+        impl crate::RegisterSpec for XipQspiClockSpec {
+            type Ux = u16;
+        }
+        #[doc = "`read()` method returns [`xip_qspi_clock::R`](R) reader structure"]
+        impl crate::Readable for XipQspiClockSpec {}
+        #[doc = "`write(|w| ..)` method takes [`xip_qspi_clock::W`](W) writer structure"]
+        impl crate::Writable for XipQspiClockSpec {
             type Safety = crate::Unsafe;
         }
     }
@@ -2081,6 +2148,103 @@ pub mod m_crg {
         impl crate::Readable for SpiDeviceModeSpec {}
         #[doc = "`write(|w| ..)` method takes [`spi_device_mode::W`](W) writer structure"]
         impl crate::Writable for SpiDeviceModeSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "XIP_CLOCK_ENABLE (rw) register accessor: XIP_CLOCK_ENABLE\n\nYou can [`read`](crate::Reg::read) this register and get [`xip_clock_enable::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`xip_clock_enable::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@xip_clock_enable`] module"]
+    #[doc(alias = "XIP_CLOCK_ENABLE")]
+    pub type XipClockEnable = crate::Reg<xip_clock_enable::XipClockEnableSpec>;
+    #[doc = "XIP_CLOCK_ENABLE"]
+    pub mod xip_clock_enable {
+        #[doc = "Register `XIP_CLOCK_ENABLE` reader"]
+        pub type R = crate::R<XipClockEnableSpec>;
+        #[doc = "Register `XIP_CLOCK_ENABLE` writer"]
+        pub type W = crate::W<XipClockEnableSpec>;
+        #[doc = "Field `QSPI1_DIVIDER_ENABLE` reader - qspi1_divider_enable"]
+        pub type Qspi1DividerEnableR = crate::BitReader;
+        #[doc = "Field `QSPI1_DIVIDER_ENABLE` writer - qspi1_divider_enable"]
+        pub type Qspi1DividerEnableW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `QSPI1_DIVIDER_CLOCK_ENABLE` reader - qspi1_divider_clock_enable"]
+        pub type Qspi1DividerClockEnableR = crate::BitReader;
+        #[doc = "Field `QSPI1_DIVIDER_CLOCK_ENABLE` writer - qspi1_divider_clock_enable"]
+        pub type Qspi1DividerClockEnableW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `XIP_BUS_ENABLE` reader - xip_bus_enable"]
+        pub type XipBusEnableR = crate::BitReader;
+        #[doc = "Field `XIP_BUS_ENABLE` writer - xip_bus_enable"]
+        pub type XipBusEnableW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `QSPI1_ENABLE` reader - qspi1_enable"]
+        pub type Qspi1EnableR = crate::BitReader;
+        #[doc = "Field `QSPI1_ENABLE` writer - qspi1_enable"]
+        pub type Qspi1EnableW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `QSPI1_XIP_ENABLE` reader - qspi1_xip_enable"]
+        pub type Qspi1XipEnableR = crate::BitReader;
+        #[doc = "Field `QSPI1_XIP_ENABLE` writer - qspi1_xip_enable"]
+        pub type Qspi1XipEnableW<'a, REG> = crate::BitWriter<'a, REG>;
+        impl R {
+            #[doc = "Bit 1 - qspi1_divider_enable"]
+            #[inline(always)]
+            pub fn qspi1_divider_enable(&self) -> Qspi1DividerEnableR {
+                Qspi1DividerEnableR::new(((self.bits >> 1) & 1) != 0)
+            }
+            #[doc = "Bit 3 - qspi1_divider_clock_enable"]
+            #[inline(always)]
+            pub fn qspi1_divider_clock_enable(&self) -> Qspi1DividerClockEnableR {
+                Qspi1DividerClockEnableR::new(((self.bits >> 3) & 1) != 0)
+            }
+            #[doc = "Bit 4 - xip_bus_enable"]
+            #[inline(always)]
+            pub fn xip_bus_enable(&self) -> XipBusEnableR {
+                XipBusEnableR::new(((self.bits >> 4) & 1) != 0)
+            }
+            #[doc = "Bit 5 - qspi1_enable"]
+            #[inline(always)]
+            pub fn qspi1_enable(&self) -> Qspi1EnableR {
+                Qspi1EnableR::new(((self.bits >> 5) & 1) != 0)
+            }
+            #[doc = "Bit 9 - qspi1_xip_enable"]
+            #[inline(always)]
+            pub fn qspi1_xip_enable(&self) -> Qspi1XipEnableR {
+                Qspi1XipEnableR::new(((self.bits >> 9) & 1) != 0)
+            }
+        }
+        impl W {
+            #[doc = "Bit 1 - qspi1_divider_enable"]
+            #[inline(always)]
+            pub fn qspi1_divider_enable(&mut self) -> Qspi1DividerEnableW<'_, XipClockEnableSpec> {
+                Qspi1DividerEnableW::new(self, 1)
+            }
+            #[doc = "Bit 3 - qspi1_divider_clock_enable"]
+            #[inline(always)]
+            pub fn qspi1_divider_clock_enable(
+                &mut self,
+            ) -> Qspi1DividerClockEnableW<'_, XipClockEnableSpec> {
+                Qspi1DividerClockEnableW::new(self, 3)
+            }
+            #[doc = "Bit 4 - xip_bus_enable"]
+            #[inline(always)]
+            pub fn xip_bus_enable(&mut self) -> XipBusEnableW<'_, XipClockEnableSpec> {
+                XipBusEnableW::new(self, 4)
+            }
+            #[doc = "Bit 5 - qspi1_enable"]
+            #[inline(always)]
+            pub fn qspi1_enable(&mut self) -> Qspi1EnableW<'_, XipClockEnableSpec> {
+                Qspi1EnableW::new(self, 5)
+            }
+            #[doc = "Bit 9 - qspi1_xip_enable"]
+            #[inline(always)]
+            pub fn qspi1_xip_enable(&mut self) -> Qspi1XipEnableW<'_, XipClockEnableSpec> {
+                Qspi1XipEnableW::new(self, 9)
+            }
+        }
+        #[doc = "XIP_CLOCK_ENABLE\n\nYou can [`read`](crate::Reg::read) this register and get [`xip_clock_enable::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`xip_clock_enable::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct XipClockEnableSpec;
+        impl crate::RegisterSpec for XipClockEnableSpec {
+            type Ux = u16;
+        }
+        #[doc = "`read()` method returns [`xip_clock_enable::R`](R) reader structure"]
+        impl crate::Readable for XipClockEnableSpec {}
+        #[doc = "`write(|w| ..)` method takes [`xip_clock_enable::W`](W) writer structure"]
+        impl crate::Writable for XipClockEnableSpec {
             type Safety = crate::Unsafe;
         }
     }
@@ -21494,19 +21658,19 @@ pub mod spi0 {
         pub type R = crate::R<BaudSpec>;
         #[doc = "Register `BAUD` writer"]
         pub type W = crate::W<BaudSpec>;
-        #[doc = "Field `VALUE` reader - value"]
+        #[doc = "Field `VALUE` reader - SDK header: even divider 2..65534, bit0 fixed zero; zero disables SCK. Setter truncates to 16 bits and does not round; silicon behavior unverified"]
         pub type ValueR = crate::FieldReader<u16>;
-        #[doc = "Field `VALUE` writer - value"]
+        #[doc = "Field `VALUE` writer - SDK header: even divider 2..65534, bit0 fixed zero; zero disables SCK. Setter truncates to 16 bits and does not round; silicon behavior unverified"]
         pub type ValueW<'a, REG> = crate::FieldWriter<'a, REG, 16, u16>;
         impl R {
-            #[doc = "Bits 0:15 - value"]
+            #[doc = "Bits 0:15 - SDK header: even divider 2..65534, bit0 fixed zero; zero disables SCK. Setter truncates to 16 bits and does not round; silicon behavior unverified"]
             #[inline(always)]
             pub fn value(&self) -> ValueR {
                 ValueR::new((self.bits & 0xffff) as u16)
             }
         }
         impl W {
-            #[doc = "Bits 0:15 - value"]
+            #[doc = "Bits 0:15 - SDK header: even divider 2..65534, bit0 fixed zero; zero disables SCK. Setter truncates to 16 bits and does not round; silicon behavior unverified"]
             #[inline(always)]
             pub fn value(&mut self) -> ValueW<'_, BaudSpec> {
                 ValueW::new(self, 0)
@@ -24065,19 +24229,19 @@ pub mod qspi1 {
         pub type R = crate::R<BaudSpec>;
         #[doc = "Register `BAUD` writer"]
         pub type W = crate::W<BaudSpec>;
-        #[doc = "Field `VALUE` reader - value"]
+        #[doc = "Field `VALUE` reader - SDK header: even divider 2..65534, bit0 fixed zero; zero disables SCK. Setter truncates to 16 bits and does not round; silicon behavior unverified"]
         pub type ValueR = crate::FieldReader<u16>;
-        #[doc = "Field `VALUE` writer - value"]
+        #[doc = "Field `VALUE` writer - SDK header: even divider 2..65534, bit0 fixed zero; zero disables SCK. Setter truncates to 16 bits and does not round; silicon behavior unverified"]
         pub type ValueW<'a, REG> = crate::FieldWriter<'a, REG, 16, u16>;
         impl R {
-            #[doc = "Bits 0:15 - value"]
+            #[doc = "Bits 0:15 - SDK header: even divider 2..65534, bit0 fixed zero; zero disables SCK. Setter truncates to 16 bits and does not round; silicon behavior unverified"]
             #[inline(always)]
             pub fn value(&self) -> ValueR {
                 ValueR::new((self.bits & 0xffff) as u16)
             }
         }
         impl W {
-            #[doc = "Bits 0:15 - value"]
+            #[doc = "Bits 0:15 - SDK header: even divider 2..65534, bit0 fixed zero; zero disables SCK. Setter truncates to 16 bits and does not round; silicon behavior unverified"]
             #[inline(always)]
             pub fn value(&mut self) -> ValueW<'_, BaudSpec> {
                 ValueW::new(self, 0)

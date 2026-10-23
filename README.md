@@ -130,3 +130,14 @@ with status positions. Header read-clear comments conflict with the executed
 write helpers; the PAC deliberately offers no speculative clear-register read
 API. Neither these layout tests nor source count formulas validate physical
 I2C timings, Fast-plus routing, pin ownership, cancellation or a bus transaction.
+
+SPI0/QSPI1 retain distinct register and field encodings. The optional application
+SPI port's missing QSPI clock chain is now modeled as halfword XIP_CLOCK_ENABLE
+(+0x1240), nine-bit XIP_QSPI_CLOCK.CONTROL (+0x574), and GLOBAL_CLKEN bit7.
+Source helpers set/clear divider-enable, divider-clock and peripheral-clock
+bits1/3/5 while preserving other XIP users' fields. This is not ownership of the
+XIP path or proof of the upstream frequency, reset state or board wiring.
+Baseline SDK SPI is disabled; the compiled source oracle enables it only on
+host RAM. Clock-divider documentation records even2..65534 (zero disables),
+while the SDK's frequency helper can write odd/truncated values. No physical
+clock measurement or stable SPI/QSPI driver is claimed here.
