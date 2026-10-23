@@ -1207,3 +1207,123 @@ fn spi_and_qspi_field_encodings_and_directional_access_stay_distinct() {
     check!(spi0, 13, 3, 15, 0, 7);
     check!(qspi1, 16, 6, 0, 1, 0);
 }
+
+#[test]
+fn i2s_has_all_word_slots_at_physical_not_sdk_pointer_offsets() {
+    let r: ws53_pac::i2s::RegisterBlock = unsafe { core::mem::zeroed() };
+    assert_eq!(ws53_pac::I2s::PTR as usize, 0x52030000);
+    assert_eq!(ws53_pac::interrupt::ExternalInterrupt::I2S as u16, 67);
+    assert_eq!(size_of_val(&r), 0xc4);
+    macro_rules! slot {
+        ($name:ident, $offset:expr) => {
+            assert_eq!(offset(&r, r.$name()), $offset);
+            assert_eq!(size_of_val(r.$name()), 4);
+        };
+    }
+    slot!(version, 0x3c);
+    slot!(mode, 0x40);
+    slot!(intstatus, 0x44);
+    slot!(intclr, 0x48);
+    slot!(left_tx, 0x4c);
+    slot!(right_tx, 0x50);
+    slot!(left_rx, 0x54);
+    slot!(right_rx, 0x58);
+    slot!(ct_set, 0x5c);
+    slot!(ct_clr, 0x60);
+    slot!(fifo_threshold, 0x64);
+    slot!(rx_sta, 0x68);
+    slot!(tx_sta, 0x6c);
+    slot!(data_width_set, 0x78);
+    slot!(i2s_start_pos, 0x7c);
+    slot!(i2s_pos_flag, 0x80);
+    slot!(signed_ext, 0x84);
+    slot!(i2s_pos_merge_en, 0x88);
+    slot!(intmask, 0x8c);
+    slot!(i2s_crg, 0x90);
+    slot!(i2s_bclk_div_num, 0x94);
+    slot!(i2s_fs_div_num, 0x98);
+    slot!(i2s_fs_div_ratio_num, 0x9c);
+    slot!(i2s_dual_rx_chn, 0xa0);
+    slot!(i2s_dual_tx_chn, 0xc0);
+}
+
+#[test]
+fn i2s_configuration_uses_audited_field_positions() {
+    let r: ws53_pac::i2s::RegisterBlock = unsafe { core::mem::zeroed() };
+    // RAM-backed encoding checks only; no clock, FIFO or reset behavior inferred.
+    r.mode()
+        .modify(|_, w| unsafe { w.channels().bits(3).clk_edge().set_bit().master().set_bit() });
+    assert_eq!(r.mode().read().bits(), 0xf0);
+    r.data_width_set()
+        .modify(|_, w| unsafe { w.tx_mode().bits(4).rx_mode().bits(3) });
+    assert_eq!(r.data_width_set().read().bits(), 0x1c);
+    r.i2s_crg().modify(|_, w| {
+        w.bclk_div_enable()
+            .set_bit()
+            .clock_enable()
+            .set_bit()
+            .fs_select()
+            .set_bit()
+    });
+    assert_eq!(r.i2s_crg().read().bits(), 0x13);
+    r.intmask().modify(|_, w| {
+        w.rx()
+            .set_bit()
+            .rx_right_overflow()
+            .set_bit()
+            .rx_left_overflow()
+            .set_bit()
+            .tx_right_underflow()
+            .set_bit()
+            .tx_left_underflow()
+            .set_bit()
+    });
+    assert_eq!(r.intmask().read().bits(), 0x3d);
+    r.fifo_threshold()
+        .modify(|_, w| unsafe { w.tx().bits(4).rx().bits(7) });
+    assert_eq!(r.fifo_threshold().read().bits(), 0x704);
+}
+
+#[test]
+fn i2s_commands_and_fifos_have_no_unsafe_direction_or_reset_api() {
+    let r: ws53_pac::i2s::RegisterBlock = unsafe { core::mem::zeroed() };
+    unsafe {
+        r.ct_set()
+            .write_with_zero(|w| w.tx_enable().set_bit().reset_n().set_bit());
+        r.ct_clr().write_with_zero(|w| w.rx_enable().set_bit());
+        // Observe local backing memory, not a PAC hardware readback operation.
+        assert_eq!(r.ct_set().as_ptr().read_volatile(), 0x9000);
+        assert_eq!(r.ct_clr().as_ptr().read_volatile(), 0x2000);
+        r.intclr().write_with_zero(|w| {
+            w.rx()
+                .clear_bit_by_one()
+                .tx_left_underflow()
+                .clear_bit_by_one()
+        });
+        assert_eq!(r.intclr().as_ptr().read_volatile(), 0x21);
+    }
+    macro_rules! no_read {
+        ($module:ident, $spec:ident) => {
+            assert_not_impl!(ws53_pac::i2s::$module::$spec, ws53_pac::generic::Readable);
+            assert_not_impl!(ws53_pac::i2s::$module::$spec, ws53_pac::generic::Resettable);
+        };
+    }
+    macro_rules! no_write {
+        ($module:ident, $spec:ident) => {
+            assert_not_impl!(ws53_pac::i2s::$module::$spec, ws53_pac::generic::Writable);
+            assert_not_impl!(ws53_pac::i2s::$module::$spec, ws53_pac::generic::Resettable);
+        };
+    }
+    no_read!(ct_set, CtSetSpec);
+    no_read!(ct_clr, CtClrSpec);
+    no_read!(intclr, IntclrSpec);
+    no_read!(left_tx, LeftTxSpec);
+    no_read!(right_tx, RightTxSpec);
+    no_read!(i2s_dual_tx_chn, I2sDualTxChnSpec);
+    no_write!(left_rx, LeftRxSpec);
+    no_write!(right_rx, RightRxSpec);
+    no_write!(i2s_dual_rx_chn, I2sDualRxChnSpec);
+    no_write!(intstatus, IntstatusSpec);
+    no_write!(rx_sta, RxStaSpec);
+    no_write!(tx_sta, TxStaSpec);
+}

@@ -141,3 +141,13 @@ Baseline SDK SPI is disabled; the compiled source oracle enables it only on
 host RAM. Clock-divider documentation records even2..65534 (zero disables),
 while the SDK's frequency helper can write odd/truncated values. No physical
 clock measurement or stable SPI/QSPI driver is claimed here.
+
+I2S now uses the WS53 SDK's audited layout instead of the imported family SIO
+map. All 25 word slots/70 fields have C compiler checks, including MODE bits,
+TX/RX enables at12/13, RX width at5:3, six interrupt causes and split/merged
+FIFOs. RX data reads consume FIFO entries; TX, interrupt-clear and CT_SET/CLR
+are write-only views. The latter have no claimed readback/zero-write semantics.
+Unknown reset values are omitted. These checks do not establish clock handoff,
+drain completion or wire timing. The SDK's 32-bit audio clock accesses still
+require integration with the existing 16-bit shared M_CLKEN0 view; this PAC
+correction alone is not a usable I2S HAL or a claim of silicon support.
