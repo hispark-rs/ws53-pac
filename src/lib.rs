@@ -11748,10 +11748,10 @@ pub mod pwm {
     pub mod pwm_start0 {
         #[doc = "Register `PWM_START0` writer"]
         pub type W = crate::W<PwmStart0Spec>;
-        #[doc = "Field `PWM_START_0` writer - Commit group 0 configuration with 1; SDK has no completion poll, self-clear/readback timing unverified"]
+        #[doc = "Field `PWM_START_0` writer - Commit group 0 configuration with 1; do not assume synchronous acceptance. A-board2MHz finite8/16 bursts required guarding the initial enabled configuration before EN-clear;10us guard passed. Exact acceptance latency and command readback unverified; see evidence/ws53-pwm-start-hil.json"]
         pub type PwmStart0W<'a, REG> = crate::BitWriter<'a, REG>;
         impl W {
-            #[doc = "Bit 0 - Commit group 0 configuration with 1; SDK has no completion poll, self-clear/readback timing unverified"]
+            #[doc = "Bit 0 - Commit group 0 configuration with 1; do not assume synchronous acceptance. A-board2MHz finite8/16 bursts required guarding the initial enabled configuration before EN-clear;10us guard passed. Exact acceptance latency and command readback unverified; see evidence/ws53-pwm-start-hil.json"]
             #[inline(always)]
             pub fn pwm_start_0(&mut self) -> PwmStart0W<'_, PwmStart0Spec> {
                 PwmStart0W::new(self, 0)
@@ -12541,10 +12541,10 @@ pub mod pwm {
     pub mod pwm_periodload_flag0 {
         #[doc = "Register `PWM_PERIODLOAD_FLAG0` reader"]
         pub type R = crate::R<PwmPeriodloadFlag0Spec>;
-        #[doc = "Field `PWM_PERIODLOAD_FLAG_0` reader - Period load complete flag"]
+        #[doc = "Field `PWM_PERIODLOAD_FLAG_0` reader - Configuration-load notification; A-board flag=1 and count=1 during first pulse after START, before 8/16-pulse block completion. W1C via CFG_INT_CLR0 clears it; deferred stop later asserts it again. Not an unconditional block-end flag. See evidence/ws53-pwm-load-flag-hil.json"]
         pub type PwmPeriodloadFlag0R = crate::BitReader;
         impl R {
-            #[doc = "Bit 0 - Period load complete flag"]
+            #[doc = "Bit 0 - Configuration-load notification; A-board flag=1 and count=1 during first pulse after START, before 8/16-pulse block completion. W1C via CFG_INT_CLR0 clears it; deferred stop later asserts it again. Not an unconditional block-end flag. See evidence/ws53-pwm-load-flag-hil.json"]
             #[inline(always)]
             pub fn pwm_periodload_flag_0(&self) -> PwmPeriodloadFlag0R {
                 PwmPeriodloadFlag0R::new((self.bits & 1) != 0)
@@ -16388,7 +16388,7 @@ pub mod pwm {
         pub type R = crate::R<PwmIntMaskSpec>;
         #[doc = "Register `PWM_INT_MASK` writer"]
         pub type W = crate::W<PwmIntMaskSpec>;
-        #[doc = "Event enable despite MASK name: bit0 abnormal, bit1 step end; 1 permits, 0 masks, confirmed by SDK init writing 3"]
+        #[doc = "Event enable despite MASK name: bit0 abnormal, bit1 configuration load; 1 permits, 0 masks, confirmed by SDK init writing 3"]
         #[derive(Clone, Copy, Debug, PartialEq, Eq)]
         #[repr(u8)]
         pub enum PwmIntMask {
@@ -16396,8 +16396,8 @@ pub mod pwm {
             Disabled = 0,
             #[doc = "1: Enable abnormal configuration event"]
             AbnormalOnly = 1,
-            #[doc = "2: Enable step end event"]
-            PeriodEndOnly = 2,
+            #[doc = "2: Enable configuration-load notification; initial START can also assert it, not proof that a pulse block ended"]
+            ConfigurationLoadedOnly = 2,
             #[doc = "3: Enable both event outputs; SDK initialization value"]
             AllEvents = 3,
         }
@@ -16411,7 +16411,7 @@ pub mod pwm {
             type Ux = u8;
         }
         impl crate::IsEnum for PwmIntMask {}
-        #[doc = "Field `PWM_INT_MASK` reader - Event enable despite MASK name: bit0 abnormal, bit1 step end; 1 permits, 0 masks, confirmed by SDK init writing 3"]
+        #[doc = "Field `PWM_INT_MASK` reader - Event enable despite MASK name: bit0 abnormal, bit1 configuration load; 1 permits, 0 masks, confirmed by SDK init writing 3"]
         pub type PwmIntMaskR = crate::FieldReader<PwmIntMask>;
         impl PwmIntMaskR {
             #[doc = "Get enumerated values variant"]
@@ -16420,7 +16420,7 @@ pub mod pwm {
                 match self.bits {
                     0 => PwmIntMask::Disabled,
                     1 => PwmIntMask::AbnormalOnly,
-                    2 => PwmIntMask::PeriodEndOnly,
+                    2 => PwmIntMask::ConfigurationLoadedOnly,
                     3 => PwmIntMask::AllEvents,
                     _ => unreachable!(),
                 }
@@ -16435,10 +16435,10 @@ pub mod pwm {
             pub fn is_abnormal_only(&self) -> bool {
                 *self == PwmIntMask::AbnormalOnly
             }
-            #[doc = "Enable step end event"]
+            #[doc = "Enable configuration-load notification; initial START can also assert it, not proof that a pulse block ended"]
             #[inline(always)]
-            pub fn is_period_end_only(&self) -> bool {
-                *self == PwmIntMask::PeriodEndOnly
+            pub fn is_configuration_loaded_only(&self) -> bool {
+                *self == PwmIntMask::ConfigurationLoadedOnly
             }
             #[doc = "Enable both event outputs; SDK initialization value"]
             #[inline(always)]
@@ -16446,7 +16446,7 @@ pub mod pwm {
                 *self == PwmIntMask::AllEvents
             }
         }
-        #[doc = "Field `PWM_INT_MASK` writer - Event enable despite MASK name: bit0 abnormal, bit1 step end; 1 permits, 0 masks, confirmed by SDK init writing 3"]
+        #[doc = "Field `PWM_INT_MASK` writer - Event enable despite MASK name: bit0 abnormal, bit1 configuration load; 1 permits, 0 masks, confirmed by SDK init writing 3"]
         pub type PwmIntMaskW<'a, REG> = crate::FieldWriter<'a, REG, 2, PwmIntMask, crate::Safe>;
         impl<'a, REG> PwmIntMaskW<'a, REG>
         where
@@ -16463,10 +16463,10 @@ pub mod pwm {
             pub fn abnormal_only(self) -> &'a mut crate::W<REG> {
                 self.variant(PwmIntMask::AbnormalOnly)
             }
-            #[doc = "Enable step end event"]
+            #[doc = "Enable configuration-load notification; initial START can also assert it, not proof that a pulse block ended"]
             #[inline(always)]
-            pub fn period_end_only(self) -> &'a mut crate::W<REG> {
-                self.variant(PwmIntMask::PeriodEndOnly)
+            pub fn configuration_loaded_only(self) -> &'a mut crate::W<REG> {
+                self.variant(PwmIntMask::ConfigurationLoadedOnly)
             }
             #[doc = "Enable both event outputs; SDK initialization value"]
             #[inline(always)]
@@ -16475,14 +16475,14 @@ pub mod pwm {
             }
         }
         impl R {
-            #[doc = "Bits 0:1 - Event enable despite MASK name: bit0 abnormal, bit1 step end; 1 permits, 0 masks, confirmed by SDK init writing 3"]
+            #[doc = "Bits 0:1 - Event enable despite MASK name: bit0 abnormal, bit1 configuration load; 1 permits, 0 masks, confirmed by SDK init writing 3"]
             #[inline(always)]
             pub fn pwm_int_mask(&self) -> PwmIntMaskR {
                 PwmIntMaskR::new((self.bits & 3) as u8)
             }
         }
         impl W {
-            #[doc = "Bits 0:1 - Event enable despite MASK name: bit0 abnormal, bit1 step end; 1 permits, 0 masks, confirmed by SDK init writing 3"]
+            #[doc = "Bits 0:1 - Event enable despite MASK name: bit0 abnormal, bit1 configuration load; 1 permits, 0 masks, confirmed by SDK init writing 3"]
             #[inline(always)]
             pub fn pwm_int_mask(&mut self) -> PwmIntMaskW<'_, PwmIntMaskSpec> {
                 PwmIntMaskW::new(self, 0)
@@ -16546,10 +16546,10 @@ pub mod pwm {
     pub mod pwm_cfg_int_clr0 {
         #[doc = "Register `PWM_CFG_INT_CLR0` writer"]
         pub type W = crate::W<PwmCfgIntClr0Spec>;
-        #[doc = "Field `PWM_CFG_INT_CLR0` writer - SDK writes channel bit to acknowledge step-end event; command readback/self-clear timing unverified"]
+        #[doc = "Field `PWM_CFG_INT_CLR0` writer - Write channel bit to acknowledge configuration-load notification; initial START also sets this flag on A-board channel0; command readback/self-clear timing unverified"]
         pub type PwmCfgIntClr0W<'a, REG> = crate::FieldWriter<'a, REG, 16, u16>;
         impl W {
-            #[doc = "Bits 0:15 - SDK writes channel bit to acknowledge step-end event; command readback/self-clear timing unverified"]
+            #[doc = "Bits 0:15 - Write channel bit to acknowledge configuration-load notification; initial START also sets this flag on A-board channel0; command readback/self-clear timing unverified"]
             #[inline(always)]
             pub fn pwm_cfg_int_clr0(&mut self) -> PwmCfgIntClr0W<'_, PwmCfgIntClr0Spec> {
                 PwmCfgIntClr0W::new(self, 0)

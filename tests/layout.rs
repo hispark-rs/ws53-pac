@@ -256,7 +256,7 @@ fn pwm_four_groups_eight_channels_and_event_enable_encodings() {
         .modify(|_, w| w.pwm_int_mask().abnormal_only());
     assert_eq!(r.pwm_int_mask().read().pwm_int_mask().bits(), 1);
     r.pwm_int_mask()
-        .modify(|_, w| w.pwm_int_mask().period_end_only());
+        .modify(|_, w| w.pwm_int_mask().configuration_loaded_only());
     assert_eq!(r.pwm_int_mask().read().pwm_int_mask().bits(), 2);
     r.pwm_int_mask().modify(|_, w| w.pwm_int_mask().disabled());
     assert_eq!(r.pwm_int_mask().read().bits(), 0xa5000000);

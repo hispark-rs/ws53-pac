@@ -4655,7 +4655,7 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <fields>
             <field>
               <name>PWM_START_0</name>
-              <description>Commit group 0 configuration with 1; SDK has no completion poll, self-clear/readback timing unverified</description>
+              <description>Commit group 0 configuration with 1; do not assume synchronous acceptance. A-board2MHz finite8/16 bursts required guarding the initial enabled configuration before EN-clear;10us guard passed. Exact acceptance latency and command readback unverified; see evidence/ws53-pwm-start-hil.json</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
               <access>write-only</access>
@@ -5007,7 +5007,7 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <fields>
             <field>
               <name>PWM_PERIODLOAD_FLAG_0</name>
-              <description>Period load complete flag</description>
+              <description>Configuration-load notification; A-board flag=1 and count=1 during first pulse after START, before 8/16-pulse block completion. W1C via CFG_INT_CLR0 clears it; deferred stop later asserts it again. Not an unconditional block-end flag. See evidence/ws53-pwm-load-flag-hil.json</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-only</access>
@@ -6607,7 +6607,7 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <fields>
             <field>
               <name>PWM_INT_MASK</name>
-              <description>Event enable despite MASK name: bit0 abnormal, bit1 step end; 1 permits, 0 masks, confirmed by SDK init writing 3</description>
+              <description>Event enable despite MASK name: bit0 abnormal, bit1 configuration load; 1 permits, 0 masks, confirmed by SDK init writing 3</description>
               <bitOffset>0</bitOffset>
               <bitWidth>2</bitWidth>
               <access>read-write</access>
@@ -6623,8 +6623,8 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
                   <value>1</value>
                 </enumeratedValue>
                 <enumeratedValue>
-                  <name>PeriodEndOnly</name>
-                  <description>Enable step end event</description>
+                  <name>ConfigurationLoadedOnly</name>
+                  <description>Enable configuration-load notification; initial START can also assert it, not proof that a pulse block ended</description>
                   <value>2</value>
                 </enumeratedValue>
                 <enumeratedValue>
@@ -6661,7 +6661,7 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <fields>
             <field>
               <name>PWM_CFG_INT_CLR0</name>
-              <description>SDK writes channel bit to acknowledge step-end event; command readback/self-clear timing unverified</description>
+              <description>Write channel bit to acknowledge configuration-load notification; initial START also sets this flag on A-board channel0; command readback/self-clear timing unverified</description>
               <bitOffset>0</bitOffset>
               <bitWidth>16</bitWidth>
               <access>write-only</access>
