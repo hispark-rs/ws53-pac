@@ -6354,8 +6354,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x0</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x000F0FFF</resetMask>
           <fields>
             <field>
               <name>MASTER_MODE</name>
@@ -6470,8 +6468,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x4</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0007000F</resetMask>
           <fields>
             <field>
               <name>ENABLE</name>
@@ -6530,8 +6526,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x10</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00013FFF</resetMask>
           <fields>
             <field>
               <name>IC_TAR</name>
@@ -6583,8 +6577,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x14</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x000003FF</resetMask>
           <fields>
             <field>
               <name>IC_SAR</name>
@@ -6601,8 +6593,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x18</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000007</resetMask>
           <fields>
             <field>
               <name>IC_HS_MAR</name>
@@ -6614,48 +6604,65 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           </fields>
         </register>
         <register>
-          <name>IC_DATA_CMD</name>
-          <description>IC_DATA_CMD</description>
+          <name>IC_DATA_READ</name>
+          <description>IC_DATA_READ</description>
           <addressOffset>0x1C</addressOffset>
           <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000FFF</resetMask>
+          <access>read-only</access>
+          <readAction>modify</readAction>
           <fields>
             <field>
               <name>DAT</name>
               <description>dat</description>
               <bitOffset>0</bitOffset>
               <bitWidth>8</bitWidth>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>CMD</name>
-              <description>cmd</description>
-              <bitOffset>8</bitOffset>
-              <bitWidth>1</bitWidth>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>STOP</name>
-              <description>stop</description>
-              <bitOffset>9</bitOffset>
-              <bitWidth>1</bitWidth>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>RESTART</name>
-              <description>restart</description>
-              <bitOffset>10</bitOffset>
-              <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
+              <readAction>modifyExternal</readAction>
             </field>
             <field>
               <name>FIRST_DATA_BYTE</name>
               <description>first_data_byte</description>
               <bitOffset>11</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_DATA_WRITE</name>
+          <description>IC_DATA_WRITE</description>
+          <alternateRegister>IC_DATA_READ</alternateRegister>
+          <addressOffset>0x1C</addressOffset>
+          <size>32</size>
+          <access>write-only</access>
+          <fields>
+            <field>
+              <name>DAT</name>
+              <description>dat</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>8</bitWidth>
+              <access>write-only</access>
+            </field>
+            <field>
+              <name>CMD</name>
+              <description>cmd</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>write-only</access>
+            </field>
+            <field>
+              <name>STOP</name>
+              <description>stop</description>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>write-only</access>
+            </field>
+            <field>
+              <name>RESTART</name>
+              <description>restart</description>
+              <bitOffset>10</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>write-only</access>
             </field>
           </fields>
         </register>
@@ -6665,8 +6672,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x30</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>IC_SS_SCL_HCNT</name>
@@ -6683,8 +6688,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x34</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>IC_SS_SCL_LCNT</name>
@@ -6701,8 +6704,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x3C</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>IC_FS_SCL_HCNT</name>
@@ -6719,8 +6720,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x40</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>IC_FS_SCL_LCNT</name>
@@ -6737,8 +6736,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x44</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>IC_HS_SCL_HCNT</name>
@@ -6755,8 +6752,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x48</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>IC_HS_SCL_LCNT</name>
@@ -6773,8 +6768,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x50</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x000000FF</resetMask>
           <fields>
             <field>
               <name>RX_TL</name>
@@ -6791,8 +6784,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x54</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x000000FF</resetMask>
           <fields>
             <field>
               <name>TX_TL</name>
@@ -6809,14 +6800,12 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x58</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
-              <name>VALUE</name>
-              <description>Whole-register value; individual fields are not yet documented</description>
+              <name>NACK</name>
+              <description>nack</description>
               <bitOffset>0</bitOffset>
-              <bitWidth>32</bitWidth>
+              <bitWidth>1</bitWidth>
               <access>read-write</access>
             </field>
           </fields>
@@ -6826,128 +6815,126 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <description>IC_STATUS</description>
           <addressOffset>0x60</addressOffset>
           <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x001F0FFF</resetMask>
+          <access>read-only</access>
           <fields>
             <field>
               <name>ACTIVITY</name>
               <description>activity</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>TFNF</name>
               <description>tfnf</description>
               <bitOffset>1</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>TFE</name>
               <description>tfe</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>RFNE</name>
               <description>rfne</description>
               <bitOffset>3</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>RFF</name>
               <description>rff</description>
               <bitOffset>4</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>MST_ACTIVITY</name>
               <description>mst_activity</description>
               <bitOffset>5</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>SLV_ACTIVITY</name>
               <description>slv_activity</description>
               <bitOffset>6</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>MST_HOLD_TX_FIFO_EMPTY</name>
               <description>mst_hold_tx_fifo_empty</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>MST_HOLD_RX_FIFO_FULL</name>
               <description>mst_hold_rx_fifo_full</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>SLV_HOLD_TX_FIFO_EMPTY</name>
               <description>slv_hold_tx_fifo_empty</description>
               <bitOffset>9</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>SLV_HOLD_RX_FIFO_FULL</name>
               <description>slv_hold_rx_fifo_full</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>SDA_STUCK_NOT_RECOVERED</name>
               <description>sda_stuck_not_recovered</description>
               <bitOffset>11</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>SMBUS_QUICK_CMD_BIT</name>
               <description>smbus_quick_cmd_bit</description>
               <bitOffset>16</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>SMBUS_SLAVE_ADDR_VALID</name>
               <description>smbus_slave_addr_valid</description>
               <bitOffset>17</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>SMBUS_SLAVE_ADDR_RESOLVED</name>
               <description>smbus_slave_addr_resolved</description>
               <bitOffset>18</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>SMBUS_SUSPEND_STATUS</name>
               <description>smbus_suspend_status</description>
               <bitOffset>19</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>SMBUS_ALERT_STATUS</name>
               <description>smbus_alert_status</description>
               <bitOffset>20</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
           </fields>
         </register>
@@ -6956,16 +6943,14 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <description>IC_TXFLR</description>
           <addressOffset>0x64</addressOffset>
           <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
+          <access>read-only</access>
           <fields>
             <field>
-              <name>VALUE</name>
-              <description>Whole-register value; individual fields are not yet documented</description>
+              <name>TXFLR</name>
+              <description>txflr</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
           </fields>
         </register>
@@ -6974,16 +6959,14 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <description>IC_RXFLR</description>
           <addressOffset>0x68</addressOffset>
           <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
+          <access>read-only</access>
           <fields>
             <field>
-              <name>VALUE</name>
-              <description>Whole-register value; individual fields are not yet documented</description>
+              <name>RXFLR</name>
+              <description>rxflr</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
           </fields>
         </register>
@@ -6993,8 +6976,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x6C</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x000000FF</resetMask>
           <fields>
             <field>
               <name>SDA_RX_HOLD</name>
@@ -7011,8 +6992,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x70</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>SDA_TX_HOLD</name>
@@ -7028,16 +7007,14 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <description>IC_TX_FLUSH_CNT</description>
           <addressOffset>0x74</addressOffset>
           <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x000001FF</resetMask>
+          <access>read-only</access>
           <fields>
             <field>
               <name>TX_FLUSH_CNT</name>
               <description>tx_flush_cnt</description>
               <bitOffset>0</bitOffset>
               <bitWidth>9</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
           </fields>
         </register>
@@ -7046,44 +7023,42 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <description>IC_TX_ABRT_SOURCE</description>
           <addressOffset>0x78</addressOffset>
           <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000001F</resetMask>
+          <access>read-only</access>
           <fields>
             <field>
               <name>USER_ABRT</name>
               <description>user_abrt</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>SDA_STUCK_AT_LOW</name>
               <description>sda_stuck_at_low</description>
               <bitOffset>1</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>DEVICE_NOACK</name>
               <description>device_noack</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>DEVICE_SLVADDR_NOACK</name>
               <description>device_slvaddr_noack</description>
               <bitOffset>3</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>ABRT_DEVICE_WRITE</name>
               <description>abrt_device_write</description>
               <bitOffset>4</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
           </fields>
         </register>
@@ -7092,16 +7067,119 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <description>IC_TX_ABRT_SLV_INTX</description>
           <addressOffset>0x7C</addressOffset>
           <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
+          <access>read-only</access>
           <fields>
             <field>
-              <name>VALUE</name>
-              <description>Whole-register value; individual fields are not yet documented</description>
+              <name>ADDR_7B_NOACK</name>
+              <description>addr_7b_noack</description>
               <bitOffset>0</bitOffset>
-              <bitWidth>32</bitWidth>
-              <access>read-write</access>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>ADDR1_10B_NOACK</name>
+              <description>addr1_10b_noack</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>ADDR2_10B_NOACK</name>
+              <description>addr2_10b_noack</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>TXDATA_NOACK</name>
+              <description>txdata_noack</description>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>GCALL_NOACK</name>
+              <description>gcall_noack</description>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>GCALLL_READ</name>
+              <description>gcalll_read</description>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>HS_ACKDET</name>
+              <description>hs_ackdet</description>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>SBYTE_ACKDET</name>
+              <description>sbyte_ackdet</description>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>HS_NORSTRT</name>
+              <description>hs_norstrt</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>SBYTE_NORSTRT</name>
+              <description>sbyte_norstrt</description>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>RD_10B_NORSTRT</name>
+              <description>rd_10b_norstrt</description>
+              <bitOffset>10</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>MASTER_DIS</name>
+              <description>master_dis</description>
+              <bitOffset>11</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>LOST</name>
+              <description>lost</description>
+              <bitOffset>12</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>SLVFLUSH_TXFIFO</name>
+              <description>slvflush_txfifo</description>
+              <bitOffset>13</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>SLV_ARBLOST</name>
+              <description>slv_arblost</description>
+              <bitOffset>14</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>SLVRD_INTX</name>
+              <description>slvrd_intx</description>
+              <bitOffset>15</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
             </field>
           </fields>
         </register>
@@ -7111,14 +7189,12 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x80</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
-              <name>VALUE</name>
-              <description>Whole-register value; individual fields are not yet documented</description>
+              <name>ACK_GEN_CALL</name>
+              <description>ack_gen_call</description>
               <bitOffset>0</bitOffset>
-              <bitWidth>32</bitWidth>
+              <bitWidth>1</bitWidth>
               <access>read-write</access>
             </field>
           </fields>
@@ -7128,30 +7204,28 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <description>IC_ENABLE_STATUS</description>
           <addressOffset>0x84</addressOffset>
           <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000007</resetMask>
+          <access>read-only</access>
           <fields>
             <field>
               <name>IC_EN</name>
               <description>ic_en</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>SLV_DISABLE_WHLLE_BUSY</name>
               <description>slv_disable_whlle_busy</description>
               <bitOffset>1</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>SLV_RX_DATA_LOST</name>
               <description>slv_rx_data_lost</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
           </fields>
         </register>
@@ -7161,8 +7235,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0xA0</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000003</resetMask>
           <fields>
             <field>
               <name>RDMAE</name>
@@ -7186,12 +7258,10 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0xA4</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
-              <name>VALUE</name>
-              <description>Whole-register value; individual fields are not yet documented</description>
+              <name>DMATDL</name>
+              <description>dmatdl</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
               <access>read-write</access>
@@ -7204,12 +7274,10 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0xA8</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
-              <name>VALUE</name>
-              <description>Whole-register value; individual fields are not yet documented</description>
+              <name>DMARDL</name>
+              <description>dmardl</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
               <access>read-write</access>
@@ -7222,8 +7290,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0xAC</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x000000FF</resetMask>
           <fields>
             <field>
               <name>SDA_SETUP</name>
@@ -7240,8 +7306,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0xB0</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00007FFF</resetMask>
           <fields>
             <field>
               <name>M_RX_UNDER</name>
@@ -7355,114 +7419,112 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <description>IC_INTR_STAT</description>
           <addressOffset>0xB4</addressOffset>
           <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00007FFF</resetMask>
+          <access>read-only</access>
           <fields>
             <field>
               <name>R_RX_UNDER</name>
               <description>r_rx_under</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>R_RX_OVER</name>
               <description>r_rx_over</description>
               <bitOffset>1</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>R_RX_FULL</name>
               <description>r_rx_full</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>R_TX_OVER</name>
               <description>r_tx_over</description>
               <bitOffset>3</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>R_TX_EMPTY</name>
               <description>r_tx_empty</description>
               <bitOffset>4</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>R_RD_REQ</name>
               <description>r_rd_req</description>
               <bitOffset>5</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>R_TX_ABRT</name>
               <description>r_tx_abrt</description>
               <bitOffset>6</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>R_RX_DONE</name>
               <description>r_rx_done</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>R_ACTIVITY</name>
               <description>r_activity</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>R_STOP_DET</name>
               <description>r_stop_det</description>
               <bitOffset>9</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>R_START_DET</name>
               <description>r_start_det</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>R_GEN_CALL</name>
               <description>r_gen_call</description>
               <bitOffset>11</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>R_RESTART_DET</name>
               <description>r_restart_det</description>
               <bitOffset>12</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>R_MASTER_ON_HOLD</name>
               <description>r_master_on_hold</description>
               <bitOffset>13</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>R_SCL_STUCK_AT_LOW</name>
               <description>r_scl_stuck_at_low</description>
               <bitOffset>14</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
           </fields>
         </register>
@@ -7471,114 +7533,112 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <description>IC_RAW_INTR_STAT</description>
           <addressOffset>0xB8</addressOffset>
           <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00007FFF</resetMask>
+          <access>read-only</access>
           <fields>
             <field>
               <name>RX_UNDER</name>
               <description>rx_under</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>RX_OVER</name>
               <description>rx_over</description>
               <bitOffset>1</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>RX_FULL</name>
               <description>rx_full</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>TX_OVER</name>
               <description>tx_over</description>
               <bitOffset>3</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>TX_EMPTY</name>
               <description>tx_empty</description>
               <bitOffset>4</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>RD_REQ</name>
               <description>rd_req</description>
               <bitOffset>5</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>TX_ABRT</name>
               <description>tx_abrt</description>
               <bitOffset>6</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>RX_DONE</name>
               <description>rx_done</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>ACTIVITY</name>
               <description>activity</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>STOP_DET</name>
               <description>stop_det</description>
               <bitOffset>9</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>START_DET</name>
               <description>start_det</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>GEN_CALL</name>
               <description>gen_call</description>
               <bitOffset>11</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>RESTART_DET</name>
               <description>restart_det</description>
               <bitOffset>12</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>MASTER_ON_HOLD</name>
               <description>master_on_hold</description>
               <bitOffset>13</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>SCL_STUCK_AT_LOW</name>
               <description>scl_stuck_at_low</description>
               <bitOffset>14</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
           </fields>
         </register>
@@ -7587,16 +7647,14 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <description>IC_INTR_STAT_ALL</description>
           <addressOffset>0xBC</addressOffset>
           <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
+          <access>read-only</access>
           <fields>
             <field>
               <name>VALUE</name>
-              <description>Whole-register value; individual fields are not yet documented</description>
+              <description>Status slot from SDK struct; no verified software write or individual field semantics</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
           </fields>
         </register>
@@ -7605,16 +7663,14 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <description>IC_CLR_INTR</description>
           <addressOffset>0xC0</addressOffset>
           <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
+          <access>write-only</access>
           <fields>
             <field>
               <name>VALUE</name>
-              <description>Whole-register value; individual fields are not yet documented</description>
+              <description>Selective clear layout unresolved: SDK bitfield exceeds 32 bits and helper masks disagree with status; do not infer W1C positions or read-clear</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
-              <access>read-write</access>
+              <access>write-only</access>
             </field>
           </fields>
         </register>
@@ -7623,16 +7679,20 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <description>IC_CLR_INT</description>
           <addressOffset>0xC4</addressOffset>
           <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
+          <access>write-only</access>
           <fields>
             <field>
               <name>CLR_INT</name>
-              <description>clr_int</description>
+              <description>Source clr_all_int writes 1; header says read-clear but conflicts with executed helper; read behavior not exposed</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>write-only</access>
+              <writeConstraint>
+                <range>
+                  <minimum>1</minimum>
+                  <maximum>1</maximum>
+                </range>
+              </writeConstraint>
             </field>
           </fields>
         </register>
@@ -7659,8 +7719,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x0</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x000F0FFF</resetMask>
           <fields>
             <field>
               <name>MASTER_MODE</name>
@@ -7775,8 +7833,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x4</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0007000F</resetMask>
           <fields>
             <field>
               <name>ENABLE</name>
@@ -7835,8 +7891,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x10</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00013FFF</resetMask>
           <fields>
             <field>
               <name>IC_TAR</name>
@@ -7888,8 +7942,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x14</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x000003FF</resetMask>
           <fields>
             <field>
               <name>IC_SAR</name>
@@ -7906,8 +7958,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x18</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000007</resetMask>
           <fields>
             <field>
               <name>IC_HS_MAR</name>
@@ -7919,48 +7969,65 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           </fields>
         </register>
         <register>
-          <name>IC_DATA_CMD</name>
-          <description>IC_DATA_CMD</description>
+          <name>IC_DATA_READ</name>
+          <description>IC_DATA_READ</description>
           <addressOffset>0x1C</addressOffset>
           <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000FFF</resetMask>
+          <access>read-only</access>
+          <readAction>modify</readAction>
           <fields>
             <field>
               <name>DAT</name>
               <description>dat</description>
               <bitOffset>0</bitOffset>
               <bitWidth>8</bitWidth>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>CMD</name>
-              <description>cmd</description>
-              <bitOffset>8</bitOffset>
-              <bitWidth>1</bitWidth>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>STOP</name>
-              <description>stop</description>
-              <bitOffset>9</bitOffset>
-              <bitWidth>1</bitWidth>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>RESTART</name>
-              <description>restart</description>
-              <bitOffset>10</bitOffset>
-              <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
+              <readAction>modifyExternal</readAction>
             </field>
             <field>
               <name>FIRST_DATA_BYTE</name>
               <description>first_data_byte</description>
               <bitOffset>11</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_DATA_WRITE</name>
+          <description>IC_DATA_WRITE</description>
+          <alternateRegister>IC_DATA_READ</alternateRegister>
+          <addressOffset>0x1C</addressOffset>
+          <size>32</size>
+          <access>write-only</access>
+          <fields>
+            <field>
+              <name>DAT</name>
+              <description>dat</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>8</bitWidth>
+              <access>write-only</access>
+            </field>
+            <field>
+              <name>CMD</name>
+              <description>cmd</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>write-only</access>
+            </field>
+            <field>
+              <name>STOP</name>
+              <description>stop</description>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>write-only</access>
+            </field>
+            <field>
+              <name>RESTART</name>
+              <description>restart</description>
+              <bitOffset>10</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>write-only</access>
             </field>
           </fields>
         </register>
@@ -7970,8 +8037,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x30</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>IC_SS_SCL_HCNT</name>
@@ -7988,8 +8053,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x34</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>IC_SS_SCL_LCNT</name>
@@ -8006,8 +8069,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x3C</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>IC_FS_SCL_HCNT</name>
@@ -8024,8 +8085,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x40</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>IC_FS_SCL_LCNT</name>
@@ -8042,8 +8101,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x44</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>IC_HS_SCL_HCNT</name>
@@ -8060,8 +8117,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x48</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>IC_HS_SCL_LCNT</name>
@@ -8078,8 +8133,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x50</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x000000FF</resetMask>
           <fields>
             <field>
               <name>RX_TL</name>
@@ -8096,8 +8149,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x54</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x000000FF</resetMask>
           <fields>
             <field>
               <name>TX_TL</name>
@@ -8114,14 +8165,12 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x58</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
-              <name>VALUE</name>
-              <description>Whole-register value; individual fields are not yet documented</description>
+              <name>NACK</name>
+              <description>nack</description>
               <bitOffset>0</bitOffset>
-              <bitWidth>32</bitWidth>
+              <bitWidth>1</bitWidth>
               <access>read-write</access>
             </field>
           </fields>
@@ -8131,128 +8180,126 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <description>IC_STATUS</description>
           <addressOffset>0x60</addressOffset>
           <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x001F0FFF</resetMask>
+          <access>read-only</access>
           <fields>
             <field>
               <name>ACTIVITY</name>
               <description>activity</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>TFNF</name>
               <description>tfnf</description>
               <bitOffset>1</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>TFE</name>
               <description>tfe</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>RFNE</name>
               <description>rfne</description>
               <bitOffset>3</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>RFF</name>
               <description>rff</description>
               <bitOffset>4</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>MST_ACTIVITY</name>
               <description>mst_activity</description>
               <bitOffset>5</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>SLV_ACTIVITY</name>
               <description>slv_activity</description>
               <bitOffset>6</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>MST_HOLD_TX_FIFO_EMPTY</name>
               <description>mst_hold_tx_fifo_empty</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>MST_HOLD_RX_FIFO_FULL</name>
               <description>mst_hold_rx_fifo_full</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>SLV_HOLD_TX_FIFO_EMPTY</name>
               <description>slv_hold_tx_fifo_empty</description>
               <bitOffset>9</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>SLV_HOLD_RX_FIFO_FULL</name>
               <description>slv_hold_rx_fifo_full</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>SDA_STUCK_NOT_RECOVERED</name>
               <description>sda_stuck_not_recovered</description>
               <bitOffset>11</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>SMBUS_QUICK_CMD_BIT</name>
               <description>smbus_quick_cmd_bit</description>
               <bitOffset>16</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>SMBUS_SLAVE_ADDR_VALID</name>
               <description>smbus_slave_addr_valid</description>
               <bitOffset>17</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>SMBUS_SLAVE_ADDR_RESOLVED</name>
               <description>smbus_slave_addr_resolved</description>
               <bitOffset>18</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>SMBUS_SUSPEND_STATUS</name>
               <description>smbus_suspend_status</description>
               <bitOffset>19</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>SMBUS_ALERT_STATUS</name>
               <description>smbus_alert_status</description>
               <bitOffset>20</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
           </fields>
         </register>
@@ -8261,16 +8308,14 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <description>IC_TXFLR</description>
           <addressOffset>0x64</addressOffset>
           <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
+          <access>read-only</access>
           <fields>
             <field>
-              <name>VALUE</name>
-              <description>Whole-register value; individual fields are not yet documented</description>
+              <name>TXFLR</name>
+              <description>txflr</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
           </fields>
         </register>
@@ -8279,16 +8324,14 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <description>IC_RXFLR</description>
           <addressOffset>0x68</addressOffset>
           <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
+          <access>read-only</access>
           <fields>
             <field>
-              <name>VALUE</name>
-              <description>Whole-register value; individual fields are not yet documented</description>
+              <name>RXFLR</name>
+              <description>rxflr</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
           </fields>
         </register>
@@ -8298,8 +8341,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x6C</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x000000FF</resetMask>
           <fields>
             <field>
               <name>SDA_RX_HOLD</name>
@@ -8316,8 +8357,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x70</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000FFFF</resetMask>
           <fields>
             <field>
               <name>SDA_TX_HOLD</name>
@@ -8333,16 +8372,14 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <description>IC_TX_FLUSH_CNT</description>
           <addressOffset>0x74</addressOffset>
           <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x000001FF</resetMask>
+          <access>read-only</access>
           <fields>
             <field>
               <name>TX_FLUSH_CNT</name>
               <description>tx_flush_cnt</description>
               <bitOffset>0</bitOffset>
               <bitWidth>9</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
           </fields>
         </register>
@@ -8351,44 +8388,42 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <description>IC_TX_ABRT_SOURCE</description>
           <addressOffset>0x78</addressOffset>
           <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000001F</resetMask>
+          <access>read-only</access>
           <fields>
             <field>
               <name>USER_ABRT</name>
               <description>user_abrt</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>SDA_STUCK_AT_LOW</name>
               <description>sda_stuck_at_low</description>
               <bitOffset>1</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>DEVICE_NOACK</name>
               <description>device_noack</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>DEVICE_SLVADDR_NOACK</name>
               <description>device_slvaddr_noack</description>
               <bitOffset>3</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>ABRT_DEVICE_WRITE</name>
               <description>abrt_device_write</description>
               <bitOffset>4</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
           </fields>
         </register>
@@ -8397,16 +8432,119 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <description>IC_TX_ABRT_SLV_INTX</description>
           <addressOffset>0x7C</addressOffset>
           <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
+          <access>read-only</access>
           <fields>
             <field>
-              <name>VALUE</name>
-              <description>Whole-register value; individual fields are not yet documented</description>
+              <name>ADDR_7B_NOACK</name>
+              <description>addr_7b_noack</description>
               <bitOffset>0</bitOffset>
-              <bitWidth>32</bitWidth>
-              <access>read-write</access>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>ADDR1_10B_NOACK</name>
+              <description>addr1_10b_noack</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>ADDR2_10B_NOACK</name>
+              <description>addr2_10b_noack</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>TXDATA_NOACK</name>
+              <description>txdata_noack</description>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>GCALL_NOACK</name>
+              <description>gcall_noack</description>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>GCALLL_READ</name>
+              <description>gcalll_read</description>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>HS_ACKDET</name>
+              <description>hs_ackdet</description>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>SBYTE_ACKDET</name>
+              <description>sbyte_ackdet</description>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>HS_NORSTRT</name>
+              <description>hs_norstrt</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>SBYTE_NORSTRT</name>
+              <description>sbyte_norstrt</description>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>RD_10B_NORSTRT</name>
+              <description>rd_10b_norstrt</description>
+              <bitOffset>10</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>MASTER_DIS</name>
+              <description>master_dis</description>
+              <bitOffset>11</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>LOST</name>
+              <description>lost</description>
+              <bitOffset>12</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>SLVFLUSH_TXFIFO</name>
+              <description>slvflush_txfifo</description>
+              <bitOffset>13</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>SLV_ARBLOST</name>
+              <description>slv_arblost</description>
+              <bitOffset>14</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>SLVRD_INTX</name>
+              <description>slvrd_intx</description>
+              <bitOffset>15</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
             </field>
           </fields>
         </register>
@@ -8416,14 +8554,12 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x80</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
-              <name>VALUE</name>
-              <description>Whole-register value; individual fields are not yet documented</description>
+              <name>ACK_GEN_CALL</name>
+              <description>ack_gen_call</description>
               <bitOffset>0</bitOffset>
-              <bitWidth>32</bitWidth>
+              <bitWidth>1</bitWidth>
               <access>read-write</access>
             </field>
           </fields>
@@ -8433,30 +8569,28 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <description>IC_ENABLE_STATUS</description>
           <addressOffset>0x84</addressOffset>
           <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000007</resetMask>
+          <access>read-only</access>
           <fields>
             <field>
               <name>IC_EN</name>
               <description>ic_en</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>SLV_DISABLE_WHLLE_BUSY</name>
               <description>slv_disable_whlle_busy</description>
               <bitOffset>1</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>SLV_RX_DATA_LOST</name>
               <description>slv_rx_data_lost</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
           </fields>
         </register>
@@ -8466,8 +8600,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0xA0</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000003</resetMask>
           <fields>
             <field>
               <name>RDMAE</name>
@@ -8491,12 +8623,10 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0xA4</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
-              <name>VALUE</name>
-              <description>Whole-register value; individual fields are not yet documented</description>
+              <name>DMATDL</name>
+              <description>dmatdl</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
               <access>read-write</access>
@@ -8509,12 +8639,10 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0xA8</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
-              <name>VALUE</name>
-              <description>Whole-register value; individual fields are not yet documented</description>
+              <name>DMARDL</name>
+              <description>dmardl</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
               <access>read-write</access>
@@ -8527,8 +8655,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0xAC</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x000000FF</resetMask>
           <fields>
             <field>
               <name>SDA_SETUP</name>
@@ -8545,8 +8671,6 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0xB0</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00007FFF</resetMask>
           <fields>
             <field>
               <name>M_RX_UNDER</name>
@@ -8660,114 +8784,112 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <description>IC_INTR_STAT</description>
           <addressOffset>0xB4</addressOffset>
           <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00007FFF</resetMask>
+          <access>read-only</access>
           <fields>
             <field>
               <name>R_RX_UNDER</name>
               <description>r_rx_under</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>R_RX_OVER</name>
               <description>r_rx_over</description>
               <bitOffset>1</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>R_RX_FULL</name>
               <description>r_rx_full</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>R_TX_OVER</name>
               <description>r_tx_over</description>
               <bitOffset>3</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>R_TX_EMPTY</name>
               <description>r_tx_empty</description>
               <bitOffset>4</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>R_RD_REQ</name>
               <description>r_rd_req</description>
               <bitOffset>5</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>R_TX_ABRT</name>
               <description>r_tx_abrt</description>
               <bitOffset>6</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>R_RX_DONE</name>
               <description>r_rx_done</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>R_ACTIVITY</name>
               <description>r_activity</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>R_STOP_DET</name>
               <description>r_stop_det</description>
               <bitOffset>9</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>R_START_DET</name>
               <description>r_start_det</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>R_GEN_CALL</name>
               <description>r_gen_call</description>
               <bitOffset>11</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>R_RESTART_DET</name>
               <description>r_restart_det</description>
               <bitOffset>12</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>R_MASTER_ON_HOLD</name>
               <description>r_master_on_hold</description>
               <bitOffset>13</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>R_SCL_STUCK_AT_LOW</name>
               <description>r_scl_stuck_at_low</description>
               <bitOffset>14</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
           </fields>
         </register>
@@ -8776,114 +8898,112 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <description>IC_RAW_INTR_STAT</description>
           <addressOffset>0xB8</addressOffset>
           <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00007FFF</resetMask>
+          <access>read-only</access>
           <fields>
             <field>
               <name>RX_UNDER</name>
               <description>rx_under</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>RX_OVER</name>
               <description>rx_over</description>
               <bitOffset>1</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>RX_FULL</name>
               <description>rx_full</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>TX_OVER</name>
               <description>tx_over</description>
               <bitOffset>3</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>TX_EMPTY</name>
               <description>tx_empty</description>
               <bitOffset>4</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>RD_REQ</name>
               <description>rd_req</description>
               <bitOffset>5</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>TX_ABRT</name>
               <description>tx_abrt</description>
               <bitOffset>6</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>RX_DONE</name>
               <description>rx_done</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>ACTIVITY</name>
               <description>activity</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>STOP_DET</name>
               <description>stop_det</description>
               <bitOffset>9</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>START_DET</name>
               <description>start_det</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>GEN_CALL</name>
               <description>gen_call</description>
               <bitOffset>11</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>RESTART_DET</name>
               <description>restart_det</description>
               <bitOffset>12</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>MASTER_ON_HOLD</name>
               <description>master_on_hold</description>
               <bitOffset>13</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
             <field>
               <name>SCL_STUCK_AT_LOW</name>
               <description>scl_stuck_at_low</description>
               <bitOffset>14</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
           </fields>
         </register>
@@ -8892,16 +9012,14 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <description>IC_INTR_STAT_ALL</description>
           <addressOffset>0xBC</addressOffset>
           <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
+          <access>read-only</access>
           <fields>
             <field>
               <name>VALUE</name>
-              <description>Whole-register value; individual fields are not yet documented</description>
+              <description>Status slot from SDK struct; no verified software write or individual field semantics</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
-              <access>read-write</access>
+              <access>read-only</access>
             </field>
           </fields>
         </register>
@@ -8910,16 +9028,14 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <description>IC_CLR_INTR</description>
           <addressOffset>0xC0</addressOffset>
           <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
+          <access>write-only</access>
           <fields>
             <field>
               <name>VALUE</name>
-              <description>Whole-register value; individual fields are not yet documented</description>
+              <description>Selective clear layout unresolved: SDK bitfield exceeds 32 bits and helper masks disagree with status; do not infer W1C positions or read-clear</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
-              <access>read-write</access>
+              <access>write-only</access>
             </field>
           </fields>
         </register>
@@ -8928,16 +9044,20 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <description>IC_CLR_INT</description>
           <addressOffset>0xC4</addressOffset>
           <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
+          <access>write-only</access>
           <fields>
             <field>
               <name>CLR_INT</name>
-              <description>clr_int</description>
+              <description>Source clr_all_int writes 1; header says read-clear but conflicts with executed helper; read behavior not exposed</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>write-only</access>
+              <writeConstraint>
+                <range>
+                  <minimum>1</minimum>
+                  <maximum>1</maximum>
+                </range>
+              </writeConstraint>
             </field>
           </fields>
         </register>

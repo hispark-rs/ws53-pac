@@ -120,3 +120,13 @@ source port, not a measured 32MHz clock or exclusive ownership of shared clocks.
 The source's 255-tick period and 32767-cycle API limits are not hardware-width
 claims; high count halves remain source-defined 16-bit slots. Register presence
 does not establish usable pins, shadow-latch timing, pulse waveforms or a PWM HAL.
+
+I2C0/1 use the audited non-PRO v151 source view: 36 register views each,
+IRQs62/63, separate RX-pop and TX-command accesses at0x1c, RO status and abort
+causes, and WO clear commands with unknown reset values. `IC_CLR_INT` accepts
+the source write-one clear-all operation. Selective `IC_CLR_INTR` positions
+remain opaque: the original C union exceeds32 bits and its helpers disagree
+with status positions. Header read-clear comments conflict with the executed
+write helpers; the PAC deliberately offers no speculative clear-register read
+API. Neither these layout tests nor source count formulas validate physical
+I2C timings, Fast-plus routing, pin ownership, cancellation or a bus transaction.

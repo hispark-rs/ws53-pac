@@ -992,3 +992,127 @@ fn application_nmi_halfwords_preserve_unknown_source_bits() {
     assert!(status.xip_control().bit() && status.xip_cache().bit());
     assert!(status.mdma().bit() && status.smdma().bit());
 }
+
+macro_rules! i2c_access_contract {
+    ($module:ident) => {
+        assert_not_impl!(
+            ws53_pac::$module::ic_data_read::IcDataReadSpec,
+            ws53_pac::generic::Writable
+        );
+        assert_not_impl!(
+            ws53_pac::$module::ic_data_write::IcDataWriteSpec,
+            ws53_pac::generic::Readable
+        );
+        assert_not_impl!(
+            ws53_pac::$module::ic_clr_int::IcClrIntSpec,
+            ws53_pac::generic::Readable
+        );
+        assert_not_impl!(
+            ws53_pac::$module::ic_clr_intr::IcClrIntrSpec,
+            ws53_pac::generic::Readable
+        );
+        assert_not_impl!(
+            ws53_pac::$module::ic_status::IcStatusSpec,
+            ws53_pac::generic::Writable
+        );
+        assert_not_impl!(
+            ws53_pac::$module::ic_enable_status::IcEnableStatusSpec,
+            ws53_pac::generic::Writable
+        );
+        assert_not_impl!(
+            ws53_pac::$module::ic_tx_abrt_source::IcTxAbrtSourceSpec,
+            ws53_pac::generic::Writable
+        );
+        assert_not_impl!(
+            ws53_pac::$module::ic_tx_abrt_slv_intx::IcTxAbrtSlvIntxSpec,
+            ws53_pac::generic::Writable
+        );
+        assert_not_impl!(
+            ws53_pac::$module::ic_intr_stat::IcIntrStatSpec,
+            ws53_pac::generic::Writable
+        );
+        assert_not_impl!(
+            ws53_pac::$module::ic_raw_intr_stat::IcRawIntrStatSpec,
+            ws53_pac::generic::Writable
+        );
+        assert_not_impl!(
+            ws53_pac::$module::ic_con::IcConSpec,
+            ws53_pac::generic::Resettable
+        );
+        assert_not_impl!(
+            ws53_pac::$module::ic_enable::IcEnableSpec,
+            ws53_pac::generic::Resettable
+        );
+        assert_not_impl!(
+            ws53_pac::$module::ic_clr_int::IcClrIntSpec,
+            ws53_pac::generic::Resettable
+        );
+    };
+}
+i2c_access_contract!(i2c0);
+i2c_access_contract!(i2c1);
+
+#[test]
+fn i2c_fifo_direction_and_abort_fields_match_both_source_instances() {
+    assert_eq!(ws53_pac::I2c0::PTR as usize, 0x52083000);
+    assert_eq!(ws53_pac::I2c1::PTR as usize, 0x52084000);
+    assert_eq!(ws53_pac::interrupt::ExternalInterrupt::I2C_0 as u16, 62);
+    assert_eq!(ws53_pac::interrupt::ExternalInterrupt::I2C_1 as u16, 63);
+    macro_rules! check {
+        ($module:ident) => {{
+            let r: ws53_pac::$module::RegisterBlock = unsafe { core::mem::zeroed() };
+            assert_eq!(size_of_val(&r), 0xc8);
+            assert_eq!(offset(&r, r.ic_data_read()), 0x1c);
+            assert_eq!(offset(&r, r.ic_data_write()), 0x1c);
+            assert_eq!(offset(&r, r.ic_tx_abrt_source()), 0x78);
+            assert_eq!(offset(&r, r.ic_tx_abrt_slv_intx()), 0x7c);
+            assert_eq!(offset(&r, r.ic_enable_status()), 0x84);
+            assert_eq!(offset(&r, r.ic_raw_intr_stat()), 0xb8);
+            assert_eq!(offset(&r, r.ic_clr_intr()), 0xc0);
+            assert_eq!(offset(&r, r.ic_clr_int()), 0xc4);
+            // Host RAM encoding only: no actual FIFO or clear side effects.
+            unsafe {
+                r.ic_data_write().write_with_zero(|w| {
+                    w.dat()
+                        .bits(0xa5)
+                        .cmd()
+                        .set_bit()
+                        .stop()
+                        .set_bit()
+                        .restart()
+                        .set_bit()
+                });
+                assert_eq!(r.ic_data_write().as_ptr().read_volatile(), 0x7a5);
+                r.ic_data_read().as_ptr().write_volatile(0x85a);
+                r.ic_tx_abrt_slv_intx().as_ptr().write_volatile(0x1009);
+                r.ic_enable_status().as_ptr().write_volatile(1);
+                r.ic_clr_int().write_with_zero(|w| w.clr_int().set_bit());
+                assert_eq!(r.ic_clr_int().as_ptr().read_volatile(), 1);
+            }
+            assert_eq!(r.ic_data_read().read().dat().bits(), 0x5a);
+            assert!(r.ic_data_read().read().first_data_byte().bit());
+            let reason = r.ic_tx_abrt_slv_intx().read();
+            assert!(
+                reason.addr_7b_noack().bit() && reason.txdata_noack().bit() && reason.lost().bit()
+            );
+            assert!(!reason.addr1_10b_noack().bit());
+            assert!(r.ic_enable_status().read().ic_en().bit());
+        }};
+    }
+    check!(i2c0);
+    check!(i2c1);
+}
+
+#[test]
+fn i2c_halfword_gates_preserve_neighbor_clock_ownership() {
+    let clocks: ws53_pac::m_crg::RegisterBlock = unsafe { core::mem::zeroed() };
+    unsafe {
+        clocks.m_clken1().write_with_zero(|w| w.bits(0xa501));
+    }
+    clocks.m_clken1().modify(|_, w| w.i2c0_enable().set_bit());
+    assert_eq!(clocks.m_clken1().read().bits(), 0xa541);
+    clocks.m_clken1().modify(|_, w| w.i2c1_enable().set_bit());
+    assert_eq!(clocks.m_clken1().read().bits(), 0xa5c1);
+    clocks.m_clken1().modify(|_, w| w.i2c0_enable().clear_bit());
+    assert_eq!(clocks.m_clken1().read().bits(), 0xa581);
+}
