@@ -12604,10 +12604,10 @@ pub mod pwm {
     pub mod pwm_periodcnt0 {
         #[doc = "Register `PWM_PERIODCNT0` reader"]
         pub type R = crate::R<PwmPeriodcnt0Spec>;
-        #[doc = "Field `PWM_PERIODCNT_0` reader - Current pulse count"]
+        #[doc = "Field `PWM_PERIODCNT_0` reader - A-board finite8/16 PWM0 at2MHz: active pulse index is1-based during each100us period, then0 after deferred stop. Boundary, continuous, repeating and overflow semantics unverified; see evidence/ws53-pwm-counter-hil.json"]
         pub type PwmPeriodcnt0R = crate::FieldReader<u16>;
         impl R {
-            #[doc = "Bits 0:15 - Current pulse count"]
+            #[doc = "Bits 0:15 - A-board finite8/16 PWM0 at2MHz: active pulse index is1-based during each100us period, then0 after deferred stop. Boundary, continuous, repeating and overflow semantics unverified; see evidence/ws53-pwm-counter-hil.json"]
             #[inline(always)]
             pub fn pwm_periodcnt_0(&self) -> PwmPeriodcnt0R {
                 PwmPeriodcnt0R::new((self.bits & 0xffff) as u16)

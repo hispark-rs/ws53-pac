@@ -5039,7 +5039,7 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <fields>
             <field>
               <name>PWM_PERIODCNT_0</name>
-              <description>Current pulse count</description>
+              <description>A-board finite8/16 PWM0 at2MHz: active pulse index is1-based during each100us period, then0 after deferred stop. Boundary, continuous, repeating and overflow semantics unverified; see evidence/ws53-pwm-counter-hil.json</description>
               <bitOffset>0</bitOffset>
               <bitWidth>16</bitWidth>
               <access>read-only</access>
