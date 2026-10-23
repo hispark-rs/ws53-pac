@@ -8252,19 +8252,19 @@ pub mod mdma {
             pub type R = crate::R<DestinationSpec>;
             #[doc = "Register `DESTINATION` writer"]
             pub type W = crate::W<DestinationSpec>;
-            #[doc = "Field `ADDRESS` reader - address"]
+            #[doc = "Field `ADDRESS` reader - Program destination address. Initial A-board memory-copy HIL reads the last transferred element after completion, not one-past; peripheral/partial progress remains unqualified."]
             pub type AddressR = crate::FieldReader<u32>;
-            #[doc = "Field `ADDRESS` writer - address"]
+            #[doc = "Field `ADDRESS` writer - Program destination address. Initial A-board memory-copy HIL reads the last transferred element after completion, not one-past; peripheral/partial progress remains unqualified."]
             pub type AddressW<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
             impl R {
-                #[doc = "Bits 0:31 - address"]
+                #[doc = "Bits 0:31 - Program destination address. Initial A-board memory-copy HIL reads the last transferred element after completion, not one-past; peripheral/partial progress remains unqualified."]
                 #[inline(always)]
                 pub fn address(&self) -> AddressR {
                     AddressR::new(self.bits)
                 }
             }
             impl W {
-                #[doc = "Bits 0:31 - address"]
+                #[doc = "Bits 0:31 - Program destination address. Initial A-board memory-copy HIL reads the last transferred element after completion, not one-past; peripheral/partial progress remains unqualified."]
                 #[inline(always)]
                 pub fn address(&mut self) -> AddressW<'_, DestinationSpec> {
                     AddressW::new(self, 0)
@@ -8919,19 +8919,19 @@ pub mod mdma {
             pub type R = crate::R<SourceSpec>;
             #[doc = "Register `SOURCE` writer"]
             pub type W = crate::W<SourceSpec>;
-            #[doc = "Field `ADDRESS` reader - address"]
+            #[doc = "Field `ADDRESS` reader - Program source address. Initial A-board memory-copy HIL reads the last transferred element after completion, not one-past; peripheral/partial progress remains unqualified."]
             pub type AddressR = crate::FieldReader<u32>;
-            #[doc = "Field `ADDRESS` writer - address"]
+            #[doc = "Field `ADDRESS` writer - Program source address. Initial A-board memory-copy HIL reads the last transferred element after completion, not one-past; peripheral/partial progress remains unqualified."]
             pub type AddressW<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
             impl R {
-                #[doc = "Bits 0:31 - address"]
+                #[doc = "Bits 0:31 - Program source address. Initial A-board memory-copy HIL reads the last transferred element after completion, not one-past; peripheral/partial progress remains unqualified."]
                 #[inline(always)]
                 pub fn address(&self) -> AddressR {
                     AddressR::new(self.bits)
                 }
             }
             impl W {
-                #[doc = "Bits 0:31 - address"]
+                #[doc = "Bits 0:31 - Program source address. Initial A-board memory-copy HIL reads the last transferred element after completion, not one-past; peripheral/partial progress remains unqualified."]
                 #[inline(always)]
                 pub fn address(&mut self) -> AddressW<'_, SourceSpec> {
                     AddressW::new(self, 0)
@@ -8958,9 +8958,9 @@ pub mod mdma {
             pub type R = crate::R<ControlSpec>;
             #[doc = "Register `CONTROL` writer"]
             pub type W = crate::W<ControlSpec>;
-            #[doc = "Field `TRANSFER_SIZE` reader - transfer_size"]
+            #[doc = "Field `TRANSFER_SIZE` reader - Write element count. Readback is status, not a programming echo: initial A-board HIL reads zero before enabling and after completion despite a successful17-element transfer. Active/partial readback semantics remain unqualified."]
             pub type TransferSizeR = crate::FieldReader<u16>;
-            #[doc = "Field `TRANSFER_SIZE` writer - transfer_size"]
+            #[doc = "Field `TRANSFER_SIZE` writer - Write element count. Readback is status, not a programming echo: initial A-board HIL reads zero before enabling and after completion despite a successful17-element transfer. Active/partial readback semantics remain unqualified."]
             pub type TransferSizeW<'a, REG> = crate::FieldWriter<'a, REG, 12, u16>;
             #[doc = "Field `SOURCE_BURST` reader - source_burst"]
             pub type SourceBurstR = crate::FieldReader;
@@ -9003,7 +9003,7 @@ pub mod mdma {
             #[doc = "Field `TERMINAL_INTERRUPT` writer - terminal_interrupt"]
             pub type TerminalInterruptW<'a, REG> = crate::BitWriter<'a, REG>;
             impl R {
-                #[doc = "Bits 0:11 - transfer_size"]
+                #[doc = "Bits 0:11 - Write element count. Readback is status, not a programming echo: initial A-board HIL reads zero before enabling and after completion despite a successful17-element transfer. Active/partial readback semantics remain unqualified."]
                 #[inline(always)]
                 pub fn transfer_size(&self) -> TransferSizeR {
                     TransferSizeR::new((self.bits & 0x0fff) as u16)
@@ -9060,7 +9060,7 @@ pub mod mdma {
                 }
             }
             impl W {
-                #[doc = "Bits 0:11 - transfer_size"]
+                #[doc = "Bits 0:11 - Write element count. Readback is status, not a programming echo: initial A-board HIL reads zero before enabling and after completion despite a successful17-element transfer. Active/partial readback semantics remain unqualified."]
                 #[inline(always)]
                 pub fn transfer_size(&mut self) -> TransferSizeW<'_, ControlSpec> {
                     TransferSizeW::new(self, 0)

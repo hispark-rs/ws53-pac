@@ -3348,7 +3348,7 @@
             <fields>
               <field>
                 <name>ADDRESS</name>
-                <description>address</description>
+                <description>Program destination address. Initial A-board memory-copy HIL reads the last transferred element after completion, not one-past; peripheral/partial progress remains unqualified.</description>
                 <bitOffset>0</bitOffset>
                 <bitWidth>32</bitWidth>
                 <access>read-write</access>
@@ -3567,7 +3567,7 @@
             <fields>
               <field>
                 <name>ADDRESS</name>
-                <description>address</description>
+                <description>Program source address. Initial A-board memory-copy HIL reads the last transferred element after completion, not one-past; peripheral/partial progress remains unqualified.</description>
                 <bitOffset>0</bitOffset>
                 <bitWidth>32</bitWidth>
                 <access>read-write</access>
@@ -3583,7 +3583,7 @@
             <fields>
               <field>
                 <name>TRANSFER_SIZE</name>
-                <description>transfer_size</description>
+                <description>Write element count. Readback is status, not a programming echo: initial A-board HIL reads zero before enabling and after completion despite a successful17-element transfer. Active/partial readback semantics remain unqualified.</description>
                 <bitOffset>0</bitOffset>
                 <bitWidth>12</bitWidth>
                 <access>read-write</access>
