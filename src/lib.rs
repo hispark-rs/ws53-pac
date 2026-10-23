@@ -35267,7 +35267,7 @@ pub mod tsensor {
         auto_refresh_config: AutoRefreshConfig,
     }
     impl RegisterBlock {
-        #[doc = "0x00 - Command view: SDK writes 1 to start; stop and self-clear behavior unspecified"]
+        #[doc = "0x00 - Command view: SDK writes 1 to start. A-board repeated START1 clears READY without clearing previous CODE; stop and command self-clear behavior unspecified"]
         #[inline(always)]
         pub const fn start(&self) -> &Start {
             &self.start
@@ -35298,10 +35298,10 @@ pub mod tsensor {
             &self.auto_refresh_config
         }
     }
-    #[doc = "START (w) register accessor: Command view: SDK writes 1 to start; stop and self-clear behavior unspecified\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`start::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@start`] module"]
+    #[doc = "START (w) register accessor: Command view: SDK writes 1 to start. A-board repeated START1 clears READY without clearing previous CODE; stop and command self-clear behavior unspecified\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`start::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@start`] module"]
     #[doc(alias = "START")]
     pub type Start = crate::Reg<start::StartSpec>;
-    #[doc = "Command view: SDK writes 1 to start; stop and self-clear behavior unspecified"]
+    #[doc = "Command view: SDK writes 1 to start. A-board repeated START1 clears READY without clearing previous CODE; stop and command self-clear behavior unspecified"]
     pub mod start {
         #[doc = "Register `START` writer"]
         pub type W = crate::W<StartSpec>;
@@ -35314,7 +35314,7 @@ pub mod tsensor {
                 ValueW::new(self, 0)
             }
         }
-        #[doc = "Command view: SDK writes 1 to start; stop and self-clear behavior unspecified\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`start::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "Command view: SDK writes 1 to start. A-board repeated START1 clears READY without clearing previous CODE; stop and command self-clear behavior unspecified\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`start::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct StartSpec;
         impl crate::RegisterSpec for StartSpec {
             type Ux = u32;
@@ -35372,7 +35372,7 @@ pub mod tsensor {
         pub type R = crate::R<AutoStatusSpec>;
         #[doc = "Field `READY` reader - ready"]
         pub type ReadyR = crate::BitReader;
-        #[doc = "Field `CODE` reader - code"]
+        #[doc = "Field `CODE` reader - Ten-bit result valid only with READY=1. A-board START1 observation retains the prior code while READY=0; that stale field is not a completed sample"]
         pub type CodeR = crate::FieldReader<u16>;
         impl R {
             #[doc = "Bit 1 - ready"]
@@ -35380,7 +35380,7 @@ pub mod tsensor {
             pub fn ready(&self) -> ReadyR {
                 ReadyR::new(((self.bits >> 1) & 1) != 0)
             }
-            #[doc = "Bits 2:11 - code"]
+            #[doc = "Bits 2:11 - Ten-bit result valid only with READY=1. A-board START1 observation retains the prior code while READY=0; that stale field is not a completed sample"]
             #[inline(always)]
             pub fn code(&self) -> CodeR {
                 CodeR::new(((self.bits >> 2) & 0x03ff) as u16)

@@ -15548,7 +15548,7 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
       <registers>
         <register>
           <name>START</name>
-          <description>Command view: SDK writes 1 to start; stop and self-clear behavior unspecified</description>
+          <description>Command view: SDK writes 1 to start. A-board repeated START1 clears READY without clearing previous CODE; stop and command self-clear behavior unspecified</description>
           <addressOffset>0x0</addressOffset>
           <size>32</size>
           <access>write-only</access>
@@ -15594,7 +15594,7 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
             </field>
             <field>
               <name>CODE</name>
-              <description>code</description>
+              <description>Ten-bit result valid only with READY=1. A-board START1 observation retains the prior code while READY=0; that stale field is not a completed sample</description>
               <bitOffset>2</bitOffset>
               <bitWidth>10</bitWidth>
               <access>read-only</access>
