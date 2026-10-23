@@ -9598,7 +9598,7 @@ pub mod uart0 {
         pub type SpsR = crate::BitReader;
         #[doc = "Field `SPS` writer - Sticky parity: 0=disabled; 1=enabled"]
         pub type SpsW<'a, REG> = crate::BitWriter<'a, REG>;
-        #[doc = "Stop bits: 0=1bit; 1=1.5/2bit"]
+        #[doc = "Stop duration: 0=one bit; 1=one-and-a-half bits when DLEN=0 (five data bits), otherwise two bits. Source configuration semantics, not waveform timing proof."]
         #[derive(Clone, Copy, Debug, PartialEq, Eq)]
         pub enum Stp {
             #[doc = "0: 1 stop bit"]
@@ -9612,7 +9612,7 @@ pub mod uart0 {
                 variant as u8 != 0
             }
         }
-        #[doc = "Field `STP` reader - Stop bits: 0=1bit; 1=1.5/2bit"]
+        #[doc = "Field `STP` reader - Stop duration: 0=one bit; 1=one-and-a-half bits when DLEN=0 (five data bits), otherwise two bits. Source configuration semantics, not waveform timing proof."]
         pub type StpR = crate::BitReader<Stp>;
         impl StpR {
             #[doc = "Get enumerated values variant"]
@@ -9634,7 +9634,7 @@ pub mod uart0 {
                 *self == Stp::Stop1_5Or2
             }
         }
-        #[doc = "Field `STP` writer - Stop bits: 0=1bit; 1=1.5/2bit"]
+        #[doc = "Field `STP` writer - Stop duration: 0=one bit; 1=one-and-a-half bits when DLEN=0 (five data bits), otherwise two bits. Source configuration semantics, not waveform timing proof."]
         pub type StpW<'a, REG> = crate::BitWriter<'a, REG, Stp>;
         impl<'a, REG> StpW<'a, REG>
         where
@@ -9682,7 +9682,7 @@ pub mod uart0 {
             pub fn sps(&self) -> SpsR {
                 SpsR::new(((self.bits >> 6) & 1) != 0)
             }
-            #[doc = "Bit 7 - Stop bits: 0=1bit; 1=1.5/2bit"]
+            #[doc = "Bit 7 - Stop duration: 0=one bit; 1=one-and-a-half bits when DLEN=0 (five data bits), otherwise two bits. Source configuration semantics, not waveform timing proof."]
             #[inline(always)]
             pub fn stp(&self) -> StpR {
                 StpR::new(((self.bits >> 7) & 1) != 0)
@@ -9719,7 +9719,7 @@ pub mod uart0 {
             pub fn sps(&mut self) -> SpsW<'_, UartCtlSpec> {
                 SpsW::new(self, 6)
             }
-            #[doc = "Bit 7 - Stop bits: 0=1bit; 1=1.5/2bit"]
+            #[doc = "Bit 7 - Stop duration: 0=one bit; 1=one-and-a-half bits when DLEN=0 (five data bits), otherwise two bits. Source configuration semantics, not waveform timing proof."]
             #[inline(always)]
             pub fn stp(&mut self) -> StpW<'_, UartCtlSpec> {
                 StpW::new(self, 7)
@@ -9746,19 +9746,19 @@ pub mod uart0 {
         pub type R = crate::R<DivHSpec>;
         #[doc = "Register `DIV_H` writer"]
         pub type W = crate::W<DivHSpec>;
-        #[doc = "Field `DIV_H` reader - Divider integer high 8 bits"]
+        #[doc = "Field `DIV_H` reader - Integer divider high byte. SDK opens DIV_EN before reading; high-byte hardware gating has not been established."]
         pub type DivHR = crate::FieldReader;
-        #[doc = "Field `DIV_H` writer - Divider integer high 8 bits"]
+        #[doc = "Field `DIV_H` writer - Integer divider high byte. SDK opens DIV_EN before reading; high-byte hardware gating has not been established."]
         pub type DivHW<'a, REG> = crate::FieldWriter<'a, REG, 8>;
         impl R {
-            #[doc = "Bits 0:7 - Divider integer high 8 bits"]
+            #[doc = "Bits 0:7 - Integer divider high byte. SDK opens DIV_EN before reading; high-byte hardware gating has not been established."]
             #[inline(always)]
             pub fn div_h(&self) -> DivHR {
                 DivHR::new((self.bits & 0xff) as u8)
             }
         }
         impl W {
-            #[doc = "Bits 0:7 - Divider integer high 8 bits"]
+            #[doc = "Bits 0:7 - Integer divider high byte. SDK opens DIV_EN before reading; high-byte hardware gating has not been established."]
             #[inline(always)]
             pub fn div_h(&mut self) -> DivHW<'_, DivHSpec> {
                 DivHW::new(self, 0)
@@ -9785,19 +9785,19 @@ pub mod uart0 {
         pub type R = crate::R<DivLSpec>;
         #[doc = "Register `DIV_L` writer"]
         pub type W = crate::W<DivLSpec>;
-        #[doc = "Field `DIV_L` reader - Divider integer low 8 bits"]
+        #[doc = "Field `DIV_L` reader - Integer divider low byte. SDK opens DIV_EN before reading; A-board UART2 reads zero with DIV_EN clear and the programmed value with DIV_EN set. Other instances and write gating remain unqualified."]
         pub type DivLR = crate::FieldReader;
-        #[doc = "Field `DIV_L` writer - Divider integer low 8 bits"]
+        #[doc = "Field `DIV_L` writer - Integer divider low byte. SDK opens DIV_EN before reading; A-board UART2 reads zero with DIV_EN clear and the programmed value with DIV_EN set. Other instances and write gating remain unqualified."]
         pub type DivLW<'a, REG> = crate::FieldWriter<'a, REG, 8>;
         impl R {
-            #[doc = "Bits 0:7 - Divider integer low 8 bits"]
+            #[doc = "Bits 0:7 - Integer divider low byte. SDK opens DIV_EN before reading; A-board UART2 reads zero with DIV_EN clear and the programmed value with DIV_EN set. Other instances and write gating remain unqualified."]
             #[inline(always)]
             pub fn div_l(&self) -> DivLR {
                 DivLR::new((self.bits & 0xff) as u8)
             }
         }
         impl W {
-            #[doc = "Bits 0:7 - Divider integer low 8 bits"]
+            #[doc = "Bits 0:7 - Integer divider low byte. SDK opens DIV_EN before reading; A-board UART2 reads zero with DIV_EN clear and the programmed value with DIV_EN set. Other instances and write gating remain unqualified."]
             #[inline(always)]
             pub fn div_l(&mut self) -> DivLW<'_, DivLSpec> {
                 DivLW::new(self, 0)

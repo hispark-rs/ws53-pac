@@ -3849,7 +3849,7 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
             </field>
             <field>
               <name>STP</name>
-              <description>Stop bits: 0=1bit; 1=1.5/2bit</description>
+              <description>Stop duration: 0=one bit; 1=one-and-a-half bits when DLEN=0 (five data bits), otherwise two bits. Source configuration semantics, not waveform timing proof.</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-write</access>
@@ -3883,7 +3883,7 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <fields>
             <field>
               <name>DIV_H</name>
-              <description>Divider integer high 8 bits</description>
+              <description>Integer divider high byte. SDK opens DIV_EN before reading; high-byte hardware gating has not been established.</description>
               <bitOffset>0</bitOffset>
               <bitWidth>8</bitWidth>
               <access>read-write</access>
@@ -3905,7 +3905,7 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <fields>
             <field>
               <name>DIV_L</name>
-              <description>Divider integer low 8 bits</description>
+              <description>Integer divider low byte. SDK opens DIV_EN before reading; A-board UART2 reads zero with DIV_EN clear and the programmed value with DIV_EN set. Other instances and write gating remain unqualified.</description>
               <bitOffset>0</bitOffset>
               <bitWidth>8</bitWidth>
               <access>read-write</access>
