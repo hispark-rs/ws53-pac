@@ -2127,17 +2127,83 @@
           <fields>
             <field>
               <name>TX_MODE</name>
-              <description>0/1/2/3/4 encode 16/18/20/24/32 bits</description>
+              <description>1/2/3/4/5 encode 16/18/20/24/32 bits; zero reserved</description>
               <bitOffset>0</bitOffset>
               <bitWidth>3</bitWidth>
               <access>read-write</access>
+              <writeConstraint>
+                <range>
+                  <minimum>1</minimum>
+                  <maximum>5</maximum>
+                </range>
+              </writeConstraint>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Bits16</name>
+                  <description>16-bit samples</description>
+                  <value>1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Bits18</name>
+                  <description>18-bit samples</description>
+                  <value>2</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Bits20</name>
+                  <description>20-bit samples</description>
+                  <value>3</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Bits24</name>
+                  <description>24-bit samples</description>
+                  <value>4</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Bits32</name>
+                  <description>32-bit samples</description>
+                  <value>5</value>
+                </enumeratedValue>
+              </enumeratedValues>
             </field>
             <field>
               <name>RX_MODE</name>
-              <description>0/1/2/3/4 encode 16/18/20/24/32 bits</description>
+              <description>1/2/3/4/5 encode 16/18/20/24/32 bits; zero reserved</description>
               <bitOffset>3</bitOffset>
               <bitWidth>3</bitWidth>
               <access>read-write</access>
+              <writeConstraint>
+                <range>
+                  <minimum>1</minimum>
+                  <maximum>5</maximum>
+                </range>
+              </writeConstraint>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Bits16</name>
+                  <description>16-bit samples</description>
+                  <value>1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Bits18</name>
+                  <description>18-bit samples</description>
+                  <value>2</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Bits20</name>
+                  <description>20-bit samples</description>
+                  <value>3</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Bits24</name>
+                  <description>24-bit samples</description>
+                  <value>4</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Bits32</name>
+                  <description>32-bit samples</description>
+                  <value>5</value>
+                </enumeratedValue>
+              </enumeratedValues>
             </field>
           </fields>
         </register>

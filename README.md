@@ -145,7 +145,9 @@ clock measurement or stable SPI/QSPI driver is claimed here.
 I2S now uses the WS53 SDK's audited layout instead of the imported family SIO
 map. All 25 word slots/70 fields have C compiler checks, including MODE bits,
 TX/RX enables at12/13, RX width at5:3, six interrupt causes and split/merged
-FIFOs. RX data reads consume FIFO entries; TX, interrupt-clear and CT_SET/CLR
+FIFOs. TX/RX sample-width variants encode1..5 for16/18/20/24/32 bits, checked
+against the original C enum; zero is reserved and excluded by write constraints.
+RX data reads consume FIFO entries; TX, interrupt-clear and CT_SET/CLR
 are write-only views. The latter have no claimed readback/zero-write semantics.
 Unknown reset values are omitted. These checks do not establish clock handoff,
 drain completion or wire timing. `M_CLKEN0_WORD` now gives a 32-bit access view

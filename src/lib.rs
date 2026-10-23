@@ -5683,33 +5683,223 @@ pub mod i2s {
         pub type R = crate::R<DataWidthSetSpec>;
         #[doc = "Register `DATA_WIDTH_SET` writer"]
         pub type W = crate::W<DataWidthSetSpec>;
-        #[doc = "Field `TX_MODE` reader - 0/1/2/3/4 encode 16/18/20/24/32 bits"]
-        pub type TxModeR = crate::FieldReader;
-        #[doc = "Field `TX_MODE` writer - 0/1/2/3/4 encode 16/18/20/24/32 bits"]
-        pub type TxModeW<'a, REG> = crate::FieldWriter<'a, REG, 3>;
-        #[doc = "Field `RX_MODE` reader - 0/1/2/3/4 encode 16/18/20/24/32 bits"]
-        pub type RxModeR = crate::FieldReader;
-        #[doc = "Field `RX_MODE` writer - 0/1/2/3/4 encode 16/18/20/24/32 bits"]
-        pub type RxModeW<'a, REG> = crate::FieldWriter<'a, REG, 3>;
+        #[doc = "1/2/3/4/5 encode 16/18/20/24/32 bits; zero reserved"]
+        #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+        #[repr(u8)]
+        pub enum TxMode {
+            #[doc = "1: 16-bit samples"]
+            Bits16 = 1,
+            #[doc = "2: 18-bit samples"]
+            Bits18 = 2,
+            #[doc = "3: 20-bit samples"]
+            Bits20 = 3,
+            #[doc = "4: 24-bit samples"]
+            Bits24 = 4,
+            #[doc = "5: 32-bit samples"]
+            Bits32 = 5,
+        }
+        impl From<TxMode> for u8 {
+            #[inline(always)]
+            fn from(variant: TxMode) -> Self {
+                variant as _
+            }
+        }
+        impl crate::FieldSpec for TxMode {
+            type Ux = u8;
+        }
+        impl crate::IsEnum for TxMode {}
+        #[doc = "Field `TX_MODE` reader - 1/2/3/4/5 encode 16/18/20/24/32 bits; zero reserved"]
+        pub type TxModeR = crate::FieldReader<TxMode>;
+        impl TxModeR {
+            #[doc = "Get enumerated values variant"]
+            #[inline(always)]
+            pub const fn variant(&self) -> Option<TxMode> {
+                match self.bits {
+                    1 => Some(TxMode::Bits16),
+                    2 => Some(TxMode::Bits18),
+                    3 => Some(TxMode::Bits20),
+                    4 => Some(TxMode::Bits24),
+                    5 => Some(TxMode::Bits32),
+                    _ => None,
+                }
+            }
+            #[doc = "16-bit samples"]
+            #[inline(always)]
+            pub fn is_bits16(&self) -> bool {
+                *self == TxMode::Bits16
+            }
+            #[doc = "18-bit samples"]
+            #[inline(always)]
+            pub fn is_bits18(&self) -> bool {
+                *self == TxMode::Bits18
+            }
+            #[doc = "20-bit samples"]
+            #[inline(always)]
+            pub fn is_bits20(&self) -> bool {
+                *self == TxMode::Bits20
+            }
+            #[doc = "24-bit samples"]
+            #[inline(always)]
+            pub fn is_bits24(&self) -> bool {
+                *self == TxMode::Bits24
+            }
+            #[doc = "32-bit samples"]
+            #[inline(always)]
+            pub fn is_bits32(&self) -> bool {
+                *self == TxMode::Bits32
+            }
+        }
+        #[doc = "Field `TX_MODE` writer - 1/2/3/4/5 encode 16/18/20/24/32 bits; zero reserved"]
+        pub type TxModeW<'a, REG> = crate::FieldWriter<'a, REG, 3, TxMode>;
+        impl<'a, REG> TxModeW<'a, REG>
+        where
+            REG: crate::Writable + crate::RegisterSpec,
+            REG::Ux: From<u8>,
+        {
+            #[doc = "16-bit samples"]
+            #[inline(always)]
+            pub fn bits16(self) -> &'a mut crate::W<REG> {
+                self.variant(TxMode::Bits16)
+            }
+            #[doc = "18-bit samples"]
+            #[inline(always)]
+            pub fn bits18(self) -> &'a mut crate::W<REG> {
+                self.variant(TxMode::Bits18)
+            }
+            #[doc = "20-bit samples"]
+            #[inline(always)]
+            pub fn bits20(self) -> &'a mut crate::W<REG> {
+                self.variant(TxMode::Bits20)
+            }
+            #[doc = "24-bit samples"]
+            #[inline(always)]
+            pub fn bits24(self) -> &'a mut crate::W<REG> {
+                self.variant(TxMode::Bits24)
+            }
+            #[doc = "32-bit samples"]
+            #[inline(always)]
+            pub fn bits32(self) -> &'a mut crate::W<REG> {
+                self.variant(TxMode::Bits32)
+            }
+        }
+        #[doc = "1/2/3/4/5 encode 16/18/20/24/32 bits; zero reserved"]
+        #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+        #[repr(u8)]
+        pub enum RxMode {
+            #[doc = "1: 16-bit samples"]
+            Bits16 = 1,
+            #[doc = "2: 18-bit samples"]
+            Bits18 = 2,
+            #[doc = "3: 20-bit samples"]
+            Bits20 = 3,
+            #[doc = "4: 24-bit samples"]
+            Bits24 = 4,
+            #[doc = "5: 32-bit samples"]
+            Bits32 = 5,
+        }
+        impl From<RxMode> for u8 {
+            #[inline(always)]
+            fn from(variant: RxMode) -> Self {
+                variant as _
+            }
+        }
+        impl crate::FieldSpec for RxMode {
+            type Ux = u8;
+        }
+        impl crate::IsEnum for RxMode {}
+        #[doc = "Field `RX_MODE` reader - 1/2/3/4/5 encode 16/18/20/24/32 bits; zero reserved"]
+        pub type RxModeR = crate::FieldReader<RxMode>;
+        impl RxModeR {
+            #[doc = "Get enumerated values variant"]
+            #[inline(always)]
+            pub const fn variant(&self) -> Option<RxMode> {
+                match self.bits {
+                    1 => Some(RxMode::Bits16),
+                    2 => Some(RxMode::Bits18),
+                    3 => Some(RxMode::Bits20),
+                    4 => Some(RxMode::Bits24),
+                    5 => Some(RxMode::Bits32),
+                    _ => None,
+                }
+            }
+            #[doc = "16-bit samples"]
+            #[inline(always)]
+            pub fn is_bits16(&self) -> bool {
+                *self == RxMode::Bits16
+            }
+            #[doc = "18-bit samples"]
+            #[inline(always)]
+            pub fn is_bits18(&self) -> bool {
+                *self == RxMode::Bits18
+            }
+            #[doc = "20-bit samples"]
+            #[inline(always)]
+            pub fn is_bits20(&self) -> bool {
+                *self == RxMode::Bits20
+            }
+            #[doc = "24-bit samples"]
+            #[inline(always)]
+            pub fn is_bits24(&self) -> bool {
+                *self == RxMode::Bits24
+            }
+            #[doc = "32-bit samples"]
+            #[inline(always)]
+            pub fn is_bits32(&self) -> bool {
+                *self == RxMode::Bits32
+            }
+        }
+        #[doc = "Field `RX_MODE` writer - 1/2/3/4/5 encode 16/18/20/24/32 bits; zero reserved"]
+        pub type RxModeW<'a, REG> = crate::FieldWriter<'a, REG, 3, RxMode>;
+        impl<'a, REG> RxModeW<'a, REG>
+        where
+            REG: crate::Writable + crate::RegisterSpec,
+            REG::Ux: From<u8>,
+        {
+            #[doc = "16-bit samples"]
+            #[inline(always)]
+            pub fn bits16(self) -> &'a mut crate::W<REG> {
+                self.variant(RxMode::Bits16)
+            }
+            #[doc = "18-bit samples"]
+            #[inline(always)]
+            pub fn bits18(self) -> &'a mut crate::W<REG> {
+                self.variant(RxMode::Bits18)
+            }
+            #[doc = "20-bit samples"]
+            #[inline(always)]
+            pub fn bits20(self) -> &'a mut crate::W<REG> {
+                self.variant(RxMode::Bits20)
+            }
+            #[doc = "24-bit samples"]
+            #[inline(always)]
+            pub fn bits24(self) -> &'a mut crate::W<REG> {
+                self.variant(RxMode::Bits24)
+            }
+            #[doc = "32-bit samples"]
+            #[inline(always)]
+            pub fn bits32(self) -> &'a mut crate::W<REG> {
+                self.variant(RxMode::Bits32)
+            }
+        }
         impl R {
-            #[doc = "Bits 0:2 - 0/1/2/3/4 encode 16/18/20/24/32 bits"]
+            #[doc = "Bits 0:2 - 1/2/3/4/5 encode 16/18/20/24/32 bits; zero reserved"]
             #[inline(always)]
             pub fn tx_mode(&self) -> TxModeR {
                 TxModeR::new((self.bits & 7) as u8)
             }
-            #[doc = "Bits 3:5 - 0/1/2/3/4 encode 16/18/20/24/32 bits"]
+            #[doc = "Bits 3:5 - 1/2/3/4/5 encode 16/18/20/24/32 bits; zero reserved"]
             #[inline(always)]
             pub fn rx_mode(&self) -> RxModeR {
                 RxModeR::new(((self.bits >> 3) & 7) as u8)
             }
         }
         impl W {
-            #[doc = "Bits 0:2 - 0/1/2/3/4 encode 16/18/20/24/32 bits"]
+            #[doc = "Bits 0:2 - 1/2/3/4/5 encode 16/18/20/24/32 bits; zero reserved"]
             #[inline(always)]
             pub fn tx_mode(&mut self) -> TxModeW<'_, DataWidthSetSpec> {
                 TxModeW::new(self, 0)
             }
-            #[doc = "Bits 3:5 - 0/1/2/3/4 encode 16/18/20/24/32 bits"]
+            #[doc = "Bits 3:5 - 1/2/3/4/5 encode 16/18/20/24/32 bits; zero reserved"]
             #[inline(always)]
             pub fn rx_mode(&mut self) -> RxModeW<'_, DataWidthSetSpec> {
                 RxModeW::new(self, 3)

@@ -1369,3 +1369,27 @@ fn i2s_word_clock_alias_preserves_pwm_and_unknown_upper_halfword() {
         ws53_pac::generic::Resettable
     );
 }
+
+#[test]
+fn i2s_width_variants_exclude_reserved_zero_and_encode_source_values() {
+    use ws53_pac::i2s::data_width_set::{RxMode, TxMode};
+    let r: ws53_pac::i2s::RegisterBlock = unsafe { core::mem::zeroed() };
+    for (tx, rx, code) in [
+        (TxMode::Bits16, RxMode::Bits16, 1),
+        (TxMode::Bits18, RxMode::Bits18, 2),
+        (TxMode::Bits20, RxMode::Bits20, 3),
+        (TxMode::Bits24, RxMode::Bits24, 4),
+        (TxMode::Bits32, RxMode::Bits32, 5),
+    ] {
+        r.data_width_set()
+            .modify(|_, w| w.tx_mode().variant(tx).rx_mode().variant(rx));
+        assert_eq!(r.data_width_set().read().bits(), code | (code << 3));
+        assert_eq!(r.data_width_set().read().tx_mode().variant(), Some(tx));
+        assert_eq!(r.data_width_set().read().rx_mode().variant(), Some(rx));
+    }
+    unsafe {
+        r.data_width_set().as_ptr().write_volatile(0);
+    }
+    assert_eq!(r.data_width_set().read().tx_mode().variant(), None);
+    assert_eq!(r.data_width_set().read().rx_mode().variant(), None);
+}
