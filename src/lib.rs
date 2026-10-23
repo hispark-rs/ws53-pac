@@ -2505,19 +2505,19 @@ pub mod timer {
         pub type R = crate::R<TimerLoadCount0Spec>;
         #[doc = "Register `TIMER_LOAD_COUNT0` writer"]
         pub type W = crate::W<TimerLoadCount0Spec>;
-        #[doc = "Field `LOAD_COUNT` reader - Timer 0 load count value"]
+        #[doc = "Field `LOAD_COUNT` reader - Full32-bit requested reload. WS53 A-board reads after writes return written_value OR 0xF; low read bits are not a retained write value. Effective sub16-tick timing and POR readback unqualified; see ws53-timer-load-hil.json"]
         pub type LoadCountR = crate::FieldReader<u32>;
-        #[doc = "Field `LOAD_COUNT` writer - Timer 0 load count value"]
+        #[doc = "Field `LOAD_COUNT` writer - Full32-bit requested reload. WS53 A-board reads after writes return written_value OR 0xF; low read bits are not a retained write value. Effective sub16-tick timing and POR readback unqualified; see ws53-timer-load-hil.json"]
         pub type LoadCountW<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
         impl R {
-            #[doc = "Bits 0:31 - Timer 0 load count value"]
+            #[doc = "Bits 0:31 - Full32-bit requested reload. WS53 A-board reads after writes return written_value OR 0xF; low read bits are not a retained write value. Effective sub16-tick timing and POR readback unqualified; see ws53-timer-load-hil.json"]
             #[inline(always)]
             pub fn load_count(&self) -> LoadCountR {
                 LoadCountR::new(self.bits)
             }
         }
         impl W {
-            #[doc = "Bits 0:31 - Timer 0 load count value"]
+            #[doc = "Bits 0:31 - Full32-bit requested reload. WS53 A-board reads after writes return written_value OR 0xF; low read bits are not a retained write value. Effective sub16-tick timing and POR readback unqualified; see ws53-timer-load-hil.json"]
             #[inline(always)]
             pub fn load_count(&mut self) -> LoadCountW<'_, TimerLoadCount0Spec> {
                 LoadCountW::new(self, 0)
@@ -2807,19 +2807,19 @@ pub mod timer {
         pub type R = crate::R<TimerLoadCount1Spec>;
         #[doc = "Register `TIMER_LOAD_COUNT1` writer"]
         pub type W = crate::W<TimerLoadCount1Spec>;
-        #[doc = "Field `LOAD_COUNT` reader - Timer 0 load count value"]
+        #[doc = "Field `LOAD_COUNT` reader - Full32-bit requested reload. WS53 A-board reads after writes return written_value OR 0xF; low read bits are not a retained write value. Effective sub16-tick timing and POR readback unqualified; see ws53-timer-load-hil.json"]
         pub type LoadCountR = crate::FieldReader<u32>;
-        #[doc = "Field `LOAD_COUNT` writer - Timer 0 load count value"]
+        #[doc = "Field `LOAD_COUNT` writer - Full32-bit requested reload. WS53 A-board reads after writes return written_value OR 0xF; low read bits are not a retained write value. Effective sub16-tick timing and POR readback unqualified; see ws53-timer-load-hil.json"]
         pub type LoadCountW<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
         impl R {
-            #[doc = "Bits 0:31 - Timer 0 load count value"]
+            #[doc = "Bits 0:31 - Full32-bit requested reload. WS53 A-board reads after writes return written_value OR 0xF; low read bits are not a retained write value. Effective sub16-tick timing and POR readback unqualified; see ws53-timer-load-hil.json"]
             #[inline(always)]
             pub fn load_count(&self) -> LoadCountR {
                 LoadCountR::new(self.bits)
             }
         }
         impl W {
-            #[doc = "Bits 0:31 - Timer 0 load count value"]
+            #[doc = "Bits 0:31 - Full32-bit requested reload. WS53 A-board reads after writes return written_value OR 0xF; low read bits are not a retained write value. Effective sub16-tick timing and POR readback unqualified; see ws53-timer-load-hil.json"]
             #[inline(always)]
             pub fn load_count(&mut self) -> LoadCountW<'_, TimerLoadCount1Spec> {
                 LoadCountW::new(self, 0)

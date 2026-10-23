@@ -691,7 +691,7 @@
           <fields>
             <field>
               <name>LOAD_COUNT</name>
-              <description>Timer 0 load count value</description>
+              <description>Full32-bit requested reload. WS53 A-board reads after writes return written_value OR 0xF; low read bits are not a retained write value. Effective sub16-tick timing and POR readback unqualified; see ws53-timer-load-hil.json</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
               <access>read-write</access>
@@ -839,7 +839,7 @@
           <fields>
             <field>
               <name>LOAD_COUNT</name>
-              <description>Timer 0 load count value</description>
+              <description>Full32-bit requested reload. WS53 A-board reads after writes return written_value OR 0xF; low read bits are not a retained write value. Effective sub16-tick timing and POR readback unqualified; see ws53-timer-load-hil.json</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
               <access>read-write</access>

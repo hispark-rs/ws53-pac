@@ -1,6 +1,6 @@
 {
   "source": "https://github.com/hispark-rs/hisi-registers",
-  "commit": "cf0b903291813d2db4442a8665b517beab4d04e8",
+  "commit": "ce05fd845382494c3eb8eb8abca843447a40f36d",
   "dirty": false,
   "profile": "ws53_liteos_app/acore/MCU_MODE_1",
   "svd2rust": "0.37.1",
@@ -33,7 +33,7 @@
     "rdl/chips/ws53/system-memory.rdl": "0392b17ff9ec8fc7a2d747b9edb1ccfbfd60a9eba7bac937d7339d63595270fc",
     "rdl/chips/ws53/trng.rdl": "75e3a5cc88ca1d2b91312f38c5d43138b39753dc6f9ea591a3e34d8e9a0e8f74",
     "rdl/chips/ws53/tsensor.rdl": "3f8af733dc054c5de9e1ac25e9a70f86c6680fc4db19b7c2ca64d0f631822304",
-    "rdl/chips/ws53.rdl": "093a68e6f4fbd3106a3124ebb33709d2c69a38a4b0328681de1cebb8bdeaffe7",
+    "rdl/chips/ws53.rdl": "13b1b5edaff328d24e377da2e11a9bb96dbd555bf3f57437caa4c0d15aa5dbea",
     "rdl/chips/ws63/peripherals/bt_em_ctl.rdl": "96d045b6ed1984d43822e7833f93f90dd77cfb2553bcffb423f86f5e5404a563",
     "rdl/chips/ws63/peripherals/cldo_crg.rdl": "b5289461723351d3643ec982df334dbd795d78fe185435c29c9dee868153d77d",
     "rdl/chips/ws63/peripherals/cmu.rdl": "9e5e37d420c350d9529c5186451db5ce2dccc354bfdec64bba7a6a8060db8a9a",
@@ -82,8 +82,8 @@
     "rust-toolchain.toml": "4a55a5c6ce672e0024729f0739b0a82a0897538c9332528927201459bda83585"
   },
   "outputs": {
-    "src/lib.rs": "c2c0ad60d8171aa6c45e97c31b6c876fdb15994de407c274390417b3dc16d2dc",
+    "src/lib.rs": "a5e42bdeba0438ddc6263a8d42eefd032edee6858fedbe91a2997db1097a1bdf",
     "device.x": "b732da88f67fc24ca2cdce044efc37da252563f855f19ca7975359951be95eba",
-    "svd/WS53.svd": "d39383d985fdbf24485bfbcf1e6cd97b5c7aca44bcf8e40db8dcba724eaab8e4"
+    "svd/WS53.svd": "764f27a85598242c435a6d6721373073713bb307c4a01a7bb57ba1872d0a833e"
   }
 }
