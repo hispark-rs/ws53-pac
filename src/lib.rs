@@ -31535,23 +31535,23 @@ pub mod wdt {
             type Safety = crate::Unsafe;
         }
     }
-    #[doc = "WDT_CNT (r) register accessor: WDT_CNT\n\nYou can [`read`](crate::Reg::read) this register and get [`wdt_cnt::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@wdt_cnt`] module"]
+    #[doc = "WDT_CNT (r) register accessor: WDT_CNT\n\nYou can [`read`](crate::Reg::read) this register and get [`wdt_cnt::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\n<div class=\"warning\">One or more dependent resources other than the current register are immediately affected by a read operation.</div>\n\nFor information about available fields see [`mod@wdt_cnt`] module"]
     #[doc(alias = "WDT_CNT")]
     pub type WdtCnt = crate::Reg<wdt_cnt::WdtCntSpec>;
     #[doc = "WDT_CNT"]
     pub mod wdt_cnt {
         #[doc = "Register `WDT_CNT` reader"]
         pub type R = crate::R<WdtCntSpec>;
-        #[doc = "Field `WDT_CNT` reader - Current counter value"]
+        #[doc = "Field `WDT_CNT` reader - Consume the valid counter snapshot; A-board observation: reading CNT clears CCVR validity. A new request issued too soon after consumption may be lost even when BUSY is zero. Read only once per valid snapshot; rearm latency and command ordering need qualification.\n\n<div class=\"warning\">One or more dependent resources other than the current field are immediately affected by a read operation.</div>"]
         pub type WdtCntR = crate::FieldReader<u32>;
         impl R {
-            #[doc = "Bits 0:31 - Current counter value"]
+            #[doc = "Bits 0:31 - Consume the valid counter snapshot; A-board observation: reading CNT clears CCVR validity. A new request issued too soon after consumption may be lost even when BUSY is zero. Read only once per valid snapshot; rearm latency and command ordering need qualification."]
             #[inline(always)]
             pub fn wdt_cnt(&self) -> WdtCntR {
                 WdtCntR::new(self.bits)
             }
         }
-        #[doc = "WDT_CNT\n\nYou can [`read`](crate::Reg::read) this register and get [`wdt_cnt::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "WDT_CNT\n\nYou can [`read`](crate::Reg::read) this register and get [`wdt_cnt::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\n<div class=\"warning\">One or more dependent resources other than the current register are immediately affected by a read operation.</div>"]
         pub struct WdtCntSpec;
         impl crate::RegisterSpec for WdtCntSpec {
             type Ux = u32;
@@ -31662,10 +31662,10 @@ pub mod wdt {
     pub mod ccvr_status {
         #[doc = "Register `CCVR_STATUS` reader"]
         pub type R = crate::R<CcvrStatusSpec>;
-        #[doc = "Field `VALID` reader - Counter latch valid; inspect after requesting a snapshot"]
+        #[doc = "Field `VALID` reader - Snapshot valid until CNT is consumed; A-board validity remains set when CNT is not read, and clears after its read. BUSY zero does not prove that another request can be accepted."]
         pub type ValidR = crate::BitReader;
         impl R {
-            #[doc = "Bit 1 - Counter latch valid; inspect after requesting a snapshot"]
+            #[doc = "Bit 1 - Snapshot valid until CNT is consumed; A-board validity remains set when CNT is not read, and clears after its read. BUSY zero does not prove that another request can be accepted."]
             #[inline(always)]
             pub fn valid(&self) -> ValidR {
                 ValidR::new(((self.bits >> 1) & 1) != 0)

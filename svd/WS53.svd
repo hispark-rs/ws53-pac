@@ -13942,13 +13942,15 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <addressOffset>0x14</addressOffset>
           <size>32</size>
           <access>read-only</access>
+          <readAction>modifyExternal</readAction>
           <fields>
             <field>
               <name>WDT_CNT</name>
-              <description>Current counter value</description>
+              <description>Consume the valid counter snapshot; A-board observation: reading CNT clears CCVR validity. A new request issued too soon after consumption may be lost even when BUSY is zero. Read only once per valid snapshot; rearm latency and command ordering need qualification.</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
               <access>read-only</access>
+              <readAction>modifyExternal</readAction>
             </field>
           </fields>
         </register>
@@ -14025,7 +14027,7 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <fields>
             <field>
               <name>VALID</name>
-              <description>Counter latch valid; inspect after requesting a snapshot</description>
+              <description>Snapshot valid until CNT is consumed; A-board validity remains set when CNT is not read, and clears after its read. BUSY zero does not prove that another request can be accepted.</description>
               <bitOffset>1</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-only</access>
