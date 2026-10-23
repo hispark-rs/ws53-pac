@@ -541,13 +541,14 @@ fn uart_word_views_preserve_data_directions_and_receive_flags() {
     assert_eq!(offset(&uart, uart.rx()), 4);
     assert_eq!(offset(&uart, uart.tx()), 4);
     assert_eq!(offset(&uart, uart.rx_fifo_cnt()), 0x4c);
-    for raw in 0..16 {
+    for raw in 0..32 {
         unsafe { uart.fifo_status().as_ptr().write_volatile(raw) };
         let status = uart.fifo_status().read();
         assert_eq!(status.tx_fifo_full().bit(), raw & 1 != 0);
         assert_eq!(status.tx_fifo_empty().bit(), raw & 2 != 0);
-        assert_eq!(status.rx_not_empty().bit(), raw & 4 != 0);
-        assert_eq!(status.rx_full().bit(), raw & 8 != 0);
+        assert_eq!(status.rx_fifo_full().bit(), raw & 4 != 0);
+        assert_eq!(status.rx_fifo_empty().bit(), raw & 8 != 0);
+        assert_eq!(status.uart_busy().bit(), raw & 16 != 0);
     }
     unsafe {
         uart.rx_fifo_cnt().as_ptr().write_volatile(64);

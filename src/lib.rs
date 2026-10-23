@@ -9394,9 +9394,9 @@ pub mod uart0 {
         pub type R = crate::R<UartCtlSpec>;
         #[doc = "Register `UART_CTL` writer"]
         pub type W = crate::W<UartCtlSpec>;
-        #[doc = "Field `DIV_EN` reader - Divider enable: 0=div accessible when not busy; 1=div accessible anytime"]
+        #[doc = "Field `DIV_EN` reader - A-board: set only after RX is drained; attempted set with1/2/64 queued bytes reads back clear. Other control-bit acceptance and TX-only busy behavior unqualified."]
         pub type DivEnR = crate::BitReader;
-        #[doc = "Field `DIV_EN` writer - Divider enable: 0=div accessible when not busy; 1=div accessible anytime"]
+        #[doc = "Field `DIV_EN` writer - A-board: set only after RX is drained; attempted set with1/2/64 queued bytes reads back clear. Other control-bit acceptance and TX-only busy behavior unqualified."]
         pub type DivEnW<'a, REG> = crate::BitWriter<'a, REG>;
         #[doc = "Field `XBREAK` reader - Break control: 0=normal; 1=force TX to space"]
         pub type XbreakR = crate::BitReader;
@@ -9652,7 +9652,7 @@ pub mod uart0 {
             }
         }
         impl R {
-            #[doc = "Bit 0 - Divider enable: 0=div accessible when not busy; 1=div accessible anytime"]
+            #[doc = "Bit 0 - A-board: set only after RX is drained; attempted set with1/2/64 queued bytes reads back clear. Other control-bit acceptance and TX-only busy behavior unqualified."]
             #[inline(always)]
             pub fn div_en(&self) -> DivEnR {
                 DivEnR::new((self.bits & 1) != 0)
@@ -9689,7 +9689,7 @@ pub mod uart0 {
             }
         }
         impl W {
-            #[doc = "Bit 0 - Divider enable: 0=div accessible when not busy; 1=div accessible anytime"]
+            #[doc = "Bit 0 - A-board: set only after RX is drained; attempted set with1/2/64 queued bytes reads back clear. Other control-bit acceptance and TX-only busy behavior unqualified."]
             #[inline(always)]
             pub fn div_en(&mut self) -> DivEnW<'_, UartCtlSpec> {
                 DivEnW::new(self, 0)
@@ -9785,19 +9785,19 @@ pub mod uart0 {
         pub type R = crate::R<DivLSpec>;
         #[doc = "Register `DIV_L` writer"]
         pub type W = crate::W<DivLSpec>;
-        #[doc = "Field `DIV_L` reader - Integer divider low byte. SDK opens DIV_EN before reading; A-board UART2 reads zero with DIV_EN clear and the programmed value with DIV_EN set. Other instances and write gating remain unqualified."]
+        #[doc = "Field `DIV_L` reader - Integer divider low byte. A-board UART0/1/2 reads zero with DIV_EN clear and the programmed value when set. Setting DIV_EN while RX has queued bytes does not latch; drain RX before enabling. High-byte and divisor-write gating remain unqualified."]
         pub type DivLR = crate::FieldReader;
-        #[doc = "Field `DIV_L` writer - Integer divider low byte. SDK opens DIV_EN before reading; A-board UART2 reads zero with DIV_EN clear and the programmed value with DIV_EN set. Other instances and write gating remain unqualified."]
+        #[doc = "Field `DIV_L` writer - Integer divider low byte. A-board UART0/1/2 reads zero with DIV_EN clear and the programmed value when set. Setting DIV_EN while RX has queued bytes does not latch; drain RX before enabling. High-byte and divisor-write gating remain unqualified."]
         pub type DivLW<'a, REG> = crate::FieldWriter<'a, REG, 8>;
         impl R {
-            #[doc = "Bits 0:7 - Integer divider low byte. SDK opens DIV_EN before reading; A-board UART2 reads zero with DIV_EN clear and the programmed value with DIV_EN set. Other instances and write gating remain unqualified."]
+            #[doc = "Bits 0:7 - Integer divider low byte. A-board UART0/1/2 reads zero with DIV_EN clear and the programmed value when set. Setting DIV_EN while RX has queued bytes does not latch; drain RX before enabling. High-byte and divisor-write gating remain unqualified."]
             #[inline(always)]
             pub fn div_l(&self) -> DivLR {
                 DivLR::new((self.bits & 0xff) as u8)
             }
         }
         impl W {
-            #[doc = "Bits 0:7 - Integer divider low byte. SDK opens DIV_EN before reading; A-board UART2 reads zero with DIV_EN clear and the programmed value with DIV_EN set. Other instances and write gating remain unqualified."]
+            #[doc = "Bits 0:7 - Integer divider low byte. A-board UART0/1/2 reads zero with DIV_EN clear and the programmed value when set. Setting DIV_EN while RX has queued bytes does not latch; drain RX before enabling. High-byte and divisor-write gating remain unqualified."]
             #[inline(always)]
             pub fn div_l(&mut self) -> DivLW<'_, DivLSpec> {
                 DivLW::new(self, 0)
@@ -10568,10 +10568,12 @@ pub mod uart0 {
         pub type TxFifoFullR = crate::BitReader;
         #[doc = "Field `TX_FIFO_EMPTY` reader - TX FIFO empty flag"]
         pub type TxFifoEmptyR = crate::BitReader;
-        #[doc = "Field `RX_NOT_EMPTY` reader - Receive FIFO contains data"]
-        pub type RxNotEmptyR = crate::BitReader;
-        #[doc = "Field `RX_FULL` reader - Receive FIFO full"]
-        pub type RxFullR = crate::BitReader;
+        #[doc = "Field `RX_FIFO_FULL` reader - A-board: asserted at64 queued RX bytes, clear at0/1/2. SDK non-PRO comment incorrectly calls this not-empty."]
+        pub type RxFifoFullR = crate::BitReader;
+        #[doc = "Field `RX_FIFO_EMPTY` reader - A-board: asserted when enabled RX FIFO is empty; clear at1/2/64 bytes and after H1/H0 soft reset with FIFO disabled. SDK comment incorrectly calls this full."]
+        pub type RxFifoEmptyR = crate::BitReader;
+        #[doc = "Field `UART_BUSY` reader - A-board UART0/1/2: high with1/2/64 clean queued RX bytes, low after draining. SDK PRO calls this busy; TX-only and disabled-FIFO behavior unqualified."]
+        pub type UartBusyR = crate::BitReader;
         impl R {
             #[doc = "Bit 0 - TX FIFO full flag"]
             #[inline(always)]
@@ -10583,15 +10585,20 @@ pub mod uart0 {
             pub fn tx_fifo_empty(&self) -> TxFifoEmptyR {
                 TxFifoEmptyR::new(((self.bits >> 1) & 1) != 0)
             }
-            #[doc = "Bit 2 - Receive FIFO contains data"]
+            #[doc = "Bit 2 - A-board: asserted at64 queued RX bytes, clear at0/1/2. SDK non-PRO comment incorrectly calls this not-empty."]
             #[inline(always)]
-            pub fn rx_not_empty(&self) -> RxNotEmptyR {
-                RxNotEmptyR::new(((self.bits >> 2) & 1) != 0)
+            pub fn rx_fifo_full(&self) -> RxFifoFullR {
+                RxFifoFullR::new(((self.bits >> 2) & 1) != 0)
             }
-            #[doc = "Bit 3 - Receive FIFO full"]
+            #[doc = "Bit 3 - A-board: asserted when enabled RX FIFO is empty; clear at1/2/64 bytes and after H1/H0 soft reset with FIFO disabled. SDK comment incorrectly calls this full."]
             #[inline(always)]
-            pub fn rx_full(&self) -> RxFullR {
-                RxFullR::new(((self.bits >> 3) & 1) != 0)
+            pub fn rx_fifo_empty(&self) -> RxFifoEmptyR {
+                RxFifoEmptyR::new(((self.bits >> 3) & 1) != 0)
+            }
+            #[doc = "Bit 4 - A-board UART0/1/2: high with1/2/64 clean queued RX bytes, low after draining. SDK PRO calls this busy; TX-only and disabled-FIFO behavior unqualified."]
+            #[inline(always)]
+            pub fn uart_busy(&self) -> UartBusyR {
+                UartBusyR::new(((self.bits >> 4) & 1) != 0)
             }
         }
         #[doc = "FIFO_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`fifo_status::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]

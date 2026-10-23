@@ -157,3 +157,9 @@ only the shared audio divider reset-release bit0. Neither view has a reset value
 Source macros and local PAC RAM tests preserve neighboring/upper bits, but
 actual clock/reset ownership and frequency still require a handoff. This PAC
 correction alone is not a usable I2S HAL or a claim of silicon support.
+
+UART FIFO status follows three-port A-board evidence, not the contradicted SDK
+comments: bit2 is RX full, bit3 enabled-FIFO empty, and bit4 observed busy while
+RX is queued. `DIV_EN` set attempts with queued RX do not latch. See source
+`evidence/ws53-uart-access-hil.json`; TX-only busy, disabled FIFO semantics,
+nonzero high divisor and busy divisor writes remain unqualified.

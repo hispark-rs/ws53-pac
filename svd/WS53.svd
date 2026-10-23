@@ -3761,7 +3761,7 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <fields>
             <field>
               <name>DIV_EN</name>
-              <description>Divider enable: 0=div accessible when not busy; 1=div accessible anytime</description>
+              <description>A-board: set only after RX is drained; attempted set with1/2/64 queued bytes reads back clear. Other control-bit acceptance and TX-only busy behavior unqualified.</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-write</access>
@@ -3905,7 +3905,7 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
           <fields>
             <field>
               <name>DIV_L</name>
-              <description>Integer divider low byte. SDK opens DIV_EN before reading; A-board UART2 reads zero with DIV_EN clear and the programmed value with DIV_EN set. Other instances and write gating remain unqualified.</description>
+              <description>Integer divider low byte. A-board UART0/1/2 reads zero with DIV_EN clear and the programmed value when set. Setting DIV_EN while RX has queued bytes does not latch; drain RX before enabling. High-byte and divisor-write gating remain unqualified.</description>
               <bitOffset>0</bitOffset>
               <bitWidth>8</bitWidth>
               <access>read-write</access>
@@ -4404,16 +4404,23 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
               <access>read-only</access>
             </field>
             <field>
-              <name>RX_NOT_EMPTY</name>
-              <description>Receive FIFO contains data</description>
+              <name>RX_FIFO_FULL</name>
+              <description>A-board: asserted at64 queued RX bytes, clear at0/1/2. SDK non-PRO comment incorrectly calls this not-empty.</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-only</access>
             </field>
             <field>
-              <name>RX_FULL</name>
-              <description>Receive FIFO full</description>
+              <name>RX_FIFO_EMPTY</name>
+              <description>A-board: asserted when enabled RX FIFO is empty; clear at1/2/64 bytes and after H1/H0 soft reset with FIFO disabled. SDK comment incorrectly calls this full.</description>
               <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>UART_BUSY</name>
+              <description>A-board UART0/1/2: high with1/2/64 clean queued RX bytes, low after draining. SDK PRO calls this busy; TX-only and disabled-FIFO behavior unqualified.</description>
+              <bitOffset>4</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-only</access>
             </field>
