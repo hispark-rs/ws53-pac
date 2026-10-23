@@ -1478,9 +1478,9 @@ pub mod m_crg {
         pub type LoadR = crate::BitReader;
         #[doc = "Field `LOAD` writer - SDK explicitly clears then sets; no autonomous clearing inferred"]
         pub type LoadW<'a, REG> = crate::BitWriter<'a, REG>;
-        #[doc = "Field `DIVIDER` reader - SDK programs 16 and reports 32MHz; input/divider relationship not proven"]
+        #[doc = "Field `DIVIDER` reader - SDK programs 16 but reports 32MHz. A-board bounded RAM experiment measured effective counter 32MHz/divider for values 1,2,4,8,16; upstream source identity and other values remain unverified. See evidence/ws53-pwm-divider-hil.json"]
         pub type DividerR = crate::FieldReader;
-        #[doc = "Field `DIVIDER` writer - SDK programs 16 and reports 32MHz; input/divider relationship not proven"]
+        #[doc = "Field `DIVIDER` writer - SDK programs 16 but reports 32MHz. A-board bounded RAM experiment measured effective counter 32MHz/divider for values 1,2,4,8,16; upstream source identity and other values remain unverified. See evidence/ws53-pwm-divider-hil.json"]
         pub type DividerW<'a, REG> = crate::FieldWriter<'a, REG, 5>;
         impl R {
             #[doc = "Bit 0 - enable"]
@@ -1493,7 +1493,7 @@ pub mod m_crg {
             pub fn load(&self) -> LoadR {
                 LoadR::new(((self.bits >> 1) & 1) != 0)
             }
-            #[doc = "Bits 2:6 - SDK programs 16 and reports 32MHz; input/divider relationship not proven"]
+            #[doc = "Bits 2:6 - SDK programs 16 but reports 32MHz. A-board bounded RAM experiment measured effective counter 32MHz/divider for values 1,2,4,8,16; upstream source identity and other values remain unverified. See evidence/ws53-pwm-divider-hil.json"]
             #[inline(always)]
             pub fn divider(&self) -> DividerR {
                 DividerR::new(((self.bits >> 2) & 0x1f) as u8)
@@ -1510,7 +1510,7 @@ pub mod m_crg {
             pub fn load(&mut self) -> LoadW<'_, PwmMDiv3Spec> {
                 LoadW::new(self, 1)
             }
-            #[doc = "Bits 2:6 - SDK programs 16 and reports 32MHz; input/divider relationship not proven"]
+            #[doc = "Bits 2:6 - SDK programs 16 but reports 32MHz. A-board bounded RAM experiment measured effective counter 32MHz/divider for values 1,2,4,8,16; upstream source identity and other values remain unverified. See evidence/ws53-pwm-divider-hil.json"]
             #[inline(always)]
             pub fn divider(&mut self) -> DividerW<'_, PwmMDiv3Spec> {
                 DividerW::new(self, 2)

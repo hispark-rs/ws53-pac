@@ -216,7 +216,7 @@
             </field>
             <field>
               <name>DIVIDER</name>
-              <description>SDK programs 16 and reports 32MHz; input/divider relationship not proven</description>
+              <description>SDK programs 16 but reports 32MHz. A-board bounded RAM experiment measured effective counter 32MHz/divider for values 1,2,4,8,16; upstream source identity and other values remain unverified. See evidence/ws53-pwm-divider-hil.json</description>
               <bitOffset>2</bitOffset>
               <bitWidth>5</bitWidth>
               <access>read-write</access>
