@@ -976,19 +976,20 @@ pub mod m_crg {
         global_clken: GlobalClken,
         _reserved8: [u8; 0x12],
         spi_clock: SpiClock,
-        _reserved9: [u8; 0x16],
+        _reserved9: [u8; 0x12],
+        _reserved_9_xip_sfc_: [u8; 0x04],
         xip_qspi_clock: XipQspiClock,
-        _reserved10: [u8; 0x018a],
+        _reserved11: [u8; 0x018a],
         nmi_enable: NmiEnable,
-        _reserved11: [u8; 0x02],
-        nmi_raw_status: NmiRawStatus,
         _reserved12: [u8; 0x02],
+        nmi_raw_status: NmiRawStatus,
+        _reserved13: [u8; 0x02],
         nmi_masked_status: NmiMaskedStatus,
-        _reserved13: [u8; 0x0246],
+        _reserved14: [u8; 0x0246],
         spi_device_mode: SpiDeviceMode,
-        _reserved14: [u8; 0x08ee],
+        _reserved15: [u8; 0x08ee],
         xip_clock_enable: XipClockEnable,
-        _reserved15: [u8; 0x03be],
+        _reserved16: [u8; 0x03be],
         trng_ring_control: TrngRingControl,
     }
     impl RegisterBlock {
@@ -1051,6 +1052,16 @@ pub mod m_crg {
         #[inline(always)]
         pub const fn spi_clock(&self) -> &SpiClock {
             &self.spi_clock
+        }
+        #[doc = "0x570 - 32-bit little-endian access view of XIP_SFC_CLOCK; same low-half fields, upper bits unmodeled; preserve them on RMW. SDK-source 163d9150 clock_recover.c:sfc_switch_clock and flashboot_ws53/startup/main.c:boot_flash_clk_init at 0x52000570; chip_io.h word reg_setbit/reg_clrbit/readl plus halfword reg16_setbits/reg16_clrbits. Both views are the same shared clock resource; no reset, upper-bit semantics, complete frequency formula, safe live switching or ownership proven. See evidence/ws53-sfc-clock-source-contract.json"]
+        #[inline(always)]
+        pub const fn xip_sfc_clock_word(&self) -> &XipSfcClockWord {
+            unsafe { &*core::ptr::from_ref(self).cast::<u8>().add(1392).cast() }
+        }
+        #[doc = "0x570 - XIP_SFC_CLOCK"]
+        #[inline(always)]
+        pub const fn xip_sfc_clock(&self) -> &XipSfcClock {
+            unsafe { &*core::ptr::from_ref(self).cast::<u8>().add(1392).cast() }
         }
         #[doc = "0x574 - XIP_QSPI_CLOCK"]
         #[inline(always)]
@@ -2311,6 +2322,112 @@ pub mod m_crg {
         impl crate::Readable for SpiClockSpec {}
         #[doc = "`write(|w| ..)` method takes [`spi_clock::W`](W) writer structure"]
         impl crate::Writable for SpiClockSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "XIP_SFC_CLOCK (rw) register accessor: XIP_SFC_CLOCK\n\nYou can [`read`](crate::Reg::read) this register and get [`xip_sfc_clock::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`xip_sfc_clock::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@xip_sfc_clock`] module"]
+    #[doc(alias = "XIP_SFC_CLOCK")]
+    pub type XipSfcClock = crate::Reg<xip_sfc_clock::XipSfcClockSpec>;
+    #[doc = "XIP_SFC_CLOCK"]
+    pub mod xip_sfc_clock {
+        #[doc = "Register `XIP_SFC_CLOCK` reader"]
+        pub type R = crate::R<XipSfcClockSpec>;
+        #[doc = "Register `XIP_SFC_CLOCK` writer"]
+        pub type W = crate::W<XipSfcClockSpec>;
+        #[doc = "Field `ENABLE` reader - SDK clears this bit before changing SOURCE_CONFIG, then sets it and optionally reads the word back. Source-level clock-enable usage only; setting it does not prove upstream clock presence or SFC readiness/drain"]
+        pub type EnableR = crate::BitReader;
+        #[doc = "Field `ENABLE` writer - SDK clears this bit before changing SOURCE_CONFIG, then sets it and optionally reads the word back. Source-level clock-enable usage only; setting it does not prove upstream clock presence or SFC readiness/drain"]
+        pub type EnableW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `SOURCE_CONFIG` reader - Three-bit configuration: sfc_switch_clock(pll=true) writes 6, pll=false writes 0; FlashBoot writes 6. Other encodings and any selector/divider decomposition or frequency are unqualified; this raw field is not a safe clock configuration API"]
+        pub type SourceConfigR = crate::FieldReader;
+        #[doc = "Field `SOURCE_CONFIG` writer - Three-bit configuration: sfc_switch_clock(pll=true) writes 6, pll=false writes 0; FlashBoot writes 6. Other encodings and any selector/divider decomposition or frequency are unqualified; this raw field is not a safe clock configuration API"]
+        pub type SourceConfigW<'a, REG> = crate::FieldWriter<'a, REG, 3>;
+        impl R {
+            #[doc = "Bit 0 - SDK clears this bit before changing SOURCE_CONFIG, then sets it and optionally reads the word back. Source-level clock-enable usage only; setting it does not prove upstream clock presence or SFC readiness/drain"]
+            #[inline(always)]
+            pub fn enable(&self) -> EnableR {
+                EnableR::new((self.bits & 1) != 0)
+            }
+            #[doc = "Bits 1:3 - Three-bit configuration: sfc_switch_clock(pll=true) writes 6, pll=false writes 0; FlashBoot writes 6. Other encodings and any selector/divider decomposition or frequency are unqualified; this raw field is not a safe clock configuration API"]
+            #[inline(always)]
+            pub fn source_config(&self) -> SourceConfigR {
+                SourceConfigR::new(((self.bits >> 1) & 7) as u8)
+            }
+        }
+        impl W {
+            #[doc = "Bit 0 - SDK clears this bit before changing SOURCE_CONFIG, then sets it and optionally reads the word back. Source-level clock-enable usage only; setting it does not prove upstream clock presence or SFC readiness/drain"]
+            #[inline(always)]
+            pub fn enable(&mut self) -> EnableW<'_, XipSfcClockSpec> {
+                EnableW::new(self, 0)
+            }
+            #[doc = "Bits 1:3 - Three-bit configuration: sfc_switch_clock(pll=true) writes 6, pll=false writes 0; FlashBoot writes 6. Other encodings and any selector/divider decomposition or frequency are unqualified; this raw field is not a safe clock configuration API"]
+            #[inline(always)]
+            pub fn source_config(&mut self) -> SourceConfigW<'_, XipSfcClockSpec> {
+                SourceConfigW::new(self, 1)
+            }
+        }
+        #[doc = "XIP_SFC_CLOCK\n\nYou can [`read`](crate::Reg::read) this register and get [`xip_sfc_clock::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`xip_sfc_clock::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct XipSfcClockSpec;
+        impl crate::RegisterSpec for XipSfcClockSpec {
+            type Ux = u16;
+        }
+        #[doc = "`read()` method returns [`xip_sfc_clock::R`](R) reader structure"]
+        impl crate::Readable for XipSfcClockSpec {}
+        #[doc = "`write(|w| ..)` method takes [`xip_sfc_clock::W`](W) writer structure"]
+        impl crate::Writable for XipSfcClockSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "XIP_SFC_CLOCK_WORD (rw) register accessor: 32-bit little-endian access view of XIP_SFC_CLOCK; same low-half fields, upper bits unmodeled; preserve them on RMW. SDK-source 163d9150 clock_recover.c:sfc_switch_clock and flashboot_ws53/startup/main.c:boot_flash_clk_init at 0x52000570; chip_io.h word reg_setbit/reg_clrbit/readl plus halfword reg16_setbits/reg16_clrbits. Both views are the same shared clock resource; no reset, upper-bit semantics, complete frequency formula, safe live switching or ownership proven. See evidence/ws53-sfc-clock-source-contract.json\n\nYou can [`read`](crate::Reg::read) this register and get [`xip_sfc_clock_word::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`xip_sfc_clock_word::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@xip_sfc_clock_word`] module"]
+    #[doc(alias = "XIP_SFC_CLOCK_WORD")]
+    pub type XipSfcClockWord = crate::Reg<xip_sfc_clock_word::XipSfcClockWordSpec>;
+    #[doc = "32-bit little-endian access view of XIP_SFC_CLOCK; same low-half fields, upper bits unmodeled; preserve them on RMW. SDK-source 163d9150 clock_recover.c:sfc_switch_clock and flashboot_ws53/startup/main.c:boot_flash_clk_init at 0x52000570; chip_io.h word reg_setbit/reg_clrbit/readl plus halfword reg16_setbits/reg16_clrbits. Both views are the same shared clock resource; no reset, upper-bit semantics, complete frequency formula, safe live switching or ownership proven. See evidence/ws53-sfc-clock-source-contract.json"]
+    pub mod xip_sfc_clock_word {
+        #[doc = "Register `XIP_SFC_CLOCK_WORD` reader"]
+        pub type R = crate::R<XipSfcClockWordSpec>;
+        #[doc = "Register `XIP_SFC_CLOCK_WORD` writer"]
+        pub type W = crate::W<XipSfcClockWordSpec>;
+        #[doc = "Field `ENABLE` reader - SDK clears this bit before changing SOURCE_CONFIG, then sets it and optionally reads the word back. Source-level clock-enable usage only; setting it does not prove upstream clock presence or SFC readiness/drain"]
+        pub type EnableR = crate::BitReader;
+        #[doc = "Field `ENABLE` writer - SDK clears this bit before changing SOURCE_CONFIG, then sets it and optionally reads the word back. Source-level clock-enable usage only; setting it does not prove upstream clock presence or SFC readiness/drain"]
+        pub type EnableW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `SOURCE_CONFIG` reader - Three-bit configuration: sfc_switch_clock(pll=true) writes 6, pll=false writes 0; FlashBoot writes 6. Other encodings and any selector/divider decomposition or frequency are unqualified; this raw field is not a safe clock configuration API"]
+        pub type SourceConfigR = crate::FieldReader;
+        #[doc = "Field `SOURCE_CONFIG` writer - Three-bit configuration: sfc_switch_clock(pll=true) writes 6, pll=false writes 0; FlashBoot writes 6. Other encodings and any selector/divider decomposition or frequency are unqualified; this raw field is not a safe clock configuration API"]
+        pub type SourceConfigW<'a, REG> = crate::FieldWriter<'a, REG, 3>;
+        impl R {
+            #[doc = "Bit 0 - SDK clears this bit before changing SOURCE_CONFIG, then sets it and optionally reads the word back. Source-level clock-enable usage only; setting it does not prove upstream clock presence or SFC readiness/drain"]
+            #[inline(always)]
+            pub fn enable(&self) -> EnableR {
+                EnableR::new((self.bits & 1) != 0)
+            }
+            #[doc = "Bits 1:3 - Three-bit configuration: sfc_switch_clock(pll=true) writes 6, pll=false writes 0; FlashBoot writes 6. Other encodings and any selector/divider decomposition or frequency are unqualified; this raw field is not a safe clock configuration API"]
+            #[inline(always)]
+            pub fn source_config(&self) -> SourceConfigR {
+                SourceConfigR::new(((self.bits >> 1) & 7) as u8)
+            }
+        }
+        impl W {
+            #[doc = "Bit 0 - SDK clears this bit before changing SOURCE_CONFIG, then sets it and optionally reads the word back. Source-level clock-enable usage only; setting it does not prove upstream clock presence or SFC readiness/drain"]
+            #[inline(always)]
+            pub fn enable(&mut self) -> EnableW<'_, XipSfcClockWordSpec> {
+                EnableW::new(self, 0)
+            }
+            #[doc = "Bits 1:3 - Three-bit configuration: sfc_switch_clock(pll=true) writes 6, pll=false writes 0; FlashBoot writes 6. Other encodings and any selector/divider decomposition or frequency are unqualified; this raw field is not a safe clock configuration API"]
+            #[inline(always)]
+            pub fn source_config(&mut self) -> SourceConfigW<'_, XipSfcClockWordSpec> {
+                SourceConfigW::new(self, 1)
+            }
+        }
+        #[doc = "32-bit little-endian access view of XIP_SFC_CLOCK; same low-half fields, upper bits unmodeled; preserve them on RMW. SDK-source 163d9150 clock_recover.c:sfc_switch_clock and flashboot_ws53/startup/main.c:boot_flash_clk_init at 0x52000570; chip_io.h word reg_setbit/reg_clrbit/readl plus halfword reg16_setbits/reg16_clrbits. Both views are the same shared clock resource; no reset, upper-bit semantics, complete frequency formula, safe live switching or ownership proven. See evidence/ws53-sfc-clock-source-contract.json\n\nYou can [`read`](crate::Reg::read) this register and get [`xip_sfc_clock_word::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`xip_sfc_clock_word::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct XipSfcClockWordSpec;
+        impl crate::RegisterSpec for XipSfcClockWordSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`xip_sfc_clock_word::R`](R) reader structure"]
+        impl crate::Readable for XipSfcClockWordSpec {}
+        #[doc = "`write(|w| ..)` method takes [`xip_sfc_clock_word::W`](W) writer structure"]
+        impl crate::Writable for XipSfcClockWordSpec {
             type Safety = crate::Unsafe;
         }
     }

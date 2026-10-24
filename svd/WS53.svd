@@ -590,6 +590,53 @@
           </fields>
         </register>
         <register>
+          <name>XIP_SFC_CLOCK</name>
+          <description>XIP_SFC_CLOCK</description>
+          <addressOffset>0x570</addressOffset>
+          <size>16</size>
+          <access>read-write</access>
+          <fields>
+            <field>
+              <name>ENABLE</name>
+              <description>SDK clears this bit before changing SOURCE_CONFIG, then sets it and optionally reads the word back. Source-level clock-enable usage only; setting it does not prove upstream clock presence or SFC readiness/drain</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>SOURCE_CONFIG</name>
+              <description>Three-bit configuration: sfc_switch_clock(pll=true) writes 6, pll=false writes 0; FlashBoot writes 6. Other encodings and any selector/divider decomposition or frequency are unqualified; this raw field is not a safe clock configuration API</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>3</bitWidth>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>XIP_SFC_CLOCK_WORD</name>
+          <description>32-bit little-endian access view of XIP_SFC_CLOCK; same low-half fields, upper bits unmodeled; preserve them on RMW. SDK-source 163d9150 clock_recover.c:sfc_switch_clock and flashboot_ws53/startup/main.c:boot_flash_clk_init at 0x52000570; chip_io.h word reg_setbit/reg_clrbit/readl plus halfword reg16_setbits/reg16_clrbits. Both views are the same shared clock resource; no reset, upper-bit semantics, complete frequency formula, safe live switching or ownership proven. See evidence/ws53-sfc-clock-source-contract.json</description>
+          <alternateRegister>XIP_SFC_CLOCK</alternateRegister>
+          <addressOffset>0x570</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <fields>
+            <field>
+              <name>ENABLE</name>
+              <description>SDK clears this bit before changing SOURCE_CONFIG, then sets it and optionally reads the word back. Source-level clock-enable usage only; setting it does not prove upstream clock presence or SFC readiness/drain</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>SOURCE_CONFIG</name>
+              <description>Three-bit configuration: sfc_switch_clock(pll=true) writes 6, pll=false writes 0; FlashBoot writes 6. Other encodings and any selector/divider decomposition or frequency are unqualified; this raw field is not a safe clock configuration API</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>3</bitWidth>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
           <name>XIP_QSPI_CLOCK</name>
           <description>XIP_QSPI_CLOCK</description>
           <addressOffset>0x574</addressOffset>

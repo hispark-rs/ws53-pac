@@ -194,3 +194,17 @@ NOR WIP, DMA buffer ownership or bus drain. DATA words may contain a previous
 response; a fresh status observation requires a new command and completion.
 The new host tests check generated layout and encodings in local memory only.
 Ordinary Cargo builds still consume checked-in code and need no SDK or generator.
+
+## SFC clock source views
+
+`M_CRG::xip_sfc_clock()` and `xip_sfc_clock_word()` are the SDK's 16-bit and
+32-bit access views of the same register at `0x52000570`. They expose bit0
+`ENABLE` and the raw three-bit `SOURCE_CONFIG` field. The SDK writes source
+codes 0 and 6; this establishes neither a complete frequency formula nor a
+clock-ready acknowledgement. The existing QSPI view at `0x52000574` is distinct.
+
+Unknown upper bits and reset values remain unmodeled, and neither SFC view
+implements `Resettable`. Local RAM tests check alias layout and preservation
+of unrelated bits under the SDK's mixed-width sequence. These are source/API
+checks only: the PAC does not grant shared-clock ownership, safe live clock
+switching, Flash execution safety, DMA drain or a usable SFC HAL.
