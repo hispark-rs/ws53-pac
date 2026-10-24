@@ -9304,19 +9304,19 @@ pub mod uart0 {
             &self.uart_parameter
         }
     }
-    #[doc = "INTR_ID (r) register accessor: INTR_ID\n\nYou can [`read`](crate::Reg::read) this register and get [`intr_id::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@intr_id`] module"]
+    #[doc = "INTR_ID (r) register accessor: INTR_ID\n\nYou can [`read`](crate::Reg::read) this register and get [`intr_id::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\n<div class=\"warning\">The register is <b>modified</b> in some way after a read operation.</div>\n\nFor information about available fields see [`mod@intr_id`] module"]
     #[doc(alias = "INTR_ID")]
     pub type IntrId = crate::Reg<intr_id::IntrIdSpec>;
     #[doc = "INTR_ID"]
     pub mod intr_id {
         #[doc = "Register `INTR_ID` reader"]
         pub type R = crate::R<IntrIdSpec>;
-        #[doc = "Field `INTR_ID` reader - Interrupt ID: 0x0=modem status; 0x1=no interrupt; 0x2=THR empty; 0x4=rx data; 0x6=rx line status; 0x7=busy; 0xC=char timeout"]
+        #[doc = "Field `INTR_ID` reader - Interrupt ID: 0=modem, 1=none, 2=TX, 4=RX, 6=line error, 7=busy, 12=RX timeout. Reading ID 2 acknowledges its TX request; UART2 observed 2 then 1 in both PTIM modes. Other causes have their own acknowledgement. UART0/1 TX read-clear behavior is not physically qualified.\n\n<div class=\"warning\">One or more dependent resources other than the current field are immediately affected by a read operation.</div>"]
         pub type IntrIdR = crate::FieldReader;
         #[doc = "Field `FIFO_EN_S` reader - FIFO enable status: 0=FIFO disabled; 1=FIFO enabled"]
         pub type FifoEnSR = crate::BitReader;
         impl R {
-            #[doc = "Bits 0:3 - Interrupt ID: 0x0=modem status; 0x1=no interrupt; 0x2=THR empty; 0x4=rx data; 0x6=rx line status; 0x7=busy; 0xC=char timeout"]
+            #[doc = "Bits 0:3 - Interrupt ID: 0=modem, 1=none, 2=TX, 4=RX, 6=line error, 7=busy, 12=RX timeout. Reading ID 2 acknowledges its TX request; UART2 observed 2 then 1 in both PTIM modes. Other causes have their own acknowledgement. UART0/1 TX read-clear behavior is not physically qualified."]
             #[inline(always)]
             pub fn intr_id(&self) -> IntrIdR {
                 IntrIdR::new((self.bits & 0x0f) as u8)
@@ -9327,7 +9327,7 @@ pub mod uart0 {
                 FifoEnSR::new(((self.bits >> 4) & 1) != 0)
             }
         }
-        #[doc = "INTR_ID\n\nYou can [`read`](crate::Reg::read) this register and get [`intr_id::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "INTR_ID\n\nYou can [`read`](crate::Reg::read) this register and get [`intr_id::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\n<div class=\"warning\">The register is <b>modified</b> in some way after a read operation.</div>"]
         pub struct IntrIdSpec;
         impl crate::RegisterSpec for IntrIdSpec {
             type Ux = u32;
@@ -10400,7 +10400,7 @@ pub mod uart0 {
         pub type BreakIntrR = crate::BitReader;
         #[doc = "Field `DATA_AVAILABLE` reader - Data available in RX FIFO/RBR"]
         pub type DataAvailableR = crate::BitReader;
-        #[doc = "Field `THRE_S` reader - THR empty flag"]
+        #[doc = "Field `THRE_S` reader - SDK: with PTIM and FIFO enabled, 1 means TX FIFO full; otherwise 1 means THR/FIFO empty. UART2 observed both polarities. This is not transmitter-shift-register completion; use TX_EMPTY_S for line drain."]
         pub type ThreSR = crate::BitReader;
         #[doc = "Field `TX_EMPTY_S` reader - Transmitter empty flag"]
         pub type TxEmptySR = crate::BitReader;
@@ -10435,7 +10435,7 @@ pub mod uart0 {
             pub fn data_available(&self) -> DataAvailableR {
                 DataAvailableR::new(((self.bits >> 5) & 1) != 0)
             }
-            #[doc = "Bit 6 - THR empty flag"]
+            #[doc = "Bit 6 - SDK: with PTIM and FIFO enabled, 1 means TX FIFO full; otherwise 1 means THR/FIFO empty. UART2 observed both polarities. This is not transmitter-shift-register completion; use TX_EMPTY_S for line drain."]
             #[inline(always)]
             pub fn thre_s(&self) -> ThreSR {
                 ThreSR::new(((self.bits >> 6) & 1) != 0)

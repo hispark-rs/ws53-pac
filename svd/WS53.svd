@@ -3699,14 +3699,15 @@
           <addressOffset>0x0</addressOffset>
           <size>32</size>
           <access>read-only</access>
+          <readAction>modify</readAction>
           <fields>
             <field>
               <name>INTR_ID</name>
-              <description>Interrupt ID: 0x0=modem status; 0x1=no interrupt; 0x2=THR empty; 0x4=rx
-data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
+              <description>Interrupt ID: 0=modem, 1=none, 2=TX, 4=RX, 6=line error, 7=busy, 12=RX timeout. Reading ID 2 acknowledges its TX request; UART2 observed 2 then 1 in both PTIM modes. Other causes have their own acknowledgement. UART0/1 TX read-clear behavior is not physically qualified.</description>
               <bitOffset>0</bitOffset>
               <bitWidth>4</bitWidth>
               <access>read-only</access>
+              <readAction>modifyExternal</readAction>
             </field>
             <field>
               <name>FIFO_EN_S</name>
@@ -4304,7 +4305,7 @@ data; 0x6=rx line status; 0x7=busy; 0xC=char timeout</description>
             </field>
             <field>
               <name>THRE_S</name>
-              <description>THR empty flag</description>
+              <description>SDK: with PTIM and FIFO enabled, 1 means TX FIFO full; otherwise 1 means THR/FIFO empty. UART2 observed both polarities. This is not transmitter-shift-register completion; use TX_EMPTY_S for line drain.</description>
               <bitOffset>6</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-only</access>
