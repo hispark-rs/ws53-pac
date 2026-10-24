@@ -1,6 +1,6 @@
 {
   "source": "https://github.com/hispark-rs/hisi-registers",
-  "commit": "92a3d202e70e305426c18af07158731e7e95e921",
+  "commit": "b4db9b7aa6902cfaabad7bd7c06c4b5d739e7f34",
   "dirty": false,
   "profile": "ws53_liteos_app/acore/MCU_MODE_1",
   "svd2rust": "0.37.1",
@@ -28,7 +28,7 @@
     "rdl/chips/ws53/m-crg.rdl": "ee0365b73351dd1245d4b28f6c210795b3bdf6b6b8f25aa0bac68aa9d5d8ba48",
     "rdl/chips/ws53/mdma-v151.rdl": "1f84dad075b4215c8a80023fd9433b5b11912d8785b974d5a595c91f328d405b",
     "rdl/chips/ws53/pinctrl.rdl": "e1f2690aba6fe2e144f29af73cf8606befbd172c8f02204f201417addb9e5550",
-    "rdl/chips/ws53/sdio-v151.rdl": "1e635aa40a5cbedda5854fb51377ab4fe993ff55eaf4758ebe87b36fc3343ba6",
+    "rdl/chips/ws53/sdio-v151.rdl": "5b86736d024899d05327521f93b774fa31329dede667ab182564e7d95e6d5dfc",
     "rdl/chips/ws53/sio-v151.rdl": "56618ef128f47b54b69c4419bb5af0a750bcd9a2b58546efcacadd718128874b",
     "rdl/chips/ws53/spi-v151-100.rdl": "a6014d20bc78e0e48709086ce058c81cddb103fb34e8b8633355a40ffe4ef68d",
     "rdl/chips/ws53/system-memory.rdl": "1a66e4d409840f79db5d6f41dcbf40953d25183840c8d0d3575571f8070be605",
@@ -83,8 +83,8 @@
     "rust-toolchain.toml": "4a55a5c6ce672e0024729f0739b0a82a0897538c9332528927201459bda83585"
   },
   "outputs": {
-    "src/lib.rs": "51a38d6e5215fbaddb202ded6071c58c71118164582b40c969c2bea3eba34ebc",
+    "src/lib.rs": "d59f1e21b8bb564a911fb1b1ab4fb2e94257f8274d44d7fa120707a3d5eb508e",
     "device.x": "b732da88f67fc24ca2cdce044efc37da252563f855f19ca7975359951be95eba",
-    "svd/WS53.svd": "1a12a7f0f572a1a25d4f4ed51a64c66759a169eb6255c70c4f011e47122e1c89"
+    "svd/WS53.svd": "b4e5e13d9973735bdcabfb31526a5ea469cde15f60ffb2724de06691ebbd3987"
   }
 }

@@ -60,6 +60,11 @@ SDIO is a ROM-audited register subset, not an implemented SDIO driver. Its
 command views deliberately omit read-modify-write and unverified clear/reset
 semantics. PAC availability does not establish DMA quiescence, safe buffer
 ownership, clock configuration, or completed silicon peripheral validation.
+Function1 status and enable expose fourteen event bits audited against the
+original ROM handler. Status bits 31:14 remain `unclassified`; the write-only
+acknowledgement retains its full-word payload. No reset value or W1C behavior
+is inferred from the ROM's write. Host tests exercise all 16,384 enable masks,
+preserved upper bits and the split read/write API using local RAM only.
 
 TRNG describes the SDK unified-security application path at `0x52024000`.
 `FIFO_DATA` reads consume words; it is not a passive diagnostic register.

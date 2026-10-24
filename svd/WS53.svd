@@ -3092,16 +3092,114 @@
         </register>
         <register>
           <name>FUNCTION1_INTERRUPT_STATUS</name>
-          <description>FUNCTION1_INTERRUPT_STATUS</description>
+          <description>ROM function1 callback/counter event mapping; status does not prove ADMA drain</description>
           <addressOffset>0x110</addressOffset>
           <size>32</size>
           <access>read-only</access>
           <fields>
             <field>
-              <name>VALUE</name>
-              <description>value</description>
+              <name>HOST_WRITE_COMPLETE</name>
+              <description>host_write_complete</description>
               <bitOffset>0</bitOffset>
-              <bitWidth>32</bitWidth>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>HOST_READ_COMPLETE</name>
+              <description>host_read_complete</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>HOST_READ_ERROR</name>
+              <description>host_read_error</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>HOST_READ_START</name>
+              <description>host_read_start</description>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>HOST_WRITE_START</name>
+              <description>host_write_start</description>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>ADMA_END</name>
+              <description>adma_end</description>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>ADMA_INTERRUPT</name>
+              <description>adma_interrupt</description>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>ADMA_ERROR</name>
+              <description>adma_error</description>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>FUNCTION_RESET</name>
+              <description>function_reset</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>HOST_MESSAGE</name>
+              <description>host_message</description>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>SUSPEND</name>
+              <description>suspend</description>
+              <bitOffset>10</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>RESUME</name>
+              <description>resume</description>
+              <bitOffset>11</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>DEVICE_MESSAGE_ACK</name>
+              <description>device_message_ack</description>
+              <bitOffset>12</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>FUNCTION_ENABLE</name>
+              <description>function_enable</description>
+              <bitOffset>13</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>UNCLASSIFIED</name>
+              <description>unclassified</description>
+              <bitOffset>14</bitOffset>
+              <bitWidth>18</bitWidth>
               <access>read-only</access>
             </field>
           </fields>
@@ -3125,16 +3223,107 @@
         </register>
         <register>
           <name>FUNCTION1_INTERRUPT_ENABLE</name>
-          <description>FUNCTION1_INTERRUPT_ENABLE</description>
+          <description>ROM enables all fourteen mapped function1 events; no inferred reset or completion semantics</description>
           <addressOffset>0x114</addressOffset>
           <size>32</size>
           <access>read-write</access>
           <fields>
             <field>
-              <name>EVENTS</name>
-              <description>events</description>
+              <name>HOST_WRITE_COMPLETE</name>
+              <description>host_write_complete</description>
               <bitOffset>0</bitOffset>
-              <bitWidth>14</bitWidth>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>HOST_READ_COMPLETE</name>
+              <description>host_read_complete</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>HOST_READ_ERROR</name>
+              <description>host_read_error</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>HOST_READ_START</name>
+              <description>host_read_start</description>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>HOST_WRITE_START</name>
+              <description>host_write_start</description>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>ADMA_END</name>
+              <description>adma_end</description>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>ADMA_INTERRUPT</name>
+              <description>adma_interrupt</description>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>ADMA_ERROR</name>
+              <description>adma_error</description>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>FUNCTION_RESET</name>
+              <description>function_reset</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>HOST_MESSAGE</name>
+              <description>host_message</description>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>SUSPEND</name>
+              <description>suspend</description>
+              <bitOffset>10</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>RESUME</name>
+              <description>resume</description>
+              <bitOffset>11</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>DEVICE_MESSAGE_ACK</name>
+              <description>device_message_ack</description>
+              <bitOffset>12</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>FUNCTION_ENABLE</name>
+              <description>function_enable</description>
+              <bitOffset>13</bitOffset>
+              <bitWidth>1</bitWidth>
               <access>read-write</access>
             </field>
           </fields>

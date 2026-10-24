@@ -7040,12 +7040,12 @@ pub mod sdio {
         pub const fn function1_interrupt_ack(&self) -> &Function1InterruptAck {
             unsafe { &*core::ptr::from_ref(self).cast::<u8>().add(272).cast() }
         }
-        #[doc = "0x110 - FUNCTION1_INTERRUPT_STATUS"]
+        #[doc = "0x110 - ROM function1 callback/counter event mapping; status does not prove ADMA drain"]
         #[inline(always)]
         pub const fn function1_interrupt_status(&self) -> &Function1InterruptStatus {
             unsafe { &*core::ptr::from_ref(self).cast::<u8>().add(272).cast() }
         }
-        #[doc = "0x114 - FUNCTION1_INTERRUPT_ENABLE"]
+        #[doc = "0x114 - ROM enables all fourteen mapped function1 events; no inferred reset or completion semantics"]
         #[inline(always)]
         pub const fn function1_interrupt_enable(&self) -> &Function1InterruptEnable {
             &self.function1_interrupt_enable
@@ -7786,24 +7786,122 @@ pub mod sdio {
             type Safety = crate::Unsafe;
         }
     }
-    #[doc = "FUNCTION1_INTERRUPT_STATUS (r) register accessor: FUNCTION1_INTERRUPT_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`function1_interrupt_status::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@function1_interrupt_status`] module"]
+    #[doc = "FUNCTION1_INTERRUPT_STATUS (r) register accessor: ROM function1 callback/counter event mapping; status does not prove ADMA drain\n\nYou can [`read`](crate::Reg::read) this register and get [`function1_interrupt_status::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@function1_interrupt_status`] module"]
     #[doc(alias = "FUNCTION1_INTERRUPT_STATUS")]
     pub type Function1InterruptStatus =
         crate::Reg<function1_interrupt_status::Function1InterruptStatusSpec>;
-    #[doc = "FUNCTION1_INTERRUPT_STATUS"]
+    #[doc = "ROM function1 callback/counter event mapping; status does not prove ADMA drain"]
     pub mod function1_interrupt_status {
         #[doc = "Register `FUNCTION1_INTERRUPT_STATUS` reader"]
         pub type R = crate::R<Function1InterruptStatusSpec>;
-        #[doc = "Field `VALUE` reader - value"]
-        pub type ValueR = crate::FieldReader<u32>;
+        #[doc = "Field `HOST_WRITE_COMPLETE` reader - host_write_complete"]
+        pub type HostWriteCompleteR = crate::BitReader;
+        #[doc = "Field `HOST_READ_COMPLETE` reader - host_read_complete"]
+        pub type HostReadCompleteR = crate::BitReader;
+        #[doc = "Field `HOST_READ_ERROR` reader - host_read_error"]
+        pub type HostReadErrorR = crate::BitReader;
+        #[doc = "Field `HOST_READ_START` reader - host_read_start"]
+        pub type HostReadStartR = crate::BitReader;
+        #[doc = "Field `HOST_WRITE_START` reader - host_write_start"]
+        pub type HostWriteStartR = crate::BitReader;
+        #[doc = "Field `ADMA_END` reader - adma_end"]
+        pub type AdmaEndR = crate::BitReader;
+        #[doc = "Field `ADMA_INTERRUPT` reader - adma_interrupt"]
+        pub type AdmaInterruptR = crate::BitReader;
+        #[doc = "Field `ADMA_ERROR` reader - adma_error"]
+        pub type AdmaErrorR = crate::BitReader;
+        #[doc = "Field `FUNCTION_RESET` reader - function_reset"]
+        pub type FunctionResetR = crate::BitReader;
+        #[doc = "Field `HOST_MESSAGE` reader - host_message"]
+        pub type HostMessageR = crate::BitReader;
+        #[doc = "Field `SUSPEND` reader - suspend"]
+        pub type SuspendR = crate::BitReader;
+        #[doc = "Field `RESUME` reader - resume"]
+        pub type ResumeR = crate::BitReader;
+        #[doc = "Field `DEVICE_MESSAGE_ACK` reader - device_message_ack"]
+        pub type DeviceMessageAckR = crate::BitReader;
+        #[doc = "Field `FUNCTION_ENABLE` reader - function_enable"]
+        pub type FunctionEnableR = crate::BitReader;
+        #[doc = "Field `UNCLASSIFIED` reader - unclassified"]
+        pub type UnclassifiedR = crate::FieldReader<u32>;
         impl R {
-            #[doc = "Bits 0:31 - value"]
+            #[doc = "Bit 0 - host_write_complete"]
             #[inline(always)]
-            pub fn value(&self) -> ValueR {
-                ValueR::new(self.bits)
+            pub fn host_write_complete(&self) -> HostWriteCompleteR {
+                HostWriteCompleteR::new((self.bits & 1) != 0)
+            }
+            #[doc = "Bit 1 - host_read_complete"]
+            #[inline(always)]
+            pub fn host_read_complete(&self) -> HostReadCompleteR {
+                HostReadCompleteR::new(((self.bits >> 1) & 1) != 0)
+            }
+            #[doc = "Bit 2 - host_read_error"]
+            #[inline(always)]
+            pub fn host_read_error(&self) -> HostReadErrorR {
+                HostReadErrorR::new(((self.bits >> 2) & 1) != 0)
+            }
+            #[doc = "Bit 3 - host_read_start"]
+            #[inline(always)]
+            pub fn host_read_start(&self) -> HostReadStartR {
+                HostReadStartR::new(((self.bits >> 3) & 1) != 0)
+            }
+            #[doc = "Bit 4 - host_write_start"]
+            #[inline(always)]
+            pub fn host_write_start(&self) -> HostWriteStartR {
+                HostWriteStartR::new(((self.bits >> 4) & 1) != 0)
+            }
+            #[doc = "Bit 5 - adma_end"]
+            #[inline(always)]
+            pub fn adma_end(&self) -> AdmaEndR {
+                AdmaEndR::new(((self.bits >> 5) & 1) != 0)
+            }
+            #[doc = "Bit 6 - adma_interrupt"]
+            #[inline(always)]
+            pub fn adma_interrupt(&self) -> AdmaInterruptR {
+                AdmaInterruptR::new(((self.bits >> 6) & 1) != 0)
+            }
+            #[doc = "Bit 7 - adma_error"]
+            #[inline(always)]
+            pub fn adma_error(&self) -> AdmaErrorR {
+                AdmaErrorR::new(((self.bits >> 7) & 1) != 0)
+            }
+            #[doc = "Bit 8 - function_reset"]
+            #[inline(always)]
+            pub fn function_reset(&self) -> FunctionResetR {
+                FunctionResetR::new(((self.bits >> 8) & 1) != 0)
+            }
+            #[doc = "Bit 9 - host_message"]
+            #[inline(always)]
+            pub fn host_message(&self) -> HostMessageR {
+                HostMessageR::new(((self.bits >> 9) & 1) != 0)
+            }
+            #[doc = "Bit 10 - suspend"]
+            #[inline(always)]
+            pub fn suspend(&self) -> SuspendR {
+                SuspendR::new(((self.bits >> 10) & 1) != 0)
+            }
+            #[doc = "Bit 11 - resume"]
+            #[inline(always)]
+            pub fn resume(&self) -> ResumeR {
+                ResumeR::new(((self.bits >> 11) & 1) != 0)
+            }
+            #[doc = "Bit 12 - device_message_ack"]
+            #[inline(always)]
+            pub fn device_message_ack(&self) -> DeviceMessageAckR {
+                DeviceMessageAckR::new(((self.bits >> 12) & 1) != 0)
+            }
+            #[doc = "Bit 13 - function_enable"]
+            #[inline(always)]
+            pub fn function_enable(&self) -> FunctionEnableR {
+                FunctionEnableR::new(((self.bits >> 13) & 1) != 0)
+            }
+            #[doc = "Bits 14:31 - unclassified"]
+            #[inline(always)]
+            pub fn unclassified(&self) -> UnclassifiedR {
+                UnclassifiedR::new((self.bits >> 14) & 0x0003_ffff)
             }
         }
-        #[doc = "FUNCTION1_INTERRUPT_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`function1_interrupt_status::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "ROM function1 callback/counter event mapping; status does not prove ADMA drain\n\nYou can [`read`](crate::Reg::read) this register and get [`function1_interrupt_status::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct Function1InterruptStatusSpec;
         impl crate::RegisterSpec for Function1InterruptStatusSpec {
             type Ux = u32;
@@ -7837,35 +7935,225 @@ pub mod sdio {
             type Safety = crate::Unsafe;
         }
     }
-    #[doc = "FUNCTION1_INTERRUPT_ENABLE (rw) register accessor: FUNCTION1_INTERRUPT_ENABLE\n\nYou can [`read`](crate::Reg::read) this register and get [`function1_interrupt_enable::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`function1_interrupt_enable::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@function1_interrupt_enable`] module"]
+    #[doc = "FUNCTION1_INTERRUPT_ENABLE (rw) register accessor: ROM enables all fourteen mapped function1 events; no inferred reset or completion semantics\n\nYou can [`read`](crate::Reg::read) this register and get [`function1_interrupt_enable::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`function1_interrupt_enable::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@function1_interrupt_enable`] module"]
     #[doc(alias = "FUNCTION1_INTERRUPT_ENABLE")]
     pub type Function1InterruptEnable =
         crate::Reg<function1_interrupt_enable::Function1InterruptEnableSpec>;
-    #[doc = "FUNCTION1_INTERRUPT_ENABLE"]
+    #[doc = "ROM enables all fourteen mapped function1 events; no inferred reset or completion semantics"]
     pub mod function1_interrupt_enable {
         #[doc = "Register `FUNCTION1_INTERRUPT_ENABLE` reader"]
         pub type R = crate::R<Function1InterruptEnableSpec>;
         #[doc = "Register `FUNCTION1_INTERRUPT_ENABLE` writer"]
         pub type W = crate::W<Function1InterruptEnableSpec>;
-        #[doc = "Field `EVENTS` reader - events"]
-        pub type EventsR = crate::FieldReader<u16>;
-        #[doc = "Field `EVENTS` writer - events"]
-        pub type EventsW<'a, REG> = crate::FieldWriter<'a, REG, 14, u16>;
+        #[doc = "Field `HOST_WRITE_COMPLETE` reader - host_write_complete"]
+        pub type HostWriteCompleteR = crate::BitReader;
+        #[doc = "Field `HOST_WRITE_COMPLETE` writer - host_write_complete"]
+        pub type HostWriteCompleteW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `HOST_READ_COMPLETE` reader - host_read_complete"]
+        pub type HostReadCompleteR = crate::BitReader;
+        #[doc = "Field `HOST_READ_COMPLETE` writer - host_read_complete"]
+        pub type HostReadCompleteW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `HOST_READ_ERROR` reader - host_read_error"]
+        pub type HostReadErrorR = crate::BitReader;
+        #[doc = "Field `HOST_READ_ERROR` writer - host_read_error"]
+        pub type HostReadErrorW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `HOST_READ_START` reader - host_read_start"]
+        pub type HostReadStartR = crate::BitReader;
+        #[doc = "Field `HOST_READ_START` writer - host_read_start"]
+        pub type HostReadStartW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `HOST_WRITE_START` reader - host_write_start"]
+        pub type HostWriteStartR = crate::BitReader;
+        #[doc = "Field `HOST_WRITE_START` writer - host_write_start"]
+        pub type HostWriteStartW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `ADMA_END` reader - adma_end"]
+        pub type AdmaEndR = crate::BitReader;
+        #[doc = "Field `ADMA_END` writer - adma_end"]
+        pub type AdmaEndW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `ADMA_INTERRUPT` reader - adma_interrupt"]
+        pub type AdmaInterruptR = crate::BitReader;
+        #[doc = "Field `ADMA_INTERRUPT` writer - adma_interrupt"]
+        pub type AdmaInterruptW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `ADMA_ERROR` reader - adma_error"]
+        pub type AdmaErrorR = crate::BitReader;
+        #[doc = "Field `ADMA_ERROR` writer - adma_error"]
+        pub type AdmaErrorW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `FUNCTION_RESET` reader - function_reset"]
+        pub type FunctionResetR = crate::BitReader;
+        #[doc = "Field `FUNCTION_RESET` writer - function_reset"]
+        pub type FunctionResetW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `HOST_MESSAGE` reader - host_message"]
+        pub type HostMessageR = crate::BitReader;
+        #[doc = "Field `HOST_MESSAGE` writer - host_message"]
+        pub type HostMessageW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `SUSPEND` reader - suspend"]
+        pub type SuspendR = crate::BitReader;
+        #[doc = "Field `SUSPEND` writer - suspend"]
+        pub type SuspendW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `RESUME` reader - resume"]
+        pub type ResumeR = crate::BitReader;
+        #[doc = "Field `RESUME` writer - resume"]
+        pub type ResumeW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `DEVICE_MESSAGE_ACK` reader - device_message_ack"]
+        pub type DeviceMessageAckR = crate::BitReader;
+        #[doc = "Field `DEVICE_MESSAGE_ACK` writer - device_message_ack"]
+        pub type DeviceMessageAckW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `FUNCTION_ENABLE` reader - function_enable"]
+        pub type FunctionEnableR = crate::BitReader;
+        #[doc = "Field `FUNCTION_ENABLE` writer - function_enable"]
+        pub type FunctionEnableW<'a, REG> = crate::BitWriter<'a, REG>;
         impl R {
-            #[doc = "Bits 0:13 - events"]
+            #[doc = "Bit 0 - host_write_complete"]
             #[inline(always)]
-            pub fn events(&self) -> EventsR {
-                EventsR::new((self.bits & 0x3fff) as u16)
+            pub fn host_write_complete(&self) -> HostWriteCompleteR {
+                HostWriteCompleteR::new((self.bits & 1) != 0)
+            }
+            #[doc = "Bit 1 - host_read_complete"]
+            #[inline(always)]
+            pub fn host_read_complete(&self) -> HostReadCompleteR {
+                HostReadCompleteR::new(((self.bits >> 1) & 1) != 0)
+            }
+            #[doc = "Bit 2 - host_read_error"]
+            #[inline(always)]
+            pub fn host_read_error(&self) -> HostReadErrorR {
+                HostReadErrorR::new(((self.bits >> 2) & 1) != 0)
+            }
+            #[doc = "Bit 3 - host_read_start"]
+            #[inline(always)]
+            pub fn host_read_start(&self) -> HostReadStartR {
+                HostReadStartR::new(((self.bits >> 3) & 1) != 0)
+            }
+            #[doc = "Bit 4 - host_write_start"]
+            #[inline(always)]
+            pub fn host_write_start(&self) -> HostWriteStartR {
+                HostWriteStartR::new(((self.bits >> 4) & 1) != 0)
+            }
+            #[doc = "Bit 5 - adma_end"]
+            #[inline(always)]
+            pub fn adma_end(&self) -> AdmaEndR {
+                AdmaEndR::new(((self.bits >> 5) & 1) != 0)
+            }
+            #[doc = "Bit 6 - adma_interrupt"]
+            #[inline(always)]
+            pub fn adma_interrupt(&self) -> AdmaInterruptR {
+                AdmaInterruptR::new(((self.bits >> 6) & 1) != 0)
+            }
+            #[doc = "Bit 7 - adma_error"]
+            #[inline(always)]
+            pub fn adma_error(&self) -> AdmaErrorR {
+                AdmaErrorR::new(((self.bits >> 7) & 1) != 0)
+            }
+            #[doc = "Bit 8 - function_reset"]
+            #[inline(always)]
+            pub fn function_reset(&self) -> FunctionResetR {
+                FunctionResetR::new(((self.bits >> 8) & 1) != 0)
+            }
+            #[doc = "Bit 9 - host_message"]
+            #[inline(always)]
+            pub fn host_message(&self) -> HostMessageR {
+                HostMessageR::new(((self.bits >> 9) & 1) != 0)
+            }
+            #[doc = "Bit 10 - suspend"]
+            #[inline(always)]
+            pub fn suspend(&self) -> SuspendR {
+                SuspendR::new(((self.bits >> 10) & 1) != 0)
+            }
+            #[doc = "Bit 11 - resume"]
+            #[inline(always)]
+            pub fn resume(&self) -> ResumeR {
+                ResumeR::new(((self.bits >> 11) & 1) != 0)
+            }
+            #[doc = "Bit 12 - device_message_ack"]
+            #[inline(always)]
+            pub fn device_message_ack(&self) -> DeviceMessageAckR {
+                DeviceMessageAckR::new(((self.bits >> 12) & 1) != 0)
+            }
+            #[doc = "Bit 13 - function_enable"]
+            #[inline(always)]
+            pub fn function_enable(&self) -> FunctionEnableR {
+                FunctionEnableR::new(((self.bits >> 13) & 1) != 0)
             }
         }
         impl W {
-            #[doc = "Bits 0:13 - events"]
+            #[doc = "Bit 0 - host_write_complete"]
             #[inline(always)]
-            pub fn events(&mut self) -> EventsW<'_, Function1InterruptEnableSpec> {
-                EventsW::new(self, 0)
+            pub fn host_write_complete(
+                &mut self,
+            ) -> HostWriteCompleteW<'_, Function1InterruptEnableSpec> {
+                HostWriteCompleteW::new(self, 0)
+            }
+            #[doc = "Bit 1 - host_read_complete"]
+            #[inline(always)]
+            pub fn host_read_complete(
+                &mut self,
+            ) -> HostReadCompleteW<'_, Function1InterruptEnableSpec> {
+                HostReadCompleteW::new(self, 1)
+            }
+            #[doc = "Bit 2 - host_read_error"]
+            #[inline(always)]
+            pub fn host_read_error(&mut self) -> HostReadErrorW<'_, Function1InterruptEnableSpec> {
+                HostReadErrorW::new(self, 2)
+            }
+            #[doc = "Bit 3 - host_read_start"]
+            #[inline(always)]
+            pub fn host_read_start(&mut self) -> HostReadStartW<'_, Function1InterruptEnableSpec> {
+                HostReadStartW::new(self, 3)
+            }
+            #[doc = "Bit 4 - host_write_start"]
+            #[inline(always)]
+            pub fn host_write_start(
+                &mut self,
+            ) -> HostWriteStartW<'_, Function1InterruptEnableSpec> {
+                HostWriteStartW::new(self, 4)
+            }
+            #[doc = "Bit 5 - adma_end"]
+            #[inline(always)]
+            pub fn adma_end(&mut self) -> AdmaEndW<'_, Function1InterruptEnableSpec> {
+                AdmaEndW::new(self, 5)
+            }
+            #[doc = "Bit 6 - adma_interrupt"]
+            #[inline(always)]
+            pub fn adma_interrupt(&mut self) -> AdmaInterruptW<'_, Function1InterruptEnableSpec> {
+                AdmaInterruptW::new(self, 6)
+            }
+            #[doc = "Bit 7 - adma_error"]
+            #[inline(always)]
+            pub fn adma_error(&mut self) -> AdmaErrorW<'_, Function1InterruptEnableSpec> {
+                AdmaErrorW::new(self, 7)
+            }
+            #[doc = "Bit 8 - function_reset"]
+            #[inline(always)]
+            pub fn function_reset(&mut self) -> FunctionResetW<'_, Function1InterruptEnableSpec> {
+                FunctionResetW::new(self, 8)
+            }
+            #[doc = "Bit 9 - host_message"]
+            #[inline(always)]
+            pub fn host_message(&mut self) -> HostMessageW<'_, Function1InterruptEnableSpec> {
+                HostMessageW::new(self, 9)
+            }
+            #[doc = "Bit 10 - suspend"]
+            #[inline(always)]
+            pub fn suspend(&mut self) -> SuspendW<'_, Function1InterruptEnableSpec> {
+                SuspendW::new(self, 10)
+            }
+            #[doc = "Bit 11 - resume"]
+            #[inline(always)]
+            pub fn resume(&mut self) -> ResumeW<'_, Function1InterruptEnableSpec> {
+                ResumeW::new(self, 11)
+            }
+            #[doc = "Bit 12 - device_message_ack"]
+            #[inline(always)]
+            pub fn device_message_ack(
+                &mut self,
+            ) -> DeviceMessageAckW<'_, Function1InterruptEnableSpec> {
+                DeviceMessageAckW::new(self, 12)
+            }
+            #[doc = "Bit 13 - function_enable"]
+            #[inline(always)]
+            pub fn function_enable(&mut self) -> FunctionEnableW<'_, Function1InterruptEnableSpec> {
+                FunctionEnableW::new(self, 13)
             }
         }
-        #[doc = "FUNCTION1_INTERRUPT_ENABLE\n\nYou can [`read`](crate::Reg::read) this register and get [`function1_interrupt_enable::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`function1_interrupt_enable::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "ROM enables all fourteen mapped function1 events; no inferred reset or completion semantics\n\nYou can [`read`](crate::Reg::read) this register and get [`function1_interrupt_enable::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`function1_interrupt_enable::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct Function1InterruptEnableSpec;
         impl crate::RegisterSpec for Function1InterruptEnableSpec {
             type Ux = u32;
