@@ -319,10 +319,163 @@
           </fields>
         </register>
         <register>
+          <name>MSUB_NORMAL_WORD</name>
+          <description>32-bit little-endian access view of MSUB_NORMAL; same low-half fields, upper bits unmodeled; preserve them on RMW. SDK 163d9150: clock_recover.c/acore_clock_recover.c use reg_setbit/reg_clrbit, whose chip_io.h reg() is volatile uint32_t; original halfword write qualification remains unresolved. Historical 16/32-bit SDMA gate attempts both failed readback; this view proves neither gate clearing nor bus drain. See evidence/ws53-msub-word-access.json</description>
+          <alternateRegister>MSUB_NORMAL</alternateRegister>
+          <addressOffset>0x3E0</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <fields>
+            <field>
+              <name>CPU_ENABLE</name>
+              <description>cpu_enable</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>CPU_HCLK_ENABLE</name>
+              <description>cpu_hclk_enable</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>MDMA_ENABLE</name>
+              <description>mdma_enable</description>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>SDMA_ENABLE</name>
+              <description>Header-defined gate; does not prove SDMA instance accessibility</description>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>COMMON_BUS_ENABLE</name>
+              <description>common_bus_enable</description>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>MCU_CORE_CHANNEL</name>
+              <description>mcu_core_channel</description>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>COMMON_BUS_CHANNEL</name>
+              <description>common_bus_channel</description>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>HIFI_CHANNEL</name>
+              <description>hifi_channel</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>CODEC_CHANNEL</name>
+              <description>codec_channel</description>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
           <name>MSUB_SLEEP</name>
           <description>MSUB_SLEEP</description>
           <addressOffset>0x3E4</addressOffset>
           <size>16</size>
+          <access>read-write</access>
+          <fields>
+            <field>
+              <name>CPU_ENABLE</name>
+              <description>cpu_enable</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>CPU_HCLK_ENABLE</name>
+              <description>cpu_hclk_enable</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>MCU_BUS_ENABLE</name>
+              <description>mcu_bus_enable</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>MDMA_ENABLE</name>
+              <description>mdma_enable</description>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>SDMA_ENABLE</name>
+              <description>sdma_enable</description>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>COMMON_BUS_ENABLE</name>
+              <description>common_bus_enable</description>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>MCU_CORE_CHANNEL</name>
+              <description>mcu_core_channel</description>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>COMMON_BUS_CHANNEL</name>
+              <description>common_bus_channel</description>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>HIFI_CHANNEL</name>
+              <description>hifi_channel</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>CODEC_CHANNEL</name>
+              <description>codec_channel</description>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>MSUB_SLEEP_WORD</name>
+          <description>32-bit little-endian access view of MSUB_SLEEP; same low-half fields, upper bits unmodeled; preserve them on RMW. SDK 163d9150: clock_recover.c/acore_clock_recover.c use 32-bit reg_setbit/reg_clrbit; pm_sleep_porting.c also uses reg32_setbit. chip_io.h defines volatile uint32_t accesses. Original halfword write qualification remains unresolved; both historical SDMA gate widths failed. This is not a bus-drain protocol. See evidence/ws53-msub-word-access.json</description>
+          <alternateRegister>MSUB_SLEEP</alternateRegister>
+          <addressOffset>0x3E4</addressOffset>
+          <size>32</size>
           <access>read-write</access>
           <fields>
             <field>
@@ -11428,12 +11581,78 @@
       </registers>
     </peripheral>
     <peripheral>
+      <name>FAMA_STATUS</name>
+      <description>fama_status</description>
+      <baseAddress>0x5208F800</baseAddress>
+      <addressBlock>
+        <offset>0x0</offset>
+        <size>0x50</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <register>
+          <dim>4</dim>
+          <dimIncrement>0x4</dimIncrement>
+          <name>SOURCE[%s]</name>
+          <description>SOURCE</description>
+          <addressOffset>0x0</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <fields>
+            <field>
+              <name>PAGE</name>
+              <description>Source first address shifted right12</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <dim>4</dim>
+          <dimIncrement>0x4</dimIncrement>
+          <name>END[%s]</name>
+          <description>END</description>
+          <addressOffset>0x20</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <fields>
+            <field>
+              <name>PAGE</name>
+              <description>Source inclusive last address shifted right12</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <dim>4</dim>
+          <dimIncrement>0x4</dimIncrement>
+          <name>DESTINATION[%s]</name>
+          <description>DESTINATION</description>
+          <addressOffset>0x40</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <fields>
+            <field>
+              <name>DELTA</name>
+              <description>Two's-complement destination minus source page number</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+      </registers>
+    </peripheral>
+    <peripheral>
       <name>SFC_CFG</name>
       <description>sfc_cfg</description>
       <baseAddress>0x53000000</baseAddress>
       <addressBlock>
         <offset>0x0</offset>
-        <size>0x1604</size>
+        <size>0x1650</size>
         <usage>registers</usage>
       </addressBlock>
       <registers>
@@ -11443,8 +11662,6 @@
           <addressOffset>0x100</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x0000003F</resetMask>
           <fields>
             <field>
               <name>MODE</name>
@@ -11506,8 +11723,6 @@
           <addressOffset>0x110</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x0000660F</resetValue>
-          <resetMask>0x0000770F</resetMask>
           <fields>
             <field>
               <name>TSHSL</name>
@@ -11538,8 +11753,6 @@
           <addressOffset>0x120</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000003</resetMask>
           <fields>
             <field>
               <name>CMD_OP_END_RAW_STATUS</name>
@@ -11563,8 +11776,6 @@
           <addressOffset>0x124</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000003</resetMask>
           <fields>
             <field>
               <name>CMD_OP_END_STATUS</name>
@@ -11588,8 +11799,6 @@
           <addressOffset>0x128</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000003</resetMask>
           <fields>
             <field>
               <name>CMD_OP_END_INT_MASK</name>
@@ -11613,8 +11822,6 @@
           <addressOffset>0x12C</addressOffset>
           <size>32</size>
           <access>write-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000003</resetMask>
           <fields>
             <field>
               <name>CMD_OP_END_INT_CLR</name>
@@ -11638,8 +11845,6 @@
           <addressOffset>0x130</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000001</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>SFC_BUS_SOFT_RST_MASK</name>
@@ -11656,8 +11861,6 @@
           <addressOffset>0x200</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x80800300</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
               <name>RD_MEM_IF_TYPE</name>
@@ -11731,8 +11934,6 @@
           <addressOffset>0x204</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000007</resetMask>
           <fields>
             <field>
               <name>WIP_LOCATE</name>
@@ -11744,13 +11945,68 @@
           </fields>
         </register>
         <register>
+          <name>FLASH_SIZE_STATUS</name>
+          <description>FLASH_SIZE_STATUS</description>
+          <addressOffset>0x210</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <fields>
+            <field>
+              <name>CS0</name>
+              <description>SDK alias-size encoding; not a JEDEC capacity measurement</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>4</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>CS1</name>
+              <description>cs1</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>4</bitWidth>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <dim>2</dim>
+          <dimIncrement>0x4</dimIncrement>
+          <name>FLASH_BASE_STATUS[%s]</name>
+          <description>FLASH_BASE_STATUS</description>
+          <addressOffset>0x214</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <fields>
+            <field>
+              <name>VALUE</name>
+              <description>Mapping byte address high16; low16 reserved. SDK supplies address shifted right16 to this field</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>16</bitWidth>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>FLASH_ALIAS_STATUS</name>
+          <description>FLASH_ALIAS_STATUS</description>
+          <addressOffset>0x220</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <fields>
+            <field>
+              <name>ALIAS_CS</name>
+              <description>alias_cs</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
           <name>BUS_DMA_CTRL</name>
           <description>BUS_DMA_CTRL</description>
           <addressOffset>0x240</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000013</resetMask>
           <fields>
             <field>
               <name>DMA_START</name>
@@ -11781,8 +12037,6 @@
           <addressOffset>0x244</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
               <name>DMA_MEM_SADDR</name>
@@ -11799,8 +12053,6 @@
           <addressOffset>0x248</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
               <name>DMA_FLASH_SADDR</name>
@@ -11817,8 +12069,6 @@
           <addressOffset>0x24C</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x3FFFFFFF</resetMask>
           <fields>
             <field>
               <name>DMA_LEN</name>
@@ -11835,8 +12085,6 @@
           <addressOffset>0x250</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000007</resetValue>
-          <resetMask>0x00000007</resetMask>
           <fields>
             <field>
               <name>INCR4_EN</name>
@@ -11867,8 +12115,6 @@
           <addressOffset>0x300</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00007E00</resetValue>
-          <resetMask>0x000E7FFB</resetMask>
           <fields>
             <field>
               <name>START</name>
@@ -11935,8 +12181,6 @@
           <addressOffset>0x308</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x000000FF</resetMask>
           <fields>
             <field>
               <name>REG_INS</name>
@@ -11953,8 +12197,6 @@
           <addressOffset>0x30C</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x3FFFFFFF</resetMask>
           <fields>
             <field>
               <name>CMD_ADDR</name>
@@ -11971,8 +12213,6 @@
           <addressOffset>0x400</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
               <name>CMD_DATABUF_0</name>
@@ -11989,8 +12229,6 @@
           <addressOffset>0x404</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
               <name>CMD_DATABUF_1</name>
@@ -12007,8 +12245,6 @@
           <addressOffset>0x408</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
               <name>CMD_DATABUF_2</name>
@@ -12025,8 +12261,6 @@
           <addressOffset>0x40C</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
               <name>CMD_DATABUF_3</name>
@@ -12043,8 +12277,6 @@
           <addressOffset>0x410</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
               <name>CMD_DATABUF_4</name>
@@ -12061,8 +12293,6 @@
           <addressOffset>0x414</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
               <name>CMD_DATABUF_5</name>
@@ -12079,8 +12309,6 @@
           <addressOffset>0x418</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
               <name>CMD_DATABUF_6</name>
@@ -12097,8 +12325,6 @@
           <addressOffset>0x41C</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
               <name>CMD_DATABUF_7</name>
@@ -12115,8 +12341,6 @@
           <addressOffset>0x420</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
               <name>CMD_DATABUF_8</name>
@@ -12133,8 +12357,6 @@
           <addressOffset>0x424</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
               <name>CMD_DATABUF_9</name>
@@ -12151,8 +12373,6 @@
           <addressOffset>0x428</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
               <name>CMD_DATABUF_10</name>
@@ -12169,8 +12389,6 @@
           <addressOffset>0x42C</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
               <name>CMD_DATABUF_11</name>
@@ -12187,8 +12405,6 @@
           <addressOffset>0x430</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
               <name>CMD_DATABUF_12</name>
@@ -12205,8 +12421,6 @@
           <addressOffset>0x434</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
               <name>CMD_DATABUF_13</name>
@@ -12223,8 +12437,6 @@
           <addressOffset>0x438</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
               <name>CMD_DATABUF_14</name>
@@ -12241,8 +12453,6 @@
           <addressOffset>0x43C</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
               <name>CMD_DATABUF_15</name>
@@ -12254,13 +12464,79 @@
           </fields>
         </register>
         <register>
+          <dim>4</dim>
+          <dimIncrement>0x4</dimIncrement>
+          <name>FAPC_START_STATUS[%s]</name>
+          <description>FAPC_START_STATUS</description>
+          <addressOffset>0x1000</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <fields>
+            <field>
+              <name>ADDRESS</name>
+              <description>SDK writes byte address; bottom8 bits reserved</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>24</bitWidth>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <dim>4</dim>
+          <dimIncrement>0x4</dimIncrement>
+          <name>FAPC_END_STATUS[%s]</name>
+          <description>FAPC_END_STATUS</description>
+          <addressOffset>0x1040</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <fields>
+            <field>
+              <name>ADDRESS</name>
+              <description>SDK region end address; bottom8 bits reserved</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>24</bitWidth>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>FAPC_MODE_STATUS</name>
+          <description>FAPC_MODE_STATUS</description>
+          <addressOffset>0x1180</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <fields>
+            <field>
+              <name>MODES</name>
+              <description>Two bits per region: 0 normal, 2 decrypt per hal_fapc_set_region_mode; other values unqualified</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>8</bitWidth>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>FAPC_LOCK_STATUS</name>
+          <description>FAPC_LOCK_STATUS</description>
+          <addressOffset>0x1220</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <fields>
+            <field>
+              <name>LOCKED</name>
+              <description>Readback only; no one-way lock writes exposed</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>4</bitWidth>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
           <name>LEA_LP_EN</name>
           <description>LEA_LP_EN</description>
           <addressOffset>0x1300</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000001</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>LEA_LP_EN</name>
@@ -12277,8 +12553,6 @@
           <addressOffset>0x1304</addressOffset>
           <size>32</size>
           <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0xFFFFFFFF</resetMask>
           <fields>
             <field>
               <name>LEA_DFX_INFO</name>
@@ -12295,8 +12569,6 @@
           <addressOffset>0x1600</addressOffset>
           <size>32</size>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <resetMask>0x00000001</resetMask>
           <fields>
             <field>
               <name>LEA_IV_VLD</name>
@@ -12304,6 +12576,24 @@
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <dim>4</dim>
+          <dimIncrement>0x4</dimIncrement>
+          <name>FAPC_IV_START_STATUS[%s]</name>
+          <description>FAPC_IV_START_STATUS</description>
+          <addressOffset>0x1640</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <fields>
+            <field>
+              <name>VALUE</name>
+              <description>ACPU IV start address per region; no IV/key contents exposed</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+              <access>read-only</access>
             </field>
           </fields>
         </register>
@@ -14073,7 +14363,7 @@
       <baseAddress>0x57030000</baseAddress>
       <addressBlock>
         <offset>0x0</offset>
-        <size>0x608</size>
+        <size>0x970</size>
         <usage>registers</usage>
       </addressBlock>
       <registers>
@@ -14136,6 +14426,22 @@
               <bitOffset>6</bitOffset>
               <bitWidth>3</bitWidth>
               <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CCORE_RESET_STATUS</name>
+          <description>Control-core reset observation; no reset command is exposed by this view</description>
+          <addressOffset>0x96C</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <fields>
+            <field>
+              <name>RELEASED_DOMAINS</name>
+              <description>Known domain-release encoding: 0 all held, 3 logic/clock released, 7 CPU also released; other encodings unqualified</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>3</bitWidth>
+              <access>read-only</access>
             </field>
           </fields>
         </register>

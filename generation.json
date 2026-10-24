@@ -1,6 +1,6 @@
 {
   "source": "https://github.com/hispark-rs/hisi-registers",
-  "commit": "d9d8b2c7ff315eb1e39536a5195193b63cf1af56",
+  "commit": "c56a24dc54be1698caa7dbcebda1c38f1a7e5fb6",
   "dirty": false,
   "profile": "ws53_liteos_app/acore/MCU_MODE_1",
   "svd2rust": "0.37.1",
@@ -23,17 +23,18 @@
     "rdl/chips/ws53/adc-v155.rdl": "abd8eb6d3c2ea78a76d00b6b86d002d48060984c462707c9045d2b473013450a",
     "rdl/chips/ws53/audio-cmu.rdl": "06c541b85e6cde769ef0b74afc484726bb78bdf50905048e1a93875736a9cba7",
     "rdl/chips/ws53/efuse-read.rdl": "ff2098881aff1cd3b7b5240fe9afe26e07ae0e691de52835d797a9cc4dcc7e1d",
+    "rdl/chips/ws53/flash-map.rdl": "cfb2f2d284005784ed85f572c9653e8bed9221b3c95c616bd98d1b12509fe508",
     "rdl/chips/ws53/glb-ctl.rdl": "fa81e83f75bd0707db2c61fb3c3a2edf1e79bb1198b00f297123ed32502084e3",
-    "rdl/chips/ws53/m-crg.rdl": "5774ef215747636c3dab9a051f4e054b07149d9a5b352e26a220e28fab6a5d34",
+    "rdl/chips/ws53/m-crg.rdl": "b26004ed244fc47a171ab4cab7da0382965b0295aecb34cffe4f2bd6b5637588",
     "rdl/chips/ws53/mdma-v151.rdl": "1f84dad075b4215c8a80023fd9433b5b11912d8785b974d5a595c91f328d405b",
     "rdl/chips/ws53/pinctrl.rdl": "e1f2690aba6fe2e144f29af73cf8606befbd172c8f02204f201417addb9e5550",
     "rdl/chips/ws53/sdio-v151.rdl": "1e635aa40a5cbedda5854fb51377ab4fe993ff55eaf4758ebe87b36fc3343ba6",
     "rdl/chips/ws53/sio-v151.rdl": "56618ef128f47b54b69c4419bb5af0a750bcd9a2b58546efcacadd718128874b",
     "rdl/chips/ws53/spi-v151-100.rdl": "a6014d20bc78e0e48709086ce058c81cddb103fb34e8b8633355a40ffe4ef68d",
-    "rdl/chips/ws53/system-memory.rdl": "0392b17ff9ec8fc7a2d747b9edb1ccfbfd60a9eba7bac937d7339d63595270fc",
+    "rdl/chips/ws53/system-memory.rdl": "1a66e4d409840f79db5d6f41dcbf40953d25183840c8d0d3575571f8070be605",
     "rdl/chips/ws53/trng.rdl": "75e3a5cc88ca1d2b91312f38c5d43138b39753dc6f9ea591a3e34d8e9a0e8f74",
     "rdl/chips/ws53/tsensor.rdl": "3f8af733dc054c5de9e1ac25e9a70f86c6680fc4db19b7c2ca64d0f631822304",
-    "rdl/chips/ws53.rdl": "ce17476bd4b31a5d2c6eceb76f0351aa865727a1ca2f445c15d9d6b84983f827",
+    "rdl/chips/ws53.rdl": "f93857baa706acef87bd75299f4fedb45e6eecc9a1fef3f30a080932565a7918",
     "rdl/chips/ws63/peripherals/bt_em_ctl.rdl": "96d045b6ed1984d43822e7833f93f90dd77cfb2553bcffb423f86f5e5404a563",
     "rdl/chips/ws63/peripherals/cldo_crg.rdl": "b5289461723351d3643ec982df334dbd795d78fe185435c29c9dee868153d77d",
     "rdl/chips/ws63/peripherals/cmu.rdl": "9e5e37d420c350d9529c5186451db5ce2dccc354bfdec64bba7a6a8060db8a9a",
@@ -60,7 +61,7 @@
     "rdl/ip/i2c-v151-ws53-bs2x.rdl": "0ce8fc3e79306d650b137f39d0f6d1aef2c9ed77416211898731313e748ed236",
     "rdl/ip/pwm-v151.rdl": "cf8ffd30f6d86869134c4237f5c41a1fb279f2d7c1c8ebfe8ef9b535171e3867",
     "rdl/ip/rtc-v150-ws53-bs2x.rdl": "e9d2a1cc619f303461d4d9bc7c6a0d789b022ce65e0bd8134259ec44a7c2a5e8",
-    "rdl/ip/sfc-v150.rdl": "11e55fbb434765a3816184c44fc07a33b8fd9f53a190991703806c4df339d755",
+    "rdl/ip/sfc-v150.rdl": "87c21b081b93caa8ae47e40e449f4aa4ded7fdee94c7d86de1721536ea7f2f3b",
     "rdl/ip/sio-v151.rdl": "1d6a0966b6393bd7d9b4ffc5a8b1424afe6d9c0ba3ca50cb39f61e1d1d9bf556",
     "rdl/ip/spi-v151.rdl": "747b69d2f3401d1082feb277af2e70de90ad3e00807a2c5ae6391afe71494c61",
     "rdl/ip/tcxo-v150-data16.rdl": "7a2092a30b2c7f7853eb8311c1a0971272aefe3fe1b77386a046d1596b504873",
@@ -82,8 +83,8 @@
     "rust-toolchain.toml": "4a55a5c6ce672e0024729f0739b0a82a0897538c9332528927201459bda83585"
   },
   "outputs": {
-    "src/lib.rs": "8d23c8a263078bfd8936348d548f3d8e995c23c3d380d1028b27e8fc7b81a137",
+    "src/lib.rs": "456f186560ca5dcb81a5f3ab7b2edbf8a19dce41dc41571bd9558582f50c5313",
     "device.x": "b732da88f67fc24ca2cdce044efc37da252563f855f19ca7975359951be95eba",
-    "svd/WS53.svd": "44c10c718da5f9a7c178715c995b92acfff43e61e82a22f3e128d4544810ff21"
+    "svd/WS53.svd": "038a78211377eaeb658006be3547afc307e00c0e9e80ae7fde09865f53b20248"
   }
 }

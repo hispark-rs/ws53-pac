@@ -16,6 +16,17 @@ reserved tail padding. RX/TX FIFO views and interrupt-clear command views
 intentionally restrict generated access APIs. These checks establish register
 layout and API shape, not peripheral behavior or safe DMA buffer ownership.
 
+`M_CRG::msub_normal_word()` and `msub_sleep_word()` expose the SDK's
+32-bit read-modify-write views at offsets 0x3e0 and 0x3e4. The existing
+halfword accessors remain available for API compatibility. The source proves
+19 named fields, not reset values or the validity of halfword accesses on
+silicon; unmodeled bits must be preserved. These shared gates do not establish
+SDMA availability, idle status, transaction drain, or exclusive ownership.
+
+The WS53-only SFC/FAMA status views and `SystemMemory::ccore_reset_status()`
+support read-only Flash handoff diagnostics. Their presence does not provide a
+Flash erase/program driver, permit mapping changes, or prove a cold boot.
+
 RTC0/1 expose the SDK v150 channel layout with local causes 49/50. Snapshot-ready
 and interrupt status are read-only, acknowledgement is a write-one command, and
 unknown reset values are omitted. The SDK header's read-clear comment is not

@@ -8,6 +8,44 @@ fn offset<B, R>(base: &B, register: &R) -> usize {
 }
 
 #[test]
+fn flash_start_memory_and_control_core_status_layout() {
+    let r: ws53_pac::system_memory::RegisterBlock = unsafe { core::mem::zeroed() };
+    assert_eq!(ws53_pac::SystemMemory::PTR as usize, 0x57030000);
+    assert_eq!(offset(&r, r.bram_share()), 0x234);
+    assert_eq!(offset(&r, r.dtcm_share()), 0x238);
+    assert_eq!(offset(&r, r.platform_enable()), 0x604);
+    assert_eq!(offset(&r, r.ccore_reset_status()), 0x96c);
+    assert_eq!(size_of_val(r.ccore_reset_status()), 4);
+}
+
+#[test]
+fn flash_readonly_mapping_views_match_ws53_sdk() {
+    let sfc: ws53_pac::sfc_cfg::RegisterBlock = unsafe { core::mem::zeroed() };
+    let fama: ws53_pac::fama_status::RegisterBlock = unsafe { core::mem::zeroed() };
+    assert_eq!(ws53_pac::FamaStatus::PTR as usize, 0x5208f800);
+    assert_eq!(ws53_pac::SfcCfg::PTR as usize, 0x53000000);
+    assert_eq!(offset(&sfc, sfc.flash_size_status()), 0x210);
+    assert_eq!(offset(&sfc, sfc.flash_base_status(1)), 0x218);
+    assert_eq!(offset(&sfc, sfc.flash_alias_status()), 0x220);
+    assert_eq!(offset(&sfc, sfc.fapc_mode_status()), 0x1180);
+    assert_eq!(offset(&sfc, sfc.fapc_lock_status()), 0x1220);
+    for index in 0..4 {
+        assert_eq!(offset(&fama, fama.source(index)), index * 4);
+        assert_eq!(offset(&fama, fama.end(index)), 0x20 + index * 4);
+        assert_eq!(offset(&fama, fama.destination(index)), 0x40 + index * 4);
+        assert_eq!(
+            offset(&sfc, sfc.fapc_start_status(index)),
+            0x1000 + index * 4
+        );
+        assert_eq!(offset(&sfc, sfc.fapc_end_status(index)), 0x1040 + index * 4);
+        assert_eq!(
+            offset(&sfc, sfc.fapc_iv_start_status(index)),
+            0x1640 + index * 4
+        );
+    }
+}
+
+#[test]
 fn generated_pin_domains_and_halfword_clocks_match_sdk_offsets() {
     // Generated blocks contain only integer register cells and byte padding.
     // Zero is a valid Rust representation; these local objects do not claim
@@ -32,6 +70,87 @@ fn generated_pin_domains_and_halfword_clocks_match_sdk_offsets() {
     aon.agpio6_pad()
         .modify(|_, w| unsafe { w.drive_high().bits(3).drive_low().bits(2).pull().bits(1) });
     assert_eq!(aon.agpio6_pad().read().bits(), 0xca);
+}
+
+#[test]
+fn msub_word_views_retain_halfword_api_and_sdk_offsets() {
+    fn halfword<T: ws53_pac::generic::RegisterSpec<Ux = u16>>() {}
+    fn word<T: ws53_pac::generic::RegisterSpec<Ux = u32>>() {}
+    halfword::<m_crg::msub_normal::MsubNormalSpec>();
+    halfword::<m_crg::msub_sleep::MsubSleepSpec>();
+    word::<m_crg::msub_normal_word::MsubNormalWordSpec>();
+    word::<m_crg::msub_sleep_word::MsubSleepWordSpec>();
+
+    let r: m_crg::RegisterBlock = unsafe { core::mem::zeroed() };
+    // Compatibility of the existing accessor return types is intentional.
+    let normal: &m_crg::MsubNormal = r.msub_normal();
+    let sleep: &m_crg::MsubSleep = r.msub_sleep();
+    let normal_word: &m_crg::MsubNormalWord = r.msub_normal_word();
+    let sleep_word: &m_crg::MsubSleepWord = r.msub_sleep_word();
+    assert_eq!(ws53_pac::MCrg::PTR as usize, 0x52000000);
+    assert_eq!(offset(&r, normal), 0x3e0);
+    assert_eq!(offset(&r, sleep), 0x3e4);
+    assert_eq!(offset(&r, normal_word), 0x3e0);
+    assert_eq!(offset(&r, sleep_word), 0x3e4);
+    assert_eq!(size_of_val(normal), 2);
+    assert_eq!(size_of_val(sleep), 2);
+    assert_eq!(size_of_val(normal_word), 4);
+    assert_eq!(size_of_val(sleep_word), 4);
+    assert_eq!(offset(&r, r.global_clken()), 0x548);
+}
+
+#[test]
+#[cfg(target_endian = "little")]
+fn msub_sdk_fields_preserve_unmodeled_bits_and_neighbor() {
+    // SDK 163d9150 hal_clocks.h: application normal/sleep enums, bits 0..9.
+    // This is local-RAM API encoding, not a hardware reset/access-width test
+    // or evidence of successful SDMA clock gating / bus transaction drain.
+    let r: m_crg::RegisterBlock = unsafe { core::mem::zeroed() };
+    macro_rules! field {
+        ($word:ident, $half:ident, $name:ident, $bit:literal) => {{
+            let mask = 1u32 << $bit;
+            let seed = 0xa55a_ffffu32 & !mask;
+            unsafe { r.$word().write_with_zero(|w| w.bits(seed)) };
+            assert!(!r.$word().read().$name().bit());
+            assert!(!r.$half().read().$name().bit());
+            r.$word().modify(|_, w| w.$name().set_bit());
+            assert_eq!(r.$word().read().bits(), seed | mask);
+            assert_eq!(r.$half().read().bits(), (seed | mask) as u16);
+            assert!(r.$word().read().$name().bit());
+            assert!(r.$half().read().$name().bit());
+            r.$half().modify(|_, w| w.$name().clear_bit());
+            assert_eq!(r.$word().read().bits(), seed);
+            assert!(!r.$word().read().$name().bit());
+            assert!(!r.$half().read().$name().bit());
+        }};
+    }
+    macro_rules! shared_fields {
+        ($word:ident, $half:ident) => {
+            field!($word, $half, cpu_enable, 0);
+            field!($word, $half, cpu_hclk_enable, 1);
+            field!($word, $half, mdma_enable, 3);
+            field!($word, $half, sdma_enable, 4);
+            field!($word, $half, common_bus_enable, 5);
+            field!($word, $half, mcu_core_channel, 6);
+            field!($word, $half, common_bus_channel, 7);
+            field!($word, $half, hifi_channel, 8);
+            field!($word, $half, codec_channel, 9);
+        };
+    }
+    unsafe {
+        r.msub_sleep_word().write_with_zero(|w| w.bits(0x1234_5678));
+    }
+    shared_fields!(msub_normal_word, msub_normal);
+    assert_eq!(r.msub_sleep_word().read().bits(), 0x1234_5678);
+    // NORMAL bit2 is unspecified and must remain unchanged by named fields.
+    assert_ne!(r.msub_normal_word().read().bits() & 4, 0);
+    unsafe {
+        r.msub_normal_word()
+            .write_with_zero(|w| w.bits(0x8765_4321));
+    }
+    shared_fields!(msub_sleep_word, msub_sleep);
+    field!(msub_sleep_word, msub_sleep, mcu_bus_enable, 2);
+    assert_eq!(r.msub_normal_word().read().bits(), 0x8765_4321);
 }
 
 #[test]
@@ -109,6 +228,23 @@ macro_rules! assert_not_impl {
         };
     };
 }
+// The SDK establishes access width and named bit positions, not reset state.
+assert_not_impl!(
+    m_crg::msub_normal::MsubNormalSpec,
+    ws53_pac::generic::Resettable
+);
+assert_not_impl!(
+    m_crg::msub_sleep::MsubSleepSpec,
+    ws53_pac::generic::Resettable
+);
+assert_not_impl!(
+    m_crg::msub_normal_word::MsubNormalWordSpec,
+    ws53_pac::generic::Resettable
+);
+assert_not_impl!(
+    m_crg::msub_sleep_word::MsubSleepWordSpec,
+    ws53_pac::generic::Resettable
+);
 macro_rules! rtc_access_api {
     ($module:ident) => {
         assert_not_impl!(
