@@ -12782,7 +12782,7 @@
       <baseAddress>0x57000000</baseAddress>
       <addressBlock>
         <offset>0x0</offset>
-        <size>0xB2</size>
+        <size>0xCC</size>
         <usage>registers</usage>
       </addressBlock>
       <registers>
@@ -12819,6 +12819,22 @@
               <name>UART_L0_RESET_N</name>
               <description>UART L0/application UART2 reset, active low; preserve all other bits</description>
               <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SDIO_SOFT_RESET</name>
+          <description>SDK SDIO reset patch control; pulse does not establish bus-master drain</description>
+          <addressOffset>0xC8</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <fields>
+            <field>
+              <name>SDIO_RESET_N</name>
+              <description>SDK drives low then high; preserve other bits. No reset-state or self-clear inference</description>
+              <bitOffset>1</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-write</access>
             </field>

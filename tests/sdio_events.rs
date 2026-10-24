@@ -141,3 +141,37 @@ fn ack_stays_full_width_write_only_alias_without_assumed_clear_behavior() {
         assert_eq!(r.function1_interrupt_status().read().bits(), raw);
     }
 }
+
+absent!(
+    ws53_pac::glb_ctl::sdio_soft_reset::SdioSoftResetSpec,
+    ws53_pac::generic::Resettable
+);
+
+#[test]
+fn sdk_reset_patch_is_word_rmw_and_preserves_other_control_bits() {
+    fn word<T: ws53_pac::generic::RegisterSpec<Ux = u32>>() {}
+    word::<ws53_pac::glb_ctl::sdio_soft_reset::SdioSoftResetSpec>();
+    let r: ws53_pac::glb_ctl::RegisterBlock = unsafe { core::mem::zeroed() };
+    assert_eq!(ws53_pac::GlbCtl::PTR as usize, 0x5700_0000);
+    assert_eq!(
+        r.sdio_soft_reset().as_ptr() as usize - &r as *const _ as usize,
+        0xc8
+    );
+    for seed in [0, u32::MAX, 0xa55a_5aa5, 0x5aa5_a55a] {
+        unsafe {
+            r.uart_soft_reset().write_with_zero(|w| w.bits(0x5aa5));
+            r.sdio_soft_reset().write_with_zero(|w| w.bits(seed));
+        }
+        r.sdio_soft_reset()
+            .modify(|_, w| w.sdio_reset_n().clear_bit());
+        assert_eq!(r.sdio_soft_reset().read().bits(), seed & !2);
+        assert!(!r.sdio_soft_reset().read().sdio_reset_n().bit());
+        // The SDK delays here; local storage verifies encoding, not elapsed
+        // time, hardware reset completion or in-flight ADMA transaction drain.
+        r.sdio_soft_reset()
+            .modify(|_, w| w.sdio_reset_n().set_bit());
+        assert_eq!(r.sdio_soft_reset().read().bits(), seed | 2);
+        assert!(r.sdio_soft_reset().read().sdio_reset_n().bit());
+        assert_eq!(r.uart_soft_reset().read().bits(), 0x5aa5);
+    }
+}

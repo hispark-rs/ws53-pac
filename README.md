@@ -65,6 +65,12 @@ original ROM handler. Status bits 31:14 remain `unclassified`; the write-only
 acknowledgement retains its full-word payload. No reset value or W1C behavior
 is inferred from the ROM's write. Host tests exercise all 16,384 enable masks,
 preserved upper bits and the split read/write API using local RAM only.
+`GlbCtl::sdio_soft_reset()` describes the SDK application's reset patch at
+`0x570000c8`: a word read-modify-write clears bit1, delays five microseconds,
+then a fresh read-modify-write sets it. This differs from the empty ROM entry.
+It proves neither activation of that patch in a board image nor ADMA drain,
+reset coverage, pulse timing or safe buffer reclamation. Unknown reset values
+are omitted and neighboring control bits must be preserved.
 
 TRNG describes the SDK unified-security application path at `0x52024000`.
 `FIFO_DATA` reads consume words; it is not a passive diagnostic register.

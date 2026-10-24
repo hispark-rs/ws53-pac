@@ -28878,6 +28878,8 @@ pub mod glb_ctl {
         uart_l0_irq_route_command: UartL0IrqRouteCommand,
         _reserved1: [u8; 0x64],
         uart_soft_reset: UartSoftReset,
+        _reserved2: [u8; 0x16],
+        sdio_soft_reset: SdioSoftReset,
     }
     impl RegisterBlock {
         #[doc = "0x48 - UART L0 interrupt routing command view: SDK writes the complete word 1 to route only to acore; other values and physical read behavior unverified"]
@@ -28889,6 +28891,11 @@ pub mod glb_ctl {
         #[inline(always)]
         pub const fn uart_soft_reset(&self) -> &UartSoftReset {
             &self.uart_soft_reset
+        }
+        #[doc = "0xc8 - SDK SDIO reset patch control; pulse does not establish bus-master drain"]
+        #[inline(always)]
+        pub const fn sdio_soft_reset(&self) -> &SdioSoftReset {
+            &self.sdio_soft_reset
         }
     }
     #[doc = "UART_L0_IRQ_ROUTE_COMMAND (w) register accessor: UART L0 interrupt routing command view: SDK writes the complete word 1 to route only to acore; other values and physical read behavior unverified\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`uart_l0_irq_route_command::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@uart_l0_irq_route_command`] module"]
@@ -28954,6 +28961,45 @@ pub mod glb_ctl {
         impl crate::Readable for UartSoftResetSpec {}
         #[doc = "`write(|w| ..)` method takes [`uart_soft_reset::W`](W) writer structure"]
         impl crate::Writable for UartSoftResetSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "SDIO_SOFT_RESET (rw) register accessor: SDK SDIO reset patch control; pulse does not establish bus-master drain\n\nYou can [`read`](crate::Reg::read) this register and get [`sdio_soft_reset::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`sdio_soft_reset::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@sdio_soft_reset`] module"]
+    #[doc(alias = "SDIO_SOFT_RESET")]
+    pub type SdioSoftReset = crate::Reg<sdio_soft_reset::SdioSoftResetSpec>;
+    #[doc = "SDK SDIO reset patch control; pulse does not establish bus-master drain"]
+    pub mod sdio_soft_reset {
+        #[doc = "Register `SDIO_SOFT_RESET` reader"]
+        pub type R = crate::R<SdioSoftResetSpec>;
+        #[doc = "Register `SDIO_SOFT_RESET` writer"]
+        pub type W = crate::W<SdioSoftResetSpec>;
+        #[doc = "Field `SDIO_RESET_N` reader - SDK drives low then high; preserve other bits. No reset-state or self-clear inference"]
+        pub type SdioResetNR = crate::BitReader;
+        #[doc = "Field `SDIO_RESET_N` writer - SDK drives low then high; preserve other bits. No reset-state or self-clear inference"]
+        pub type SdioResetNW<'a, REG> = crate::BitWriter<'a, REG>;
+        impl R {
+            #[doc = "Bit 1 - SDK drives low then high; preserve other bits. No reset-state or self-clear inference"]
+            #[inline(always)]
+            pub fn sdio_reset_n(&self) -> SdioResetNR {
+                SdioResetNR::new(((self.bits >> 1) & 1) != 0)
+            }
+        }
+        impl W {
+            #[doc = "Bit 1 - SDK drives low then high; preserve other bits. No reset-state or self-clear inference"]
+            #[inline(always)]
+            pub fn sdio_reset_n(&mut self) -> SdioResetNW<'_, SdioSoftResetSpec> {
+                SdioResetNW::new(self, 1)
+            }
+        }
+        #[doc = "SDK SDIO reset patch control; pulse does not establish bus-master drain\n\nYou can [`read`](crate::Reg::read) this register and get [`sdio_soft_reset::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`sdio_soft_reset::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct SdioSoftResetSpec;
+        impl crate::RegisterSpec for SdioSoftResetSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`sdio_soft_reset::R`](R) reader structure"]
+        impl crate::Readable for SdioSoftResetSpec {}
+        #[doc = "`write(|w| ..)` method takes [`sdio_soft_reset::W`](W) writer structure"]
+        impl crate::Writable for SdioSoftResetSpec {
             type Safety = crate::Unsafe;
         }
     }
