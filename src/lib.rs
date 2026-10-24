@@ -962,8 +962,8 @@ pub mod m_crg {
     pub struct RegisterBlock {
         _reserved0: [u8; 0x40],
         _reserved_0_m_clken: [u8; 0x04],
-        m_clken1: MClken1,
-        _reserved2: [u8; 0x0e],
+        _reserved_1_m_clken: [u8; 0x04],
+        _reserved2: [u8; 0x0c],
         soft_reset1: SoftReset1,
         _reserved3: [u8; 0x24],
         pwm_m_div3: PwmMDiv3,
@@ -1003,10 +1003,15 @@ pub mod m_crg {
         pub const fn m_clken0(&self) -> &MClken0 {
             unsafe { &*core::ptr::from_ref(self).cast::<u8>().add(64).cast() }
         }
+        #[doc = "0x44 - 32-bit little-endian access view of M_CLKEN1; same low-half fields, upper bits unmodeled; preserve them on RMW. SDK 163d9150 libplat_patch.a:sdio_patch.c.obj:sdio_clock_set uses word loads/stores at M_CLKEN0/1, changing only SDIO bits11/1. Other peripheral ports retain halfword accesses; upper bits and reset values unknown. See evidence/ws53-sdio-clock-contract.json"]
+        #[inline(always)]
+        pub const fn m_clken1_word(&self) -> &MClken1Word {
+            unsafe { &*core::ptr::from_ref(self).cast::<u8>().add(68).cast() }
+        }
         #[doc = "0x44 - M_CLKEN1"]
         #[inline(always)]
         pub const fn m_clken1(&self) -> &MClken1 {
-            &self.m_clken1
+            unsafe { &*core::ptr::from_ref(self).cast::<u8>().add(68).cast() }
         }
         #[doc = "0x54 - SOFT_RESET1"]
         #[inline(always)]
@@ -1439,6 +1444,129 @@ pub mod m_crg {
         impl crate::Readable for MClken1Spec {}
         #[doc = "`write(|w| ..)` method takes [`m_clken1::W`](W) writer structure"]
         impl crate::Writable for MClken1Spec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "M_CLKEN1_WORD (rw) register accessor: 32-bit little-endian access view of M_CLKEN1; same low-half fields, upper bits unmodeled; preserve them on RMW. SDK 163d9150 libplat_patch.a:sdio_patch.c.obj:sdio_clock_set uses word loads/stores at M_CLKEN0/1, changing only SDIO bits11/1. Other peripheral ports retain halfword accesses; upper bits and reset values unknown. See evidence/ws53-sdio-clock-contract.json\n\nYou can [`read`](crate::Reg::read) this register and get [`m_clken1_word::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`m_clken1_word::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@m_clken1_word`] module"]
+    #[doc(alias = "M_CLKEN1_WORD")]
+    pub type MClken1Word = crate::Reg<m_clken1_word::MClken1WordSpec>;
+    #[doc = "32-bit little-endian access view of M_CLKEN1; same low-half fields, upper bits unmodeled; preserve them on RMW. SDK 163d9150 libplat_patch.a:sdio_patch.c.obj:sdio_clock_set uses word loads/stores at M_CLKEN0/1, changing only SDIO bits11/1. Other peripheral ports retain halfword accesses; upper bits and reset values unknown. See evidence/ws53-sdio-clock-contract.json"]
+    pub mod m_clken1_word {
+        #[doc = "Register `M_CLKEN1_WORD` reader"]
+        pub type R = crate::R<MClken1WordSpec>;
+        #[doc = "Register `M_CLKEN1_WORD` writer"]
+        pub type W = crate::W<MClken1WordSpec>;
+        #[doc = "Field `TIMER_ENABLE` reader - timer_enable"]
+        pub type TimerEnableR = crate::BitReader;
+        #[doc = "Field `TIMER_ENABLE` writer - timer_enable"]
+        pub type TimerEnableW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `SDIO_AHB_ENABLE` reader - sdio_ahb_enable"]
+        pub type SdioAhbEnableR = crate::BitReader;
+        #[doc = "Field `SDIO_AHB_ENABLE` writer - sdio_ahb_enable"]
+        pub type SdioAhbEnableW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `LSADC_APB_ENABLE` reader - lsadc_apb_enable"]
+        pub type LsadcApbEnableR = crate::BitReader;
+        #[doc = "Field `LSADC_APB_ENABLE` writer - lsadc_apb_enable"]
+        pub type LsadcApbEnableW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `UART_H0_ENABLE` reader - UART H0 = application UART1"]
+        pub type UartH0EnableR = crate::BitReader;
+        #[doc = "Field `UART_H0_ENABLE` writer - UART H0 = application UART1"]
+        pub type UartH0EnableW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `I2C0_ENABLE` reader - i2c0_enable"]
+        pub type I2c0EnableR = crate::BitReader;
+        #[doc = "Field `I2C0_ENABLE` writer - i2c0_enable"]
+        pub type I2c0EnableW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `I2C1_ENABLE` reader - i2c1_enable"]
+        pub type I2c1EnableR = crate::BitReader;
+        #[doc = "Field `I2C1_ENABLE` writer - i2c1_enable"]
+        pub type I2c1EnableW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `SPI3_MS_ENABLE` reader - SPI3_MS = SDK application SPI_BUS_0"]
+        pub type Spi3MsEnableR = crate::BitReader;
+        #[doc = "Field `SPI3_MS_ENABLE` writer - SPI3_MS = SDK application SPI_BUS_0"]
+        pub type Spi3MsEnableW<'a, REG> = crate::BitWriter<'a, REG>;
+        impl R {
+            #[doc = "Bit 0 - timer_enable"]
+            #[inline(always)]
+            pub fn timer_enable(&self) -> TimerEnableR {
+                TimerEnableR::new((self.bits & 1) != 0)
+            }
+            #[doc = "Bit 1 - sdio_ahb_enable"]
+            #[inline(always)]
+            pub fn sdio_ahb_enable(&self) -> SdioAhbEnableR {
+                SdioAhbEnableR::new(((self.bits >> 1) & 1) != 0)
+            }
+            #[doc = "Bit 2 - lsadc_apb_enable"]
+            #[inline(always)]
+            pub fn lsadc_apb_enable(&self) -> LsadcApbEnableR {
+                LsadcApbEnableR::new(((self.bits >> 2) & 1) != 0)
+            }
+            #[doc = "Bit 4 - UART H0 = application UART1"]
+            #[inline(always)]
+            pub fn uart_h0_enable(&self) -> UartH0EnableR {
+                UartH0EnableR::new(((self.bits >> 4) & 1) != 0)
+            }
+            #[doc = "Bit 6 - i2c0_enable"]
+            #[inline(always)]
+            pub fn i2c0_enable(&self) -> I2c0EnableR {
+                I2c0EnableR::new(((self.bits >> 6) & 1) != 0)
+            }
+            #[doc = "Bit 7 - i2c1_enable"]
+            #[inline(always)]
+            pub fn i2c1_enable(&self) -> I2c1EnableR {
+                I2c1EnableR::new(((self.bits >> 7) & 1) != 0)
+            }
+            #[doc = "Bit 11 - SPI3_MS = SDK application SPI_BUS_0"]
+            #[inline(always)]
+            pub fn spi3_ms_enable(&self) -> Spi3MsEnableR {
+                Spi3MsEnableR::new(((self.bits >> 11) & 1) != 0)
+            }
+        }
+        impl W {
+            #[doc = "Bit 0 - timer_enable"]
+            #[inline(always)]
+            pub fn timer_enable(&mut self) -> TimerEnableW<'_, MClken1WordSpec> {
+                TimerEnableW::new(self, 0)
+            }
+            #[doc = "Bit 1 - sdio_ahb_enable"]
+            #[inline(always)]
+            pub fn sdio_ahb_enable(&mut self) -> SdioAhbEnableW<'_, MClken1WordSpec> {
+                SdioAhbEnableW::new(self, 1)
+            }
+            #[doc = "Bit 2 - lsadc_apb_enable"]
+            #[inline(always)]
+            pub fn lsadc_apb_enable(&mut self) -> LsadcApbEnableW<'_, MClken1WordSpec> {
+                LsadcApbEnableW::new(self, 2)
+            }
+            #[doc = "Bit 4 - UART H0 = application UART1"]
+            #[inline(always)]
+            pub fn uart_h0_enable(&mut self) -> UartH0EnableW<'_, MClken1WordSpec> {
+                UartH0EnableW::new(self, 4)
+            }
+            #[doc = "Bit 6 - i2c0_enable"]
+            #[inline(always)]
+            pub fn i2c0_enable(&mut self) -> I2c0EnableW<'_, MClken1WordSpec> {
+                I2c0EnableW::new(self, 6)
+            }
+            #[doc = "Bit 7 - i2c1_enable"]
+            #[inline(always)]
+            pub fn i2c1_enable(&mut self) -> I2c1EnableW<'_, MClken1WordSpec> {
+                I2c1EnableW::new(self, 7)
+            }
+            #[doc = "Bit 11 - SPI3_MS = SDK application SPI_BUS_0"]
+            #[inline(always)]
+            pub fn spi3_ms_enable(&mut self) -> Spi3MsEnableW<'_, MClken1WordSpec> {
+                Spi3MsEnableW::new(self, 11)
+            }
+        }
+        #[doc = "32-bit little-endian access view of M_CLKEN1; same low-half fields, upper bits unmodeled; preserve them on RMW. SDK 163d9150 libplat_patch.a:sdio_patch.c.obj:sdio_clock_set uses word loads/stores at M_CLKEN0/1, changing only SDIO bits11/1. Other peripheral ports retain halfword accesses; upper bits and reset values unknown. See evidence/ws53-sdio-clock-contract.json\n\nYou can [`read`](crate::Reg::read) this register and get [`m_clken1_word::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`m_clken1_word::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct MClken1WordSpec;
+        impl crate::RegisterSpec for MClken1WordSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`m_clken1_word::R`](R) reader structure"]
+        impl crate::Readable for MClken1WordSpec {}
+        #[doc = "`write(|w| ..)` method takes [`m_clken1_word::W`](W) writer structure"]
+        impl crate::Writable for MClken1WordSpec {
             type Safety = crate::Unsafe;
         }
     }
@@ -6985,7 +7113,7 @@ pub mod sdio {
         pub const fn config_30(&self) -> &Config30 {
             &self.config_30
         }
-        #[doc = "0x34 - ROM enables bits 0..10 and bit 16; individual event semantics not fully established"]
+        #[doc = "0x34 - ROM enables bits 0..11; individual event semantics not fully established. The last orshf rotates 16 right by 25, producing 0x800, not bit16"]
         #[inline(always)]
         pub const fn function0_interrupt_enable(&self) -> &Function0InterruptEnable {
             &self.function0_interrupt_enable
@@ -7345,22 +7473,22 @@ pub mod sdio {
         pub type R = crate::R<ModeSpec>;
         #[doc = "Register `MODE` writer"]
         pub type W = crate::W<ModeSpec>;
-        #[doc = "Field `VALUE` reader - value"]
-        pub type ValueR = crate::FieldReader<u32>;
-        #[doc = "Field `VALUE` writer - value"]
-        pub type ValueW<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
+        #[doc = "Field `INIT_PROFILE` reader - ROM sets this entire seven-bit profile; individual meanings unknown"]
+        pub type InitProfileR = crate::FieldReader;
+        #[doc = "Field `INIT_PROFILE` writer - ROM sets this entire seven-bit profile; individual meanings unknown"]
+        pub type InitProfileW<'a, REG> = crate::FieldWriter<'a, REG, 7>;
         impl R {
-            #[doc = "Bits 0:31 - value"]
+            #[doc = "Bits 0:6 - ROM sets this entire seven-bit profile; individual meanings unknown"]
             #[inline(always)]
-            pub fn value(&self) -> ValueR {
-                ValueR::new(self.bits)
+            pub fn init_profile(&self) -> InitProfileR {
+                InitProfileR::new((self.bits & 0x7f) as u8)
             }
         }
         impl W {
-            #[doc = "Bits 0:31 - value"]
+            #[doc = "Bits 0:6 - ROM sets this entire seven-bit profile; individual meanings unknown"]
             #[inline(always)]
-            pub fn value(&mut self) -> ValueW<'_, ModeSpec> {
-                ValueW::new(self, 0)
+            pub fn init_profile(&mut self) -> InitProfileW<'_, ModeSpec> {
+                InitProfileW::new(self, 0)
             }
         }
         #[doc = "Opaque mode configuration: ROM sets bits 0..6, meanings not established by an available register header\n\nYou can [`read`](crate::Reg::read) this register and get [`mode::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`mode::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
@@ -7384,22 +7512,36 @@ pub mod sdio {
         pub type R = crate::R<VoltageControlSpec>;
         #[doc = "Register `VOLTAGE_CONTROL` writer"]
         pub type W = crate::W<VoltageControlSpec>;
-        #[doc = "Field `VALUE` reader - value"]
-        pub type ValueR = crate::FieldReader<u32>;
-        #[doc = "Field `VALUE` writer - value"]
-        pub type ValueW<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
+        #[doc = "Field `SWITCH_REQUESTS` reader - switch_requests"]
+        pub type SwitchRequestsR = crate::FieldReader;
+        #[doc = "Field `SWITCH_REQUESTS` writer - switch_requests"]
+        pub type SwitchRequestsW<'a, REG> = crate::FieldWriter<'a, REG, 3>;
+        #[doc = "Field `INIT_BIT` reader - Bit set by ROM base initialization, not a voltage-ready indication"]
+        pub type InitBitR = crate::BitReader;
+        #[doc = "Field `INIT_BIT` writer - Bit set by ROM base initialization, not a voltage-ready indication"]
+        pub type InitBitW<'a, REG> = crate::BitWriter<'a, REG>;
         impl R {
-            #[doc = "Bits 0:31 - value"]
+            #[doc = "Bits 0:2 - switch_requests"]
             #[inline(always)]
-            pub fn value(&self) -> ValueR {
-                ValueR::new(self.bits)
+            pub fn switch_requests(&self) -> SwitchRequestsR {
+                SwitchRequestsR::new((self.bits & 7) as u8)
+            }
+            #[doc = "Bit 4 - Bit set by ROM base initialization, not a voltage-ready indication"]
+            #[inline(always)]
+            pub fn init_bit(&self) -> InitBitR {
+                InitBitR::new(((self.bits >> 4) & 1) != 0)
             }
         }
         impl W {
-            #[doc = "Bits 0:31 - value"]
+            #[doc = "Bits 0:2 - switch_requests"]
             #[inline(always)]
-            pub fn value(&mut self) -> ValueW<'_, VoltageControlSpec> {
-                ValueW::new(self, 0)
+            pub fn switch_requests(&mut self) -> SwitchRequestsW<'_, VoltageControlSpec> {
+                SwitchRequestsW::new(self, 0)
+            }
+            #[doc = "Bit 4 - Bit set by ROM base initialization, not a voltage-ready indication"]
+            #[inline(always)]
+            pub fn init_bit(&mut self) -> InitBitW<'_, VoltageControlSpec> {
+                InitBitW::new(self, 4)
             }
         }
         #[doc = "ROM initialization sets bit 4; voltage-switch routine sets bits 0..2. Electrical sequencing remains unverified\n\nYou can [`read`](crate::Reg::read) this register and get [`voltage_control::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`voltage_control::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
@@ -7462,22 +7604,22 @@ pub mod sdio {
         pub type R = crate::R<Config30Spec>;
         #[doc = "Register `CONFIG_30` writer"]
         pub type W = crate::W<Config30Spec>;
-        #[doc = "Field `VALUE` reader - value"]
-        pub type ValueR = crate::FieldReader<u32>;
-        #[doc = "Field `VALUE` writer - value"]
-        pub type ValueW<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
+        #[doc = "Field `INIT_BIT` reader - ROM sets after common configuration; no completion semantics inferred"]
+        pub type InitBitR = crate::BitReader;
+        #[doc = "Field `INIT_BIT` writer - ROM sets after common configuration; no completion semantics inferred"]
+        pub type InitBitW<'a, REG> = crate::BitWriter<'a, REG>;
         impl R {
-            #[doc = "Bits 0:31 - value"]
+            #[doc = "Bit 0 - ROM sets after common configuration; no completion semantics inferred"]
             #[inline(always)]
-            pub fn value(&self) -> ValueR {
-                ValueR::new(self.bits)
+            pub fn init_bit(&self) -> InitBitR {
+                InitBitR::new((self.bits & 1) != 0)
             }
         }
         impl W {
-            #[doc = "Bits 0:31 - value"]
+            #[doc = "Bit 0 - ROM sets after common configuration; no completion semantics inferred"]
             #[inline(always)]
-            pub fn value(&mut self) -> ValueW<'_, Config30Spec> {
-                ValueW::new(self, 0)
+            pub fn init_bit(&mut self) -> InitBitW<'_, Config30Spec> {
+                InitBitW::new(self, 0)
             }
         }
         #[doc = "Opaque configuration: ROM sets bit 0 after registering the IRQ\n\nYou can [`read`](crate::Reg::read) this register and get [`config_30::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`config_30::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
@@ -7492,11 +7634,11 @@ pub mod sdio {
             type Safety = crate::Unsafe;
         }
     }
-    #[doc = "FUNCTION0_INTERRUPT_ENABLE (rw) register accessor: ROM enables bits 0..10 and bit 16; individual event semantics not fully established\n\nYou can [`read`](crate::Reg::read) this register and get [`function0_interrupt_enable::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`function0_interrupt_enable::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@function0_interrupt_enable`] module"]
+    #[doc = "FUNCTION0_INTERRUPT_ENABLE (rw) register accessor: ROM enables bits 0..11; individual event semantics not fully established. The last orshf rotates 16 right by 25, producing 0x800, not bit16\n\nYou can [`read`](crate::Reg::read) this register and get [`function0_interrupt_enable::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`function0_interrupt_enable::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@function0_interrupt_enable`] module"]
     #[doc(alias = "FUNCTION0_INTERRUPT_ENABLE")]
     pub type Function0InterruptEnable =
         crate::Reg<function0_interrupt_enable::Function0InterruptEnableSpec>;
-    #[doc = "ROM enables bits 0..10 and bit 16; individual event semantics not fully established"]
+    #[doc = "ROM enables bits 0..11; individual event semantics not fully established. The last orshf rotates 16 right by 25, producing 0x800, not bit16"]
     pub mod function0_interrupt_enable {
         #[doc = "Register `FUNCTION0_INTERRUPT_ENABLE` reader"]
         pub type R = crate::R<Function0InterruptEnableSpec>;
@@ -7506,20 +7648,20 @@ pub mod sdio {
         pub type EventsR = crate::FieldReader<u16>;
         #[doc = "Field `EVENTS` writer - events"]
         pub type EventsW<'a, REG> = crate::FieldWriter<'a, REG, 11, u16>;
-        #[doc = "Field `EVENT16` reader - event16"]
-        pub type Event16R = crate::BitReader;
-        #[doc = "Field `EVENT16` writer - event16"]
-        pub type Event16W<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `EVENT11` reader - event11"]
+        pub type Event11R = crate::BitReader;
+        #[doc = "Field `EVENT11` writer - event11"]
+        pub type Event11W<'a, REG> = crate::BitWriter<'a, REG>;
         impl R {
             #[doc = "Bits 0:10 - events"]
             #[inline(always)]
             pub fn events(&self) -> EventsR {
                 EventsR::new((self.bits & 0x07ff) as u16)
             }
-            #[doc = "Bit 16 - event16"]
+            #[doc = "Bit 11 - event11"]
             #[inline(always)]
-            pub fn event16(&self) -> Event16R {
-                Event16R::new(((self.bits >> 16) & 1) != 0)
+            pub fn event11(&self) -> Event11R {
+                Event11R::new(((self.bits >> 11) & 1) != 0)
             }
         }
         impl W {
@@ -7528,13 +7670,13 @@ pub mod sdio {
             pub fn events(&mut self) -> EventsW<'_, Function0InterruptEnableSpec> {
                 EventsW::new(self, 0)
             }
-            #[doc = "Bit 16 - event16"]
+            #[doc = "Bit 11 - event11"]
             #[inline(always)]
-            pub fn event16(&mut self) -> Event16W<'_, Function0InterruptEnableSpec> {
-                Event16W::new(self, 16)
+            pub fn event11(&mut self) -> Event11W<'_, Function0InterruptEnableSpec> {
+                Event11W::new(self, 11)
             }
         }
-        #[doc = "ROM enables bits 0..10 and bit 16; individual event semantics not fully established\n\nYou can [`read`](crate::Reg::read) this register and get [`function0_interrupt_enable::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`function0_interrupt_enable::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "ROM enables bits 0..11; individual event semantics not fully established. The last orshf rotates 16 right by 25, producing 0x800, not bit16\n\nYou can [`read`](crate::Reg::read) this register and get [`function0_interrupt_enable::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`function0_interrupt_enable::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct Function0InterruptEnableSpec;
         impl crate::RegisterSpec for Function0InterruptEnableSpec {
             type Ux = u32;
@@ -7756,22 +7898,22 @@ pub mod sdio {
         pub type R = crate::R<Function1ConfigSpec>;
         #[doc = "Register `FUNCTION1_CONFIG` writer"]
         pub type W = crate::W<Function1ConfigSpec>;
-        #[doc = "Field `VALUE` reader - value"]
-        pub type ValueR = crate::FieldReader<u32>;
-        #[doc = "Field `VALUE` writer - value"]
-        pub type ValueW<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
+        #[doc = "Field `INIT_PROFILE` reader - init_profile"]
+        pub type InitProfileR = crate::FieldReader<u32>;
+        #[doc = "Field `INIT_PROFILE` writer - init_profile"]
+        pub type InitProfileW<'a, REG> = crate::FieldWriter<'a, REG, 24, u32>;
         impl R {
-            #[doc = "Bits 0:31 - value"]
+            #[doc = "Bits 0:23 - init_profile"]
             #[inline(always)]
-            pub fn value(&self) -> ValueR {
-                ValueR::new(self.bits)
+            pub fn init_profile(&self) -> InitProfileR {
+                InitProfileR::new(self.bits & 0x00ff_ffff)
             }
         }
         impl W {
-            #[doc = "Bits 0:31 - value"]
+            #[doc = "Bits 0:23 - init_profile"]
             #[inline(always)]
-            pub fn value(&mut self) -> ValueW<'_, Function1ConfigSpec> {
-                ValueW::new(self, 0)
+            pub fn init_profile(&mut self) -> InitProfileW<'_, Function1ConfigSpec> {
+                InitProfileW::new(self, 0)
             }
         }
         #[doc = "Opaque function1 configuration: ROM replaces low 24 bits with 0xff8000\n\nYou can [`read`](crate::Reg::read) this register and get [`function1_config::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`function1_config::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]

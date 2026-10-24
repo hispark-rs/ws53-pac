@@ -178,6 +178,65 @@
           </fields>
         </register>
         <register>
+          <name>M_CLKEN1_WORD</name>
+          <description>32-bit little-endian access view of M_CLKEN1; same low-half fields, upper bits unmodeled; preserve them on RMW. SDK 163d9150 libplat_patch.a:sdio_patch.c.obj:sdio_clock_set uses word loads/stores at M_CLKEN0/1, changing only SDIO bits11/1. Other peripheral ports retain halfword accesses; upper bits and reset values unknown. See evidence/ws53-sdio-clock-contract.json</description>
+          <alternateRegister>M_CLKEN1</alternateRegister>
+          <addressOffset>0x44</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <fields>
+            <field>
+              <name>TIMER_ENABLE</name>
+              <description>timer_enable</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>SDIO_AHB_ENABLE</name>
+              <description>sdio_ahb_enable</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>LSADC_APB_ENABLE</name>
+              <description>lsadc_apb_enable</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>UART_H0_ENABLE</name>
+              <description>UART H0 = application UART1</description>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C0_ENABLE</name>
+              <description>i2c0_enable</description>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C1_ENABLE</name>
+              <description>i2c1_enable</description>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>SPI3_MS_ENABLE</name>
+              <description>SPI3_MS = SDK application SPI_BUS_0</description>
+              <bitOffset>11</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
           <name>SOFT_RESET1</name>
           <description>SOFT_RESET1</description>
           <addressOffset>0x54</addressOffset>
@@ -2864,10 +2923,10 @@
           <access>read-write</access>
           <fields>
             <field>
-              <name>VALUE</name>
-              <description>value</description>
+              <name>INIT_PROFILE</name>
+              <description>ROM sets this entire seven-bit profile; individual meanings unknown</description>
               <bitOffset>0</bitOffset>
-              <bitWidth>32</bitWidth>
+              <bitWidth>7</bitWidth>
               <access>read-write</access>
             </field>
           </fields>
@@ -2880,10 +2939,17 @@
           <access>read-write</access>
           <fields>
             <field>
-              <name>VALUE</name>
-              <description>value</description>
+              <name>SWITCH_REQUESTS</name>
+              <description>switch_requests</description>
               <bitOffset>0</bitOffset>
-              <bitWidth>32</bitWidth>
+              <bitWidth>3</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>INIT_BIT</name>
+              <description>Bit set by ROM base initialization, not a voltage-ready indication</description>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
               <access>read-write</access>
             </field>
           </fields>
@@ -2912,17 +2978,17 @@
           <access>read-write</access>
           <fields>
             <field>
-              <name>VALUE</name>
-              <description>value</description>
+              <name>INIT_BIT</name>
+              <description>ROM sets after common configuration; no completion semantics inferred</description>
               <bitOffset>0</bitOffset>
-              <bitWidth>32</bitWidth>
+              <bitWidth>1</bitWidth>
               <access>read-write</access>
             </field>
           </fields>
         </register>
         <register>
           <name>FUNCTION0_INTERRUPT_ENABLE</name>
-          <description>ROM enables bits 0..10 and bit 16; individual event semantics not fully established</description>
+          <description>ROM enables bits 0..11; individual event semantics not fully established. The last orshf rotates 16 right by 25, producing 0x800, not bit16</description>
           <addressOffset>0x34</addressOffset>
           <size>32</size>
           <access>read-write</access>
@@ -2935,9 +3001,9 @@
               <access>read-write</access>
             </field>
             <field>
-              <name>EVENT16</name>
-              <description>event16</description>
-              <bitOffset>16</bitOffset>
+              <name>EVENT11</name>
+              <description>event11</description>
+              <bitOffset>11</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-write</access>
             </field>
@@ -3082,10 +3148,10 @@
           <access>read-write</access>
           <fields>
             <field>
-              <name>VALUE</name>
-              <description>value</description>
+              <name>INIT_PROFILE</name>
+              <description>init_profile</description>
               <bitOffset>0</bitOffset>
-              <bitWidth>32</bitWidth>
+              <bitWidth>24</bitWidth>
               <access>read-write</access>
             </field>
           </fields>

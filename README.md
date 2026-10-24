@@ -219,3 +219,17 @@ implements `Resettable`. Local RAM tests check alias layout and preservation
 of unrelated bits under the SDK's mixed-width sequence. These are source/API
 checks only: the PAC does not grant shared-clock ownership, safe live clock
 switching, Flash execution safety, DMA drain or a usable SFC HAL.
+
+## SDIO initialization source correction
+
+The pinned RDL source now executes the original ROM base initializer against
+ordinary RAM with36 initial states. Function0's final enable operand is bit11
+(16 rotated right25), not bit16: the experimental `event16()` accessor is
+replaced by `event11()`. The initializer profile uses named partial fields in
+MODE, VOLTAGE_CONTROL, CONFIG_30 and FUNCTION1_CONFIG; unknown bits are preserved.
+
+`M_CRG::m_clken1_word()` exposes the SDK patch's 32-bit SDIO AHB gate access,
+while the original halfword accessor remains available. Host tests check both
+clock word aliases, unrelated bits, and the corrected initialization masks.
+These are generated API and source checks, not SDIO bus, IRQ, reset or DMA
+completion tests. No reset defaults or buffer-lifetime guarantees are inferred.

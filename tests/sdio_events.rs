@@ -175,3 +175,87 @@ fn sdk_reset_patch_is_word_rmw_and_preserves_other_control_bits() {
         assert_eq!(r.uart_soft_reset().read().bits(), 0x5aa5);
     }
 }
+
+absent!(
+    ws53_pac::m_crg::m_clken1_word::MClken1WordSpec,
+    ws53_pac::generic::Resettable
+);
+
+#[test]
+fn sdk_clock_gates_use_word_aliases_and_preserve_every_other_bit() {
+    fn word<T: ws53_pac::generic::RegisterSpec<Ux = u32>>() {}
+    word::<ws53_pac::m_crg::m_clken0_word::MClken0WordSpec>();
+    word::<ws53_pac::m_crg::m_clken1_word::MClken1WordSpec>();
+    let r: ws53_pac::m_crg::RegisterBlock = unsafe { core::mem::zeroed() };
+    let offset = |p: *mut u32| p as usize - &r as *const _ as usize;
+    assert_eq!(offset(r.m_clken0_word().as_ptr()), 0x40);
+    assert_eq!(offset(r.m_clken1_word().as_ptr()), 0x44);
+    assert_eq!(
+        r.m_clken1().as_ptr().cast::<u32>(),
+        r.m_clken1_word().as_ptr()
+    );
+    for seed in [0, u32::MAX, 0xa55a_5aa5, 0x5aa5_a55a]
+        .into_iter()
+        .chain((0..32).map(|bit| 1 << bit))
+    {
+        for enabled in [false, true] {
+            unsafe {
+                r.m_clken0_word().write_with_zero(|w| w.bits(seed));
+                r.m_clken1_word().write_with_zero(|w| w.bits(!seed));
+            }
+            r.m_clken0_word()
+                .modify(|_, w| w.sdio_device_enable().bit(enabled));
+            r.m_clken1_word()
+                .modify(|_, w| w.sdio_ahb_enable().bit(enabled));
+            assert_eq!(
+                r.m_clken0_word().read().bits(),
+                (seed & !0x800) | (u32::from(enabled) << 11)
+            );
+            assert_eq!(
+                r.m_clken1_word().read().bits(),
+                (!seed & !2) | (u32::from(enabled) << 1)
+            );
+            assert_eq!(
+                r.m_clken1().read().bits() as u32,
+                r.m_clken1_word().read().bits() & 0xffff
+            );
+        }
+    }
+}
+
+#[test]
+fn initialization_profile_preserves_unknown_bits_and_corrects_function0_bit11() {
+    let r: sdio::RegisterBlock = unsafe { core::mem::zeroed() };
+    for seed in [0, u32::MAX, 0xa55a_5aa5, 0x5aa5_a55a]
+        .into_iter()
+        .chain((0..32).map(|bit| 1 << bit))
+    {
+        unsafe {
+            r.mode().write_with_zero(|w| w.bits(seed));
+            r.voltage_control().write_with_zero(|w| w.bits(seed));
+            r.config_30().write_with_zero(|w| w.bits(seed));
+            r.function0_interrupt_enable()
+                .write_with_zero(|w| w.bits(seed));
+            r.function1_config().write_with_zero(|w| w.bits(seed));
+            r.mode().modify(|_, w| w.init_profile().bits(0x7f));
+            r.function0_interrupt_enable()
+                .modify(|_, w| w.events().bits(0x7ff).event11().set_bit());
+            r.function1_config()
+                .modify(|_, w| w.init_profile().bits(0xff8000));
+        }
+        r.voltage_control().modify(|_, w| w.init_bit().set_bit());
+        r.config_30().modify(|_, w| w.init_bit().set_bit());
+        assert_eq!(r.mode().read().bits(), seed | 0x7f);
+        assert_eq!(r.voltage_control().read().bits(), seed | 0x10);
+        assert_eq!(r.config_30().read().bits(), seed | 1);
+        assert_eq!(r.function0_interrupt_enable().read().bits(), seed | 0xfff);
+        assert_eq!(
+            r.function0_interrupt_enable().read().bits() & (1 << 16),
+            seed & (1 << 16)
+        );
+        assert_eq!(
+            r.function1_config().read().bits(),
+            (seed & 0xff000000) | 0xff8000
+        );
+    }
+}
