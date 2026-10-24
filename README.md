@@ -174,3 +174,23 @@ comments: bit2 is RX full, bit3 enabled-FIFO empty, and bit4 observed busy while
 RX is queued. `DIV_EN` set attempts with queued RX do not latch. See source
 `evidence/ws53-uart-access-hil.json`; TX-only busy, disabled FIFO semantics,
 nonzero high divisor and busy divisor writes remain unqualified.
+
+## SFC command source contract update
+
+The generated SFC view now follows the original WS53 SDK command helper
+contract recorded by `hisi-registers` commit `a5f81ca`. Seven DDR/sample fields
+are available as source-confirmed layout; their operation is not qualified.
+CMD_CONFIG.START, BUS_DMA_CTRL.DMA_START and the 16 command-data words are
+documented as hardware-updated, with no invented reset defaults.
+
+This intentionally removes the previously imported `INT_RAW_STATUS`,
+`INT_STATUS`, `INT_MASK`, `INT_CLEAR` and `SOFT_RST_MASK` registers from WS53:
+the pinned SDK supplies neither their layout nor an application-core SFC IRQ
+route. Downstream experimental code using those accessors must be reviewed;
+there is no replacement interrupt or reset API. Other chips are unaffected.
+
+START clearing describes the controller's transfer state. It does not certify
+NOR WIP, DMA buffer ownership or bus drain. DATA words may contain a previous
+response; a fresh status observation requires a new command and completion.
+The new host tests check generated layout and encodings in local memory only.
+Ordinary Cargo builds still consume checked-in code and need no SDK or generator.

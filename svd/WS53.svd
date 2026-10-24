@@ -11715,6 +11715,13 @@
               <bitWidth>3</bitWidth>
               <access>read-write</access>
             </field>
+            <field>
+              <name>SAMPLE_TEST</name>
+              <description>SDK DDR sampling-point selector; layout only, DDR operation unqualified</description>
+              <bitOffset>6</bitOffset>
+              <bitWidth>4</bitWidth>
+              <access>read-write</access>
+            </field>
           </fields>
         </register>
         <register>
@@ -11743,114 +11750,6 @@
               <description>CS hold time: (n+1) clock cycles</description>
               <bitOffset>12</bitOffset>
               <bitWidth>3</bitWidth>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>INT_RAW_STATUS</name>
-          <description>INT_RAW_STATUS</description>
-          <addressOffset>0x120</addressOffset>
-          <size>32</size>
-          <access>read-only</access>
-          <fields>
-            <field>
-              <name>CMD_OP_END_RAW_STATUS</name>
-              <description>Command operation end raw status</description>
-              <bitOffset>0</bitOffset>
-              <bitWidth>1</bitWidth>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>DMA_DONE_INT_RAW_STATUS</name>
-              <description>DMA done raw status</description>
-              <bitOffset>1</bitOffset>
-              <bitWidth>1</bitWidth>
-              <access>read-only</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>INT_STATUS</name>
-          <description>INT_STATUS</description>
-          <addressOffset>0x124</addressOffset>
-          <size>32</size>
-          <access>read-only</access>
-          <fields>
-            <field>
-              <name>CMD_OP_END_STATUS</name>
-              <description>Command operation end status</description>
-              <bitOffset>0</bitOffset>
-              <bitWidth>1</bitWidth>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>DMA_DONE_INT_STATUS</name>
-              <description>DMA done status</description>
-              <bitOffset>1</bitOffset>
-              <bitWidth>1</bitWidth>
-              <access>read-only</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>INT_MASK</name>
-          <description>INT_MASK</description>
-          <addressOffset>0x128</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <fields>
-            <field>
-              <name>CMD_OP_END_INT_MASK</name>
-              <description>Command end mask: 0=masked; 1=unmasked</description>
-              <bitOffset>0</bitOffset>
-              <bitWidth>1</bitWidth>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>DMA_DONE_INT_MASK</name>
-              <description>DMA done mask</description>
-              <bitOffset>1</bitOffset>
-              <bitWidth>1</bitWidth>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>INT_CLEAR</name>
-          <description>INT_CLEAR</description>
-          <addressOffset>0x12C</addressOffset>
-          <size>32</size>
-          <access>write-only</access>
-          <fields>
-            <field>
-              <name>CMD_OP_END_INT_CLR</name>
-              <description>Command end interrupt clear (self-clearing)</description>
-              <bitOffset>0</bitOffset>
-              <bitWidth>1</bitWidth>
-              <access>write-only</access>
-            </field>
-            <field>
-              <name>DMA_DONE_INT_CLR</name>
-              <description>DMA done interrupt clear (self-clearing)</description>
-              <bitOffset>1</bitOffset>
-              <bitWidth>1</bitWidth>
-              <access>write-only</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>SOFT_RST_MASK</name>
-          <description>SOFT_RST_MASK</description>
-          <addressOffset>0x130</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <fields>
-            <field>
-              <name>SFC_BUS_SOFT_RST_MASK</name>
-              <description>SFC bus soft reset mask: 0=reset active; 1=reset masked</description>
-              <bitOffset>0</bitOffset>
-              <bitWidth>1</bitWidth>
               <access>read-write</access>
             </field>
           </fields>
@@ -11942,6 +11841,34 @@
               <bitWidth>3</bitWidth>
               <access>read-write</access>
             </field>
+            <field>
+              <name>BUS_DDR_MODE</name>
+              <description>SDK DDR bus-mode bit; layout only, DDR operation unqualified</description>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>DDR_RD_DUMMY_BYTES</name>
+              <description>ddr_rd_dummy_bytes</description>
+              <bitOffset>4</bitOffset>
+              <bitWidth>4</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>DDR_WR_DUMMY_BYTES</name>
+              <description>ddr_wr_dummy_bytes</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>4</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>SFC_DDR_TX_DELAY_ENABLE</name>
+              <description>sfc_ddr_tx_delay_enable</description>
+              <bitOffset>12</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
           </fields>
         </register>
         <register>
@@ -12010,7 +11937,7 @@
           <fields>
             <field>
               <name>DMA_START</name>
-              <description>DMA transfer enable (auto-clears)</description>
+              <description>SDK starts bus DMA by writing 1 and polls until hardware returns 0 after transfer completion per header. Source contract uses repeated volatile reads, not a read-clear operation; silicon side effects/timing unqualified. No abort, buffer-ownership or posted-write drain proof follows from zero</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-write</access>
@@ -12040,7 +11967,7 @@
           <fields>
             <field>
               <name>DMA_MEM_SADDR</name>
-              <description>DMA memory start address (0x00100000~0x00BFFFFF)</description>
+              <description>SDK writes caller RAM pointer as a 32-bit bus-DMA address. No supported RAM range, alias translation, cache policy or exclusive ownership is established by this register layout</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
               <access>read-write</access>
@@ -12072,7 +11999,7 @@
           <fields>
             <field>
               <name>DMA_LEN</name>
-              <description>DMA length (n+1 bytes)</description>
+              <description>Thirty-bit DMA length-minus-one; SDK helper preserves upper bits but does not validate zero/oversize. Layout is not a buffer ownership or transfer-range guarantee</description>
               <bitOffset>0</bitOffset>
               <bitWidth>30</bitWidth>
               <access>read-write</access>
@@ -12118,7 +12045,7 @@
           <fields>
             <field>
               <name>START</name>
-              <description>Command start (auto-clears)</description>
+              <description>SDK starts SPI transfer by writing 1 and polls until hardware returns 0 after transfer completion per header. Source contract uses repeated volatile reads, not a read-clear operation; silicon side effects/timing, write-while-busy and forced-clear semantics unqualified. Zero does not certify NOR WIP, cache coherence or bus drain</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-write</access>
@@ -12160,7 +12087,7 @@
             </field>
             <field>
               <name>DATA_CNT</name>
-              <description>Data length (n+1 bytes)</description>
+              <description>Six-bit length-minus-one for data-enabled commands: 1..64 bytes. Original SDK helper truncates size-1, including zero/oversize; caller validation is required. With data_en=0 this field is not a data request</description>
               <bitOffset>9</bitOffset>
               <bitWidth>6</bitWidth>
               <access>read-write</access>
@@ -12187,6 +12114,20 @@
               <description>Instruction code</description>
               <bitOffset>0</bitOffset>
               <bitWidth>8</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>CMD_DDR_MODE</name>
+              <description>SDK command DDR bit; layout only, standard-SPI helpers preserve it</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>DDR_DUMMY_BYTE_CNT</name>
+              <description>SDK DDR dummy count; layout only, standard-SPI helpers preserve it</description>
+              <bitOffset>12</bitOffset>
+              <bitWidth>4</bitWidth>
               <access>read-write</access>
             </field>
           </fields>
@@ -12216,7 +12157,7 @@
           <fields>
             <field>
               <name>CMD_DATABUF_0</name>
-              <description>Data buffer 0</description>
+              <description>CPU command data buffer, also updated by completed reads. SDK uses ordinary volatile accesses without a source-level FIFO pop/read-clear operation; silicon side effects unverified. A previously buffered value is not a fresh Flash status/WIP observation: SDK issues a status command, waits command START, then reads this word</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
               <access>read-write</access>
@@ -12232,7 +12173,7 @@
           <fields>
             <field>
               <name>CMD_DATABUF_1</name>
-              <description>Command data buffer 1</description>
+              <description>Command data word 1; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
               <access>read-write</access>
@@ -12248,7 +12189,7 @@
           <fields>
             <field>
               <name>CMD_DATABUF_2</name>
-              <description>Command data buffer 2</description>
+              <description>Command data word 2; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
               <access>read-write</access>
@@ -12264,7 +12205,7 @@
           <fields>
             <field>
               <name>CMD_DATABUF_3</name>
-              <description>Command data buffer 3</description>
+              <description>Command data word 3; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
               <access>read-write</access>
@@ -12280,7 +12221,7 @@
           <fields>
             <field>
               <name>CMD_DATABUF_4</name>
-              <description>Command data buffer 4</description>
+              <description>Command data word 4; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
               <access>read-write</access>
@@ -12296,7 +12237,7 @@
           <fields>
             <field>
               <name>CMD_DATABUF_5</name>
-              <description>Command data buffer 5</description>
+              <description>Command data word 5; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
               <access>read-write</access>
@@ -12312,7 +12253,7 @@
           <fields>
             <field>
               <name>CMD_DATABUF_6</name>
-              <description>Command data buffer 6</description>
+              <description>Command data word 6; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
               <access>read-write</access>
@@ -12328,7 +12269,7 @@
           <fields>
             <field>
               <name>CMD_DATABUF_7</name>
-              <description>Command data buffer 7</description>
+              <description>Command data word 7; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
               <access>read-write</access>
@@ -12344,7 +12285,7 @@
           <fields>
             <field>
               <name>CMD_DATABUF_8</name>
-              <description>Command data buffer 8</description>
+              <description>Command data word 8; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
               <access>read-write</access>
@@ -12360,7 +12301,7 @@
           <fields>
             <field>
               <name>CMD_DATABUF_9</name>
-              <description>Command data buffer 9</description>
+              <description>Command data word 9; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
               <access>read-write</access>
@@ -12376,7 +12317,7 @@
           <fields>
             <field>
               <name>CMD_DATABUF_10</name>
-              <description>Command data buffer 10</description>
+              <description>Command data word 10; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
               <access>read-write</access>
@@ -12392,7 +12333,7 @@
           <fields>
             <field>
               <name>CMD_DATABUF_11</name>
-              <description>Command data buffer 11</description>
+              <description>Command data word 11; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
               <access>read-write</access>
@@ -12408,7 +12349,7 @@
           <fields>
             <field>
               <name>CMD_DATABUF_12</name>
-              <description>Command data buffer 12</description>
+              <description>Command data word 12; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
               <access>read-write</access>
@@ -12424,7 +12365,7 @@
           <fields>
             <field>
               <name>CMD_DATABUF_13</name>
-              <description>Command data buffer 13</description>
+              <description>Command data word 13; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
               <access>read-write</access>
@@ -12440,7 +12381,7 @@
           <fields>
             <field>
               <name>CMD_DATABUF_14</name>
-              <description>Command data buffer 14</description>
+              <description>Command data word 14; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
               <access>read-write</access>
@@ -12456,7 +12397,7 @@
           <fields>
             <field>
               <name>CMD_DATABUF_15</name>
-              <description>Command data buffer 15</description>
+              <description>Command data word 15; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
               <access>read-write</access>

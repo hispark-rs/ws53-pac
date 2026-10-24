@@ -26258,32 +26258,26 @@ pub mod sfc_cfg {
         global_config: GlobalConfig,
         _reserved1: [u8; 0x0c],
         timing: Timing,
-        _reserved2: [u8; 0x0c],
-        int_raw_status: IntRawStatus,
-        int_status: IntStatus,
-        int_mask: IntMask,
-        int_clear: IntClear,
-        soft_rst_mask: SoftRstMask,
-        _reserved7: [u8; 0xcc],
+        _reserved2: [u8; 0xec],
         bus_config1: BusConfig1,
         bus_config2: BusConfig2,
-        _reserved9: [u8; 0x08],
+        _reserved4: [u8; 0x08],
         flash_size_status: FlashSizeStatus,
         flash_base_status: [FlashBaseStatus; 2],
-        _reserved11: [u8; 0x04],
+        _reserved6: [u8; 0x04],
         flash_alias_status: FlashAliasStatus,
-        _reserved12: [u8; 0x1c],
+        _reserved7: [u8; 0x1c],
         bus_dma_ctrl: BusDmaCtrl,
         bus_dma_mem_saddr: BusDmaMemSaddr,
         bus_dma_flash_saddr: BusDmaFlashSaddr,
         bus_dma_len: BusDmaLen,
         bus_dma_ahb_ctrl: BusDmaAhbCtrl,
-        _reserved17: [u8; 0xac],
+        _reserved12: [u8; 0xac],
         cmd_config: CmdConfig,
-        _reserved18: [u8; 0x04],
+        _reserved13: [u8; 0x04],
         cmd_ins: CmdIns,
         cmd_addr: CmdAddr,
-        _reserved20: [u8; 0xf0],
+        _reserved15: [u8; 0xf0],
         cmd_databuf_0: CmdDatabuf0,
         cmd_databuf_1: CmdDatabuf1,
         cmd_databuf_2: CmdDatabuf2,
@@ -26300,20 +26294,20 @@ pub mod sfc_cfg {
         cmd_databuf_13: CmdDatabuf13,
         cmd_databuf_14: CmdDatabuf14,
         cmd_databuf_15: CmdDatabuf15,
-        _reserved36: [u8; 0x0bc0],
+        _reserved31: [u8; 0x0bc0],
         fapc_start_status: [FapcStartStatus; 4],
-        _reserved37: [u8; 0x30],
+        _reserved32: [u8; 0x30],
         fapc_end_status: [FapcEndStatus; 4],
-        _reserved38: [u8; 0x0130],
+        _reserved33: [u8; 0x0130],
         fapc_mode_status: FapcModeStatus,
-        _reserved39: [u8; 0x9c],
+        _reserved34: [u8; 0x9c],
         fapc_lock_status: FapcLockStatus,
-        _reserved40: [u8; 0xdc],
+        _reserved35: [u8; 0xdc],
         lea_lp_en: LeaLpEn,
         lea_dfx_info: LeaDfxInfo,
-        _reserved42: [u8; 0x02f8],
+        _reserved37: [u8; 0x02f8],
         lea_iv_vld: LeaIvVld,
-        _reserved43: [u8; 0x3c],
+        _reserved38: [u8; 0x3c],
         fapc_iv_start_status: [FapcIvStartStatus; 4],
     }
     impl RegisterBlock {
@@ -26326,31 +26320,6 @@ pub mod sfc_cfg {
         #[inline(always)]
         pub const fn timing(&self) -> &Timing {
             &self.timing
-        }
-        #[doc = "0x120 - INT_RAW_STATUS"]
-        #[inline(always)]
-        pub const fn int_raw_status(&self) -> &IntRawStatus {
-            &self.int_raw_status
-        }
-        #[doc = "0x124 - INT_STATUS"]
-        #[inline(always)]
-        pub const fn int_status(&self) -> &IntStatus {
-            &self.int_status
-        }
-        #[doc = "0x128 - INT_MASK"]
-        #[inline(always)]
-        pub const fn int_mask(&self) -> &IntMask {
-            &self.int_mask
-        }
-        #[doc = "0x12c - INT_CLEAR"]
-        #[inline(always)]
-        pub const fn int_clear(&self) -> &IntClear {
-            &self.int_clear
-        }
-        #[doc = "0x130 - SOFT_RST_MASK"]
-        #[inline(always)]
-        pub const fn soft_rst_mask(&self) -> &SoftRstMask {
-            &self.soft_rst_mask
         }
         #[doc = "0x200 - BUS_CONFIG1"]
         #[inline(always)]
@@ -26685,6 +26654,10 @@ pub mod sfc_cfg {
         pub type RdDelayR = crate::FieldReader;
         #[doc = "Field `RD_DELAY` writer - SPI read data delay: 000=0.5~1clk; 001=1~1.5clk; etc."]
         pub type RdDelayW<'a, REG> = crate::FieldWriter<'a, REG, 3>;
+        #[doc = "Field `SAMPLE_TEST` reader - SDK DDR sampling-point selector; layout only, DDR operation unqualified"]
+        pub type SampleTestR = crate::FieldReader;
+        #[doc = "Field `SAMPLE_TEST` writer - SDK DDR sampling-point selector; layout only, DDR operation unqualified"]
+        pub type SampleTestW<'a, REG> = crate::FieldWriter<'a, REG, 4>;
         impl R {
             #[doc = "Bit 0 - SPI mode: 0=Mode0; 1=Mode3"]
             #[inline(always)]
@@ -26705,6 +26678,11 @@ pub mod sfc_cfg {
             #[inline(always)]
             pub fn rd_delay(&self) -> RdDelayR {
                 RdDelayR::new(((self.bits >> 3) & 7) as u8)
+            }
+            #[doc = "Bits 6:9 - SDK DDR sampling-point selector; layout only, DDR operation unqualified"]
+            #[inline(always)]
+            pub fn sample_test(&self) -> SampleTestR {
+                SampleTestR::new(((self.bits >> 6) & 0x0f) as u8)
             }
         }
         impl W {
@@ -26727,6 +26705,11 @@ pub mod sfc_cfg {
             #[inline(always)]
             pub fn rd_delay(&mut self) -> RdDelayW<'_, GlobalConfigSpec> {
                 RdDelayW::new(self, 3)
+            }
+            #[doc = "Bits 6:9 - SDK DDR sampling-point selector; layout only, DDR operation unqualified"]
+            #[inline(always)]
+            pub fn sample_test(&mut self) -> SampleTestW<'_, GlobalConfigSpec> {
+                SampleTestW::new(self, 6)
             }
         }
         #[doc = "GLOBAL_CONFIG\n\nYou can [`read`](crate::Reg::read) this register and get [`global_config::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`global_config::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
@@ -26805,193 +26788,6 @@ pub mod sfc_cfg {
         impl crate::Readable for TimingSpec {}
         #[doc = "`write(|w| ..)` method takes [`timing::W`](W) writer structure"]
         impl crate::Writable for TimingSpec {
-            type Safety = crate::Unsafe;
-        }
-    }
-    #[doc = "INT_RAW_STATUS (r) register accessor: INT_RAW_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`int_raw_status::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@int_raw_status`] module"]
-    #[doc(alias = "INT_RAW_STATUS")]
-    pub type IntRawStatus = crate::Reg<int_raw_status::IntRawStatusSpec>;
-    #[doc = "INT_RAW_STATUS"]
-    pub mod int_raw_status {
-        #[doc = "Register `INT_RAW_STATUS` reader"]
-        pub type R = crate::R<IntRawStatusSpec>;
-        #[doc = "Field `CMD_OP_END_RAW_STATUS` reader - Command operation end raw status"]
-        pub type CmdOpEndRawStatusR = crate::BitReader;
-        #[doc = "Field `DMA_DONE_INT_RAW_STATUS` reader - DMA done raw status"]
-        pub type DmaDoneIntRawStatusR = crate::BitReader;
-        impl R {
-            #[doc = "Bit 0 - Command operation end raw status"]
-            #[inline(always)]
-            pub fn cmd_op_end_raw_status(&self) -> CmdOpEndRawStatusR {
-                CmdOpEndRawStatusR::new((self.bits & 1) != 0)
-            }
-            #[doc = "Bit 1 - DMA done raw status"]
-            #[inline(always)]
-            pub fn dma_done_int_raw_status(&self) -> DmaDoneIntRawStatusR {
-                DmaDoneIntRawStatusR::new(((self.bits >> 1) & 1) != 0)
-            }
-        }
-        #[doc = "INT_RAW_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`int_raw_status::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
-        pub struct IntRawStatusSpec;
-        impl crate::RegisterSpec for IntRawStatusSpec {
-            type Ux = u32;
-        }
-        #[doc = "`read()` method returns [`int_raw_status::R`](R) reader structure"]
-        impl crate::Readable for IntRawStatusSpec {}
-    }
-    #[doc = "INT_STATUS (r) register accessor: INT_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`int_status::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@int_status`] module"]
-    #[doc(alias = "INT_STATUS")]
-    pub type IntStatus = crate::Reg<int_status::IntStatusSpec>;
-    #[doc = "INT_STATUS"]
-    pub mod int_status {
-        #[doc = "Register `INT_STATUS` reader"]
-        pub type R = crate::R<IntStatusSpec>;
-        #[doc = "Field `CMD_OP_END_STATUS` reader - Command operation end status"]
-        pub type CmdOpEndStatusR = crate::BitReader;
-        #[doc = "Field `DMA_DONE_INT_STATUS` reader - DMA done status"]
-        pub type DmaDoneIntStatusR = crate::BitReader;
-        impl R {
-            #[doc = "Bit 0 - Command operation end status"]
-            #[inline(always)]
-            pub fn cmd_op_end_status(&self) -> CmdOpEndStatusR {
-                CmdOpEndStatusR::new((self.bits & 1) != 0)
-            }
-            #[doc = "Bit 1 - DMA done status"]
-            #[inline(always)]
-            pub fn dma_done_int_status(&self) -> DmaDoneIntStatusR {
-                DmaDoneIntStatusR::new(((self.bits >> 1) & 1) != 0)
-            }
-        }
-        #[doc = "INT_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`int_status::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
-        pub struct IntStatusSpec;
-        impl crate::RegisterSpec for IntStatusSpec {
-            type Ux = u32;
-        }
-        #[doc = "`read()` method returns [`int_status::R`](R) reader structure"]
-        impl crate::Readable for IntStatusSpec {}
-    }
-    #[doc = "INT_MASK (rw) register accessor: INT_MASK\n\nYou can [`read`](crate::Reg::read) this register and get [`int_mask::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`int_mask::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@int_mask`] module"]
-    #[doc(alias = "INT_MASK")]
-    pub type IntMask = crate::Reg<int_mask::IntMaskSpec>;
-    #[doc = "INT_MASK"]
-    pub mod int_mask {
-        #[doc = "Register `INT_MASK` reader"]
-        pub type R = crate::R<IntMaskSpec>;
-        #[doc = "Register `INT_MASK` writer"]
-        pub type W = crate::W<IntMaskSpec>;
-        #[doc = "Field `CMD_OP_END_INT_MASK` reader - Command end mask: 0=masked; 1=unmasked"]
-        pub type CmdOpEndIntMaskR = crate::BitReader;
-        #[doc = "Field `CMD_OP_END_INT_MASK` writer - Command end mask: 0=masked; 1=unmasked"]
-        pub type CmdOpEndIntMaskW<'a, REG> = crate::BitWriter<'a, REG>;
-        #[doc = "Field `DMA_DONE_INT_MASK` reader - DMA done mask"]
-        pub type DmaDoneIntMaskR = crate::BitReader;
-        #[doc = "Field `DMA_DONE_INT_MASK` writer - DMA done mask"]
-        pub type DmaDoneIntMaskW<'a, REG> = crate::BitWriter<'a, REG>;
-        impl R {
-            #[doc = "Bit 0 - Command end mask: 0=masked; 1=unmasked"]
-            #[inline(always)]
-            pub fn cmd_op_end_int_mask(&self) -> CmdOpEndIntMaskR {
-                CmdOpEndIntMaskR::new((self.bits & 1) != 0)
-            }
-            #[doc = "Bit 1 - DMA done mask"]
-            #[inline(always)]
-            pub fn dma_done_int_mask(&self) -> DmaDoneIntMaskR {
-                DmaDoneIntMaskR::new(((self.bits >> 1) & 1) != 0)
-            }
-        }
-        impl W {
-            #[doc = "Bit 0 - Command end mask: 0=masked; 1=unmasked"]
-            #[inline(always)]
-            pub fn cmd_op_end_int_mask(&mut self) -> CmdOpEndIntMaskW<'_, IntMaskSpec> {
-                CmdOpEndIntMaskW::new(self, 0)
-            }
-            #[doc = "Bit 1 - DMA done mask"]
-            #[inline(always)]
-            pub fn dma_done_int_mask(&mut self) -> DmaDoneIntMaskW<'_, IntMaskSpec> {
-                DmaDoneIntMaskW::new(self, 1)
-            }
-        }
-        #[doc = "INT_MASK\n\nYou can [`read`](crate::Reg::read) this register and get [`int_mask::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`int_mask::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
-        pub struct IntMaskSpec;
-        impl crate::RegisterSpec for IntMaskSpec {
-            type Ux = u32;
-        }
-        #[doc = "`read()` method returns [`int_mask::R`](R) reader structure"]
-        impl crate::Readable for IntMaskSpec {}
-        #[doc = "`write(|w| ..)` method takes [`int_mask::W`](W) writer structure"]
-        impl crate::Writable for IntMaskSpec {
-            type Safety = crate::Unsafe;
-        }
-    }
-    #[doc = "INT_CLEAR (w) register accessor: INT_CLEAR\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`int_clear::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@int_clear`] module"]
-    #[doc(alias = "INT_CLEAR")]
-    pub type IntClear = crate::Reg<int_clear::IntClearSpec>;
-    #[doc = "INT_CLEAR"]
-    pub mod int_clear {
-        #[doc = "Register `INT_CLEAR` writer"]
-        pub type W = crate::W<IntClearSpec>;
-        #[doc = "Field `CMD_OP_END_INT_CLR` writer - Command end interrupt clear (self-clearing)"]
-        pub type CmdOpEndIntClrW<'a, REG> = crate::BitWriter<'a, REG>;
-        #[doc = "Field `DMA_DONE_INT_CLR` writer - DMA done interrupt clear (self-clearing)"]
-        pub type DmaDoneIntClrW<'a, REG> = crate::BitWriter<'a, REG>;
-        impl W {
-            #[doc = "Bit 0 - Command end interrupt clear (self-clearing)"]
-            #[inline(always)]
-            pub fn cmd_op_end_int_clr(&mut self) -> CmdOpEndIntClrW<'_, IntClearSpec> {
-                CmdOpEndIntClrW::new(self, 0)
-            }
-            #[doc = "Bit 1 - DMA done interrupt clear (self-clearing)"]
-            #[inline(always)]
-            pub fn dma_done_int_clr(&mut self) -> DmaDoneIntClrW<'_, IntClearSpec> {
-                DmaDoneIntClrW::new(self, 1)
-            }
-        }
-        #[doc = "INT_CLEAR\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`int_clear::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
-        pub struct IntClearSpec;
-        impl crate::RegisterSpec for IntClearSpec {
-            type Ux = u32;
-        }
-        #[doc = "`write(|w| ..)` method takes [`int_clear::W`](W) writer structure"]
-        impl crate::Writable for IntClearSpec {
-            type Safety = crate::Unsafe;
-        }
-    }
-    #[doc = "SOFT_RST_MASK (rw) register accessor: SOFT_RST_MASK\n\nYou can [`read`](crate::Reg::read) this register and get [`soft_rst_mask::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`soft_rst_mask::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@soft_rst_mask`] module"]
-    #[doc(alias = "SOFT_RST_MASK")]
-    pub type SoftRstMask = crate::Reg<soft_rst_mask::SoftRstMaskSpec>;
-    #[doc = "SOFT_RST_MASK"]
-    pub mod soft_rst_mask {
-        #[doc = "Register `SOFT_RST_MASK` reader"]
-        pub type R = crate::R<SoftRstMaskSpec>;
-        #[doc = "Register `SOFT_RST_MASK` writer"]
-        pub type W = crate::W<SoftRstMaskSpec>;
-        #[doc = "Field `SFC_BUS_SOFT_RST_MASK` reader - SFC bus soft reset mask: 0=reset active; 1=reset masked"]
-        pub type SfcBusSoftRstMaskR = crate::BitReader;
-        #[doc = "Field `SFC_BUS_SOFT_RST_MASK` writer - SFC bus soft reset mask: 0=reset active; 1=reset masked"]
-        pub type SfcBusSoftRstMaskW<'a, REG> = crate::BitWriter<'a, REG>;
-        impl R {
-            #[doc = "Bit 0 - SFC bus soft reset mask: 0=reset active; 1=reset masked"]
-            #[inline(always)]
-            pub fn sfc_bus_soft_rst_mask(&self) -> SfcBusSoftRstMaskR {
-                SfcBusSoftRstMaskR::new((self.bits & 1) != 0)
-            }
-        }
-        impl W {
-            #[doc = "Bit 0 - SFC bus soft reset mask: 0=reset active; 1=reset masked"]
-            #[inline(always)]
-            pub fn sfc_bus_soft_rst_mask(&mut self) -> SfcBusSoftRstMaskW<'_, SoftRstMaskSpec> {
-                SfcBusSoftRstMaskW::new(self, 0)
-            }
-        }
-        #[doc = "SOFT_RST_MASK\n\nYou can [`read`](crate::Reg::read) this register and get [`soft_rst_mask::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`soft_rst_mask::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
-        pub struct SoftRstMaskSpec;
-        impl crate::RegisterSpec for SoftRstMaskSpec {
-            type Ux = u32;
-        }
-        #[doc = "`read()` method returns [`soft_rst_mask::R`](R) reader structure"]
-        impl crate::Readable for SoftRstMaskSpec {}
-        #[doc = "`write(|w| ..)` method takes [`soft_rst_mask::W`](W) writer structure"]
-        impl crate::Writable for SoftRstMaskSpec {
             type Safety = crate::Unsafe;
         }
     }
@@ -27159,11 +26955,47 @@ pub mod sfc_cfg {
         pub type WipLocateR = crate::FieldReader;
         #[doc = "Field `WIP_LOCATE` writer - WIP bit position in Flash status register: 000=bit0; etc."]
         pub type WipLocateW<'a, REG> = crate::FieldWriter<'a, REG, 3>;
+        #[doc = "Field `BUS_DDR_MODE` reader - SDK DDR bus-mode bit; layout only, DDR operation unqualified"]
+        pub type BusDdrModeR = crate::BitReader;
+        #[doc = "Field `BUS_DDR_MODE` writer - SDK DDR bus-mode bit; layout only, DDR operation unqualified"]
+        pub type BusDdrModeW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `DDR_RD_DUMMY_BYTES` reader - ddr_rd_dummy_bytes"]
+        pub type DdrRdDummyBytesR = crate::FieldReader;
+        #[doc = "Field `DDR_RD_DUMMY_BYTES` writer - ddr_rd_dummy_bytes"]
+        pub type DdrRdDummyBytesW<'a, REG> = crate::FieldWriter<'a, REG, 4>;
+        #[doc = "Field `DDR_WR_DUMMY_BYTES` reader - ddr_wr_dummy_bytes"]
+        pub type DdrWrDummyBytesR = crate::FieldReader;
+        #[doc = "Field `DDR_WR_DUMMY_BYTES` writer - ddr_wr_dummy_bytes"]
+        pub type DdrWrDummyBytesW<'a, REG> = crate::FieldWriter<'a, REG, 4>;
+        #[doc = "Field `SFC_DDR_TX_DELAY_ENABLE` reader - sfc_ddr_tx_delay_enable"]
+        pub type SfcDdrTxDelayEnableR = crate::BitReader;
+        #[doc = "Field `SFC_DDR_TX_DELAY_ENABLE` writer - sfc_ddr_tx_delay_enable"]
+        pub type SfcDdrTxDelayEnableW<'a, REG> = crate::BitWriter<'a, REG>;
         impl R {
             #[doc = "Bits 0:2 - WIP bit position in Flash status register: 000=bit0; etc."]
             #[inline(always)]
             pub fn wip_locate(&self) -> WipLocateR {
                 WipLocateR::new((self.bits & 7) as u8)
+            }
+            #[doc = "Bit 3 - SDK DDR bus-mode bit; layout only, DDR operation unqualified"]
+            #[inline(always)]
+            pub fn bus_ddr_mode(&self) -> BusDdrModeR {
+                BusDdrModeR::new(((self.bits >> 3) & 1) != 0)
+            }
+            #[doc = "Bits 4:7 - ddr_rd_dummy_bytes"]
+            #[inline(always)]
+            pub fn ddr_rd_dummy_bytes(&self) -> DdrRdDummyBytesR {
+                DdrRdDummyBytesR::new(((self.bits >> 4) & 0x0f) as u8)
+            }
+            #[doc = "Bits 8:11 - ddr_wr_dummy_bytes"]
+            #[inline(always)]
+            pub fn ddr_wr_dummy_bytes(&self) -> DdrWrDummyBytesR {
+                DdrWrDummyBytesR::new(((self.bits >> 8) & 0x0f) as u8)
+            }
+            #[doc = "Bit 12 - sfc_ddr_tx_delay_enable"]
+            #[inline(always)]
+            pub fn sfc_ddr_tx_delay_enable(&self) -> SfcDdrTxDelayEnableR {
+                SfcDdrTxDelayEnableR::new(((self.bits >> 12) & 1) != 0)
             }
         }
         impl W {
@@ -27171,6 +27003,26 @@ pub mod sfc_cfg {
             #[inline(always)]
             pub fn wip_locate(&mut self) -> WipLocateW<'_, BusConfig2Spec> {
                 WipLocateW::new(self, 0)
+            }
+            #[doc = "Bit 3 - SDK DDR bus-mode bit; layout only, DDR operation unqualified"]
+            #[inline(always)]
+            pub fn bus_ddr_mode(&mut self) -> BusDdrModeW<'_, BusConfig2Spec> {
+                BusDdrModeW::new(self, 3)
+            }
+            #[doc = "Bits 4:7 - ddr_rd_dummy_bytes"]
+            #[inline(always)]
+            pub fn ddr_rd_dummy_bytes(&mut self) -> DdrRdDummyBytesW<'_, BusConfig2Spec> {
+                DdrRdDummyBytesW::new(self, 4)
+            }
+            #[doc = "Bits 8:11 - ddr_wr_dummy_bytes"]
+            #[inline(always)]
+            pub fn ddr_wr_dummy_bytes(&mut self) -> DdrWrDummyBytesW<'_, BusConfig2Spec> {
+                DdrWrDummyBytesW::new(self, 8)
+            }
+            #[doc = "Bit 12 - sfc_ddr_tx_delay_enable"]
+            #[inline(always)]
+            pub fn sfc_ddr_tx_delay_enable(&mut self) -> SfcDdrTxDelayEnableW<'_, BusConfig2Spec> {
+                SfcDdrTxDelayEnableW::new(self, 12)
             }
         }
         #[doc = "BUS_CONFIG2\n\nYou can [`read`](crate::Reg::read) this register and get [`bus_config2::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`bus_config2::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
@@ -27273,9 +27125,9 @@ pub mod sfc_cfg {
         pub type R = crate::R<BusDmaCtrlSpec>;
         #[doc = "Register `BUS_DMA_CTRL` writer"]
         pub type W = crate::W<BusDmaCtrlSpec>;
-        #[doc = "Field `DMA_START` reader - DMA transfer enable (auto-clears)"]
+        #[doc = "Field `DMA_START` reader - SDK starts bus DMA by writing 1 and polls until hardware returns 0 after transfer completion per header. Source contract uses repeated volatile reads, not a read-clear operation; silicon side effects/timing unqualified. No abort, buffer-ownership or posted-write drain proof follows from zero"]
         pub type DmaStartR = crate::BitReader;
-        #[doc = "Field `DMA_START` writer - DMA transfer enable (auto-clears)"]
+        #[doc = "Field `DMA_START` writer - SDK starts bus DMA by writing 1 and polls until hardware returns 0 after transfer completion per header. Source contract uses repeated volatile reads, not a read-clear operation; silicon side effects/timing unqualified. No abort, buffer-ownership or posted-write drain proof follows from zero"]
         pub type DmaStartW<'a, REG> = crate::BitWriter<'a, REG>;
         #[doc = "Field `DMA_RW` reader - DMA direction: 0=write; 1=read"]
         pub type DmaRwR = crate::BitReader;
@@ -27286,7 +27138,7 @@ pub mod sfc_cfg {
         #[doc = "Field `DMA_SEL_CS` writer - DMA chip select: 0=CS0; 1=CS1"]
         pub type DmaSelCsW<'a, REG> = crate::BitWriter<'a, REG>;
         impl R {
-            #[doc = "Bit 0 - DMA transfer enable (auto-clears)"]
+            #[doc = "Bit 0 - SDK starts bus DMA by writing 1 and polls until hardware returns 0 after transfer completion per header. Source contract uses repeated volatile reads, not a read-clear operation; silicon side effects/timing unqualified. No abort, buffer-ownership or posted-write drain proof follows from zero"]
             #[inline(always)]
             pub fn dma_start(&self) -> DmaStartR {
                 DmaStartR::new((self.bits & 1) != 0)
@@ -27303,7 +27155,7 @@ pub mod sfc_cfg {
             }
         }
         impl W {
-            #[doc = "Bit 0 - DMA transfer enable (auto-clears)"]
+            #[doc = "Bit 0 - SDK starts bus DMA by writing 1 and polls until hardware returns 0 after transfer completion per header. Source contract uses repeated volatile reads, not a read-clear operation; silicon side effects/timing unqualified. No abort, buffer-ownership or posted-write drain proof follows from zero"]
             #[inline(always)]
             pub fn dma_start(&mut self) -> DmaStartW<'_, BusDmaCtrlSpec> {
                 DmaStartW::new(self, 0)
@@ -27340,19 +27192,19 @@ pub mod sfc_cfg {
         pub type R = crate::R<BusDmaMemSaddrSpec>;
         #[doc = "Register `BUS_DMA_MEM_SADDR` writer"]
         pub type W = crate::W<BusDmaMemSaddrSpec>;
-        #[doc = "Field `DMA_MEM_SADDR` reader - DMA memory start address (0x00100000~0x00BFFFFF)"]
+        #[doc = "Field `DMA_MEM_SADDR` reader - SDK writes caller RAM pointer as a 32-bit bus-DMA address. No supported RAM range, alias translation, cache policy or exclusive ownership is established by this register layout"]
         pub type DmaMemSaddrR = crate::FieldReader<u32>;
-        #[doc = "Field `DMA_MEM_SADDR` writer - DMA memory start address (0x00100000~0x00BFFFFF)"]
+        #[doc = "Field `DMA_MEM_SADDR` writer - SDK writes caller RAM pointer as a 32-bit bus-DMA address. No supported RAM range, alias translation, cache policy or exclusive ownership is established by this register layout"]
         pub type DmaMemSaddrW<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
         impl R {
-            #[doc = "Bits 0:31 - DMA memory start address (0x00100000~0x00BFFFFF)"]
+            #[doc = "Bits 0:31 - SDK writes caller RAM pointer as a 32-bit bus-DMA address. No supported RAM range, alias translation, cache policy or exclusive ownership is established by this register layout"]
             #[inline(always)]
             pub fn dma_mem_saddr(&self) -> DmaMemSaddrR {
                 DmaMemSaddrR::new(self.bits)
             }
         }
         impl W {
-            #[doc = "Bits 0:31 - DMA memory start address (0x00100000~0x00BFFFFF)"]
+            #[doc = "Bits 0:31 - SDK writes caller RAM pointer as a 32-bit bus-DMA address. No supported RAM range, alias translation, cache policy or exclusive ownership is established by this register layout"]
             #[inline(always)]
             pub fn dma_mem_saddr(&mut self) -> DmaMemSaddrW<'_, BusDmaMemSaddrSpec> {
                 DmaMemSaddrW::new(self, 0)
@@ -27418,19 +27270,19 @@ pub mod sfc_cfg {
         pub type R = crate::R<BusDmaLenSpec>;
         #[doc = "Register `BUS_DMA_LEN` writer"]
         pub type W = crate::W<BusDmaLenSpec>;
-        #[doc = "Field `DMA_LEN` reader - DMA length (n+1 bytes)"]
+        #[doc = "Field `DMA_LEN` reader - Thirty-bit DMA length-minus-one; SDK helper preserves upper bits but does not validate zero/oversize. Layout is not a buffer ownership or transfer-range guarantee"]
         pub type DmaLenR = crate::FieldReader<u32>;
-        #[doc = "Field `DMA_LEN` writer - DMA length (n+1 bytes)"]
+        #[doc = "Field `DMA_LEN` writer - Thirty-bit DMA length-minus-one; SDK helper preserves upper bits but does not validate zero/oversize. Layout is not a buffer ownership or transfer-range guarantee"]
         pub type DmaLenW<'a, REG> = crate::FieldWriter<'a, REG, 30, u32>;
         impl R {
-            #[doc = "Bits 0:29 - DMA length (n+1 bytes)"]
+            #[doc = "Bits 0:29 - Thirty-bit DMA length-minus-one; SDK helper preserves upper bits but does not validate zero/oversize. Layout is not a buffer ownership or transfer-range guarantee"]
             #[inline(always)]
             pub fn dma_len(&self) -> DmaLenR {
                 DmaLenR::new(self.bits & 0x3fff_ffff)
             }
         }
         impl W {
-            #[doc = "Bits 0:29 - DMA length (n+1 bytes)"]
+            #[doc = "Bits 0:29 - Thirty-bit DMA length-minus-one; SDK helper preserves upper bits but does not validate zero/oversize. Layout is not a buffer ownership or transfer-range guarantee"]
             #[inline(always)]
             pub fn dma_len(&mut self) -> DmaLenW<'_, BusDmaLenSpec> {
                 DmaLenW::new(self, 0)
@@ -27524,9 +27376,9 @@ pub mod sfc_cfg {
         pub type R = crate::R<CmdConfigSpec>;
         #[doc = "Register `CMD_CONFIG` writer"]
         pub type W = crate::W<CmdConfigSpec>;
-        #[doc = "Field `START` reader - Command start (auto-clears)"]
+        #[doc = "Field `START` reader - SDK starts SPI transfer by writing 1 and polls until hardware returns 0 after transfer completion per header. Source contract uses repeated volatile reads, not a read-clear operation; silicon side effects/timing, write-while-busy and forced-clear semantics unqualified. Zero does not certify NOR WIP, cache coherence or bus drain"]
         pub type StartR = crate::BitReader;
-        #[doc = "Field `START` writer - Command start (auto-clears)"]
+        #[doc = "Field `START` writer - SDK starts SPI transfer by writing 1 and polls until hardware returns 0 after transfer completion per header. Source contract uses repeated volatile reads, not a read-clear operation; silicon side effects/timing, write-while-busy and forced-clear semantics unqualified. Zero does not certify NOR WIP, cache coherence or bus drain"]
         pub type StartW<'a, REG> = crate::BitWriter<'a, REG>;
         #[doc = "Field `SEL_CS` reader - Chip select: 0=CS0; 1=CS1"]
         pub type SelCsR = crate::BitReader;
@@ -27548,16 +27400,16 @@ pub mod sfc_cfg {
         pub type RwR = crate::BitReader;
         #[doc = "Field `RW` writer - Data direction: 0=write; 1=read"]
         pub type RwW<'a, REG> = crate::BitWriter<'a, REG>;
-        #[doc = "Field `DATA_CNT` reader - Data length (n+1 bytes)"]
+        #[doc = "Field `DATA_CNT` reader - Six-bit length-minus-one for data-enabled commands: 1..64 bytes. Original SDK helper truncates size-1, including zero/oversize; caller validation is required. With data_en=0 this field is not a data request"]
         pub type DataCntR = crate::FieldReader;
-        #[doc = "Field `DATA_CNT` writer - Data length (n+1 bytes)"]
+        #[doc = "Field `DATA_CNT` writer - Six-bit length-minus-one for data-enabled commands: 1..64 bytes. Original SDK helper truncates size-1, including zero/oversize; caller validation is required. With data_en=0 this field is not a data request"]
         pub type DataCntW<'a, REG> = crate::FieldWriter<'a, REG, 6>;
         #[doc = "Field `MEM_IF_TYPE` reader - SPI interface type: 000=Standard; 001=Dual; 010=Dual-IO; 101=Quad-Input; 110=Quad-IO"]
         pub type MemIfTypeR = crate::FieldReader;
         #[doc = "Field `MEM_IF_TYPE` writer - SPI interface type: 000=Standard; 001=Dual; 010=Dual-IO; 101=Quad-Input; 110=Quad-IO"]
         pub type MemIfTypeW<'a, REG> = crate::FieldWriter<'a, REG, 3>;
         impl R {
-            #[doc = "Bit 0 - Command start (auto-clears)"]
+            #[doc = "Bit 0 - SDK starts SPI transfer by writing 1 and polls until hardware returns 0 after transfer completion per header. Source contract uses repeated volatile reads, not a read-clear operation; silicon side effects/timing, write-while-busy and forced-clear semantics unqualified. Zero does not certify NOR WIP, cache coherence or bus drain"]
             #[inline(always)]
             pub fn start(&self) -> StartR {
                 StartR::new((self.bits & 1) != 0)
@@ -27587,7 +27439,7 @@ pub mod sfc_cfg {
             pub fn rw(&self) -> RwR {
                 RwR::new(((self.bits >> 8) & 1) != 0)
             }
-            #[doc = "Bits 9:14 - Data length (n+1 bytes)"]
+            #[doc = "Bits 9:14 - Six-bit length-minus-one for data-enabled commands: 1..64 bytes. Original SDK helper truncates size-1, including zero/oversize; caller validation is required. With data_en=0 this field is not a data request"]
             #[inline(always)]
             pub fn data_cnt(&self) -> DataCntR {
                 DataCntR::new(((self.bits >> 9) & 0x3f) as u8)
@@ -27599,7 +27451,7 @@ pub mod sfc_cfg {
             }
         }
         impl W {
-            #[doc = "Bit 0 - Command start (auto-clears)"]
+            #[doc = "Bit 0 - SDK starts SPI transfer by writing 1 and polls until hardware returns 0 after transfer completion per header. Source contract uses repeated volatile reads, not a read-clear operation; silicon side effects/timing, write-while-busy and forced-clear semantics unqualified. Zero does not certify NOR WIP, cache coherence or bus drain"]
             #[inline(always)]
             pub fn start(&mut self) -> StartW<'_, CmdConfigSpec> {
                 StartW::new(self, 0)
@@ -27629,7 +27481,7 @@ pub mod sfc_cfg {
             pub fn rw(&mut self) -> RwW<'_, CmdConfigSpec> {
                 RwW::new(self, 8)
             }
-            #[doc = "Bits 9:14 - Data length (n+1 bytes)"]
+            #[doc = "Bits 9:14 - Six-bit length-minus-one for data-enabled commands: 1..64 bytes. Original SDK helper truncates size-1, including zero/oversize; caller validation is required. With data_en=0 this field is not a data request"]
             #[inline(always)]
             pub fn data_cnt(&mut self) -> DataCntW<'_, CmdConfigSpec> {
                 DataCntW::new(self, 9)
@@ -27665,11 +27517,29 @@ pub mod sfc_cfg {
         pub type RegInsR = crate::FieldReader;
         #[doc = "Field `REG_INS` writer - Instruction code"]
         pub type RegInsW<'a, REG> = crate::FieldWriter<'a, REG, 8>;
+        #[doc = "Field `CMD_DDR_MODE` reader - SDK command DDR bit; layout only, standard-SPI helpers preserve it"]
+        pub type CmdDdrModeR = crate::BitReader;
+        #[doc = "Field `CMD_DDR_MODE` writer - SDK command DDR bit; layout only, standard-SPI helpers preserve it"]
+        pub type CmdDdrModeW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `DDR_DUMMY_BYTE_CNT` reader - SDK DDR dummy count; layout only, standard-SPI helpers preserve it"]
+        pub type DdrDummyByteCntR = crate::FieldReader;
+        #[doc = "Field `DDR_DUMMY_BYTE_CNT` writer - SDK DDR dummy count; layout only, standard-SPI helpers preserve it"]
+        pub type DdrDummyByteCntW<'a, REG> = crate::FieldWriter<'a, REG, 4>;
         impl R {
             #[doc = "Bits 0:7 - Instruction code"]
             #[inline(always)]
             pub fn reg_ins(&self) -> RegInsR {
                 RegInsR::new((self.bits & 0xff) as u8)
+            }
+            #[doc = "Bit 8 - SDK command DDR bit; layout only, standard-SPI helpers preserve it"]
+            #[inline(always)]
+            pub fn cmd_ddr_mode(&self) -> CmdDdrModeR {
+                CmdDdrModeR::new(((self.bits >> 8) & 1) != 0)
+            }
+            #[doc = "Bits 12:15 - SDK DDR dummy count; layout only, standard-SPI helpers preserve it"]
+            #[inline(always)]
+            pub fn ddr_dummy_byte_cnt(&self) -> DdrDummyByteCntR {
+                DdrDummyByteCntR::new(((self.bits >> 12) & 0x0f) as u8)
             }
         }
         impl W {
@@ -27677,6 +27547,16 @@ pub mod sfc_cfg {
             #[inline(always)]
             pub fn reg_ins(&mut self) -> RegInsW<'_, CmdInsSpec> {
                 RegInsW::new(self, 0)
+            }
+            #[doc = "Bit 8 - SDK command DDR bit; layout only, standard-SPI helpers preserve it"]
+            #[inline(always)]
+            pub fn cmd_ddr_mode(&mut self) -> CmdDdrModeW<'_, CmdInsSpec> {
+                CmdDdrModeW::new(self, 8)
+            }
+            #[doc = "Bits 12:15 - SDK DDR dummy count; layout only, standard-SPI helpers preserve it"]
+            #[inline(always)]
+            pub fn ddr_dummy_byte_cnt(&mut self) -> DdrDummyByteCntW<'_, CmdInsSpec> {
+                DdrDummyByteCntW::new(self, 12)
             }
         }
         #[doc = "CMD_INS\n\nYou can [`read`](crate::Reg::read) this register and get [`cmd_ins::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`cmd_ins::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
@@ -27739,19 +27619,19 @@ pub mod sfc_cfg {
         pub type R = crate::R<CmdDatabuf0Spec>;
         #[doc = "Register `CMD_DATABUF_0` writer"]
         pub type W = crate::W<CmdDatabuf0Spec>;
-        #[doc = "Field `CMD_DATABUF_0` reader - Data buffer 0"]
+        #[doc = "Field `CMD_DATABUF_0` reader - CPU command data buffer, also updated by completed reads. SDK uses ordinary volatile accesses without a source-level FIFO pop/read-clear operation; silicon side effects unverified. A previously buffered value is not a fresh Flash status/WIP observation: SDK issues a status command, waits command START, then reads this word"]
         pub type CmdDatabuf0R = crate::FieldReader<u32>;
-        #[doc = "Field `CMD_DATABUF_0` writer - Data buffer 0"]
+        #[doc = "Field `CMD_DATABUF_0` writer - CPU command data buffer, also updated by completed reads. SDK uses ordinary volatile accesses without a source-level FIFO pop/read-clear operation; silicon side effects unverified. A previously buffered value is not a fresh Flash status/WIP observation: SDK issues a status command, waits command START, then reads this word"]
         pub type CmdDatabuf0W<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
         impl R {
-            #[doc = "Bits 0:31 - Data buffer 0"]
+            #[doc = "Bits 0:31 - CPU command data buffer, also updated by completed reads. SDK uses ordinary volatile accesses without a source-level FIFO pop/read-clear operation; silicon side effects unverified. A previously buffered value is not a fresh Flash status/WIP observation: SDK issues a status command, waits command START, then reads this word"]
             #[inline(always)]
             pub fn cmd_databuf_0(&self) -> CmdDatabuf0R {
                 CmdDatabuf0R::new(self.bits)
             }
         }
         impl W {
-            #[doc = "Bits 0:31 - Data buffer 0"]
+            #[doc = "Bits 0:31 - CPU command data buffer, also updated by completed reads. SDK uses ordinary volatile accesses without a source-level FIFO pop/read-clear operation; silicon side effects unverified. A previously buffered value is not a fresh Flash status/WIP observation: SDK issues a status command, waits command START, then reads this word"]
             #[inline(always)]
             pub fn cmd_databuf_0(&mut self) -> CmdDatabuf0W<'_, CmdDatabuf0Spec> {
                 CmdDatabuf0W::new(self, 0)
@@ -27778,19 +27658,19 @@ pub mod sfc_cfg {
         pub type R = crate::R<CmdDatabuf1Spec>;
         #[doc = "Register `CMD_DATABUF_1` writer"]
         pub type W = crate::W<CmdDatabuf1Spec>;
-        #[doc = "Field `CMD_DATABUF_1` reader - Command data buffer 1"]
+        #[doc = "Field `CMD_DATABUF_1` reader - Command data word 1; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
         pub type CmdDatabuf1R = crate::FieldReader<u32>;
-        #[doc = "Field `CMD_DATABUF_1` writer - Command data buffer 1"]
+        #[doc = "Field `CMD_DATABUF_1` writer - Command data word 1; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
         pub type CmdDatabuf1W<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
         impl R {
-            #[doc = "Bits 0:31 - Command data buffer 1"]
+            #[doc = "Bits 0:31 - Command data word 1; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
             #[inline(always)]
             pub fn cmd_databuf_1(&self) -> CmdDatabuf1R {
                 CmdDatabuf1R::new(self.bits)
             }
         }
         impl W {
-            #[doc = "Bits 0:31 - Command data buffer 1"]
+            #[doc = "Bits 0:31 - Command data word 1; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
             #[inline(always)]
             pub fn cmd_databuf_1(&mut self) -> CmdDatabuf1W<'_, CmdDatabuf1Spec> {
                 CmdDatabuf1W::new(self, 0)
@@ -27817,19 +27697,19 @@ pub mod sfc_cfg {
         pub type R = crate::R<CmdDatabuf2Spec>;
         #[doc = "Register `CMD_DATABUF_2` writer"]
         pub type W = crate::W<CmdDatabuf2Spec>;
-        #[doc = "Field `CMD_DATABUF_2` reader - Command data buffer 2"]
+        #[doc = "Field `CMD_DATABUF_2` reader - Command data word 2; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
         pub type CmdDatabuf2R = crate::FieldReader<u32>;
-        #[doc = "Field `CMD_DATABUF_2` writer - Command data buffer 2"]
+        #[doc = "Field `CMD_DATABUF_2` writer - Command data word 2; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
         pub type CmdDatabuf2W<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
         impl R {
-            #[doc = "Bits 0:31 - Command data buffer 2"]
+            #[doc = "Bits 0:31 - Command data word 2; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
             #[inline(always)]
             pub fn cmd_databuf_2(&self) -> CmdDatabuf2R {
                 CmdDatabuf2R::new(self.bits)
             }
         }
         impl W {
-            #[doc = "Bits 0:31 - Command data buffer 2"]
+            #[doc = "Bits 0:31 - Command data word 2; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
             #[inline(always)]
             pub fn cmd_databuf_2(&mut self) -> CmdDatabuf2W<'_, CmdDatabuf2Spec> {
                 CmdDatabuf2W::new(self, 0)
@@ -27856,19 +27736,19 @@ pub mod sfc_cfg {
         pub type R = crate::R<CmdDatabuf3Spec>;
         #[doc = "Register `CMD_DATABUF_3` writer"]
         pub type W = crate::W<CmdDatabuf3Spec>;
-        #[doc = "Field `CMD_DATABUF_3` reader - Command data buffer 3"]
+        #[doc = "Field `CMD_DATABUF_3` reader - Command data word 3; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
         pub type CmdDatabuf3R = crate::FieldReader<u32>;
-        #[doc = "Field `CMD_DATABUF_3` writer - Command data buffer 3"]
+        #[doc = "Field `CMD_DATABUF_3` writer - Command data word 3; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
         pub type CmdDatabuf3W<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
         impl R {
-            #[doc = "Bits 0:31 - Command data buffer 3"]
+            #[doc = "Bits 0:31 - Command data word 3; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
             #[inline(always)]
             pub fn cmd_databuf_3(&self) -> CmdDatabuf3R {
                 CmdDatabuf3R::new(self.bits)
             }
         }
         impl W {
-            #[doc = "Bits 0:31 - Command data buffer 3"]
+            #[doc = "Bits 0:31 - Command data word 3; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
             #[inline(always)]
             pub fn cmd_databuf_3(&mut self) -> CmdDatabuf3W<'_, CmdDatabuf3Spec> {
                 CmdDatabuf3W::new(self, 0)
@@ -27895,19 +27775,19 @@ pub mod sfc_cfg {
         pub type R = crate::R<CmdDatabuf4Spec>;
         #[doc = "Register `CMD_DATABUF_4` writer"]
         pub type W = crate::W<CmdDatabuf4Spec>;
-        #[doc = "Field `CMD_DATABUF_4` reader - Command data buffer 4"]
+        #[doc = "Field `CMD_DATABUF_4` reader - Command data word 4; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
         pub type CmdDatabuf4R = crate::FieldReader<u32>;
-        #[doc = "Field `CMD_DATABUF_4` writer - Command data buffer 4"]
+        #[doc = "Field `CMD_DATABUF_4` writer - Command data word 4; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
         pub type CmdDatabuf4W<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
         impl R {
-            #[doc = "Bits 0:31 - Command data buffer 4"]
+            #[doc = "Bits 0:31 - Command data word 4; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
             #[inline(always)]
             pub fn cmd_databuf_4(&self) -> CmdDatabuf4R {
                 CmdDatabuf4R::new(self.bits)
             }
         }
         impl W {
-            #[doc = "Bits 0:31 - Command data buffer 4"]
+            #[doc = "Bits 0:31 - Command data word 4; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
             #[inline(always)]
             pub fn cmd_databuf_4(&mut self) -> CmdDatabuf4W<'_, CmdDatabuf4Spec> {
                 CmdDatabuf4W::new(self, 0)
@@ -27934,19 +27814,19 @@ pub mod sfc_cfg {
         pub type R = crate::R<CmdDatabuf5Spec>;
         #[doc = "Register `CMD_DATABUF_5` writer"]
         pub type W = crate::W<CmdDatabuf5Spec>;
-        #[doc = "Field `CMD_DATABUF_5` reader - Command data buffer 5"]
+        #[doc = "Field `CMD_DATABUF_5` reader - Command data word 5; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
         pub type CmdDatabuf5R = crate::FieldReader<u32>;
-        #[doc = "Field `CMD_DATABUF_5` writer - Command data buffer 5"]
+        #[doc = "Field `CMD_DATABUF_5` writer - Command data word 5; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
         pub type CmdDatabuf5W<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
         impl R {
-            #[doc = "Bits 0:31 - Command data buffer 5"]
+            #[doc = "Bits 0:31 - Command data word 5; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
             #[inline(always)]
             pub fn cmd_databuf_5(&self) -> CmdDatabuf5R {
                 CmdDatabuf5R::new(self.bits)
             }
         }
         impl W {
-            #[doc = "Bits 0:31 - Command data buffer 5"]
+            #[doc = "Bits 0:31 - Command data word 5; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
             #[inline(always)]
             pub fn cmd_databuf_5(&mut self) -> CmdDatabuf5W<'_, CmdDatabuf5Spec> {
                 CmdDatabuf5W::new(self, 0)
@@ -27973,19 +27853,19 @@ pub mod sfc_cfg {
         pub type R = crate::R<CmdDatabuf6Spec>;
         #[doc = "Register `CMD_DATABUF_6` writer"]
         pub type W = crate::W<CmdDatabuf6Spec>;
-        #[doc = "Field `CMD_DATABUF_6` reader - Command data buffer 6"]
+        #[doc = "Field `CMD_DATABUF_6` reader - Command data word 6; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
         pub type CmdDatabuf6R = crate::FieldReader<u32>;
-        #[doc = "Field `CMD_DATABUF_6` writer - Command data buffer 6"]
+        #[doc = "Field `CMD_DATABUF_6` writer - Command data word 6; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
         pub type CmdDatabuf6W<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
         impl R {
-            #[doc = "Bits 0:31 - Command data buffer 6"]
+            #[doc = "Bits 0:31 - Command data word 6; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
             #[inline(always)]
             pub fn cmd_databuf_6(&self) -> CmdDatabuf6R {
                 CmdDatabuf6R::new(self.bits)
             }
         }
         impl W {
-            #[doc = "Bits 0:31 - Command data buffer 6"]
+            #[doc = "Bits 0:31 - Command data word 6; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
             #[inline(always)]
             pub fn cmd_databuf_6(&mut self) -> CmdDatabuf6W<'_, CmdDatabuf6Spec> {
                 CmdDatabuf6W::new(self, 0)
@@ -28012,19 +27892,19 @@ pub mod sfc_cfg {
         pub type R = crate::R<CmdDatabuf7Spec>;
         #[doc = "Register `CMD_DATABUF_7` writer"]
         pub type W = crate::W<CmdDatabuf7Spec>;
-        #[doc = "Field `CMD_DATABUF_7` reader - Command data buffer 7"]
+        #[doc = "Field `CMD_DATABUF_7` reader - Command data word 7; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
         pub type CmdDatabuf7R = crate::FieldReader<u32>;
-        #[doc = "Field `CMD_DATABUF_7` writer - Command data buffer 7"]
+        #[doc = "Field `CMD_DATABUF_7` writer - Command data word 7; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
         pub type CmdDatabuf7W<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
         impl R {
-            #[doc = "Bits 0:31 - Command data buffer 7"]
+            #[doc = "Bits 0:31 - Command data word 7; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
             #[inline(always)]
             pub fn cmd_databuf_7(&self) -> CmdDatabuf7R {
                 CmdDatabuf7R::new(self.bits)
             }
         }
         impl W {
-            #[doc = "Bits 0:31 - Command data buffer 7"]
+            #[doc = "Bits 0:31 - Command data word 7; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
             #[inline(always)]
             pub fn cmd_databuf_7(&mut self) -> CmdDatabuf7W<'_, CmdDatabuf7Spec> {
                 CmdDatabuf7W::new(self, 0)
@@ -28051,19 +27931,19 @@ pub mod sfc_cfg {
         pub type R = crate::R<CmdDatabuf8Spec>;
         #[doc = "Register `CMD_DATABUF_8` writer"]
         pub type W = crate::W<CmdDatabuf8Spec>;
-        #[doc = "Field `CMD_DATABUF_8` reader - Command data buffer 8"]
+        #[doc = "Field `CMD_DATABUF_8` reader - Command data word 8; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
         pub type CmdDatabuf8R = crate::FieldReader<u32>;
-        #[doc = "Field `CMD_DATABUF_8` writer - Command data buffer 8"]
+        #[doc = "Field `CMD_DATABUF_8` writer - Command data word 8; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
         pub type CmdDatabuf8W<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
         impl R {
-            #[doc = "Bits 0:31 - Command data buffer 8"]
+            #[doc = "Bits 0:31 - Command data word 8; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
             #[inline(always)]
             pub fn cmd_databuf_8(&self) -> CmdDatabuf8R {
                 CmdDatabuf8R::new(self.bits)
             }
         }
         impl W {
-            #[doc = "Bits 0:31 - Command data buffer 8"]
+            #[doc = "Bits 0:31 - Command data word 8; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
             #[inline(always)]
             pub fn cmd_databuf_8(&mut self) -> CmdDatabuf8W<'_, CmdDatabuf8Spec> {
                 CmdDatabuf8W::new(self, 0)
@@ -28090,19 +27970,19 @@ pub mod sfc_cfg {
         pub type R = crate::R<CmdDatabuf9Spec>;
         #[doc = "Register `CMD_DATABUF_9` writer"]
         pub type W = crate::W<CmdDatabuf9Spec>;
-        #[doc = "Field `CMD_DATABUF_9` reader - Command data buffer 9"]
+        #[doc = "Field `CMD_DATABUF_9` reader - Command data word 9; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
         pub type CmdDatabuf9R = crate::FieldReader<u32>;
-        #[doc = "Field `CMD_DATABUF_9` writer - Command data buffer 9"]
+        #[doc = "Field `CMD_DATABUF_9` writer - Command data word 9; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
         pub type CmdDatabuf9W<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
         impl R {
-            #[doc = "Bits 0:31 - Command data buffer 9"]
+            #[doc = "Bits 0:31 - Command data word 9; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
             #[inline(always)]
             pub fn cmd_databuf_9(&self) -> CmdDatabuf9R {
                 CmdDatabuf9R::new(self.bits)
             }
         }
         impl W {
-            #[doc = "Bits 0:31 - Command data buffer 9"]
+            #[doc = "Bits 0:31 - Command data word 9; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
             #[inline(always)]
             pub fn cmd_databuf_9(&mut self) -> CmdDatabuf9W<'_, CmdDatabuf9Spec> {
                 CmdDatabuf9W::new(self, 0)
@@ -28129,19 +28009,19 @@ pub mod sfc_cfg {
         pub type R = crate::R<CmdDatabuf10Spec>;
         #[doc = "Register `CMD_DATABUF_10` writer"]
         pub type W = crate::W<CmdDatabuf10Spec>;
-        #[doc = "Field `CMD_DATABUF_10` reader - Command data buffer 10"]
+        #[doc = "Field `CMD_DATABUF_10` reader - Command data word 10; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
         pub type CmdDatabuf10R = crate::FieldReader<u32>;
-        #[doc = "Field `CMD_DATABUF_10` writer - Command data buffer 10"]
+        #[doc = "Field `CMD_DATABUF_10` writer - Command data word 10; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
         pub type CmdDatabuf10W<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
         impl R {
-            #[doc = "Bits 0:31 - Command data buffer 10"]
+            #[doc = "Bits 0:31 - Command data word 10; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
             #[inline(always)]
             pub fn cmd_databuf_10(&self) -> CmdDatabuf10R {
                 CmdDatabuf10R::new(self.bits)
             }
         }
         impl W {
-            #[doc = "Bits 0:31 - Command data buffer 10"]
+            #[doc = "Bits 0:31 - Command data word 10; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
             #[inline(always)]
             pub fn cmd_databuf_10(&mut self) -> CmdDatabuf10W<'_, CmdDatabuf10Spec> {
                 CmdDatabuf10W::new(self, 0)
@@ -28168,19 +28048,19 @@ pub mod sfc_cfg {
         pub type R = crate::R<CmdDatabuf11Spec>;
         #[doc = "Register `CMD_DATABUF_11` writer"]
         pub type W = crate::W<CmdDatabuf11Spec>;
-        #[doc = "Field `CMD_DATABUF_11` reader - Command data buffer 11"]
+        #[doc = "Field `CMD_DATABUF_11` reader - Command data word 11; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
         pub type CmdDatabuf11R = crate::FieldReader<u32>;
-        #[doc = "Field `CMD_DATABUF_11` writer - Command data buffer 11"]
+        #[doc = "Field `CMD_DATABUF_11` writer - Command data word 11; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
         pub type CmdDatabuf11W<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
         impl R {
-            #[doc = "Bits 0:31 - Command data buffer 11"]
+            #[doc = "Bits 0:31 - Command data word 11; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
             #[inline(always)]
             pub fn cmd_databuf_11(&self) -> CmdDatabuf11R {
                 CmdDatabuf11R::new(self.bits)
             }
         }
         impl W {
-            #[doc = "Bits 0:31 - Command data buffer 11"]
+            #[doc = "Bits 0:31 - Command data word 11; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
             #[inline(always)]
             pub fn cmd_databuf_11(&mut self) -> CmdDatabuf11W<'_, CmdDatabuf11Spec> {
                 CmdDatabuf11W::new(self, 0)
@@ -28207,19 +28087,19 @@ pub mod sfc_cfg {
         pub type R = crate::R<CmdDatabuf12Spec>;
         #[doc = "Register `CMD_DATABUF_12` writer"]
         pub type W = crate::W<CmdDatabuf12Spec>;
-        #[doc = "Field `CMD_DATABUF_12` reader - Command data buffer 12"]
+        #[doc = "Field `CMD_DATABUF_12` reader - Command data word 12; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
         pub type CmdDatabuf12R = crate::FieldReader<u32>;
-        #[doc = "Field `CMD_DATABUF_12` writer - Command data buffer 12"]
+        #[doc = "Field `CMD_DATABUF_12` writer - Command data word 12; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
         pub type CmdDatabuf12W<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
         impl R {
-            #[doc = "Bits 0:31 - Command data buffer 12"]
+            #[doc = "Bits 0:31 - Command data word 12; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
             #[inline(always)]
             pub fn cmd_databuf_12(&self) -> CmdDatabuf12R {
                 CmdDatabuf12R::new(self.bits)
             }
         }
         impl W {
-            #[doc = "Bits 0:31 - Command data buffer 12"]
+            #[doc = "Bits 0:31 - Command data word 12; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
             #[inline(always)]
             pub fn cmd_databuf_12(&mut self) -> CmdDatabuf12W<'_, CmdDatabuf12Spec> {
                 CmdDatabuf12W::new(self, 0)
@@ -28246,19 +28126,19 @@ pub mod sfc_cfg {
         pub type R = crate::R<CmdDatabuf13Spec>;
         #[doc = "Register `CMD_DATABUF_13` writer"]
         pub type W = crate::W<CmdDatabuf13Spec>;
-        #[doc = "Field `CMD_DATABUF_13` reader - Command data buffer 13"]
+        #[doc = "Field `CMD_DATABUF_13` reader - Command data word 13; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
         pub type CmdDatabuf13R = crate::FieldReader<u32>;
-        #[doc = "Field `CMD_DATABUF_13` writer - Command data buffer 13"]
+        #[doc = "Field `CMD_DATABUF_13` writer - Command data word 13; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
         pub type CmdDatabuf13W<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
         impl R {
-            #[doc = "Bits 0:31 - Command data buffer 13"]
+            #[doc = "Bits 0:31 - Command data word 13; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
             #[inline(always)]
             pub fn cmd_databuf_13(&self) -> CmdDatabuf13R {
                 CmdDatabuf13R::new(self.bits)
             }
         }
         impl W {
-            #[doc = "Bits 0:31 - Command data buffer 13"]
+            #[doc = "Bits 0:31 - Command data word 13; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
             #[inline(always)]
             pub fn cmd_databuf_13(&mut self) -> CmdDatabuf13W<'_, CmdDatabuf13Spec> {
                 CmdDatabuf13W::new(self, 0)
@@ -28285,19 +28165,19 @@ pub mod sfc_cfg {
         pub type R = crate::R<CmdDatabuf14Spec>;
         #[doc = "Register `CMD_DATABUF_14` writer"]
         pub type W = crate::W<CmdDatabuf14Spec>;
-        #[doc = "Field `CMD_DATABUF_14` reader - Command data buffer 14"]
+        #[doc = "Field `CMD_DATABUF_14` reader - Command data word 14; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
         pub type CmdDatabuf14R = crate::FieldReader<u32>;
-        #[doc = "Field `CMD_DATABUF_14` writer - Command data buffer 14"]
+        #[doc = "Field `CMD_DATABUF_14` writer - Command data word 14; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
         pub type CmdDatabuf14W<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
         impl R {
-            #[doc = "Bits 0:31 - Command data buffer 14"]
+            #[doc = "Bits 0:31 - Command data word 14; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
             #[inline(always)]
             pub fn cmd_databuf_14(&self) -> CmdDatabuf14R {
                 CmdDatabuf14R::new(self.bits)
             }
         }
         impl W {
-            #[doc = "Bits 0:31 - Command data buffer 14"]
+            #[doc = "Bits 0:31 - Command data word 14; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
             #[inline(always)]
             pub fn cmd_databuf_14(&mut self) -> CmdDatabuf14W<'_, CmdDatabuf14Spec> {
                 CmdDatabuf14W::new(self, 0)
@@ -28324,19 +28204,19 @@ pub mod sfc_cfg {
         pub type R = crate::R<CmdDatabuf15Spec>;
         #[doc = "Register `CMD_DATABUF_15` writer"]
         pub type W = crate::W<CmdDatabuf15Spec>;
-        #[doc = "Field `CMD_DATABUF_15` reader - Command data buffer 15"]
+        #[doc = "Field `CMD_DATABUF_15` reader - Command data word 15; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
         pub type CmdDatabuf15R = crate::FieldReader<u32>;
-        #[doc = "Field `CMD_DATABUF_15` writer - Command data buffer 15"]
+        #[doc = "Field `CMD_DATABUF_15` writer - Command data word 15; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
         pub type CmdDatabuf15W<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
         impl R {
-            #[doc = "Bits 0:31 - Command data buffer 15"]
+            #[doc = "Bits 0:31 - Command data word 15; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
             #[inline(always)]
             pub fn cmd_databuf_15(&self) -> CmdDatabuf15R {
                 CmdDatabuf15R::new(self.bits)
             }
         }
         impl W {
-            #[doc = "Bits 0:31 - Command data buffer 15"]
+            #[doc = "Bits 0:31 - Command data word 15; SDK ordinary volatile read/write, hardware-read result after START polling. No source-level FIFO pop/read-clear; silicon side effects unverified. Old data is not fresh WIP"]
             #[inline(always)]
             pub fn cmd_databuf_15(&mut self) -> CmdDatabuf15W<'_, CmdDatabuf15Spec> {
                 CmdDatabuf15W::new(self, 0)
