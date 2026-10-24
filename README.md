@@ -40,6 +40,20 @@ ambiguous timeout/zero result must be handled in the integration driver.
 numbers are absolute HiSilicon local interrupt cause numbers. This PAC does not
 initialize clocks, release the control core, or establish peripheral ownership.
 
+`Spacc` describes the SDK's HASH subset of the shared controller at0x52010000,
+with `SEC_INT1` local cause59. `hash_channel(0/1)` and `hash_state(0/1)` select
+SDK channels1/2; `hash_error(0/1)` selects TEE/REE diagnostics. Clear, interrupt
+acknowledgement, state index and DMA submission have WO interfaces; status and
+pointer views are RO. No reset values or W1C behavior are assumed. Submission
+is a full-word command because the SDK preserves unmodeled high pointer bits.
+
+This PAC does not implement HASH algorithms or grant cross-core exclusivity,
+keyslot ownership or DMA buffer reclamation. The audited SDK ignores channel
+clear timeout before publishing descriptors and deinitializes channels0/1
+instead of1/2; a driver must not inherit those paths. SYMC/PKE/KM remain pending.
+The PKE IRQ58 declaration conflicts with MDMA and is disabled in the selected
+SDK application profile, so it is not exposed as a PKE interrupt here.
+
 ## Standalone verification
 
 The committed Cargo.lock belongs to this repository. From a standalone clone:

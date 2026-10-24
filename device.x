@@ -12,6 +12,7 @@ PROVIDE(RTC_1 = DefaultHandler);
 PROVIDE(TIMER_0 = DefaultHandler);
 PROVIDE(TIMER_1 = DefaultHandler);
 PROVIDE(M_DMA = DefaultHandler);
+PROVIDE(SEC_INT1 = DefaultHandler);
 PROVIDE(I2C_0 = DefaultHandler);
 PROVIDE(I2C_1 = DefaultHandler);
 PROVIDE(SPI_3 = DefaultHandler);
