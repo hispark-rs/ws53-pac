@@ -1,6 +1,6 @@
 {
   "source": "https://github.com/hispark-rs/hisi-registers",
-  "commit": "6cda2bbf4297b376aeda509ec7940f2f91425353",
+  "commit": "5700dafed5f835d9eea7b5c8d18224677b2a015e",
   "dirty": false,
   "profile": "ws53_liteos_app/acore/MCU_MODE_1",
   "svd2rust": "0.37.1",
@@ -33,7 +33,7 @@
     "rdl/chips/ws53/sio-v151.rdl": "56618ef128f47b54b69c4419bb5af0a750bcd9a2b58546efcacadd718128874b",
     "rdl/chips/ws53/spacc.rdl": "8bdfe05b95e23fabdd0990fcd42943c71c3b3f352552172538f523779dce4470",
     "rdl/chips/ws53/spi-v151-100.rdl": "a6014d20bc78e0e48709086ce058c81cddb103fb34e8b8633355a40ffe4ef68d",
-    "rdl/chips/ws53/system-memory.rdl": "1a66e4d409840f79db5d6f41dcbf40953d25183840c8d0d3575571f8070be605",
+    "rdl/chips/ws53/system-memory.rdl": "3e332a75d44e5657e80f8ac3a0f943cc3aaeef19d45dfb9a4341dc9718e2ea66",
     "rdl/chips/ws53/trng.rdl": "75e3a5cc88ca1d2b91312f38c5d43138b39753dc6f9ea591a3e34d8e9a0e8f74",
     "rdl/chips/ws53/tsensor.rdl": "3f8af733dc054c5de9e1ac25e9a70f86c6680fc4db19b7c2ca64d0f631822304",
     "rdl/chips/ws53.rdl": "11d421b1b8401b1ea34b5a4622005688ee233ae6819845658c612d2fa21f4e4c",
@@ -85,8 +85,8 @@
     "rust-toolchain.toml": "4a55a5c6ce672e0024729f0739b0a82a0897538c9332528927201459bda83585"
   },
   "outputs": {
-    "src/lib.rs": "4f27a9cd586d65ba4483c824eeedc89232fb5f3a1a48427e90cc15d19f198d0c",
+    "src/lib.rs": "28c46f3b610ec48e3f81300fd062dc511c1c4ef72318b7cf40c3ac6bd07f81c0",
     "device.x": "bd0921b78954a064147cdc13ade1862710d712011b6e838cffc91a7faeb21fb6",
-    "svd/WS53.svd": "a8f29c68923cef039b56b1307fc0af4d3bd3d677e15cb2c5127053899a320961"
+    "svd/WS53.svd": "d86fd771901c697f4e10b17c5c13a55ec4c54da98cacd3898bf0187edcf080ab"
   }
 }

@@ -36369,7 +36369,7 @@ pub mod system_memory {
         _reserved2: [u8; 0x03c8],
         platform_enable: PlatformEnable,
         _reserved3: [u8; 0x0364],
-        ccore_reset_status: CcoreResetStatus,
+        _reserved_3_ccore: [u8; 0x04],
     }
     impl RegisterBlock {
         #[doc = "0x234 - BRAM_SHARE"]
@@ -36387,10 +36387,15 @@ pub mod system_memory {
         pub const fn platform_enable(&self) -> &PlatformEnable {
             &self.platform_enable
         }
+        #[doc = "0x96c - Restricted full-word logic/clock release command, retaining control CPU reset"]
+        #[inline(always)]
+        pub const fn ccore_logic_clock_release_command(&self) -> &CcoreLogicClockReleaseCommand {
+            unsafe { &*core::ptr::from_ref(self).cast::<u8>().add(2412).cast() }
+        }
         #[doc = "0x96c - Control-core reset observation; no reset command is exposed by this view"]
         #[inline(always)]
         pub const fn ccore_reset_status(&self) -> &CcoreResetStatus {
-            &self.ccore_reset_status
+            unsafe { &*core::ptr::from_ref(self).cast::<u8>().add(2412).cast() }
         }
     }
     #[doc = "BRAM_SHARE (rw) register accessor: BRAM_SHARE\n\nYou can [`read`](crate::Reg::read) this register and get [`bram_share::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`bram_share::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@bram_share`] module"]
@@ -36561,6 +36566,35 @@ pub mod system_memory {
         }
         #[doc = "`read()` method returns [`ccore_reset_status::R`](R) reader structure"]
         impl crate::Readable for CcoreResetStatusSpec {}
+    }
+    #[doc = "CCORE_LOGIC_CLOCK_RELEASE_COMMAND (w) register accessor: Restricted full-word logic/clock release command, retaining control CPU reset\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`ccore_logic_clock_release_command::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@ccore_logic_clock_release_command`] module"]
+    #[doc(alias = "CCORE_LOGIC_CLOCK_RELEASE_COMMAND")]
+    pub type CcoreLogicClockReleaseCommand =
+        crate::Reg<ccore_logic_clock_release_command::CcoreLogicClockReleaseCommandSpec>;
+    #[doc = "Restricted full-word logic/clock release command, retaining control CPU reset"]
+    pub mod ccore_logic_clock_release_command {
+        #[doc = "Register `CCORE_LOGIC_CLOCK_RELEASE_COMMAND` writer"]
+        pub type W = crate::W<CcoreLogicClockReleaseCommandSpec>;
+        #[doc = "Field `LOGIC_CLOCK_RELEASE` writer - Write exactly 3 after exclusive domain handoff from state0, wait at least SDK 5us and verify status3; CPU bit2 stays zero. This is a shared domain, not just TSENSOR. Reset state and other command values are not modeled; SVD constraints do not guard unsafe raw PAC writes"]
+        pub type LogicClockReleaseW<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
+        impl W {
+            #[doc = "Bits 0:31 - Write exactly 3 after exclusive domain handoff from state0, wait at least SDK 5us and verify status3; CPU bit2 stays zero. This is a shared domain, not just TSENSOR. Reset state and other command values are not modeled; SVD constraints do not guard unsafe raw PAC writes"]
+            #[inline(always)]
+            pub fn logic_clock_release(
+                &mut self,
+            ) -> LogicClockReleaseW<'_, CcoreLogicClockReleaseCommandSpec> {
+                LogicClockReleaseW::new(self, 0)
+            }
+        }
+        #[doc = "Restricted full-word logic/clock release command, retaining control CPU reset\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`ccore_logic_clock_release_command::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct CcoreLogicClockReleaseCommandSpec;
+        impl crate::RegisterSpec for CcoreLogicClockReleaseCommandSpec {
+            type Ux = u32;
+        }
+        #[doc = "`write(|w| ..)` method takes [`ccore_logic_clock_release_command::W`](W) writer structure"]
+        impl crate::Writable for CcoreLogicClockReleaseCommandSpec {
+            type Safety = crate::Unsafe;
+        }
     }
 }
 #[doc = "pinmux_aon"]

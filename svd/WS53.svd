@@ -16436,6 +16436,29 @@
             </field>
           </fields>
         </register>
+        <register>
+          <name>CCORE_LOGIC_CLOCK_RELEASE_COMMAND</name>
+          <description>Restricted full-word logic/clock release command, retaining control CPU reset</description>
+          <alternateRegister>CCORE_RESET_STATUS</alternateRegister>
+          <addressOffset>0x96C</addressOffset>
+          <size>32</size>
+          <access>write-only</access>
+          <fields>
+            <field>
+              <name>LOGIC_CLOCK_RELEASE</name>
+              <description>Write exactly 3 after exclusive domain handoff from state0, wait at least SDK 5us and verify status3; CPU bit2 stays zero. This is a shared domain, not just TSENSOR. Reset state and other command values are not modeled; SVD constraints do not guard unsafe raw PAC writes</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+              <access>write-only</access>
+              <writeConstraint>
+                <range>
+                  <minimum>3</minimum>
+                  <maximum>3</maximum>
+                </range>
+              </writeConstraint>
+            </field>
+          </fields>
+        </register>
       </registers>
     </peripheral>
     <peripheral>

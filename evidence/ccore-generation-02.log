@@ -1,0 +1,10 @@
+WS53.svd: CMSIS-SVD 1.3.9 schema PASS
+[INFO  svd2rust] Parsing device from SVD file
+[INFO  svd2rust] Rendering device
+[WARN  svd2rust::generate::peripheral] Found type name conflict with region Some("m_clken"), renamed to Some("m_clken0")
+[WARN  svd2rust::generate::peripheral] Found type name conflict with region Some("m_clken"), renamed to Some("m_clken1")
+[WARN  svd2rust::generate::peripheral] Found type name conflict with region Some("msub_"), renamed to Some("msub_normal")
+[WARN  svd2rust::generate::peripheral] Found type name conflict with region Some("msub_"), renamed to Some("msub_sleep")
+[WARN  svd2rust::generate::peripheral] Found type name conflict with region Some("symc_clear"), renamed to Some("symc_clear_ack")
+[WARN  svd2rust::generate::peripheral] Found type name conflict with region Some("symc_clear"), renamed to Some("symc_clear_read")
+postprocess: stripped 0 bare accessors, migrated 1 no_mangle attribute(s), gated 1 pac_enum + 6 riscv re-exports for host, fixed 1 unsafe fn body

@@ -1,0 +1,139 @@
+   Compiling ws53-pac v0.1.0-alpha.1 (/home/sanchuanhehe/Documents/hispark-rs/ws53-pac-ccore-domain)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.76s
+     Running unittests src/lib.rs (target/debug/deps/ws53_pac-948614ef6441183c)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/ccore_domain.rs (target/debug/deps/ccore_domain-7414881055ef30e3)
+
+running 2 tests
+test full_word_release_overwrites_the_owned_host_word_with_exactly_three ... ok
+test command_and_status_are_full_word_aliases_at_the_sdk_address ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/km.rs (target/debug/deps/km-5f1906d5341b7527)
+
+running 5 tests
+test command_words_have_no_automatic_w1c_or_64_bit_access ... ok
+test offsets_array_stride_and_command_aliases_match_original_headers ... ok
+test one_shared_resource_and_application_irq ... ok
+test diagnostic_reads_keep_timeout_and_owner_information ... ok
+test working_key_and_slot_fields_preserve_unmodeled_bits ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/layout.rs (target/debug/deps/layout-da3c0baacd25eea7)
+
+running 31 tests
+test application_nmi_halfwords_preserve_unknown_source_bits ... ok
+test adc_v155_uses_diagnostic_capture_and_explicit_pulses ... ok
+test efuse_read_window_preserves_two_bytes_per_word_and_command_alias ... ok
+test flash_start_memory_and_control_core_status_layout ... ok
+test flash_readonly_mapping_views_match_ws53_sdk ... ok
+test gpio_banks_use_word_slots_and_per_pin_bitmaps ... ok
+test generated_pin_domains_and_halfword_clocks_match_sdk_offsets ... ok
+test i2c_fifo_direction_and_abort_fields_match_both_source_instances ... ok
+test i2c_halfword_gates_preserve_neighbor_clock_ownership ... ok
+test i2s_commands_and_fifos_have_no_unsafe_direction_or_reset_api ... ok
+test i2s_configuration_uses_audited_field_positions ... ok
+test i2s_has_all_word_slots_at_physical_not_sdk_pointer_offsets ... ok
+test i2s_width_variants_exclude_reserved_zero_and_encode_source_values ... ok
+test i2s_word_clock_alias_preserves_pwm_and_unknown_upper_halfword ... ok
+test mdma_eight_channels_keep_padding_request_encoding_and_w1c_commands ... ok
+test msub_word_views_retain_halfword_api_and_sdk_offsets ... ok
+test msub_sdk_fields_preserve_unmodeled_bits_and_neighbor ... ok
+test peripheral_singleton_is_not_reissued ... ok
+test pwm_clock_divider_is_halfword_and_preserves_unmodeled_fields ... ok
+test pwm_four_groups_eight_channels_and_event_enable_encodings ... ok
+test qspi_clock_chain_is_halfword_and_preserves_shared_neighbors ... ok
+test rtc_channels_preserve_status_and_use_the_v150_mask_and_modes ... ok
+test sdio_device_layout_keeps_command_views_and_cmd53_fields ... ok
+test spi_and_qspi_field_encodings_and_directional_access_stay_distinct ... ok
+test spi_fifo_views_keep_their_instance_layout_and_access_direction ... ok
+test temperature_status_decodes_ten_bit_code_without_a_clear_write_api ... ok
+test timer_channel_status_and_tcxo_words_match_selected_sdk_profile ... ok
+test trng_uses_unified_address_and_shared_halfword_ring_control ... ok
+test uart_reset_controls_preserve_other_halfword_bits ... ok
+test uart_word_views_preserve_data_directions_and_receive_flags ... ok
+test watchdog_asymmetric_views_and_field_encodings_match_sdk ... ok
+
+test result: ok. 31 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/sdio_events.rs (target/debug/deps/sdio_events-9546c359d737a922)
+
+running 6 tests
+test ack_stays_full_width_write_only_alias_without_assumed_clear_behavior ... ok
+test initialization_profile_preserves_unknown_bits_and_corrects_function0_bit11 ... ok
+test sdk_clock_gates_use_word_aliases_and_preserve_every_other_bit ... ok
+test sdk_reset_patch_is_word_rmw_and_preserves_other_control_bits ... ok
+test status_events_decode_individually_and_keep_unclassified_bits ... ok
+test enable_fields_round_trip_all_event_masks_without_touching_upper_bits ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/sfc_clock.rs (target/debug/deps/sfc_clock-12c7578ef0d3c9b5)
+
+running 3 tests
+test sdk_mixed_width_sequence_preserves_upper_bits_and_neighbor ... ok
+test sfc_clock_aliases_have_sdk_widths_and_distinct_qspi_neighbor ... ok
+test sfc_clock_fields_preserve_unmodeled_bits_in_both_views ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/sfc_command.rs (target/debug/deps/sfc_command-9b01825e9da70474)
+
+running 3 tests
+test additional_sdk_fields_preserve_unrelated_bits ... ok
+test command_and_dma_windows_preserve_physical_word_layout ... ok
+test generated_command_fields_encode_original_c_length_and_direction ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/spacc.rs (target/debug/deps/spacc-dd249a44c0d14f02)
+
+running 5 tests
+test acknowledgements_are_direct_writes_without_implicit_modify_semantics ... ok
+test source_error_bits_decode_independently_without_a_clear_writer ... ok
+test shared_block_irq_arrays_and_command_aliases_match_source ... ok
+test channel_fields_and_submission_preserve_distinct_views ... ok
+test owners_and_interrupt_gates_preserve_unmodeled_channels ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/symc.rs (target/debug/deps/symc-9c7303e4cff76aad)
+
+running 5 tests
+test command_words_do_not_gain_rmw_or_automatic_w1c_semantics ... ok
+test configuration_and_keyslot_fields_preserve_reserved_bits ... ok
+test source_offsets_and_input_output_ring_strides_are_distinct ... ok
+test read_only_diagnostics_do_not_alias_hash_or_each_other ... ok
+test owner_and_interrupt_updates_preserve_other_users ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests ws53_pac
+
+running 16 tests
+test src/lib.rs - generic::Reg<REG>::as_ptr (line 609) ... ignored
+test src/lib.rs - generic::Reg<REG>::from_modify (line 819) ... ignored
+test src/lib.rs - generic::Reg<REG>::from_modify (line 830) ... ignored
+test src/lib.rs - generic::Reg<REG>::from_modify (line 838) ... ignored
+test src/lib.rs - generic::Reg<REG>::from_write (line 686) ... ignored
+test src/lib.rs - generic::Reg<REG>::from_write (line 690) ... ignored
+test src/lib.rs - generic::Reg<REG>::from_write (line 698) ... ignored
+test src/lib.rs - generic::Reg<REG>::from_write (line 708) ... ignored
+test src/lib.rs - generic::Reg<REG>::modify (line 772) ... ignored
+test src/lib.rs - generic::Reg<REG>::modify (line 778) ... ignored
+test src/lib.rs - generic::Reg<REG>::modify (line 786) ... ignored
+test src/lib.rs - generic::Reg<REG>::read (line 621) ... ignored
+test src/lib.rs - generic::Reg<REG>::read (line 625) ... ignored
+test src/lib.rs - generic::Reg<REG>::write (line 649) ... ignored
+test src/lib.rs - generic::Reg<REG>::write (line 653) ... ignored
+test src/lib.rs - generic::Reg<REG>::write (line 661) ... ignored
+
+test result: ok. 0 passed; 0 failed; 16 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+all doctests ran in 0.10s; merged doctests compilation took 0.10s

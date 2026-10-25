@@ -290,3 +290,25 @@ clear-loader timeout still clears input words. PAC access does not prove slot
 erasure, completion, cross-core exclusion or safe resource handback. Future HAL
 code must validate ownership, algorithm/length and error recovery explicitly.
 This remains a register interface, not an encryption/HMAC implementation.
+
+## Shared control-core logic/clock release
+
+`SystemMemory::ccore_logic_clock_release_command()` is a full-word write-only
+alias of the existing read-only `ccore_reset_status()` at `0x5703096c`.
+The `logic_clock_release` field describes only value3: logic and clocks released
+while the control CPU stays held. No reset defaults, readable command, RMW or
+generic CPU-release/reset helper are generated.
+
+The source SDK waits5us after this command; a future HAL must also establish
+exclusive handoff, require exact state0, wait and check state3. This is shared
+domain control, not a TSENSOR-only clock. The diagnostic attempt to reset the
+domain again stalled debug access, so dropping a software token must not imply
+a safe reset/rollback. PAC access alone establishes none of those conditions.
+
+SVD's exact3 range is metadata: unsafe raw writes can bypass it. Host tests
+check the32-bit alias, full-word encoding and absence of `Readable`/`Resettable`
+on the command and `Writable`/`Resettable` on status. They are ordinary RAM tests,
+not hardware startup, delay or rollback qualification.
+The [validation report](evidence/ccore-domain-validation.json) records two
+byte-identical generations,60 host tests and offline RV32IMFC default/`rt`
+builds, tied to the clean RDL commit and SDK contract.

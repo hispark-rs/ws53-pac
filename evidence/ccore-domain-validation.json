@@ -1,0 +1,66 @@
+{
+  "passed": true,
+  "hardware_accessed": false,
+  "baseline_pac": "996115a",
+  "source_commit": "5700dafed5f835d9eea7b5c8d18224677b2a015e",
+  "source_dirty": false,
+  "regeneration_identical": true,
+  "outputs": {
+    "src/lib.rs": "28c46f3b610ec48e3f81300fd062dc511c1c4ef72318b7cf40c3ac6bd07f81c0",
+    "device.x": "bd0921b78954a064147cdc13ade1862710d712011b6e838cffc91a7faeb21fb6",
+    "svd/WS53.svd": "d86fd771901c697f4e10b17c5c13a55ec4c54da98cacd3898bf0187edcf080ab",
+    "generation.json": "292bd6a7bbb067f5c69f52c20207150352eb0b459f59071435501b1e93839e5b"
+  },
+  "host_tests_passed": 60,
+  "doc_tests_ignored": 16,
+  "new_host_tests": 2,
+  "compile_time_absent_traits": [
+    "command:Readable",
+    "command:Resettable",
+    "status:Writable",
+    "status:Resettable"
+  ],
+  "target": "riscv32imfc-unknown-none-elf",
+  "register_address": "0x5703096c",
+  "register_width": 32,
+  "svd_command_minimum": 3,
+  "svd_command_maximum": 3,
+  "raw_unsafe_writes_runtime_constrained": false,
+  "hardware_release_accepted": false,
+  "hardware_rollback_accepted": false,
+  "logs": {
+    "ccore-generation-01.log": {
+      "command": "HISI_REGISTERS=<pinned source> SVD2RUST=<svd2rust 0.37.1> bash scripts/regen.sh",
+      "exit_code": 0,
+      "sha256": "80f59a6b9e02affdaacf346d9fd264e265833382c8329566861fc1e4cf4024ee"
+    },
+    "ccore-generation-02.log": {
+      "command": "HISI_REGISTERS=<pinned source> SVD2RUST=<svd2rust 0.37.1> bash scripts/regen.sh",
+      "exit_code": 0,
+      "sha256": "80f59a6b9e02affdaacf346d9fd264e265833382c8329566861fc1e4cf4024ee"
+    },
+    "ccore-host-tests.log": {
+      "command": "cargo test --locked --offline",
+      "exit_code": 0,
+      "sha256": "7168b6a3ed2f776d7f2fba992d6d0b2cf19c5ef21a4b616d413c7e47c3868c8e"
+    },
+    "ccore-host-minimal.log": {
+      "command": "cargo check --locked --offline --no-default-features",
+      "exit_code": 0,
+      "sha256": "da129a3ae90f41b938469ceef3bea71881a8b88b31c7e354a8fd565cbe5efeac"
+    },
+    "ccore-rv32-default.log": {
+      "command": "cargo check --locked --offline -Zbuild-std=core --target riscv32imfc-unknown-none-elf",
+      "exit_code": 0,
+      "sha256": "e8e0087eb61fdb445275b14943a25f896816664fcc72336bf21bac5a23af15e7"
+    },
+    "ccore-rv32-rt.log": {
+      "command": "cargo check --locked --offline -Zbuild-std=core --target riscv32imfc-unknown-none-elf --no-default-features --features rt",
+      "exit_code": 0,
+      "sha256": "e8e0087eb61fdb445275b14943a25f896816664fcc72336bf21bac5a23af15e7"
+    }
+  },
+  "locked_source_validation": "6b46588efd4ece56b30626b83169e2b5cc5e02170222bd48b5106044dfe1cf95",
+  "sdk_source_contract": "a527011bfdbeab9cbf0b3ae3615dbe88e94228808ec31d58b70c902a8674812b",
+  "tests_sha256": "a86ef03e54f3f4ec2ec0ae9c79179bb3902398e189a81c57ebfdbb06968dd1a2"
+}
