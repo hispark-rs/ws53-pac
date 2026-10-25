@@ -1828,7 +1828,7 @@
       <baseAddress>0x52010000</baseAddress>
       <addressBlock>
         <offset>0x0</offset>
-        <size>0xA180</size>
+        <size>0xD200</size>
         <usage>registers</usage>
       </addressBlock>
       <interrupt>
@@ -1864,6 +1864,46 @@
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SYMC_CLEAR_STATUS</name>
+          <description>SYMC clear completion read view; SDK masks selected channel. Completion alone does not prove bus drain</description>
+          <addressOffset>0x8</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <fields>
+            <field>
+              <name>CHANNEL1</name>
+              <description>channel1</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>CHANNEL2</name>
+              <description>channel2</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SYMC_CLEAR_ACK</name>
+          <description>Full-word clear acknowledgement command. SDK reuses the clear-request word including other bits; no W1C/reset semantics inferred and no implicit RMW interface</description>
+          <alternateRegister>SYMC_CLEAR_STATUS</alternateRegister>
+          <addressOffset>0x8</addressOffset>
+          <size>32</size>
+          <access>write-only</access>
+          <fields>
+            <field>
+              <name>VALUE</name>
+              <description>value</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+              <access>write-only</access>
             </field>
           </fields>
         </register>
@@ -1915,6 +1955,29 @@
           </fields>
         </register>
         <register>
+          <name>SYMC_LOCK</name>
+          <description>SYMC owner nibbles: SDK requests REE1/TEE2 and checks readback. SDK unlock drops owner even on clear timeout; that is not a valid memory reclamation proof</description>
+          <addressOffset>0x20</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <fields>
+            <field>
+              <name>CHANNEL1_OWNER</name>
+              <description>channel1_owner</description>
+              <bitOffset>4</bitOffset>
+              <bitWidth>4</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>CHANNEL2_OWNER</name>
+              <description>channel2_owner</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>4</bitWidth>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
           <name>HASH_LOCK</name>
           <description>Hardware channel owner nibbles: SDK requests 1 REE or 2 TEE and checks readback. Preserve other channels; not a software-only lock or a single-hart critical section</description>
           <addressOffset>0x40</addressOffset>
@@ -1934,6 +1997,39 @@
               <bitOffset>8</bitOffset>
               <bitWidth>4</bitWidth>
               <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SYMC_CLEAR_READ</name>
+          <description>SDK reads this full word before ORing the requested channel. Readback is not idle or completion</description>
+          <addressOffset>0x60</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <fields>
+            <field>
+              <name>VALUE</name>
+              <description>value</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SYMC_CLEAR_REQUEST</name>
+          <description>Full-word clear request command; no software-only clear/RMW/reset semantics</description>
+          <alternateRegister>SYMC_CLEAR_READ</alternateRegister>
+          <addressOffset>0x60</addressOffset>
+          <size>32</size>
+          <access>write-only</access>
+          <fields>
+            <field>
+              <name>VALUE</name>
+              <description>value</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+              <access>write-only</access>
             </field>
           </fields>
         </register>
@@ -1960,6 +2056,207 @@
             </field>
           </fields>
         </register>
+        <cluster>
+          <dim>2</dim>
+          <dimIncrement>0x100</dimIncrement>
+          <name>SYMC_CHANNEL[%s]</name>
+          <description>SYMC input configuration: index0 is SDK channel1, index1 channel2. Software contexts do not establish silicon availability or ownership</description>
+          <addressOffset>0x4100</addressOffset>
+          <register>
+            <name>CONTROL</name>
+            <description>CONTROL</description>
+            <addressOffset>0x0</addressOffset>
+            <size>32</size>
+            <access>read-write</access>
+            <fields>
+              <field>
+                <name>SOURCE_SECURITY</name>
+                <description>source_security</description>
+                <bitOffset>8</bitOffset>
+                <bitWidth>4</bitWidth>
+                <access>read-write</access>
+              </field>
+              <field>
+                <name>DESTINATION_SECURITY</name>
+                <description>destination_security</description>
+                <bitOffset>12</bitOffset>
+                <bitWidth>4</bitWidth>
+                <access>read-write</access>
+              </field>
+              <field>
+                <name>ENABLE</name>
+                <description>enable</description>
+                <bitOffset>31</bitOffset>
+                <bitWidth>1</bitWidth>
+                <access>read-write</access>
+              </field>
+            </fields>
+          </register>
+          <register>
+            <name>OUTPUT_CONTROL</name>
+            <description>SDK writes 1 for DMA copy, 0 for cipher; other two-bit encodings unqualified</description>
+            <addressOffset>0x4</addressOffset>
+            <size>32</size>
+            <access>read-write</access>
+            <fields>
+              <field>
+                <name>COPY_MODE</name>
+                <description>copy_mode</description>
+                <bitOffset>0</bitOffset>
+                <bitWidth>2</bitWidth>
+                <access>read-write</access>
+              </field>
+            </fields>
+          </register>
+          <register>
+            <name>KEY_CONTROL</name>
+            <description>Separate keyslot selector, not key bytes. Source table maps AES2/SM4=5, ECB1/CBC3/CTR6, width128=0 unlike unused BIT_WIDTH_128_REG macro. Valid encoding does not validate algorithm/key combinations</description>
+            <addressOffset>0x10</addressOffset>
+            <size>32</size>
+            <access>read-write</access>
+            <fields>
+              <field>
+                <name>KEYSLOT</name>
+                <description>keyslot</description>
+                <bitOffset>0</bitOffset>
+                <bitWidth>9</bitWidth>
+                <access>read-write</access>
+              </field>
+              <field>
+                <name>ALGORITHM</name>
+                <description>algorithm</description>
+                <bitOffset>16</bitOffset>
+                <bitWidth>4</bitWidth>
+                <access>read-write</access>
+              </field>
+              <field>
+                <name>MODE</name>
+                <description>mode</description>
+                <bitOffset>20</bitOffset>
+                <bitWidth>4</bitWidth>
+                <access>read-write</access>
+              </field>
+              <field>
+                <name>KEY_LENGTH</name>
+                <description>key_length</description>
+                <bitOffset>24</bitOffset>
+                <bitWidth>2</bitWidth>
+                <access>read-write</access>
+              </field>
+              <field>
+                <name>DATA_WIDTH</name>
+                <description>data_width</description>
+                <bitOffset>26</bitOffset>
+                <bitWidth>2</bitWidth>
+                <access>read-write</access>
+              </field>
+              <field>
+                <name>DECRYPT</name>
+                <description>decrypt</description>
+                <bitOffset>28</bitOffset>
+                <bitWidth>1</bitWidth>
+                <access>read-write</access>
+              </field>
+            </fields>
+          </register>
+          <register>
+            <name>NODE_BASE_HIGH</name>
+            <description>SDK writes zero high descriptor address. No nonzero high address support established</description>
+            <addressOffset>0x20</addressOffset>
+            <size>32</size>
+            <access>read-write</access>
+            <fields>
+              <field>
+                <name>VALUE</name>
+                <description>value</description>
+                <bitOffset>0</bitOffset>
+                <bitWidth>32</bitWidth>
+                <access>read-write</access>
+              </field>
+            </fields>
+          </register>
+          <register>
+            <name>NODE_BASE_LOW</name>
+            <description>NODE_BASE_LOW</description>
+            <addressOffset>0x24</addressOffset>
+            <size>32</size>
+            <access>read-write</access>
+            <fields>
+              <field>
+                <name>ADDRESS</name>
+                <description>address</description>
+                <bitOffset>0</bitOffset>
+                <bitWidth>32</bitWidth>
+                <access>read-write</access>
+              </field>
+            </fields>
+          </register>
+          <register>
+            <name>NODE_DEPTH</name>
+            <description>Source RMW low8 bits to two 32-byte input descriptors; silicon depth range unqualified</description>
+            <addressOffset>0x2C</addressOffset>
+            <size>32</size>
+            <access>read-write</access>
+            <fields>
+              <field>
+                <name>LENGTH</name>
+                <description>length</description>
+                <bitOffset>0</bitOffset>
+                <bitWidth>8</bitWidth>
+                <access>read-write</access>
+              </field>
+            </fields>
+          </register>
+          <register>
+            <name>WRITE_POINTER</name>
+            <description>WRITE_POINTER</description>
+            <addressOffset>0x30</addressOffset>
+            <size>32</size>
+            <access>read-only</access>
+            <fields>
+              <field>
+                <name>POINTER</name>
+                <description>pointer</description>
+                <bitOffset>0</bitOffset>
+                <bitWidth>8</bitWidth>
+                <access>read-only</access>
+              </field>
+            </fields>
+          </register>
+          <register>
+            <name>SUBMIT</name>
+            <description>Input submission command; SDK publishes after output pointer, barriers and cache callbacks. Completion, timeout and pointer equality do not grant memory ownership</description>
+            <alternateRegister>WRITE_POINTER</alternateRegister>
+            <addressOffset>0x30</addressOffset>
+            <size>32</size>
+            <access>write-only</access>
+            <fields>
+              <field>
+                <name>VALUE</name>
+                <description>value</description>
+                <bitOffset>0</bitOffset>
+                <bitWidth>32</bitWidth>
+                <access>write-only</access>
+              </field>
+            </fields>
+          </register>
+          <register>
+            <name>READ_POINTER</name>
+            <description>READ_POINTER</description>
+            <addressOffset>0x34</addressOffset>
+            <size>32</size>
+            <access>read-only</access>
+            <fields>
+              <field>
+                <name>POINTER</name>
+                <description>pointer</description>
+                <bitOffset>0</bitOffset>
+                <bitWidth>8</bitWidth>
+                <access>read-only</access>
+              </field>
+            </fields>
+          </register>
+        </cluster>
         <cluster>
           <dim>2</dim>
           <dimIncrement>0x100</dimIncrement>
@@ -2144,12 +2441,107 @@
           <dim>2</dim>
           <dimIncrement>0x10</dimIncrement>
           <name>HASH_ERROR[%s]</name>
-          <description>Read-only SDK HASH diagnostic views: index0 TEE, index1 REE. PCPU/AIDSP and error-clear commands are not established by the selected application path</description>
-          <addressOffset>0x8068</addressOffset>
+          <description>Read-only interleaved security-domain diagnostics: legacy HASH_ERROR accessor name retained; index0 TEE,index1 REE. HASH CAUSE/STATUS addresses unchanged; SYMC views occupy preceding eight bytes. No error-clear commands</description>
+          <addressOffset>0x8060</addressOffset>
+          <register>
+            <name>SYMC_CAUSE</name>
+            <description>SYMC_CAUSE</description>
+            <addressOffset>0x0</addressOffset>
+            <size>32</size>
+            <access>read-only</access>
+            <fields>
+              <field>
+                <name>DESTINATION_SECURITY</name>
+                <description>destination_security</description>
+                <bitOffset>0</bitOffset>
+                <bitWidth>1</bitWidth>
+                <access>read-only</access>
+              </field>
+              <field>
+                <name>SOURCE_SECURITY</name>
+                <description>source_security</description>
+                <bitOffset>1</bitOffset>
+                <bitWidth>1</bitWidth>
+                <access>read-only</access>
+              </field>
+              <field>
+                <name>ALGORITHM</name>
+                <description>algorithm</description>
+                <bitOffset>2</bitOffset>
+                <bitWidth>1</bitWidth>
+                <access>read-only</access>
+              </field>
+              <field>
+                <name>INVALID_ALGORITHM</name>
+                <description>invalid_algorithm</description>
+                <bitOffset>3</bitOffset>
+                <bitWidth>1</bitWidth>
+                <access>read-only</access>
+              </field>
+              <field>
+                <name>DECRYPT</name>
+                <description>decrypt</description>
+                <bitOffset>4</bitOffset>
+                <bitWidth>1</bitWidth>
+                <access>read-only</access>
+              </field>
+              <field>
+                <name>SC</name>
+                <description>sc</description>
+                <bitOffset>6</bitOffset>
+                <bitWidth>1</bitWidth>
+                <access>read-only</access>
+              </field>
+              <field>
+                <name>KEY_SIZE</name>
+                <description>key_size</description>
+                <bitOffset>7</bitOffset>
+                <bitWidth>1</bitWidth>
+                <access>read-only</access>
+              </field>
+              <field>
+                <name>KEY_INFORMATION</name>
+                <description>key_information</description>
+                <bitOffset>16</bitOffset>
+                <bitWidth>1</bitWidth>
+                <access>read-only</access>
+              </field>
+              <field>
+                <name>TEE_ONLY</name>
+                <description>tee_only</description>
+                <bitOffset>17</bitOffset>
+                <bitWidth>1</bitWidth>
+                <access>read-only</access>
+              </field>
+              <field>
+                <name>AIDSP</name>
+                <description>aidsp</description>
+                <bitOffset>18</bitOffset>
+                <bitWidth>1</bitWidth>
+                <access>read-only</access>
+              </field>
+            </fields>
+          </register>
+          <register>
+            <name>SYMC_STATUS</name>
+            <description>SYMC_STATUS</description>
+            <addressOffset>0x4</addressOffset>
+            <size>32</size>
+            <access>read-only</access>
+            <fields>
+              <field>
+                <name>CHANNEL</name>
+                <description>channel</description>
+                <bitOffset>16</bitOffset>
+                <bitWidth>4</bitWidth>
+                <access>read-only</access>
+              </field>
+            </fields>
+          </register>
           <register>
             <name>CAUSE</name>
             <description>CAUSE</description>
-            <addressOffset>0x0</addressOffset>
+            <addressOffset>0x8</addressOffset>
             <size>32</size>
             <access>read-only</access>
             <fields>
@@ -2214,7 +2606,7 @@
           <register>
             <name>STATUS</name>
             <description>Error channel indication; header bit0 clear command intentionally withheld without an audited application write path</description>
-            <addressOffset>0x4</addressOffset>
+            <addressOffset>0xC</addressOffset>
             <size>32</size>
             <access>read-only</access>
             <fields>
@@ -2298,6 +2690,140 @@
             </field>
           </fields>
         </register>
+        <register>
+          <name>SYMC_INPUT_INTERRUPT_STATUS</name>
+          <description>Source RAW input/no-output completion path; actual IRQ/ACK behavior not proved by header</description>
+          <addressOffset>0x8610</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <fields>
+            <field>
+              <name>CHANNEL1</name>
+              <description>channel1</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>CHANNEL2</name>
+              <description>channel2</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SYMC_INPUT_INTERRUPT_ACK</name>
+          <description>SDK masks low16 to selected channel but preserves upper16 read bits in full-word acknowledgement. No inferred W1C or read-modify-write API</description>
+          <alternateRegister>SYMC_INPUT_INTERRUPT_STATUS</alternateRegister>
+          <addressOffset>0x8610</addressOffset>
+          <size>32</size>
+          <access>write-only</access>
+          <fields>
+            <field>
+              <name>VALUE</name>
+              <description>value</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+              <access>write-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SYMC_INPUT_INTERRUPT_ENABLE</name>
+          <description>Header field and optional CONFIG_SYMC_RAW_INT_SUPPORT path. Availability of optional IRQ route unqualified</description>
+          <addressOffset>0x8614</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <fields>
+            <field>
+              <name>CHANNEL1</name>
+              <description>channel1</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>CHANNEL2</name>
+              <description>channel2</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <cluster>
+          <dim>2</dim>
+          <dimIncrement>0x80</dimIncrement>
+          <name>SYMC_IV[%s]</name>
+          <description>CPU-read IV output state. SDK copies four little-endian words regardless of caller iv_len; this is not key storage</description>
+          <addressOffset>0x9080</addressOffset>
+          <register>
+            <name>WORD0</name>
+            <description>WORD0</description>
+            <addressOffset>0x0</addressOffset>
+            <size>32</size>
+            <access>read-only</access>
+            <fields>
+              <field>
+                <name>VALUE</name>
+                <description>value</description>
+                <bitOffset>0</bitOffset>
+                <bitWidth>32</bitWidth>
+                <access>read-only</access>
+              </field>
+            </fields>
+          </register>
+          <register>
+            <name>WORD1</name>
+            <description>WORD1</description>
+            <addressOffset>0x4</addressOffset>
+            <size>32</size>
+            <access>read-only</access>
+            <fields>
+              <field>
+                <name>VALUE</name>
+                <description>value</description>
+                <bitOffset>0</bitOffset>
+                <bitWidth>32</bitWidth>
+                <access>read-only</access>
+              </field>
+            </fields>
+          </register>
+          <register>
+            <name>WORD2</name>
+            <description>WORD2</description>
+            <addressOffset>0x8</addressOffset>
+            <size>32</size>
+            <access>read-only</access>
+            <fields>
+              <field>
+                <name>VALUE</name>
+                <description>value</description>
+                <bitOffset>0</bitOffset>
+                <bitWidth>32</bitWidth>
+                <access>read-only</access>
+              </field>
+            </fields>
+          </register>
+          <register>
+            <name>WORD3</name>
+            <description>WORD3</description>
+            <addressOffset>0xC</addressOffset>
+            <size>32</size>
+            <access>read-only</access>
+            <fields>
+              <field>
+                <name>VALUE</name>
+                <description>value</description>
+                <bitOffset>0</bitOffset>
+                <bitWidth>32</bitWidth>
+                <access>read-only</access>
+              </field>
+            </fields>
+          </register>
+        </cluster>
         <cluster>
           <dim>2</dim>
           <dimIncrement>0x80</dimIncrement>
@@ -2333,6 +2859,173 @@
                 <bitOffset>0</bitOffset>
                 <bitWidth>32</bitWidth>
                 <access>write-only</access>
+              </field>
+            </fields>
+          </register>
+        </cluster>
+        <register>
+          <name>SYMC_OUTPUT_INTERRUPT_STATUS</name>
+          <description>Last output-node completion used by original polling and IRQ dispatch; no physical drain guarantee</description>
+          <addressOffset>0xC000</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <fields>
+            <field>
+              <name>CHANNEL1</name>
+              <description>channel1</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>CHANNEL2</name>
+              <description>channel2</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SYMC_OUTPUT_INTERRUPT_ACK</name>
+          <description>Full-word last-node acknowledgement; source retains reserved upper16 read bits, no W1C/reset inference</description>
+          <alternateRegister>SYMC_OUTPUT_INTERRUPT_STATUS</alternateRegister>
+          <addressOffset>0xC000</addressOffset>
+          <size>32</size>
+          <access>write-only</access>
+          <fields>
+            <field>
+              <name>VALUE</name>
+              <description>value</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+              <access>write-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SYMC_OUTPUT_INTERRUPT_ENABLE</name>
+          <description>SYMC_OUTPUT_INTERRUPT_ENABLE</description>
+          <addressOffset>0xC004</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <fields>
+            <field>
+              <name>CHANNEL1</name>
+              <description>channel1</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>CHANNEL2</name>
+              <description>channel2</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <cluster>
+          <dim>2</dim>
+          <dimIncrement>0x100</dimIncrement>
+          <name>SYMC_OUTPUT[%s]</name>
+          <description>SYMC output descriptor ring: index0 SDK channel1,index1 channel2. Receives device writes into separately reserved DMA memory</description>
+          <addressOffset>0xD000</addressOffset>
+          <register>
+            <name>NODE_BASE_HIGH</name>
+            <description>NODE_BASE_HIGH</description>
+            <addressOffset>0x20</addressOffset>
+            <size>32</size>
+            <access>read-write</access>
+            <fields>
+              <field>
+                <name>VALUE</name>
+                <description>value</description>
+                <bitOffset>0</bitOffset>
+                <bitWidth>32</bitWidth>
+                <access>read-write</access>
+              </field>
+            </fields>
+          </register>
+          <register>
+            <name>NODE_BASE_LOW</name>
+            <description>NODE_BASE_LOW</description>
+            <addressOffset>0x24</addressOffset>
+            <size>32</size>
+            <access>read-write</access>
+            <fields>
+              <field>
+                <name>ADDRESS</name>
+                <description>address</description>
+                <bitOffset>0</bitOffset>
+                <bitWidth>32</bitWidth>
+                <access>read-write</access>
+              </field>
+            </fields>
+          </register>
+          <register>
+            <name>NODE_DEPTH</name>
+            <description>Source programs two 16-byte output descriptors, not the 32-byte input format</description>
+            <addressOffset>0x28</addressOffset>
+            <size>32</size>
+            <access>read-write</access>
+            <fields>
+              <field>
+                <name>LENGTH</name>
+                <description>length</description>
+                <bitOffset>0</bitOffset>
+                <bitWidth>8</bitWidth>
+                <access>read-write</access>
+              </field>
+            </fields>
+          </register>
+          <register>
+            <name>WRITE_POINTER</name>
+            <description>WRITE_POINTER</description>
+            <addressOffset>0x30</addressOffset>
+            <size>32</size>
+            <access>read-only</access>
+            <fields>
+              <field>
+                <name>POINTER</name>
+                <description>pointer</description>
+                <bitOffset>0</bitOffset>
+                <bitWidth>8</bitWidth>
+                <access>read-only</access>
+              </field>
+            </fields>
+          </register>
+          <register>
+            <name>SUBMIT</name>
+            <description>Output descriptor publication command; must not expose read/modify as ordinary storage</description>
+            <alternateRegister>WRITE_POINTER</alternateRegister>
+            <addressOffset>0x30</addressOffset>
+            <size>32</size>
+            <access>write-only</access>
+            <fields>
+              <field>
+                <name>VALUE</name>
+                <description>value</description>
+                <bitOffset>0</bitOffset>
+                <bitWidth>32</bitWidth>
+                <access>write-only</access>
+              </field>
+            </fields>
+          </register>
+          <register>
+            <name>READ_POINTER</name>
+            <description>READ_POINTER</description>
+            <addressOffset>0x34</addressOffset>
+            <size>32</size>
+            <access>read-only</access>
+            <fields>
+              <field>
+                <name>POINTER</name>
+                <description>pointer</description>
+                <bitOffset>0</bitOffset>
+                <bitWidth>8</bitWidth>
+                <access>read-only</access>
               </field>
             </fields>
           </register>

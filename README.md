@@ -50,7 +50,7 @@ is a full-word command because the SDK preserves unmodeled high pointer bits.
 This PAC does not implement HASH algorithms or grant cross-core exclusivity,
 keyslot ownership or DMA buffer reclamation. The audited SDK ignores channel
 clear timeout before publishing descriptors and deinitializes channels0/1
-instead of1/2; a driver must not inherit those paths. SYMC/PKE/KM remain pending.
+instead of1/2; a driver must not inherit those paths. SYMC behavior and PKE/KM remain pending.
 The PKE IRQ58 declaration conflicts with MDMA and is disabled in the selected
 SDK application profile, so it is not exposed as a PKE interrupt here.
 
@@ -247,3 +247,26 @@ while the original halfword accessor remains available. Host tests check both
 clock word aliases, unrelated bits, and the corrected initialization masks.
 These are generated API and source checks, not SDIO bus, IRQ, reset or DMA
 completion tests. No reset defaults or buffer-lifetime guarantees are inferred.
+
+## SYMC register extension
+
+The shared `Spacc` now also provides two SYMC input/output rings, channel
+configuration, IV readback and completion/acknowledgement views from the pinned
+WS53 SDK. These are generated register interfaces, not an AES/SM4 HAL or key
+loader. A keyslot selector does not grant ownership of the separate KM resource.
+The original SDK's direct `set_key` operation always fails.
+
+`symc_channel(0/1)` and `symc_output(0/1)` correspond to SDK channels1/2. Input
+descriptors are32 bytes, output descriptors16 bytes; their depth registers are
+at different offsets. Submission/clear/ACK are WO commands with RO read views;
+no unknown reset values, read side effects or W1C behavior are fabricated.
+
+SYMC/HASH diagnostics interleave by security domain. The existing `hash_error`
+container starts8 bytes earlier to include `symc_cause`/`symc_status`; the original
+`cause`/`status` register accessors retain their exact absolute addresses and
+the array stride remains16 bytes. Code deriving addresses from the container
+base itself must be reviewed. All existing HASH API tests remain applicable.
+
+The SDK releases ownership even on a clear timeout and publishes output before
+descriptor-cache maintenance. Neither source sequence proves bus quiescence or
+safe resource reclamation. This PAC does not implement those lifecycle choices.
