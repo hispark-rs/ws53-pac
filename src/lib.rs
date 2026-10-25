@@ -934,6 +934,8 @@ pub mod interrupt {
         M_DMA = 58,
         #[doc = "59 - SEC_INT1"]
         SEC_INT1 = 59,
+        #[doc = "61 - SEC_INT3"]
+        SEC_INT3 = 61,
         #[doc = "62 - I2C_0"]
         I2C_0 = 62,
         #[doc = "63 - I2C_1"]
@@ -7785,6 +7787,983 @@ pub mod spacc {
             #[doc = "`read()` method returns [`read_pointer::R`](R) reader structure"]
             impl crate::Readable for ReadPointerSpec {}
         }
+    }
+}
+#[doc = "km"]
+pub type Km = crate::Periph<km::RegisterBlock, 0x5202_2000>;
+impl core::fmt::Debug for Km {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("Km").finish()
+    }
+}
+#[doc = "km"]
+pub mod km {
+    #[repr(C)]
+    #[doc = "Register block"]
+    pub struct RegisterBlock {
+        _reserved0: [u8; 0x1000],
+        data_in: [DataIn; 4],
+        key_address: KeyAddress,
+        key_config: KeyConfig,
+        key_security: KeySecurity,
+        _reserved4: [u8; 0x1c],
+        loader_error: LoaderError,
+        controller_error: ControllerError,
+        _reserved6: [u8; 0x04],
+        _reserved_6_interrupt: [u8; 0x04],
+        _reserved7: [u8; 0x2c],
+        common_lock: CommonLock,
+        common_unlock: CommonUnlock,
+        common_lock_info: CommonLockInfo,
+        common_owner: CommonOwner,
+        _reserved11: [u8; 0x03b4],
+        _reserved_11_clear: [u8; 0x04],
+        _reserved12: [u8; 0x06c4],
+        _reserved_12_tee_slot: [u8; 0x04],
+        _reserved_13_ree_slot: [u8; 0x04],
+        _reserved14: [u8; 0x08],
+        tee_flush_status: TeeFlushStatus,
+        ree_flush_status: ReeFlushStatus,
+        _reserved16: [u8; 0x18],
+        slot_select: SlotSelect,
+        slot_owner: SlotOwner,
+    }
+    impl RegisterBlock {
+        #[doc = "0x1000..0x1010 - Clear-key staging write: source writes four little-endian words, zero-pads and clears them afterwards. Readback is not evidenced; zero writes after timeout are not proof of route completion or slot erasure"]
+        #[inline(always)]
+        pub const fn data_in(&self, n: usize) -> &DataIn {
+            &self.data_in[n]
+        }
+        #[doc = "Iterator for array of:"]
+        #[doc = "0x1000..0x1010 - Clear-key staging write: source writes four little-endian words, zero-pads and clears them afterwards. Readback is not evidenced; zero writes after timeout are not proof of route completion or slot erasure"]
+        #[inline(always)]
+        pub fn data_in_iter(&self) -> impl Iterator<Item = &DataIn> {
+            self.data_in.iter()
+        }
+        #[doc = "0x1010 - Shared destination selector; MCIPHER slot times2 with parity in bit0, HMAC unshifted slot. Field width is not the available slot count; SDK allocation limits are8/2 respectively"]
+        #[inline(always)]
+        pub const fn key_address(&self) -> &KeyAddress {
+            &self.key_address
+        }
+        #[doc = "0x1014 - Volatile working-key policy/configuration. SDK ports1 MCIPHER/HMAC,7 Flash; engine codes0x20 AES,0x50 SM4,0xa0/0xa1/0xa2 HMAC. Layout is not chip algorithm availability or authorization to affect live Flash decryption"]
+        #[inline(always)]
+        pub const fn key_config(&self) -> &KeyConfig {
+            &self.key_config
+        }
+        #[doc = "0x1018 - Volatile working-key buffer/security permissions from SDK; not eFuse or permanent security configuration. Requires explicit ownership and correct CPU/security domain"]
+        #[inline(always)]
+        pub const fn key_security(&self) -> &KeySecurity {
+            &self.key_security
+        }
+        #[doc = "0x1038 - Opaque KL error read; SDK treats any nonzero as failure. No clear semantics evidenced"]
+        #[inline(always)]
+        pub const fn loader_error(&self) -> &LoaderError {
+            &self.loader_error
+        }
+        #[doc = "0x103c - Opaque key-controller error read; no error-clear semantics evidenced"]
+        #[inline(always)]
+        pub const fn controller_error(&self) -> &ControllerError {
+            &self.controller_error
+        }
+        #[doc = "0x1044 - Source writes entire prior raw value OR bit14; not a proven isolated W1C and may acknowledge other pending causes. Command deliberately has no modify/read/reset API"]
+        #[inline(always)]
+        pub const fn interrupt_ack(&self) -> &InterruptAck {
+            unsafe { &*core::ptr::from_ref(self).cast::<u8>().add(4164).cast() }
+        }
+        #[doc = "0x1044 - Low32-bit raw interrupt read used by source. Header union has an overlong reserved tail; register access remains32-bit. Interrupt number/delivery and ACK behavior not silicon-qualified"]
+        #[inline(always)]
+        pub const fn interrupt_status(&self) -> &InterruptStatus {
+            unsafe { &*core::ptr::from_ref(self).cast::<u8>().add(4164).cast() }
+        }
+        #[doc = "0x1074 - Source common/root-route lock request writes1; this does not establish exclusion of the clear-key loader"]
+        #[inline(always)]
+        pub const fn common_lock(&self) -> &CommonLock {
+            &self.common_lock
+        }
+        #[doc = "0x1078 - Source common/root-route unlock request writes1; successful request alone is not a reread of owner"]
+        #[inline(always)]
+        pub const fn common_unlock(&self) -> &CommonUnlock {
+            &self.common_unlock
+        }
+        #[doc = "0x107c - COMMON_LOCK_INFO"]
+        #[inline(always)]
+        pub const fn common_lock_info(&self) -> &CommonLockInfo {
+            &self.common_lock_info
+        }
+        #[doc = "0x1080 - Common-route owner; source expects0xaa for ACPU. Clear-route exclusion is not established"]
+        #[inline(always)]
+        pub const fn common_owner(&self) -> &CommonOwner {
+            &self.common_owner
+        }
+        #[doc = "0x1438 - Clear-route command: SYMC preserves readback and writes START1/key-size1,2,3; HMAC sends fresh START1/block0..7. No abort or forced-clear semantics"]
+        #[inline(always)]
+        pub const fn clear_submit(&self) -> &ClearSubmit {
+            unsafe { &*core::ptr::from_ref(self).cast::<u8>().add(5176).cast() }
+        }
+        #[doc = "0x1438 - Clear-route read view; source polls START until zero and then reads both error words. Busy/idle does not certify slot erasure, DMA drain or cross-core handback"]
+        #[inline(always)]
+        pub const fn clear_control(&self) -> &ClearControl {
+            unsafe { &*core::ptr::from_ref(self).cast::<u8>().add(5176).cast() }
+        }
+        #[doc = "0x1b00 - TEE slot lock/flush command readback preserved by SDK. low10 slot, bit15 HMAC, bit20 lock1/unlock0; slot count and completion require independent validation"]
+        #[inline(always)]
+        pub const fn tee_slot_command(&self) -> &TeeSlotCommand {
+            unsafe { &*core::ptr::from_ref(self).cast::<u8>().add(6912).cast() }
+        }
+        #[doc = "0x1b00 - TEE_SLOT_READ"]
+        #[inline(always)]
+        pub const fn tee_slot_read(&self) -> &TeeSlotRead {
+            unsafe { &*core::ptr::from_ref(self).cast::<u8>().add(6912).cast() }
+        }
+        #[doc = "0x1b04 - ACPU/REE slot lock/flush command. Separate write view prevents read-modify-write convenience on a command; construct from validated selection and explicit prior readback"]
+        #[inline(always)]
+        pub const fn ree_slot_command(&self) -> &ReeSlotCommand {
+            unsafe { &*core::ptr::from_ref(self).cast::<u8>().add(6916).cast() }
+        }
+        #[doc = "0x1b04 - REE_SLOT_READ"]
+        #[inline(always)]
+        pub const fn ree_slot_read(&self) -> &ReeSlotRead {
+            unsafe { &*core::ptr::from_ref(self).cast::<u8>().add(6916).cast() }
+        }
+        #[doc = "0x1b10 - TEE_FLUSH_STATUS"]
+        #[inline(always)]
+        pub const fn tee_flush_status(&self) -> &TeeFlushStatus {
+            &self.tee_flush_status
+        }
+        #[doc = "0x1b14 - REE_FLUSH_STATUS"]
+        #[inline(always)]
+        pub const fn ree_flush_status(&self) -> &ReeFlushStatus {
+            &self.ree_flush_status
+        }
+        #[doc = "0x1b30 - Global selector for SLOT_OWNER, shared with all CPU/security clients. Selector write/read must remain within an exclusive KM transaction; field width is not capacity"]
+        #[inline(always)]
+        pub const fn slot_select(&self) -> &SlotSelect {
+            &self.slot_select
+        }
+        #[doc = "0x1b34 - Owner of globally selected slot; original enum/call path use1 REE,2 TEE. Contradictory unused header bit-pattern macros are not adopted. No read-clear semantics evidenced"]
+        #[inline(always)]
+        pub const fn slot_owner(&self) -> &SlotOwner {
+            &self.slot_owner
+        }
+    }
+    #[doc = "DATA_IN (w) register accessor: Clear-key staging write: source writes four little-endian words, zero-pads and clears them afterwards. Readback is not evidenced; zero writes after timeout are not proof of route completion or slot erasure\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`data_in::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@data_in`] module"]
+    #[doc(alias = "DATA_IN")]
+    pub type DataIn = crate::Reg<data_in::DataInSpec>;
+    #[doc = "Clear-key staging write: source writes four little-endian words, zero-pads and clears them afterwards. Readback is not evidenced; zero writes after timeout are not proof of route completion or slot erasure"]
+    pub mod data_in {
+        #[doc = "Register `DATA_IN[%s]` writer"]
+        pub type W = crate::W<DataInSpec>;
+        #[doc = "Field `VALUE` writer - value"]
+        pub type ValueW<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
+        impl W {
+            #[doc = "Bits 0:31 - value"]
+            #[inline(always)]
+            pub fn value(&mut self) -> ValueW<'_, DataInSpec> {
+                ValueW::new(self, 0)
+            }
+        }
+        #[doc = "Clear-key staging write: source writes four little-endian words, zero-pads and clears them afterwards. Readback is not evidenced; zero writes after timeout are not proof of route completion or slot erasure\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`data_in::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct DataInSpec;
+        impl crate::RegisterSpec for DataInSpec {
+            type Ux = u32;
+        }
+        #[doc = "`write(|w| ..)` method takes [`data_in::W`](W) writer structure"]
+        impl crate::Writable for DataInSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "KEY_ADDRESS (rw) register accessor: Shared destination selector; MCIPHER slot times2 with parity in bit0, HMAC unshifted slot. Field width is not the available slot count; SDK allocation limits are8/2 respectively\n\nYou can [`read`](crate::Reg::read) this register and get [`key_address::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`key_address::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@key_address`] module"]
+    #[doc(alias = "KEY_ADDRESS")]
+    pub type KeyAddress = crate::Reg<key_address::KeyAddressSpec>;
+    #[doc = "Shared destination selector; MCIPHER slot times2 with parity in bit0, HMAC unshifted slot. Field width is not the available slot count; SDK allocation limits are8/2 respectively"]
+    pub mod key_address {
+        #[doc = "Register `KEY_ADDRESS` reader"]
+        pub type R = crate::R<KeyAddressSpec>;
+        #[doc = "Register `KEY_ADDRESS` writer"]
+        pub type W = crate::W<KeyAddressSpec>;
+        #[doc = "Field `ADDRESS` reader - address"]
+        pub type AddressR = crate::FieldReader<u16>;
+        #[doc = "Field `ADDRESS` writer - address"]
+        pub type AddressW<'a, REG> = crate::FieldWriter<'a, REG, 10, u16>;
+        impl R {
+            #[doc = "Bits 0:9 - address"]
+            #[inline(always)]
+            pub fn address(&self) -> AddressR {
+                AddressR::new((self.bits & 0x03ff) as u16)
+            }
+        }
+        impl W {
+            #[doc = "Bits 0:9 - address"]
+            #[inline(always)]
+            pub fn address(&mut self) -> AddressW<'_, KeyAddressSpec> {
+                AddressW::new(self, 0)
+            }
+        }
+        #[doc = "Shared destination selector; MCIPHER slot times2 with parity in bit0, HMAC unshifted slot. Field width is not the available slot count; SDK allocation limits are8/2 respectively\n\nYou can [`read`](crate::Reg::read) this register and get [`key_address::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`key_address::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct KeyAddressSpec;
+        impl crate::RegisterSpec for KeyAddressSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`key_address::R`](R) reader structure"]
+        impl crate::Readable for KeyAddressSpec {}
+        #[doc = "`write(|w| ..)` method takes [`key_address::W`](W) writer structure"]
+        impl crate::Writable for KeyAddressSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "KEY_CONFIG (rw) register accessor: Volatile working-key policy/configuration. SDK ports1 MCIPHER/HMAC,7 Flash; engine codes0x20 AES,0x50 SM4,0xa0/0xa1/0xa2 HMAC. Layout is not chip algorithm availability or authorization to affect live Flash decryption\n\nYou can [`read`](crate::Reg::read) this register and get [`key_config::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`key_config::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@key_config`] module"]
+    #[doc(alias = "KEY_CONFIG")]
+    pub type KeyConfig = crate::Reg<key_config::KeyConfigSpec>;
+    #[doc = "Volatile working-key policy/configuration. SDK ports1 MCIPHER/HMAC,7 Flash; engine codes0x20 AES,0x50 SM4,0xa0/0xa1/0xa2 HMAC. Layout is not chip algorithm availability or authorization to affect live Flash decryption"]
+    pub mod key_config {
+        #[doc = "Register `KEY_CONFIG` reader"]
+        pub type R = crate::R<KeyConfigSpec>;
+        #[doc = "Register `KEY_CONFIG` writer"]
+        pub type W = crate::W<KeyConfigSpec>;
+        #[doc = "Field `PORT` reader - port"]
+        pub type PortR = crate::FieldReader;
+        #[doc = "Field `PORT` writer - port"]
+        pub type PortW<'a, REG> = crate::FieldWriter<'a, REG, 3>;
+        #[doc = "Field `ENGINE` reader - engine"]
+        pub type EngineR = crate::FieldReader;
+        #[doc = "Field `ENGINE` writer - engine"]
+        pub type EngineW<'a, REG> = crate::FieldWriter<'a, REG, 8>;
+        #[doc = "Field `ENCRYPT` reader - encrypt"]
+        pub type EncryptR = crate::BitReader;
+        #[doc = "Field `ENCRYPT` writer - encrypt"]
+        pub type EncryptW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `DECRYPT` reader - decrypt"]
+        pub type DecryptR = crate::BitReader;
+        #[doc = "Field `DECRYPT` writer - decrypt"]
+        pub type DecryptW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `FLASH_SELECTION` reader - flash_selection"]
+        pub type FlashSelectionR = crate::FieldReader;
+        #[doc = "Field `FLASH_SELECTION` writer - flash_selection"]
+        pub type FlashSelectionW<'a, REG> = crate::FieldWriter<'a, REG, 2>;
+        impl R {
+            #[doc = "Bits 0:2 - port"]
+            #[inline(always)]
+            pub fn port(&self) -> PortR {
+                PortR::new((self.bits & 7) as u8)
+            }
+            #[doc = "Bits 4:11 - engine"]
+            #[inline(always)]
+            pub fn engine(&self) -> EngineR {
+                EngineR::new(((self.bits >> 4) & 0xff) as u8)
+            }
+            #[doc = "Bit 16 - encrypt"]
+            #[inline(always)]
+            pub fn encrypt(&self) -> EncryptR {
+                EncryptR::new(((self.bits >> 16) & 1) != 0)
+            }
+            #[doc = "Bit 17 - decrypt"]
+            #[inline(always)]
+            pub fn decrypt(&self) -> DecryptR {
+                DecryptR::new(((self.bits >> 17) & 1) != 0)
+            }
+            #[doc = "Bits 18:19 - flash_selection"]
+            #[inline(always)]
+            pub fn flash_selection(&self) -> FlashSelectionR {
+                FlashSelectionR::new(((self.bits >> 18) & 3) as u8)
+            }
+        }
+        impl W {
+            #[doc = "Bits 0:2 - port"]
+            #[inline(always)]
+            pub fn port(&mut self) -> PortW<'_, KeyConfigSpec> {
+                PortW::new(self, 0)
+            }
+            #[doc = "Bits 4:11 - engine"]
+            #[inline(always)]
+            pub fn engine(&mut self) -> EngineW<'_, KeyConfigSpec> {
+                EngineW::new(self, 4)
+            }
+            #[doc = "Bit 16 - encrypt"]
+            #[inline(always)]
+            pub fn encrypt(&mut self) -> EncryptW<'_, KeyConfigSpec> {
+                EncryptW::new(self, 16)
+            }
+            #[doc = "Bit 17 - decrypt"]
+            #[inline(always)]
+            pub fn decrypt(&mut self) -> DecryptW<'_, KeyConfigSpec> {
+                DecryptW::new(self, 17)
+            }
+            #[doc = "Bits 18:19 - flash_selection"]
+            #[inline(always)]
+            pub fn flash_selection(&mut self) -> FlashSelectionW<'_, KeyConfigSpec> {
+                FlashSelectionW::new(self, 18)
+            }
+        }
+        #[doc = "Volatile working-key policy/configuration. SDK ports1 MCIPHER/HMAC,7 Flash; engine codes0x20 AES,0x50 SM4,0xa0/0xa1/0xa2 HMAC. Layout is not chip algorithm availability or authorization to affect live Flash decryption\n\nYou can [`read`](crate::Reg::read) this register and get [`key_config::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`key_config::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct KeyConfigSpec;
+        impl crate::RegisterSpec for KeyConfigSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`key_config::R`](R) reader structure"]
+        impl crate::Readable for KeyConfigSpec {}
+        #[doc = "`write(|w| ..)` method takes [`key_config::W`](W) writer structure"]
+        impl crate::Writable for KeyConfigSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "KEY_SECURITY (rw) register accessor: Volatile working-key buffer/security permissions from SDK; not eFuse or permanent security configuration. Requires explicit ownership and correct CPU/security domain\n\nYou can [`read`](crate::Reg::read) this register and get [`key_security::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`key_security::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@key_security`] module"]
+    #[doc(alias = "KEY_SECURITY")]
+    pub type KeySecurity = crate::Reg<key_security::KeySecuritySpec>;
+    #[doc = "Volatile working-key buffer/security permissions from SDK; not eFuse or permanent security configuration. Requires explicit ownership and correct CPU/security domain"]
+    pub mod key_security {
+        #[doc = "Register `KEY_SECURITY` reader"]
+        pub type R = crate::R<KeySecuritySpec>;
+        #[doc = "Register `KEY_SECURITY` writer"]
+        pub type W = crate::W<KeySecuritySpec>;
+        #[doc = "Field `SECURE_KEY` reader - secure_key"]
+        pub type SecureKeyR = crate::BitReader;
+        #[doc = "Field `SECURE_KEY` writer - secure_key"]
+        pub type SecureKeyW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `SOURCE_NONSECURE` reader - source_nonsecure"]
+        pub type SourceNonsecureR = crate::BitReader;
+        #[doc = "Field `SOURCE_NONSECURE` writer - source_nonsecure"]
+        pub type SourceNonsecureW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `SOURCE_SECURE` reader - source_secure"]
+        pub type SourceSecureR = crate::BitReader;
+        #[doc = "Field `SOURCE_SECURE` writer - source_secure"]
+        pub type SourceSecureW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `DESTINATION_NONSECURE` reader - destination_nonsecure"]
+        pub type DestinationNonsecureR = crate::BitReader;
+        #[doc = "Field `DESTINATION_NONSECURE` writer - destination_nonsecure"]
+        pub type DestinationNonsecureW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `DESTINATION_SECURE` reader - destination_secure"]
+        pub type DestinationSecureR = crate::BitReader;
+        #[doc = "Field `DESTINATION_SECURE` writer - destination_secure"]
+        pub type DestinationSecureW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `SAME_MASTER_ONLY` reader - same_master_only"]
+        pub type SameMasterOnlyR = crate::BitReader;
+        #[doc = "Field `SAME_MASTER_ONLY` writer - same_master_only"]
+        pub type SameMasterOnlyW<'a, REG> = crate::BitWriter<'a, REG>;
+        impl R {
+            #[doc = "Bit 0 - secure_key"]
+            #[inline(always)]
+            pub fn secure_key(&self) -> SecureKeyR {
+                SecureKeyR::new((self.bits & 1) != 0)
+            }
+            #[doc = "Bit 1 - source_nonsecure"]
+            #[inline(always)]
+            pub fn source_nonsecure(&self) -> SourceNonsecureR {
+                SourceNonsecureR::new(((self.bits >> 1) & 1) != 0)
+            }
+            #[doc = "Bit 2 - source_secure"]
+            #[inline(always)]
+            pub fn source_secure(&self) -> SourceSecureR {
+                SourceSecureR::new(((self.bits >> 2) & 1) != 0)
+            }
+            #[doc = "Bit 3 - destination_nonsecure"]
+            #[inline(always)]
+            pub fn destination_nonsecure(&self) -> DestinationNonsecureR {
+                DestinationNonsecureR::new(((self.bits >> 3) & 1) != 0)
+            }
+            #[doc = "Bit 4 - destination_secure"]
+            #[inline(always)]
+            pub fn destination_secure(&self) -> DestinationSecureR {
+                DestinationSecureR::new(((self.bits >> 4) & 1) != 0)
+            }
+            #[doc = "Bit 5 - same_master_only"]
+            #[inline(always)]
+            pub fn same_master_only(&self) -> SameMasterOnlyR {
+                SameMasterOnlyR::new(((self.bits >> 5) & 1) != 0)
+            }
+        }
+        impl W {
+            #[doc = "Bit 0 - secure_key"]
+            #[inline(always)]
+            pub fn secure_key(&mut self) -> SecureKeyW<'_, KeySecuritySpec> {
+                SecureKeyW::new(self, 0)
+            }
+            #[doc = "Bit 1 - source_nonsecure"]
+            #[inline(always)]
+            pub fn source_nonsecure(&mut self) -> SourceNonsecureW<'_, KeySecuritySpec> {
+                SourceNonsecureW::new(self, 1)
+            }
+            #[doc = "Bit 2 - source_secure"]
+            #[inline(always)]
+            pub fn source_secure(&mut self) -> SourceSecureW<'_, KeySecuritySpec> {
+                SourceSecureW::new(self, 2)
+            }
+            #[doc = "Bit 3 - destination_nonsecure"]
+            #[inline(always)]
+            pub fn destination_nonsecure(&mut self) -> DestinationNonsecureW<'_, KeySecuritySpec> {
+                DestinationNonsecureW::new(self, 3)
+            }
+            #[doc = "Bit 4 - destination_secure"]
+            #[inline(always)]
+            pub fn destination_secure(&mut self) -> DestinationSecureW<'_, KeySecuritySpec> {
+                DestinationSecureW::new(self, 4)
+            }
+            #[doc = "Bit 5 - same_master_only"]
+            #[inline(always)]
+            pub fn same_master_only(&mut self) -> SameMasterOnlyW<'_, KeySecuritySpec> {
+                SameMasterOnlyW::new(self, 5)
+            }
+        }
+        #[doc = "Volatile working-key buffer/security permissions from SDK; not eFuse or permanent security configuration. Requires explicit ownership and correct CPU/security domain\n\nYou can [`read`](crate::Reg::read) this register and get [`key_security::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`key_security::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct KeySecuritySpec;
+        impl crate::RegisterSpec for KeySecuritySpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`key_security::R`](R) reader structure"]
+        impl crate::Readable for KeySecuritySpec {}
+        #[doc = "`write(|w| ..)` method takes [`key_security::W`](W) writer structure"]
+        impl crate::Writable for KeySecuritySpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "LOADER_ERROR (r) register accessor: Opaque KL error read; SDK treats any nonzero as failure. No clear semantics evidenced\n\nYou can [`read`](crate::Reg::read) this register and get [`loader_error::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@loader_error`] module"]
+    #[doc(alias = "LOADER_ERROR")]
+    pub type LoaderError = crate::Reg<loader_error::LoaderErrorSpec>;
+    #[doc = "Opaque KL error read; SDK treats any nonzero as failure. No clear semantics evidenced"]
+    pub mod loader_error {
+        #[doc = "Register `LOADER_ERROR` reader"]
+        pub type R = crate::R<LoaderErrorSpec>;
+        #[doc = "Field `VALUE` reader - value"]
+        pub type ValueR = crate::FieldReader<u32>;
+        impl R {
+            #[doc = "Bits 0:31 - value"]
+            #[inline(always)]
+            pub fn value(&self) -> ValueR {
+                ValueR::new(self.bits)
+            }
+        }
+        #[doc = "Opaque KL error read; SDK treats any nonzero as failure. No clear semantics evidenced\n\nYou can [`read`](crate::Reg::read) this register and get [`loader_error::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct LoaderErrorSpec;
+        impl crate::RegisterSpec for LoaderErrorSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`loader_error::R`](R) reader structure"]
+        impl crate::Readable for LoaderErrorSpec {}
+    }
+    #[doc = "CONTROLLER_ERROR (r) register accessor: Opaque key-controller error read; no error-clear semantics evidenced\n\nYou can [`read`](crate::Reg::read) this register and get [`controller_error::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@controller_error`] module"]
+    #[doc(alias = "CONTROLLER_ERROR")]
+    pub type ControllerError = crate::Reg<controller_error::ControllerErrorSpec>;
+    #[doc = "Opaque key-controller error read; no error-clear semantics evidenced"]
+    pub mod controller_error {
+        #[doc = "Register `CONTROLLER_ERROR` reader"]
+        pub type R = crate::R<ControllerErrorSpec>;
+        #[doc = "Field `VALUE` reader - value"]
+        pub type ValueR = crate::FieldReader<u32>;
+        impl R {
+            #[doc = "Bits 0:31 - value"]
+            #[inline(always)]
+            pub fn value(&self) -> ValueR {
+                ValueR::new(self.bits)
+            }
+        }
+        #[doc = "Opaque key-controller error read; no error-clear semantics evidenced\n\nYou can [`read`](crate::Reg::read) this register and get [`controller_error::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct ControllerErrorSpec;
+        impl crate::RegisterSpec for ControllerErrorSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`controller_error::R`](R) reader structure"]
+        impl crate::Readable for ControllerErrorSpec {}
+    }
+    #[doc = "INTERRUPT_STATUS (r) register accessor: Low32-bit raw interrupt read used by source. Header union has an overlong reserved tail; register access remains32-bit. Interrupt number/delivery and ACK behavior not silicon-qualified\n\nYou can [`read`](crate::Reg::read) this register and get [`interrupt_status::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@interrupt_status`] module"]
+    #[doc(alias = "INTERRUPT_STATUS")]
+    pub type InterruptStatus = crate::Reg<interrupt_status::InterruptStatusSpec>;
+    #[doc = "Low32-bit raw interrupt read used by source. Header union has an overlong reserved tail; register access remains32-bit. Interrupt number/delivery and ACK behavior not silicon-qualified"]
+    pub mod interrupt_status {
+        #[doc = "Register `INTERRUPT_STATUS` reader"]
+        pub type R = crate::R<InterruptStatusSpec>;
+        #[doc = "Field `COMMON` reader - common"]
+        pub type CommonR = crate::BitReader;
+        #[doc = "Field `INDEX` reader - index"]
+        pub type IndexR = crate::FieldReader;
+        #[doc = "Field `CLEAR_ROUTE` reader - clear_route"]
+        pub type ClearRouteR = crate::BitReader;
+        impl R {
+            #[doc = "Bit 0 - common"]
+            #[inline(always)]
+            pub fn common(&self) -> CommonR {
+                CommonR::new((self.bits & 1) != 0)
+            }
+            #[doc = "Bits 4:8 - index"]
+            #[inline(always)]
+            pub fn index(&self) -> IndexR {
+                IndexR::new(((self.bits >> 4) & 0x1f) as u8)
+            }
+            #[doc = "Bit 14 - clear_route"]
+            #[inline(always)]
+            pub fn clear_route(&self) -> ClearRouteR {
+                ClearRouteR::new(((self.bits >> 14) & 1) != 0)
+            }
+        }
+        #[doc = "Low32-bit raw interrupt read used by source. Header union has an overlong reserved tail; register access remains32-bit. Interrupt number/delivery and ACK behavior not silicon-qualified\n\nYou can [`read`](crate::Reg::read) this register and get [`interrupt_status::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct InterruptStatusSpec;
+        impl crate::RegisterSpec for InterruptStatusSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`interrupt_status::R`](R) reader structure"]
+        impl crate::Readable for InterruptStatusSpec {}
+    }
+    #[doc = "INTERRUPT_ACK (w) register accessor: Source writes entire prior raw value OR bit14; not a proven isolated W1C and may acknowledge other pending causes. Command deliberately has no modify/read/reset API\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`interrupt_ack::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@interrupt_ack`] module"]
+    #[doc(alias = "INTERRUPT_ACK")]
+    pub type InterruptAck = crate::Reg<interrupt_ack::InterruptAckSpec>;
+    #[doc = "Source writes entire prior raw value OR bit14; not a proven isolated W1C and may acknowledge other pending causes. Command deliberately has no modify/read/reset API"]
+    pub mod interrupt_ack {
+        #[doc = "Register `INTERRUPT_ACK` writer"]
+        pub type W = crate::W<InterruptAckSpec>;
+        #[doc = "Field `VALUE` writer - value"]
+        pub type ValueW<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
+        impl W {
+            #[doc = "Bits 0:31 - value"]
+            #[inline(always)]
+            pub fn value(&mut self) -> ValueW<'_, InterruptAckSpec> {
+                ValueW::new(self, 0)
+            }
+        }
+        #[doc = "Source writes entire prior raw value OR bit14; not a proven isolated W1C and may acknowledge other pending causes. Command deliberately has no modify/read/reset API\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`interrupt_ack::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct InterruptAckSpec;
+        impl crate::RegisterSpec for InterruptAckSpec {
+            type Ux = u32;
+        }
+        #[doc = "`write(|w| ..)` method takes [`interrupt_ack::W`](W) writer structure"]
+        impl crate::Writable for InterruptAckSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "COMMON_LOCK (w) register accessor: Source common/root-route lock request writes1; this does not establish exclusion of the clear-key loader\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`common_lock::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@common_lock`] module"]
+    #[doc(alias = "COMMON_LOCK")]
+    pub type CommonLock = crate::Reg<common_lock::CommonLockSpec>;
+    #[doc = "Source common/root-route lock request writes1; this does not establish exclusion of the clear-key loader"]
+    pub mod common_lock {
+        #[doc = "Register `COMMON_LOCK` writer"]
+        pub type W = crate::W<CommonLockSpec>;
+        #[doc = "Field `VALUE` writer - value"]
+        pub type ValueW<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
+        impl W {
+            #[doc = "Bits 0:31 - value"]
+            #[inline(always)]
+            pub fn value(&mut self) -> ValueW<'_, CommonLockSpec> {
+                ValueW::new(self, 0)
+            }
+        }
+        #[doc = "Source common/root-route lock request writes1; this does not establish exclusion of the clear-key loader\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`common_lock::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct CommonLockSpec;
+        impl crate::RegisterSpec for CommonLockSpec {
+            type Ux = u32;
+        }
+        #[doc = "`write(|w| ..)` method takes [`common_lock::W`](W) writer structure"]
+        impl crate::Writable for CommonLockSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "COMMON_UNLOCK (w) register accessor: Source common/root-route unlock request writes1; successful request alone is not a reread of owner\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`common_unlock::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@common_unlock`] module"]
+    #[doc(alias = "COMMON_UNLOCK")]
+    pub type CommonUnlock = crate::Reg<common_unlock::CommonUnlockSpec>;
+    #[doc = "Source common/root-route unlock request writes1; successful request alone is not a reread of owner"]
+    pub mod common_unlock {
+        #[doc = "Register `COMMON_UNLOCK` writer"]
+        pub type W = crate::W<CommonUnlockSpec>;
+        #[doc = "Field `VALUE` writer - value"]
+        pub type ValueW<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
+        impl W {
+            #[doc = "Bits 0:31 - value"]
+            #[inline(always)]
+            pub fn value(&mut self) -> ValueW<'_, CommonUnlockSpec> {
+                ValueW::new(self, 0)
+            }
+        }
+        #[doc = "Source common/root-route unlock request writes1; successful request alone is not a reread of owner\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`common_unlock::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct CommonUnlockSpec;
+        impl crate::RegisterSpec for CommonUnlockSpec {
+            type Ux = u32;
+        }
+        #[doc = "`write(|w| ..)` method takes [`common_unlock::W`](W) writer structure"]
+        impl crate::Writable for CommonUnlockSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "COMMON_LOCK_INFO (r) register accessor: COMMON_LOCK_INFO\n\nYou can [`read`](crate::Reg::read) this register and get [`common_lock_info::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@common_lock_info`] module"]
+    #[doc(alias = "COMMON_LOCK_INFO")]
+    pub type CommonLockInfo = crate::Reg<common_lock_info::CommonLockInfoSpec>;
+    #[doc = "COMMON_LOCK_INFO"]
+    pub mod common_lock_info {
+        #[doc = "Register `COMMON_LOCK_INFO` reader"]
+        pub type R = crate::R<CommonLockInfoSpec>;
+        #[doc = "Field `BUSY` reader - busy"]
+        pub type BusyR = crate::FieldReader;
+        #[doc = "Field `LOCK_FAILURE` reader - lock_failure"]
+        pub type LockFailureR = crate::FieldReader;
+        #[doc = "Field `UNLOCK_FAILURE` reader - unlock_failure"]
+        pub type UnlockFailureR = crate::FieldReader;
+        #[doc = "Field `INDEX` reader - index"]
+        pub type IndexR = crate::FieldReader;
+        impl R {
+            #[doc = "Bits 0:1 - busy"]
+            #[inline(always)]
+            pub fn busy(&self) -> BusyR {
+                BusyR::new((self.bits & 3) as u8)
+            }
+            #[doc = "Bits 2:3 - lock_failure"]
+            #[inline(always)]
+            pub fn lock_failure(&self) -> LockFailureR {
+                LockFailureR::new(((self.bits >> 2) & 3) as u8)
+            }
+            #[doc = "Bits 4:5 - unlock_failure"]
+            #[inline(always)]
+            pub fn unlock_failure(&self) -> UnlockFailureR {
+                UnlockFailureR::new(((self.bits >> 4) & 3) as u8)
+            }
+            #[doc = "Bits 8:10 - index"]
+            #[inline(always)]
+            pub fn index(&self) -> IndexR {
+                IndexR::new(((self.bits >> 8) & 7) as u8)
+            }
+        }
+        #[doc = "COMMON_LOCK_INFO\n\nYou can [`read`](crate::Reg::read) this register and get [`common_lock_info::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct CommonLockInfoSpec;
+        impl crate::RegisterSpec for CommonLockInfoSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`common_lock_info::R`](R) reader structure"]
+        impl crate::Readable for CommonLockInfoSpec {}
+    }
+    #[doc = "COMMON_OWNER (r) register accessor: Common-route owner; source expects0xaa for ACPU. Clear-route exclusion is not established\n\nYou can [`read`](crate::Reg::read) this register and get [`common_owner::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@common_owner`] module"]
+    #[doc(alias = "COMMON_OWNER")]
+    pub type CommonOwner = crate::Reg<common_owner::CommonOwnerSpec>;
+    #[doc = "Common-route owner; source expects0xaa for ACPU. Clear-route exclusion is not established"]
+    pub mod common_owner {
+        #[doc = "Register `COMMON_OWNER` reader"]
+        pub type R = crate::R<CommonOwnerSpec>;
+        #[doc = "Field `OWNER` reader - owner"]
+        pub type OwnerR = crate::FieldReader;
+        impl R {
+            #[doc = "Bits 0:7 - owner"]
+            #[inline(always)]
+            pub fn owner(&self) -> OwnerR {
+                OwnerR::new((self.bits & 0xff) as u8)
+            }
+        }
+        #[doc = "Common-route owner; source expects0xaa for ACPU. Clear-route exclusion is not established\n\nYou can [`read`](crate::Reg::read) this register and get [`common_owner::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct CommonOwnerSpec;
+        impl crate::RegisterSpec for CommonOwnerSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`common_owner::R`](R) reader structure"]
+        impl crate::Readable for CommonOwnerSpec {}
+    }
+    #[doc = "CLEAR_CONTROL (r) register accessor: Clear-route read view; source polls START until zero and then reads both error words. Busy/idle does not certify slot erasure, DMA drain or cross-core handback\n\nYou can [`read`](crate::Reg::read) this register and get [`clear_control::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@clear_control`] module"]
+    #[doc(alias = "CLEAR_CONTROL")]
+    pub type ClearControl = crate::Reg<clear_control::ClearControlSpec>;
+    #[doc = "Clear-route read view; source polls START until zero and then reads both error words. Busy/idle does not certify slot erasure, DMA drain or cross-core handback"]
+    pub mod clear_control {
+        #[doc = "Register `CLEAR_CONTROL` reader"]
+        pub type R = crate::R<ClearControlSpec>;
+        #[doc = "Field `START` reader - start"]
+        pub type StartR = crate::BitReader;
+        #[doc = "Field `KEY_SIZE` reader - key_size"]
+        pub type KeySizeR = crate::FieldReader;
+        #[doc = "Field `HMAC_BLOCK` reader - hmac_block"]
+        pub type HmacBlockR = crate::FieldReader;
+        impl R {
+            #[doc = "Bit 0 - start"]
+            #[inline(always)]
+            pub fn start(&self) -> StartR {
+                StartR::new((self.bits & 1) != 0)
+            }
+            #[doc = "Bits 2:3 - key_size"]
+            #[inline(always)]
+            pub fn key_size(&self) -> KeySizeR {
+                KeySizeR::new(((self.bits >> 2) & 3) as u8)
+            }
+            #[doc = "Bits 13:15 - hmac_block"]
+            #[inline(always)]
+            pub fn hmac_block(&self) -> HmacBlockR {
+                HmacBlockR::new(((self.bits >> 13) & 7) as u8)
+            }
+        }
+        #[doc = "Clear-route read view; source polls START until zero and then reads both error words. Busy/idle does not certify slot erasure, DMA drain or cross-core handback\n\nYou can [`read`](crate::Reg::read) this register and get [`clear_control::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct ClearControlSpec;
+        impl crate::RegisterSpec for ClearControlSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`clear_control::R`](R) reader structure"]
+        impl crate::Readable for ClearControlSpec {}
+    }
+    #[doc = "CLEAR_SUBMIT (w) register accessor: Clear-route command: SYMC preserves readback and writes START1/key-size1,2,3; HMAC sends fresh START1/block0..7. No abort or forced-clear semantics\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`clear_submit::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@clear_submit`] module"]
+    #[doc(alias = "CLEAR_SUBMIT")]
+    pub type ClearSubmit = crate::Reg<clear_submit::ClearSubmitSpec>;
+    #[doc = "Clear-route command: SYMC preserves readback and writes START1/key-size1,2,3; HMAC sends fresh START1/block0..7. No abort or forced-clear semantics"]
+    pub mod clear_submit {
+        #[doc = "Register `CLEAR_SUBMIT` writer"]
+        pub type W = crate::W<ClearSubmitSpec>;
+        #[doc = "Field `VALUE` writer - value"]
+        pub type ValueW<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
+        impl W {
+            #[doc = "Bits 0:31 - value"]
+            #[inline(always)]
+            pub fn value(&mut self) -> ValueW<'_, ClearSubmitSpec> {
+                ValueW::new(self, 0)
+            }
+        }
+        #[doc = "Clear-route command: SYMC preserves readback and writes START1/key-size1,2,3; HMAC sends fresh START1/block0..7. No abort or forced-clear semantics\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`clear_submit::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct ClearSubmitSpec;
+        impl crate::RegisterSpec for ClearSubmitSpec {
+            type Ux = u32;
+        }
+        #[doc = "`write(|w| ..)` method takes [`clear_submit::W`](W) writer structure"]
+        impl crate::Writable for ClearSubmitSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "TEE_SLOT_READ (r) register accessor: TEE_SLOT_READ\n\nYou can [`read`](crate::Reg::read) this register and get [`tee_slot_read::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@tee_slot_read`] module"]
+    #[doc(alias = "TEE_SLOT_READ")]
+    pub type TeeSlotRead = crate::Reg<tee_slot_read::TeeSlotReadSpec>;
+    #[doc = "TEE_SLOT_READ"]
+    pub mod tee_slot_read {
+        #[doc = "Register `TEE_SLOT_READ` reader"]
+        pub type R = crate::R<TeeSlotReadSpec>;
+        #[doc = "Field `VALUE` reader - value"]
+        pub type ValueR = crate::FieldReader<u32>;
+        impl R {
+            #[doc = "Bits 0:31 - value"]
+            #[inline(always)]
+            pub fn value(&self) -> ValueR {
+                ValueR::new(self.bits)
+            }
+        }
+        #[doc = "TEE_SLOT_READ\n\nYou can [`read`](crate::Reg::read) this register and get [`tee_slot_read::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct TeeSlotReadSpec;
+        impl crate::RegisterSpec for TeeSlotReadSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`tee_slot_read::R`](R) reader structure"]
+        impl crate::Readable for TeeSlotReadSpec {}
+    }
+    #[doc = "TEE_SLOT_COMMAND (w) register accessor: TEE slot lock/flush command readback preserved by SDK. low10 slot, bit15 HMAC, bit20 lock1/unlock0; slot count and completion require independent validation\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`tee_slot_command::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@tee_slot_command`] module"]
+    #[doc(alias = "TEE_SLOT_COMMAND")]
+    pub type TeeSlotCommand = crate::Reg<tee_slot_command::TeeSlotCommandSpec>;
+    #[doc = "TEE slot lock/flush command readback preserved by SDK. low10 slot, bit15 HMAC, bit20 lock1/unlock0; slot count and completion require independent validation"]
+    pub mod tee_slot_command {
+        #[doc = "Register `TEE_SLOT_COMMAND` writer"]
+        pub type W = crate::W<TeeSlotCommandSpec>;
+        #[doc = "Field `VALUE` writer - value"]
+        pub type ValueW<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
+        impl W {
+            #[doc = "Bits 0:31 - value"]
+            #[inline(always)]
+            pub fn value(&mut self) -> ValueW<'_, TeeSlotCommandSpec> {
+                ValueW::new(self, 0)
+            }
+        }
+        #[doc = "TEE slot lock/flush command readback preserved by SDK. low10 slot, bit15 HMAC, bit20 lock1/unlock0; slot count and completion require independent validation\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`tee_slot_command::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct TeeSlotCommandSpec;
+        impl crate::RegisterSpec for TeeSlotCommandSpec {
+            type Ux = u32;
+        }
+        #[doc = "`write(|w| ..)` method takes [`tee_slot_command::W`](W) writer structure"]
+        impl crate::Writable for TeeSlotCommandSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "REE_SLOT_READ (r) register accessor: REE_SLOT_READ\n\nYou can [`read`](crate::Reg::read) this register and get [`ree_slot_read::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@ree_slot_read`] module"]
+    #[doc(alias = "REE_SLOT_READ")]
+    pub type ReeSlotRead = crate::Reg<ree_slot_read::ReeSlotReadSpec>;
+    #[doc = "REE_SLOT_READ"]
+    pub mod ree_slot_read {
+        #[doc = "Register `REE_SLOT_READ` reader"]
+        pub type R = crate::R<ReeSlotReadSpec>;
+        #[doc = "Field `VALUE` reader - value"]
+        pub type ValueR = crate::FieldReader<u32>;
+        impl R {
+            #[doc = "Bits 0:31 - value"]
+            #[inline(always)]
+            pub fn value(&self) -> ValueR {
+                ValueR::new(self.bits)
+            }
+        }
+        #[doc = "REE_SLOT_READ\n\nYou can [`read`](crate::Reg::read) this register and get [`ree_slot_read::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct ReeSlotReadSpec;
+        impl crate::RegisterSpec for ReeSlotReadSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`ree_slot_read::R`](R) reader structure"]
+        impl crate::Readable for ReeSlotReadSpec {}
+    }
+    #[doc = "REE_SLOT_COMMAND (w) register accessor: ACPU/REE slot lock/flush command. Separate write view prevents read-modify-write convenience on a command; construct from validated selection and explicit prior readback\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`ree_slot_command::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@ree_slot_command`] module"]
+    #[doc(alias = "REE_SLOT_COMMAND")]
+    pub type ReeSlotCommand = crate::Reg<ree_slot_command::ReeSlotCommandSpec>;
+    #[doc = "ACPU/REE slot lock/flush command. Separate write view prevents read-modify-write convenience on a command; construct from validated selection and explicit prior readback"]
+    pub mod ree_slot_command {
+        #[doc = "Register `REE_SLOT_COMMAND` writer"]
+        pub type W = crate::W<ReeSlotCommandSpec>;
+        #[doc = "Field `VALUE` writer - value"]
+        pub type ValueW<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
+        impl W {
+            #[doc = "Bits 0:31 - value"]
+            #[inline(always)]
+            pub fn value(&mut self) -> ValueW<'_, ReeSlotCommandSpec> {
+                ValueW::new(self, 0)
+            }
+        }
+        #[doc = "ACPU/REE slot lock/flush command. Separate write view prevents read-modify-write convenience on a command; construct from validated selection and explicit prior readback\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`ree_slot_command::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct ReeSlotCommandSpec;
+        impl crate::RegisterSpec for ReeSlotCommandSpec {
+            type Ux = u32;
+        }
+        #[doc = "`write(|w| ..)` method takes [`ree_slot_command::W`](W) writer structure"]
+        impl crate::Writable for ReeSlotCommandSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "TEE_FLUSH_STATUS (r) register accessor: TEE_FLUSH_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`tee_flush_status::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@tee_flush_status`] module"]
+    #[doc(alias = "TEE_FLUSH_STATUS")]
+    pub type TeeFlushStatus = crate::Reg<tee_flush_status::TeeFlushStatusSpec>;
+    #[doc = "TEE_FLUSH_STATUS"]
+    pub mod tee_flush_status {
+        #[doc = "Register `TEE_FLUSH_STATUS` reader"]
+        pub type R = crate::R<TeeFlushStatusSpec>;
+        #[doc = "Field `BUSY` reader - busy"]
+        pub type BusyR = crate::BitReader;
+        #[doc = "Field `UNLOCK_FAILURE` reader - unlock_failure"]
+        pub type UnlockFailureR = crate::BitReader;
+        #[doc = "Field `TIMEOUT_ERROR` reader - timeout_error"]
+        pub type TimeoutErrorR = crate::BitReader;
+        impl R {
+            #[doc = "Bit 0 - busy"]
+            #[inline(always)]
+            pub fn busy(&self) -> BusyR {
+                BusyR::new((self.bits & 1) != 0)
+            }
+            #[doc = "Bit 1 - unlock_failure"]
+            #[inline(always)]
+            pub fn unlock_failure(&self) -> UnlockFailureR {
+                UnlockFailureR::new(((self.bits >> 1) & 1) != 0)
+            }
+            #[doc = "Bit 2 - timeout_error"]
+            #[inline(always)]
+            pub fn timeout_error(&self) -> TimeoutErrorR {
+                TimeoutErrorR::new(((self.bits >> 2) & 1) != 0)
+            }
+        }
+        #[doc = "TEE_FLUSH_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`tee_flush_status::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct TeeFlushStatusSpec;
+        impl crate::RegisterSpec for TeeFlushStatusSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`tee_flush_status::R`](R) reader structure"]
+        impl crate::Readable for TeeFlushStatusSpec {}
+    }
+    #[doc = "REE_FLUSH_STATUS (r) register accessor: REE_FLUSH_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`ree_flush_status::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@ree_flush_status`] module"]
+    #[doc(alias = "REE_FLUSH_STATUS")]
+    pub type ReeFlushStatus = crate::Reg<ree_flush_status::ReeFlushStatusSpec>;
+    #[doc = "REE_FLUSH_STATUS"]
+    pub mod ree_flush_status {
+        #[doc = "Register `REE_FLUSH_STATUS` reader"]
+        pub type R = crate::R<ReeFlushStatusSpec>;
+        #[doc = "Field `BUSY` reader - busy"]
+        pub type BusyR = crate::BitReader;
+        #[doc = "Field `UNLOCK_FAILURE` reader - unlock_failure"]
+        pub type UnlockFailureR = crate::BitReader;
+        #[doc = "Field `TIMEOUT_ERROR` reader - timeout_error"]
+        pub type TimeoutErrorR = crate::BitReader;
+        impl R {
+            #[doc = "Bit 0 - busy"]
+            #[inline(always)]
+            pub fn busy(&self) -> BusyR {
+                BusyR::new((self.bits & 1) != 0)
+            }
+            #[doc = "Bit 1 - unlock_failure"]
+            #[inline(always)]
+            pub fn unlock_failure(&self) -> UnlockFailureR {
+                UnlockFailureR::new(((self.bits >> 1) & 1) != 0)
+            }
+            #[doc = "Bit 2 - timeout_error"]
+            #[inline(always)]
+            pub fn timeout_error(&self) -> TimeoutErrorR {
+                TimeoutErrorR::new(((self.bits >> 2) & 1) != 0)
+            }
+        }
+        #[doc = "REE_FLUSH_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`ree_flush_status::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct ReeFlushStatusSpec;
+        impl crate::RegisterSpec for ReeFlushStatusSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`ree_flush_status::R`](R) reader structure"]
+        impl crate::Readable for ReeFlushStatusSpec {}
+    }
+    #[doc = "SLOT_SELECT (rw) register accessor: Global selector for SLOT_OWNER, shared with all CPU/security clients. Selector write/read must remain within an exclusive KM transaction; field width is not capacity\n\nYou can [`read`](crate::Reg::read) this register and get [`slot_select::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`slot_select::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@slot_select`] module"]
+    #[doc(alias = "SLOT_SELECT")]
+    pub type SlotSelect = crate::Reg<slot_select::SlotSelectSpec>;
+    #[doc = "Global selector for SLOT_OWNER, shared with all CPU/security clients. Selector write/read must remain within an exclusive KM transaction; field width is not capacity"]
+    pub mod slot_select {
+        #[doc = "Register `SLOT_SELECT` reader"]
+        pub type R = crate::R<SlotSelectSpec>;
+        #[doc = "Register `SLOT_SELECT` writer"]
+        pub type W = crate::W<SlotSelectSpec>;
+        #[doc = "Field `SLOT` reader - slot"]
+        pub type SlotR = crate::FieldReader<u16>;
+        #[doc = "Field `SLOT` writer - slot"]
+        pub type SlotW<'a, REG> = crate::FieldWriter<'a, REG, 10, u16>;
+        #[doc = "Field `HMAC` reader - hmac"]
+        pub type HmacR = crate::BitReader;
+        #[doc = "Field `HMAC` writer - hmac"]
+        pub type HmacW<'a, REG> = crate::BitWriter<'a, REG>;
+        impl R {
+            #[doc = "Bits 0:9 - slot"]
+            #[inline(always)]
+            pub fn slot(&self) -> SlotR {
+                SlotR::new((self.bits & 0x03ff) as u16)
+            }
+            #[doc = "Bit 15 - hmac"]
+            #[inline(always)]
+            pub fn hmac(&self) -> HmacR {
+                HmacR::new(((self.bits >> 15) & 1) != 0)
+            }
+        }
+        impl W {
+            #[doc = "Bits 0:9 - slot"]
+            #[inline(always)]
+            pub fn slot(&mut self) -> SlotW<'_, SlotSelectSpec> {
+                SlotW::new(self, 0)
+            }
+            #[doc = "Bit 15 - hmac"]
+            #[inline(always)]
+            pub fn hmac(&mut self) -> HmacW<'_, SlotSelectSpec> {
+                HmacW::new(self, 15)
+            }
+        }
+        #[doc = "Global selector for SLOT_OWNER, shared with all CPU/security clients. Selector write/read must remain within an exclusive KM transaction; field width is not capacity\n\nYou can [`read`](crate::Reg::read) this register and get [`slot_select::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`slot_select::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct SlotSelectSpec;
+        impl crate::RegisterSpec for SlotSelectSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`slot_select::R`](R) reader structure"]
+        impl crate::Readable for SlotSelectSpec {}
+        #[doc = "`write(|w| ..)` method takes [`slot_select::W`](W) writer structure"]
+        impl crate::Writable for SlotSelectSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "SLOT_OWNER (r) register accessor: Owner of globally selected slot; original enum/call path use1 REE,2 TEE. Contradictory unused header bit-pattern macros are not adopted. No read-clear semantics evidenced\n\nYou can [`read`](crate::Reg::read) this register and get [`slot_owner::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@slot_owner`] module"]
+    #[doc(alias = "SLOT_OWNER")]
+    pub type SlotOwner = crate::Reg<slot_owner::SlotOwnerSpec>;
+    #[doc = "Owner of globally selected slot; original enum/call path use1 REE,2 TEE. Contradictory unused header bit-pattern macros are not adopted. No read-clear semantics evidenced"]
+    pub mod slot_owner {
+        #[doc = "Register `SLOT_OWNER` reader"]
+        pub type R = crate::R<SlotOwnerSpec>;
+        #[doc = "Field `OWNER` reader - owner"]
+        pub type OwnerR = crate::FieldReader;
+        impl R {
+            #[doc = "Bits 0:2 - owner"]
+            #[inline(always)]
+            pub fn owner(&self) -> OwnerR {
+                OwnerR::new((self.bits & 7) as u8)
+            }
+        }
+        #[doc = "Owner of globally selected slot; original enum/call path use1 REE,2 TEE. Contradictory unused header bit-pattern macros are not adopted. No read-clear semantics evidenced\n\nYou can [`read`](crate::Reg::read) this register and get [`slot_owner::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct SlotOwnerSpec;
+        impl crate::RegisterSpec for SlotOwnerSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`slot_owner::R`](R) reader structure"]
+        impl crate::Readable for SlotOwnerSpec {}
     }
 }
 #[doc = "trng"]
@@ -39185,6 +40164,8 @@ pub struct Peripherals {
     pub pinmux_mcu: PinmuxMcu,
     #[doc = "SPACC"]
     pub spacc: Spacc,
+    #[doc = "KM"]
+    pub km: Km,
     #[doc = "TRNG"]
     pub trng: Trng,
     #[doc = "I2S"]
@@ -39271,6 +40252,7 @@ impl Peripherals {
                 mcu_diag: McuDiag::steal(),
                 pinmux_mcu: PinmuxMcu::steal(),
                 spacc: Spacc::steal(),
+                km: Km::steal(),
                 trng: Trng::steal(),
                 i2s: I2s::steal(),
                 sdio: Sdio::steal(),

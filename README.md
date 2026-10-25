@@ -270,3 +270,23 @@ base itself must be reviewed. All existing HASH API tests remain applicable.
 The SDK releases ownership even on a clear timeout and publishes output before
 descriptor-cache maintenance. Neither source sequence proves bus quiescence or
 safe resource reclamation. This PAC does not implement those lifecycle choices.
+
+## KM keyslot and clear-key loader
+
+The same isolated integration now supplies one `Km` token at`0x52022000`,
+covering25 source-audited register views,46 fields, a four-word `data_in` array
+and application IRQ`SEC_INT3=61`. Generation is pinned to the clean source in
+`generation.json`; ordinary Cargo users require neither Python nor a local SDK.
+
+Shared selectors, working-key configuration, loader and slots belong to this
+one resource. Command/ACK views are write-only, errors/status are read-only,
+and unknown reset defaults are absent. The original interrupt C union is8 bytes
+because of an overlong reserved field; its actual access and this PAC are32-bit.
+There is no root derivation, OTP, permanent-policy or PCPU/AIDSP command API.
+
+The source driver allocates8 MCIPHER slots and2 HMAC slots; field width is not
+capacity. Source unlock omits the timeout-error bit and an owner reread, while
+clear-loader timeout still clears input words. PAC access does not prove slot
+erasure, completion, cross-core exclusion or safe resource handback. Future HAL
+code must validate ownership, algorithm/length and error recovery explicitly.
+This remains a register interface, not an encryption/HMAC implementation.
