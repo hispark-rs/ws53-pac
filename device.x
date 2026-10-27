@@ -1,4 +1,6 @@
 /* External interrupt sources */
+PROVIDE(APP_INT0 = DefaultHandler);
+PROVIDE(APP_INT1 = DefaultHandler);
 PROVIDE(SGPIO_INT = DefaultHandler);
 PROVIDE(GPIO_1 = DefaultHandler);
 PROVIDE(GPIO_0 = DefaultHandler);

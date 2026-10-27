@@ -906,6 +906,10 @@ pub mod interrupt {
     #[cfg_attr(target_arch = "riscv32", riscv :: pac_enum (unsafe ExternalInterruptNumber))]
     #[derive(Debug, Clone, Copy, PartialEq, Eq)]
     pub enum ExternalInterrupt {
+        #[doc = "26 - APP_INT0"]
+        APP_INT0 = 26,
+        #[doc = "27 - APP_INT1"]
+        APP_INT1 = 27,
         #[doc = "29 - SGPIO_INT"]
         SGPIO_INT = 29,
         #[doc = "33 - GPIO_1"]
@@ -964,39 +968,83 @@ pub mod m_crg {
     #[repr(C)]
     #[doc = "Register block"]
     pub struct RegisterBlock {
-        _reserved0: [u8; 0x40],
-        _reserved_0_m_clken: [u8; 0x04],
-        _reserved_1_m_clken: [u8; 0x04],
-        _reserved2: [u8; 0x0c],
+        _reserved0: [u8; 0x20],
+        ipc_receive_enable: IpcReceiveEnable,
+        _reserved1: [u8; 0x04],
+        ipc_receive_status: IpcReceiveStatus,
+        _reserved_2_ipc_receive_ack: [u8; 0x04],
+        ipc_send_status: IpcSendStatus,
+        ipc_send_set_command: IpcSendSetCommand,
+        _reserved5: [u8; 0x02],
+        ipc_release_command: IpcReleaseCommand,
+        _reserved6: [u8; 0x04],
+        _reserved_6_m_clken: [u8; 0x04],
+        _reserved_7_m_clken: [u8; 0x04],
+        _reserved8: [u8; 0x0c],
         soft_reset1: SoftReset1,
-        _reserved3: [u8; 0x24],
+        _reserved9: [u8; 0x24],
         pwm_m_div3: PwmMDiv3,
-        _reserved4: [u8; 0xea],
+        _reserved10: [u8; 0xea],
         uart_soft_reset: UartSoftReset,
-        _reserved5: [u8; 0x0276],
-        _reserved_5_msub_: [u8; 0x04],
-        _reserved_6_msub_: [u8; 0x04],
-        _reserved7: [u8; 0x0160],
+        _reserved11: [u8; 0x0276],
+        _reserved_11_msub_: [u8; 0x04],
+        _reserved_12_msub_: [u8; 0x04],
+        _reserved13: [u8; 0x0160],
         global_clken: GlobalClken,
-        _reserved8: [u8; 0x12],
+        _reserved14: [u8; 0x12],
         spi_clock: SpiClock,
-        _reserved9: [u8; 0x12],
-        _reserved_9_xip_sfc_: [u8; 0x04],
+        _reserved15: [u8; 0x12],
+        _reserved_15_xip_sfc_: [u8; 0x04],
         xip_qspi_clock: XipQspiClock,
-        _reserved11: [u8; 0x018a],
+        _reserved17: [u8; 0x018a],
         nmi_enable: NmiEnable,
-        _reserved12: [u8; 0x02],
+        _reserved18: [u8; 0x02],
         nmi_raw_status: NmiRawStatus,
-        _reserved13: [u8; 0x02],
+        _reserved19: [u8; 0x02],
         nmi_masked_status: NmiMaskedStatus,
-        _reserved14: [u8; 0x0246],
+        _reserved20: [u8; 0x0246],
         spi_device_mode: SpiDeviceMode,
-        _reserved15: [u8; 0x08ee],
+        _reserved21: [u8; 0x08ee],
         xip_clock_enable: XipClockEnable,
-        _reserved16: [u8; 0x03be],
+        _reserved22: [u8; 0x03be],
         trng_ring_control: TrngRingControl,
     }
     impl RegisterBlock {
+        #[doc = "0x20 - IPC_RECEIVE_ENABLE"]
+        #[inline(always)]
+        pub const fn ipc_receive_enable(&self) -> &IpcReceiveEnable {
+            &self.ipc_receive_enable
+        }
+        #[doc = "0x28 - IPC_RECEIVE_STATUS"]
+        #[inline(always)]
+        pub const fn ipc_receive_status(&self) -> &IpcReceiveStatus {
+            &self.ipc_receive_status
+        }
+        #[doc = "0x2c - IPC_RECEIVE_ACK_SYNC"]
+        #[inline(always)]
+        pub const fn ipc_receive_ack_sync(&self) -> &IpcReceiveAckSync {
+            unsafe { &*core::ptr::from_ref(self).cast::<u8>().add(44).cast() }
+        }
+        #[doc = "0x2c - IPC_RECEIVE_ACK_COMMAND"]
+        #[inline(always)]
+        pub const fn ipc_receive_ack_command(&self) -> &IpcReceiveAckCommand {
+            unsafe { &*core::ptr::from_ref(self).cast::<u8>().add(44).cast() }
+        }
+        #[doc = "0x30 - IPC_SEND_STATUS"]
+        #[inline(always)]
+        pub const fn ipc_send_status(&self) -> &IpcSendStatus {
+            &self.ipc_send_status
+        }
+        #[doc = "0x34 - IPC_SEND_SET_COMMAND"]
+        #[inline(always)]
+        pub const fn ipc_send_set_command(&self) -> &IpcSendSetCommand {
+            &self.ipc_send_set_command
+        }
+        #[doc = "0x38 - IPC_RELEASE_COMMAND"]
+        #[inline(always)]
+        pub const fn ipc_release_command(&self) -> &IpcReleaseCommand {
+            &self.ipc_release_command
+        }
         #[doc = "0x40 - 32-bit little-endian access view of M_CLKEN0; same low-half fields, upper bits unmodeled; preserve them on RMW. SDK 163d9150: pwm_porting uses halfword access; sio_porting_clock_enable uses uapi_reg_setbit/clrbit with 32-bit unsigned int at the same address; upper bits unmodeled"]
         #[inline(always)]
         pub const fn m_clken0_word(&self) -> &MClken0Word {
@@ -1106,6 +1154,237 @@ pub mod m_crg {
         #[inline(always)]
         pub const fn trng_ring_control(&self) -> &TrngRingControl {
             &self.trng_ring_control
+        }
+    }
+    #[doc = "IPC_RECEIVE_ENABLE (rw) register accessor: IPC_RECEIVE_ENABLE\n\nYou can [`read`](crate::Reg::read) this register and get [`ipc_receive_enable::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`ipc_receive_enable::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@ipc_receive_enable`] module"]
+    #[doc(alias = "IPC_RECEIVE_ENABLE")]
+    pub type IpcReceiveEnable = crate::Reg<ipc_receive_enable::IpcReceiveEnableSpec>;
+    #[doc = "IPC_RECEIVE_ENABLE"]
+    pub mod ipc_receive_enable {
+        #[doc = "Register `IPC_RECEIVE_ENABLE` reader"]
+        pub type R = crate::R<IpcReceiveEnableSpec>;
+        #[doc = "Register `IPC_RECEIVE_ENABLE` writer"]
+        pub type W = crate::W<IpcReceiveEnableSpec>;
+        #[doc = "Field `CHANNEL0` reader - channel0"]
+        pub type Channel0R = crate::BitReader;
+        #[doc = "Field `CHANNEL0` writer - channel0"]
+        pub type Channel0W<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `CHANNEL1` reader - channel1"]
+        pub type Channel1R = crate::BitReader;
+        #[doc = "Field `CHANNEL1` writer - channel1"]
+        pub type Channel1W<'a, REG> = crate::BitWriter<'a, REG>;
+        impl R {
+            #[doc = "Bit 0 - channel0"]
+            #[inline(always)]
+            pub fn channel0(&self) -> Channel0R {
+                Channel0R::new((self.bits & 1) != 0)
+            }
+            #[doc = "Bit 1 - channel1"]
+            #[inline(always)]
+            pub fn channel1(&self) -> Channel1R {
+                Channel1R::new(((self.bits >> 1) & 1) != 0)
+            }
+        }
+        impl W {
+            #[doc = "Bit 0 - channel0"]
+            #[inline(always)]
+            pub fn channel0(&mut self) -> Channel0W<'_, IpcReceiveEnableSpec> {
+                Channel0W::new(self, 0)
+            }
+            #[doc = "Bit 1 - channel1"]
+            #[inline(always)]
+            pub fn channel1(&mut self) -> Channel1W<'_, IpcReceiveEnableSpec> {
+                Channel1W::new(self, 1)
+            }
+        }
+        #[doc = "IPC_RECEIVE_ENABLE\n\nYou can [`read`](crate::Reg::read) this register and get [`ipc_receive_enable::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`ipc_receive_enable::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct IpcReceiveEnableSpec;
+        impl crate::RegisterSpec for IpcReceiveEnableSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`ipc_receive_enable::R`](R) reader structure"]
+        impl crate::Readable for IpcReceiveEnableSpec {}
+        #[doc = "`write(|w| ..)` method takes [`ipc_receive_enable::W`](W) writer structure"]
+        impl crate::Writable for IpcReceiveEnableSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "IPC_RECEIVE_STATUS (r) register accessor: IPC_RECEIVE_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`ipc_receive_status::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@ipc_receive_status`] module"]
+    #[doc(alias = "IPC_RECEIVE_STATUS")]
+    pub type IpcReceiveStatus = crate::Reg<ipc_receive_status::IpcReceiveStatusSpec>;
+    #[doc = "IPC_RECEIVE_STATUS"]
+    pub mod ipc_receive_status {
+        #[doc = "Register `IPC_RECEIVE_STATUS` reader"]
+        pub type R = crate::R<IpcReceiveStatusSpec>;
+        #[doc = "Field `CHANNEL0` reader - channel0"]
+        pub type Channel0R = crate::BitReader;
+        #[doc = "Field `CHANNEL1` reader - channel1"]
+        pub type Channel1R = crate::BitReader;
+        impl R {
+            #[doc = "Bit 0 - channel0"]
+            #[inline(always)]
+            pub fn channel0(&self) -> Channel0R {
+                Channel0R::new((self.bits & 1) != 0)
+            }
+            #[doc = "Bit 1 - channel1"]
+            #[inline(always)]
+            pub fn channel1(&self) -> Channel1R {
+                Channel1R::new(((self.bits >> 1) & 1) != 0)
+            }
+        }
+        #[doc = "IPC_RECEIVE_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`ipc_receive_status::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct IpcReceiveStatusSpec;
+        impl crate::RegisterSpec for IpcReceiveStatusSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`ipc_receive_status::R`](R) reader structure"]
+        impl crate::Readable for IpcReceiveStatusSpec {}
+    }
+    #[doc = "IPC_RECEIVE_ACK_COMMAND (w) register accessor: IPC_RECEIVE_ACK_COMMAND\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`ipc_receive_ack_command::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@ipc_receive_ack_command`] module"]
+    #[doc(alias = "IPC_RECEIVE_ACK_COMMAND")]
+    pub type IpcReceiveAckCommand = crate::Reg<ipc_receive_ack_command::IpcReceiveAckCommandSpec>;
+    #[doc = "IPC_RECEIVE_ACK_COMMAND"]
+    pub mod ipc_receive_ack_command {
+        #[doc = "Register `IPC_RECEIVE_ACK_COMMAND` writer"]
+        pub type W = crate::W<IpcReceiveAckCommandSpec>;
+        #[doc = "Field `CHANNEL0` writer - channel0"]
+        pub type Channel0W<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `CHANNEL1` writer - channel1"]
+        pub type Channel1W<'a, REG> = crate::BitWriter<'a, REG>;
+        impl W {
+            #[doc = "Bit 0 - channel0"]
+            #[inline(always)]
+            pub fn channel0(&mut self) -> Channel0W<'_, IpcReceiveAckCommandSpec> {
+                Channel0W::new(self, 0)
+            }
+            #[doc = "Bit 1 - channel1"]
+            #[inline(always)]
+            pub fn channel1(&mut self) -> Channel1W<'_, IpcReceiveAckCommandSpec> {
+                Channel1W::new(self, 1)
+            }
+        }
+        #[doc = "IPC_RECEIVE_ACK_COMMAND\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`ipc_receive_ack_command::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct IpcReceiveAckCommandSpec;
+        impl crate::RegisterSpec for IpcReceiveAckCommandSpec {
+            type Ux = u32;
+        }
+        #[doc = "`write(|w| ..)` method takes [`ipc_receive_ack_command::W`](W) writer structure"]
+        impl crate::Writable for IpcReceiveAckCommandSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "IPC_RECEIVE_ACK_SYNC (r) register accessor: IPC_RECEIVE_ACK_SYNC\n\nYou can [`read`](crate::Reg::read) this register and get [`ipc_receive_ack_sync::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@ipc_receive_ack_sync`] module"]
+    #[doc(alias = "IPC_RECEIVE_ACK_SYNC")]
+    pub type IpcReceiveAckSync = crate::Reg<ipc_receive_ack_sync::IpcReceiveAckSyncSpec>;
+    #[doc = "IPC_RECEIVE_ACK_SYNC"]
+    pub mod ipc_receive_ack_sync {
+        #[doc = "Register `IPC_RECEIVE_ACK_SYNC` reader"]
+        pub type R = crate::R<IpcReceiveAckSyncSpec>;
+        #[doc = "Field `UNSPECIFIED` reader - Discard-only synchronization readback; value unspecified"]
+        pub type UnspecifiedR = crate::FieldReader<u32>;
+        impl R {
+            #[doc = "Bits 0:31 - Discard-only synchronization readback; value unspecified"]
+            #[inline(always)]
+            pub fn unspecified(&self) -> UnspecifiedR {
+                UnspecifiedR::new(self.bits)
+            }
+        }
+        #[doc = "IPC_RECEIVE_ACK_SYNC\n\nYou can [`read`](crate::Reg::read) this register and get [`ipc_receive_ack_sync::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct IpcReceiveAckSyncSpec;
+        impl crate::RegisterSpec for IpcReceiveAckSyncSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`ipc_receive_ack_sync::R`](R) reader structure"]
+        impl crate::Readable for IpcReceiveAckSyncSpec {}
+    }
+    #[doc = "IPC_SEND_STATUS (r) register accessor: IPC_SEND_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`ipc_send_status::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@ipc_send_status`] module"]
+    #[doc(alias = "IPC_SEND_STATUS")]
+    pub type IpcSendStatus = crate::Reg<ipc_send_status::IpcSendStatusSpec>;
+    #[doc = "IPC_SEND_STATUS"]
+    pub mod ipc_send_status {
+        #[doc = "Register `IPC_SEND_STATUS` reader"]
+        pub type R = crate::R<IpcSendStatusSpec>;
+        #[doc = "Field `CHANNEL0` reader - channel0"]
+        pub type Channel0R = crate::BitReader;
+        #[doc = "Field `CHANNEL1` reader - channel1"]
+        pub type Channel1R = crate::BitReader;
+        impl R {
+            #[doc = "Bit 0 - channel0"]
+            #[inline(always)]
+            pub fn channel0(&self) -> Channel0R {
+                Channel0R::new((self.bits & 1) != 0)
+            }
+            #[doc = "Bit 1 - channel1"]
+            #[inline(always)]
+            pub fn channel1(&self) -> Channel1R {
+                Channel1R::new(((self.bits >> 1) & 1) != 0)
+            }
+        }
+        #[doc = "IPC_SEND_STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`ipc_send_status::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct IpcSendStatusSpec;
+        impl crate::RegisterSpec for IpcSendStatusSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`ipc_send_status::R`](R) reader structure"]
+        impl crate::Readable for IpcSendStatusSpec {}
+    }
+    #[doc = "IPC_SEND_SET_COMMAND (w) register accessor: IPC_SEND_SET_COMMAND\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`ipc_send_set_command::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@ipc_send_set_command`] module"]
+    #[doc(alias = "IPC_SEND_SET_COMMAND")]
+    pub type IpcSendSetCommand = crate::Reg<ipc_send_set_command::IpcSendSetCommandSpec>;
+    #[doc = "IPC_SEND_SET_COMMAND"]
+    pub mod ipc_send_set_command {
+        #[doc = "Register `IPC_SEND_SET_COMMAND` writer"]
+        pub type W = crate::W<IpcSendSetCommandSpec>;
+        #[doc = "Field `CHANNEL0` writer - channel0"]
+        pub type Channel0W<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `CHANNEL1` writer - channel1"]
+        pub type Channel1W<'a, REG> = crate::BitWriter<'a, REG>;
+        impl W {
+            #[doc = "Bit 0 - channel0"]
+            #[inline(always)]
+            pub fn channel0(&mut self) -> Channel0W<'_, IpcSendSetCommandSpec> {
+                Channel0W::new(self, 0)
+            }
+            #[doc = "Bit 1 - channel1"]
+            #[inline(always)]
+            pub fn channel1(&mut self) -> Channel1W<'_, IpcSendSetCommandSpec> {
+                Channel1W::new(self, 1)
+            }
+        }
+        #[doc = "IPC_SEND_SET_COMMAND\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`ipc_send_set_command::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct IpcSendSetCommandSpec;
+        impl crate::RegisterSpec for IpcSendSetCommandSpec {
+            type Ux = u16;
+        }
+        #[doc = "`write(|w| ..)` method takes [`ipc_send_set_command::W`](W) writer structure"]
+        impl crate::Writable for IpcSendSetCommandSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "IPC_RELEASE_COMMAND (w) register accessor: IPC_RELEASE_COMMAND\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`ipc_release_command::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@ipc_release_command`] module"]
+    #[doc(alias = "IPC_RELEASE_COMMAND")]
+    pub type IpcReleaseCommand = crate::Reg<ipc_release_command::IpcReleaseCommandSpec>;
+    #[doc = "IPC_RELEASE_COMMAND"]
+    pub mod ipc_release_command {
+        #[doc = "Register `IPC_RELEASE_COMMAND` writer"]
+        pub type W = crate::W<IpcReleaseCommandSpec>;
+        #[doc = "Field `RELEASE` writer - release"]
+        pub type ReleaseW<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
+        impl W {
+            #[doc = "Bits 0:31 - release"]
+            #[inline(always)]
+            pub fn release(&mut self) -> ReleaseW<'_, IpcReleaseCommandSpec> {
+                ReleaseW::new(self, 0)
+            }
+        }
+        #[doc = "IPC_RELEASE_COMMAND\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`ipc_release_command::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct IpcReleaseCommandSpec;
+        impl crate::RegisterSpec for IpcReleaseCommandSpec {
+            type Ux = u32;
+        }
+        #[doc = "`write(|w| ..)` method takes [`ipc_release_command::W`](W) writer structure"]
+        impl crate::Writable for IpcReleaseCommandSpec {
+            type Safety = crate::Unsafe;
         }
     }
     #[doc = "M_CLKEN0 (rw) register accessor: M_CLKEN0\n\nYou can [`read`](crate::Reg::read) this register and get [`m_clken0::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`m_clken0::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@m_clken0`] module"]

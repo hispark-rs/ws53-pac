@@ -312,3 +312,12 @@ not hardware startup, delay or rollback qualification.
 The [validation report](evidence/ccore-domain-validation.json) records two
 byte-identical generations,60 host tests and offline RV32IMFC default/`rt`
 builds, tied to the clean RDL commit and SDK contract.
+
+The IPC increment follows the pinned RDL/ROM/patch contract: two application
+receive IRQs26/27, word status/ACK, distinct discard-only ACK readback, and a
+halfword send command replacing the ROM word store. Host tests verify layout,
+field encoding, preserved neighboring bits and intentionally absent read/RMW/
+reset traits. They do not send an IPC message or prove coherence, doorbell
+completion, firmware peer ownership or safe shared-memory access. No live-peer
+reset API is added. The header's shared-memory defaults must not be substituted
+for the control-image-selected layout documented by hisi-registers.
