@@ -31,21 +31,21 @@
           <description>IPC_RECEIVE_ENABLE</description>
           <addressOffset>0x20</addressOffset>
           <size>32</size>
-          <access>read-write</access>
+          <access>write-only</access>
           <fields>
             <field>
               <name>CHANNEL0</name>
               <description>channel0</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>write-only</access>
             </field>
             <field>
               <name>CHANNEL1</name>
               <description>channel1</description>
               <bitOffset>1</bitOffset>
               <bitWidth>1</bitWidth>
-              <access>read-write</access>
+              <access>write-only</access>
             </field>
           </fields>
         </register>

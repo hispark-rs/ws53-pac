@@ -1156,35 +1156,17 @@ pub mod m_crg {
             &self.trng_ring_control
         }
     }
-    #[doc = "IPC_RECEIVE_ENABLE (rw) register accessor: IPC_RECEIVE_ENABLE\n\nYou can [`read`](crate::Reg::read) this register and get [`ipc_receive_enable::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`ipc_receive_enable::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@ipc_receive_enable`] module"]
+    #[doc = "IPC_RECEIVE_ENABLE (w) register accessor: IPC_RECEIVE_ENABLE\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`ipc_receive_enable::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@ipc_receive_enable`] module"]
     #[doc(alias = "IPC_RECEIVE_ENABLE")]
     pub type IpcReceiveEnable = crate::Reg<ipc_receive_enable::IpcReceiveEnableSpec>;
     #[doc = "IPC_RECEIVE_ENABLE"]
     pub mod ipc_receive_enable {
-        #[doc = "Register `IPC_RECEIVE_ENABLE` reader"]
-        pub type R = crate::R<IpcReceiveEnableSpec>;
         #[doc = "Register `IPC_RECEIVE_ENABLE` writer"]
         pub type W = crate::W<IpcReceiveEnableSpec>;
-        #[doc = "Field `CHANNEL0` reader - channel0"]
-        pub type Channel0R = crate::BitReader;
         #[doc = "Field `CHANNEL0` writer - channel0"]
         pub type Channel0W<'a, REG> = crate::BitWriter<'a, REG>;
-        #[doc = "Field `CHANNEL1` reader - channel1"]
-        pub type Channel1R = crate::BitReader;
         #[doc = "Field `CHANNEL1` writer - channel1"]
         pub type Channel1W<'a, REG> = crate::BitWriter<'a, REG>;
-        impl R {
-            #[doc = "Bit 0 - channel0"]
-            #[inline(always)]
-            pub fn channel0(&self) -> Channel0R {
-                Channel0R::new((self.bits & 1) != 0)
-            }
-            #[doc = "Bit 1 - channel1"]
-            #[inline(always)]
-            pub fn channel1(&self) -> Channel1R {
-                Channel1R::new(((self.bits >> 1) & 1) != 0)
-            }
-        }
         impl W {
             #[doc = "Bit 0 - channel0"]
             #[inline(always)]
@@ -1197,13 +1179,11 @@ pub mod m_crg {
                 Channel1W::new(self, 1)
             }
         }
-        #[doc = "IPC_RECEIVE_ENABLE\n\nYou can [`read`](crate::Reg::read) this register and get [`ipc_receive_enable::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`ipc_receive_enable::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "IPC_RECEIVE_ENABLE\n\nYou can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`ipc_receive_enable::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct IpcReceiveEnableSpec;
         impl crate::RegisterSpec for IpcReceiveEnableSpec {
             type Ux = u32;
         }
-        #[doc = "`read()` method returns [`ipc_receive_enable::R`](R) reader structure"]
-        impl crate::Readable for IpcReceiveEnableSpec {}
         #[doc = "`write(|w| ..)` method takes [`ipc_receive_enable::W`](W) writer structure"]
         impl crate::Writable for IpcReceiveEnableSpec {
             type Safety = crate::Unsafe;

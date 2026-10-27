@@ -321,3 +321,9 @@ reset traits. They do not send an IPC message or prove coherence, doorbell
 completion, firmware peer ownership or safe shared-memory access. No live-peer
 reset API is added. The header's shared-memory defaults must not be substituted
 for the control-image-selected layout documented by hisi-registers.
+
+The IPC receive-enable correction removes its Readable/RMW API: the SDK only
+establishes full-word writes0xffff/0. No hardware read is inferred. Trait tests
+reject enable reads/reset, and the HAL adopts an explicit known enable shadow.
+Channel-specific gate behavior remains an integration inference until hardware
+validation; this does not claim the physical register is intrinsically unreadable.
