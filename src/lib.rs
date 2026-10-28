@@ -36622,15 +36622,27 @@ pub mod system_memory {
     #[repr(C)]
     #[doc = "Register block"]
     pub struct RegisterBlock {
-        _reserved0: [u8; 0x0234],
+        _reserved0: [u8; 0x24],
+        _reserved_0_gpio_: [u8; 0x04],
+        _reserved1: [u8; 0x020c],
         bram_share: BramShare,
         dtcm_share: DtcmShare,
-        _reserved2: [u8; 0x03c8],
+        _reserved3: [u8; 0x03c8],
         platform_enable: PlatformEnable,
-        _reserved3: [u8; 0x0364],
-        _reserved_3_ccore: [u8; 0x04],
+        _reserved4: [u8; 0x0364],
+        _reserved_4_ccore: [u8; 0x04],
     }
     impl RegisterBlock {
+        #[doc = "0x24 - 32-bit little-endian access view of GPIO_CLOCK; same low-half fields, upper bits unmodeled; preserve them on RMW. SDK 163d9150 ws53_application/main.c dev_work_clock_init unconditionally uses reg16_setbit(0x57030024,0), including BOARD_ASIC. clock_recover.c and pm_porting.c also use word writes 1/3/0. Shared AGPIO/ULP clock; reset value and silicon timing are unknown. SPI23 Flash failure reaches the GPIO1 access stage while factory-initialized RAM works; this is not yet controlled gate-causality proof"]
+        #[inline(always)]
+        pub const fn gpio_clock_word(&self) -> &GpioClockWord {
+            unsafe { &*core::ptr::from_ref(self).cast::<u8>().add(36).cast() }
+        }
+        #[doc = "0x24 - GPIO_CLOCK"]
+        #[inline(always)]
+        pub const fn gpio_clock(&self) -> &GpioClock {
+            unsafe { &*core::ptr::from_ref(self).cast::<u8>().add(36).cast() }
+        }
         #[doc = "0x234 - BRAM_SHARE"]
         #[inline(always)]
         pub const fn bram_share(&self) -> &BramShare {
@@ -36655,6 +36667,112 @@ pub mod system_memory {
         #[inline(always)]
         pub const fn ccore_reset_status(&self) -> &CcoreResetStatus {
             unsafe { &*core::ptr::from_ref(self).cast::<u8>().add(2412).cast() }
+        }
+    }
+    #[doc = "GPIO_CLOCK (rw) register accessor: GPIO_CLOCK\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_clock::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_clock::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_clock`] module"]
+    #[doc(alias = "GPIO_CLOCK")]
+    pub type GpioClock = crate::Reg<gpio_clock::GpioClockSpec>;
+    #[doc = "GPIO_CLOCK"]
+    pub mod gpio_clock {
+        #[doc = "Register `GPIO_CLOCK` reader"]
+        pub type R = crate::R<GpioClockSpec>;
+        #[doc = "Register `GPIO_CLOCK` writer"]
+        pub type W = crate::W<GpioClockSpec>;
+        #[doc = "Field `ENABLE` reader - SDK AGPIO clock enable; application initialization sets bit0 before GPIO1 use. Preserve the handed-off source and other clock bits. Shared with sleep/wakeup code; no automatic disable or exclusive ownership is implied"]
+        pub type EnableR = crate::BitReader;
+        #[doc = "Field `ENABLE` writer - SDK AGPIO clock enable; application initialization sets bit0 before GPIO1 use. Preserve the handed-off source and other clock bits. Shared with sleep/wakeup code; no automatic disable or exclusive ownership is implied"]
+        pub type EnableW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `SLOW_CLOCK_SELECT` reader - SDK clock recovery writes 3 for GPIO 32K and 1 for PLL/fast source. Frequency, APB versus interrupt-clock coverage, and low-power behavior remain silicon-unqualified"]
+        pub type SlowClockSelectR = crate::BitReader;
+        #[doc = "Field `SLOW_CLOCK_SELECT` writer - SDK clock recovery writes 3 for GPIO 32K and 1 for PLL/fast source. Frequency, APB versus interrupt-clock coverage, and low-power behavior remain silicon-unqualified"]
+        pub type SlowClockSelectW<'a, REG> = crate::BitWriter<'a, REG>;
+        impl R {
+            #[doc = "Bit 0 - SDK AGPIO clock enable; application initialization sets bit0 before GPIO1 use. Preserve the handed-off source and other clock bits. Shared with sleep/wakeup code; no automatic disable or exclusive ownership is implied"]
+            #[inline(always)]
+            pub fn enable(&self) -> EnableR {
+                EnableR::new((self.bits & 1) != 0)
+            }
+            #[doc = "Bit 1 - SDK clock recovery writes 3 for GPIO 32K and 1 for PLL/fast source. Frequency, APB versus interrupt-clock coverage, and low-power behavior remain silicon-unqualified"]
+            #[inline(always)]
+            pub fn slow_clock_select(&self) -> SlowClockSelectR {
+                SlowClockSelectR::new(((self.bits >> 1) & 1) != 0)
+            }
+        }
+        impl W {
+            #[doc = "Bit 0 - SDK AGPIO clock enable; application initialization sets bit0 before GPIO1 use. Preserve the handed-off source and other clock bits. Shared with sleep/wakeup code; no automatic disable or exclusive ownership is implied"]
+            #[inline(always)]
+            pub fn enable(&mut self) -> EnableW<'_, GpioClockSpec> {
+                EnableW::new(self, 0)
+            }
+            #[doc = "Bit 1 - SDK clock recovery writes 3 for GPIO 32K and 1 for PLL/fast source. Frequency, APB versus interrupt-clock coverage, and low-power behavior remain silicon-unqualified"]
+            #[inline(always)]
+            pub fn slow_clock_select(&mut self) -> SlowClockSelectW<'_, GpioClockSpec> {
+                SlowClockSelectW::new(self, 1)
+            }
+        }
+        #[doc = "GPIO_CLOCK\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_clock::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_clock::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct GpioClockSpec;
+        impl crate::RegisterSpec for GpioClockSpec {
+            type Ux = u16;
+        }
+        #[doc = "`read()` method returns [`gpio_clock::R`](R) reader structure"]
+        impl crate::Readable for GpioClockSpec {}
+        #[doc = "`write(|w| ..)` method takes [`gpio_clock::W`](W) writer structure"]
+        impl crate::Writable for GpioClockSpec {
+            type Safety = crate::Unsafe;
+        }
+    }
+    #[doc = "GPIO_CLOCK_WORD (rw) register accessor: 32-bit little-endian access view of GPIO_CLOCK; same low-half fields, upper bits unmodeled; preserve them on RMW. SDK 163d9150 ws53_application/main.c dev_work_clock_init unconditionally uses reg16_setbit(0x57030024,0), including BOARD_ASIC. clock_recover.c and pm_porting.c also use word writes 1/3/0. Shared AGPIO/ULP clock; reset value and silicon timing are unknown. SPI23 Flash failure reaches the GPIO1 access stage while factory-initialized RAM works; this is not yet controlled gate-causality proof\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_clock_word::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_clock_word::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@gpio_clock_word`] module"]
+    #[doc(alias = "GPIO_CLOCK_WORD")]
+    pub type GpioClockWord = crate::Reg<gpio_clock_word::GpioClockWordSpec>;
+    #[doc = "32-bit little-endian access view of GPIO_CLOCK; same low-half fields, upper bits unmodeled; preserve them on RMW. SDK 163d9150 ws53_application/main.c dev_work_clock_init unconditionally uses reg16_setbit(0x57030024,0), including BOARD_ASIC. clock_recover.c and pm_porting.c also use word writes 1/3/0. Shared AGPIO/ULP clock; reset value and silicon timing are unknown. SPI23 Flash failure reaches the GPIO1 access stage while factory-initialized RAM works; this is not yet controlled gate-causality proof"]
+    pub mod gpio_clock_word {
+        #[doc = "Register `GPIO_CLOCK_WORD` reader"]
+        pub type R = crate::R<GpioClockWordSpec>;
+        #[doc = "Register `GPIO_CLOCK_WORD` writer"]
+        pub type W = crate::W<GpioClockWordSpec>;
+        #[doc = "Field `ENABLE` reader - SDK AGPIO clock enable; application initialization sets bit0 before GPIO1 use. Preserve the handed-off source and other clock bits. Shared with sleep/wakeup code; no automatic disable or exclusive ownership is implied"]
+        pub type EnableR = crate::BitReader;
+        #[doc = "Field `ENABLE` writer - SDK AGPIO clock enable; application initialization sets bit0 before GPIO1 use. Preserve the handed-off source and other clock bits. Shared with sleep/wakeup code; no automatic disable or exclusive ownership is implied"]
+        pub type EnableW<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `SLOW_CLOCK_SELECT` reader - SDK clock recovery writes 3 for GPIO 32K and 1 for PLL/fast source. Frequency, APB versus interrupt-clock coverage, and low-power behavior remain silicon-unqualified"]
+        pub type SlowClockSelectR = crate::BitReader;
+        #[doc = "Field `SLOW_CLOCK_SELECT` writer - SDK clock recovery writes 3 for GPIO 32K and 1 for PLL/fast source. Frequency, APB versus interrupt-clock coverage, and low-power behavior remain silicon-unqualified"]
+        pub type SlowClockSelectW<'a, REG> = crate::BitWriter<'a, REG>;
+        impl R {
+            #[doc = "Bit 0 - SDK AGPIO clock enable; application initialization sets bit0 before GPIO1 use. Preserve the handed-off source and other clock bits. Shared with sleep/wakeup code; no automatic disable or exclusive ownership is implied"]
+            #[inline(always)]
+            pub fn enable(&self) -> EnableR {
+                EnableR::new((self.bits & 1) != 0)
+            }
+            #[doc = "Bit 1 - SDK clock recovery writes 3 for GPIO 32K and 1 for PLL/fast source. Frequency, APB versus interrupt-clock coverage, and low-power behavior remain silicon-unqualified"]
+            #[inline(always)]
+            pub fn slow_clock_select(&self) -> SlowClockSelectR {
+                SlowClockSelectR::new(((self.bits >> 1) & 1) != 0)
+            }
+        }
+        impl W {
+            #[doc = "Bit 0 - SDK AGPIO clock enable; application initialization sets bit0 before GPIO1 use. Preserve the handed-off source and other clock bits. Shared with sleep/wakeup code; no automatic disable or exclusive ownership is implied"]
+            #[inline(always)]
+            pub fn enable(&mut self) -> EnableW<'_, GpioClockWordSpec> {
+                EnableW::new(self, 0)
+            }
+            #[doc = "Bit 1 - SDK clock recovery writes 3 for GPIO 32K and 1 for PLL/fast source. Frequency, APB versus interrupt-clock coverage, and low-power behavior remain silicon-unqualified"]
+            #[inline(always)]
+            pub fn slow_clock_select(&mut self) -> SlowClockSelectW<'_, GpioClockWordSpec> {
+                SlowClockSelectW::new(self, 1)
+            }
+        }
+        #[doc = "32-bit little-endian access view of GPIO_CLOCK; same low-half fields, upper bits unmodeled; preserve them on RMW. SDK 163d9150 ws53_application/main.c dev_work_clock_init unconditionally uses reg16_setbit(0x57030024,0), including BOARD_ASIC. clock_recover.c and pm_porting.c also use word writes 1/3/0. Shared AGPIO/ULP clock; reset value and silicon timing are unknown. SPI23 Flash failure reaches the GPIO1 access stage while factory-initialized RAM works; this is not yet controlled gate-causality proof\n\nYou can [`read`](crate::Reg::read) this register and get [`gpio_clock_word::R`](R). You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`gpio_clock_word::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct GpioClockWordSpec;
+        impl crate::RegisterSpec for GpioClockWordSpec {
+            type Ux = u32;
+        }
+        #[doc = "`read()` method returns [`gpio_clock_word::R`](R) reader structure"]
+        impl crate::Readable for GpioClockWordSpec {}
+        #[doc = "`write(|w| ..)` method takes [`gpio_clock_word::W`](W) writer structure"]
+        impl crate::Writable for GpioClockWordSpec {
+            type Safety = crate::Unsafe;
         }
     }
     #[doc = "BRAM_SHARE (rw) register accessor: BRAM_SHARE\n\nYou can [`read`](crate::Reg::read) this register and get [`bram_share::R`]. You can [`write_with_zero`](crate::Reg::write_with_zero) this register using [`bram_share::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@bram_share`] module"]
