@@ -1,0 +1,45 @@
+name: Publish
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Verify the package without uploading it'
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: nightly-2026-07-09
+      - name: Verify version, lockfile and package
+        run: |
+          set -euo pipefail
+          if [[ "$GITHUB_REF_TYPE" == tag ]]; then
+            version=$(cargo metadata --locked --no-deps --format-version 1 | jq -r '.packages[0].version')
+            test "$GITHUB_REF_NAME" = "v$version"
+          fi
+          git ls-files --error-unmatch Cargo.lock >/dev/null
+          cargo generate-lockfile --locked
+          git diff --exit-code -- Cargo.lock
+          cargo package --locked --target x86_64-unknown-linux-gnu
+      - name: Publish to crates.io
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+        run: |
+          set -euo pipefail
+          if [[ "$DRY_RUN" == true ]]; then
+            cargo publish --locked --dry-run --target x86_64-unknown-linux-gnu
+          else
+            cargo publish --locked --target x86_64-unknown-linux-gnu
+          fi
