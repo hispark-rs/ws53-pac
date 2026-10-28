@@ -27600,14 +27600,14 @@ pub mod spi0 {
         #[doc = "`read()` method returns [`clear_rx_underflow::R`](R) reader structure"]
         impl crate::Readable for ClearRxUnderflowSpec {}
     }
-    #[doc = "STATUS (r) register accessor: STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`status::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@status`] module"]
+    #[doc = "STATUS (r) register accessor: STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`status::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\n<div class=\"warning\">The register is <b>modified</b> in some way after a read operation.</div>\n\nFor information about available fields see [`mod@status`] module"]
     #[doc(alias = "STATUS")]
     pub type Status = crate::Reg<status::StatusSpec>;
     #[doc = "STATUS"]
     pub mod status {
         #[doc = "Register `STATUS` reader"]
         pub type R = crate::R<StatusSpec>;
-        #[doc = "Field `COLLISION_OR_TX_ERROR` reader - collision_or_tx_error"]
+        #[doc = "Field `COLLISION_OR_TX_ERROR` reader - SDK spi_wsr_data_t: master collision status clears on read. Retain the existing field name for API compatibility; the SDK documentation establishes master collision, not TX FIFO overflow. Relation to RAW_INTERRUPT acknowledgement is not established; do not use STATUS as an IRQ acknowledgement. SDK documentation, not silicon-qualified.\n\n<div class=\"warning\">The field is <b>cleared</b> (set to zero) following a read operation.</div>"]
         pub type CollisionOrTxErrorR = crate::BitReader;
         #[doc = "Field `RX_NOT_EMPTY` reader - rx_not_empty"]
         pub type RxNotEmptyR = crate::BitReader;
@@ -27620,7 +27620,7 @@ pub mod spi0 {
         #[doc = "Field `BUSY` reader - busy"]
         pub type BusyR = crate::BitReader;
         impl R {
-            #[doc = "Bit 0 - collision_or_tx_error"]
+            #[doc = "Bit 0 - SDK spi_wsr_data_t: master collision status clears on read. Retain the existing field name for API compatibility; the SDK documentation establishes master collision, not TX FIFO overflow. Relation to RAW_INTERRUPT acknowledgement is not established; do not use STATUS as an IRQ acknowledgement. SDK documentation, not silicon-qualified."]
             #[inline(always)]
             pub fn collision_or_tx_error(&self) -> CollisionOrTxErrorR {
                 CollisionOrTxErrorR::new((self.bits & 1) != 0)
@@ -27651,7 +27651,7 @@ pub mod spi0 {
                 BusyR::new(((self.bits >> 15) & 1) != 0)
             }
         }
-        #[doc = "STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`status::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`status::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\n<div class=\"warning\">The register is <b>modified</b> in some way after a read operation.</div>"]
         pub struct StatusSpec;
         impl crate::RegisterSpec for StatusSpec {
             type Ux = u32;
@@ -29598,7 +29598,7 @@ pub mod qspi1 {
         #[doc = "`read()` method returns [`rx_level::R`](R) reader structure"]
         impl crate::Readable for RxLevelSpec {}
     }
-    #[doc = "STATUS (r) register accessor: STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`status::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@status`] module"]
+    #[doc = "STATUS (r) register accessor: STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`status::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\n<div class=\"warning\">The register is <b>modified</b> in some way after a read operation.</div>\n\nFor information about available fields see [`mod@status`] module"]
     #[doc(alias = "STATUS")]
     pub type Status = crate::Reg<status::StatusSpec>;
     #[doc = "STATUS"]
@@ -29615,9 +29615,9 @@ pub mod qspi1 {
         pub type RxNotEmptyR = crate::BitReader;
         #[doc = "Field `RX_FULL` reader - rx_full"]
         pub type RxFullR = crate::BitReader;
-        #[doc = "Field `TX_ERROR` reader - tx_error"]
+        #[doc = "Field `TX_ERROR` reader - SDK sr_data_t: transmit FIFO empty when a slave transfer starts; clears on read. Only a slave can set this flag; the WS53 QSPI1 port is master-only. This is not TX FIFO overflow. SDK documentation, not silicon-qualified.\n\n<div class=\"warning\">The field is <b>cleared</b> (set to zero) following a read operation.</div>"]
         pub type TxErrorR = crate::BitReader;
-        #[doc = "Field `COLLISION` reader - collision"]
+        #[doc = "Field `COLLISION` reader - SDK sr_data_t: master collision status clears on read. Relation to RAW_INTERRUPT acknowledgement is not established; do not use STATUS as an IRQ acknowledgement. SDK documentation, not silicon-qualified.\n\n<div class=\"warning\">The field is <b>cleared</b> (set to zero) following a read operation.</div>"]
         pub type CollisionR = crate::BitReader;
         impl R {
             #[doc = "Bit 0 - busy"]
@@ -29645,18 +29645,18 @@ pub mod qspi1 {
             pub fn rx_full(&self) -> RxFullR {
                 RxFullR::new(((self.bits >> 4) & 1) != 0)
             }
-            #[doc = "Bit 5 - tx_error"]
+            #[doc = "Bit 5 - SDK sr_data_t: transmit FIFO empty when a slave transfer starts; clears on read. Only a slave can set this flag; the WS53 QSPI1 port is master-only. This is not TX FIFO overflow. SDK documentation, not silicon-qualified."]
             #[inline(always)]
             pub fn tx_error(&self) -> TxErrorR {
                 TxErrorR::new(((self.bits >> 5) & 1) != 0)
             }
-            #[doc = "Bit 6 - collision"]
+            #[doc = "Bit 6 - SDK sr_data_t: master collision status clears on read. Relation to RAW_INTERRUPT acknowledgement is not established; do not use STATUS as an IRQ acknowledgement. SDK documentation, not silicon-qualified."]
             #[inline(always)]
             pub fn collision(&self) -> CollisionR {
                 CollisionR::new(((self.bits >> 6) & 1) != 0)
             }
         }
-        #[doc = "STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`status::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "STATUS\n\nYou can [`read`](crate::Reg::read) this register and get [`status::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\n<div class=\"warning\">The register is <b>modified</b> in some way after a read operation.</div>"]
         pub struct StatusSpec;
         impl crate::RegisterSpec for StatusSpec {
             type Ux = u32;
